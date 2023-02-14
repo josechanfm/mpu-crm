@@ -3,12 +3,12 @@
 
 defineProps({
     title: String,
-    holder: Object,
+    card: Object,
 });
 </script>
 
 <template>
-    <div class="md:grid md:grid-cols-3 md:gap-6">
+    <div class="md:grid md:grid-cols-3 py-5 md:gap-6">
         <div class="md:col-span-1 flex justify-between">
             <div class="px-4 sm:px-0">
                 <h3 class="text-lg font-medium text-gray-900">{{ title }}</h3>
@@ -20,28 +20,42 @@ defineProps({
         </div>
         <div class="mt-5 md:mt-0 md:col-span-2">
             <div class="w-96 h-56 m-auto bg-red-100 rounded-xl relative text-white shadow-2xl transition-transform transform hover:scale-110">
-                <img class="relative object-cover w-full h-full rounded-xl" src="https://i.imgur.com/kGkSg1v.png"
+                <img class="relative object-cover w-full h-full rounded-xl" :src="card.face"
                     width="10px">
+                <div class="absolute w-full text-center text-lg" style="top:1em">澳門柔道協會會員</div>
                 <div class="w-full px-8 absolute top-8">
                     <div class="flex justify-between">
                         <div class="">
                             <p class="font-light">
                                 Name
                             </p>
-                            <p class="font-medium tracking-widest">
-                                {{ holder.name }}
+                            <p p class="font-medium tracking-widest">
+                                {{ card.name }}
                             </p>
                         </div>
-                        <img class="w-14 h-14" src="https://i.imgur.com/bbPHJVe.png" />
+                        <img class="w-14 h-14" src="storage/judo_logo.jpg" />
                     </div>
-                    <div class="pt-1">
-                        <p class="font-light">
-                            Card Number
-                        </p>
-                        <p class="font-medium tracking-more-wider">
-                            {{ holder.number }}
-                        </p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="pt-1">
+                            <p class="font-light">
+                                編號
+                            </p>
+                            <p class="font-medium tracking-more-wider">
+                                {{ card.number }}
+                            </p>
+                        </div>
+                        <div class="pt-1">
+                            <p class="font-light">
+                                段數
+                            </p>
+                            <p class="font-medium tracking-more-wider">
+                                {{ card.dan }}
+                            </p>
+                        </div>
+
                     </div>
+
+                    
                     <div class="pt-6 pr-6">
                         <div class="flex justify-between">
                             <div class="">
@@ -80,3 +94,10 @@ defineProps({
 
 
 </template>
+
+
+<style>
+p{
+    margin-bottom:0
+}
+</style>

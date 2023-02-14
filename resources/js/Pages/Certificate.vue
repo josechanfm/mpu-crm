@@ -10,10 +10,18 @@ export default {
 
     data() {
         return{
-            cardHolder:{
-                'name':'Jose',
-                'number':'4642 3489 9867 7632'
-            },
+            cardHolder:[{
+                'title':'澳門柔道協會會員',
+                'name':'謝廣漢',
+                'number':'0001',
+                'dan':'7',
+                'face':'/storage/card1.png'
+            },{
+                'title':'澳門柔道協會教練員',
+                'name':'謝廣漢',
+                'number':'0012',
+                'face':'/storage/card2.png'
+            }],
 
         }
     }
@@ -29,7 +37,7 @@ export default {
             </h2>
         </template>
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-            <CertificateCard title="Member Card" :holder="cardHolder">
+            <CertificateCard v-for="card in cardHolder" title="Member Card" :card="card">
                 <template #description>
                     afasdf
                 </template>

@@ -43,14 +43,14 @@ const logout = () => {
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
-                                    <ApplicationMark class="block h-9 w-auto" />
+                                    <img src="/storage/judo_logo.jpg" width="48"/>
                                 </Link>
                             </div>
-
+                            <div class="flex items-center ml-4 text-2xl font-bold tracking-widest">澳門柔道總會</div>
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                <NavLink :href="route('member')" :active="route().current('member')">
+                                    Member
                                 </NavLink>
                             </div>
                         </div>
