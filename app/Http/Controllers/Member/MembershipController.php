@@ -9,8 +9,11 @@ use Inertia\Inertia;
 class MembershipController extends Controller
 {
     public function index(){
+        $member=Auth()->user()->member;
+        $certificates=Auth()->user()->member->certificates;
         return Inertia::render('Member/Membership',[
-            'member'=>Auth()->user()->member,
+            'member'=>$member,
+            'certificates'=>$certificates
         ]);
     }
 }

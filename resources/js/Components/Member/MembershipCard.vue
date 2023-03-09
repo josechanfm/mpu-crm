@@ -20,9 +20,9 @@ defineProps({
         </div>
         <div class="mt-5 md:mt-0 md:col-span-2">
             <div class="w-96 h-56 m-auto bg-red-100 rounded-lg relative text-white shadow-2xl transition-transform transform hover:scale-110">
-                <img class="relative object-cover w-full h-full rounded-lg" :src="card.face"
+                <img class="relative object-cover w-full h-full rounded-lg" :src="card.background"
                     width="10px">
-                <div class="absolute w-full text-center text-lg" style="top:1em">{{ card.title }}</div>
+                <div class="absolute w-full text-center text-lg" style="top:1em">{{ card.cert_title }}</div>
                 <div class="w-full px-8 absolute top-8">
                     <div class="flex justify-between">
                         <div class="">
@@ -30,10 +30,10 @@ defineProps({
                                 Name
                             </p>
                             <p p class="font-medium tracking-widest">
-                                {{ card.name }}
+                                {{ card.pivot.display_name }}
                             </p>
                         </div>
-                        <img class="w-14 h-14" src="storage/judo_logo.jpg" />
+                        <img class="w-14 h-14" :src="card.avata" />
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div class="pt-1">
@@ -41,7 +41,7 @@ defineProps({
                                 編號
                             </p>
                             <p class="font-medium tracking-more-wider">
-                                {{ card.number }}
+                                {{ card.pivot.number }}
                             </p>
                         </div>
                         <div class="pt-1">
@@ -49,7 +49,7 @@ defineProps({
                                 {{ card.rank_caption }}
                             </p>
                             <p class="font-medium tracking-more-wider">
-                                {{ card.rank }}
+                                {{ card.pivot.rank }}
                             </p>
                         </div>
 
@@ -63,7 +63,7 @@ defineProps({
                                     Valid
                                 </p>
                                 <p class="font-medium tracking-wider text-sm">
-                                    11/15
+                                    {{card.pivot.valid_from}}
                                 </p>
                             </div>
                             <div class="">
@@ -71,7 +71,7 @@ defineProps({
                                     Expiry
                                 </p>
                                 <p class="font-medium tracking-wider text-sm">
-                                    03/25
+                                    {{card.pivot.valid_until}}
                                 </p>
                             </div>
 
