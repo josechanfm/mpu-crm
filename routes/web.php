@@ -29,19 +29,17 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
-    Route::get('/member', function () {
-        return Inertia::render('Member');
-    })->name('member');
-    Route::get('/certificate', function () {
-        return Inertia::render('Certificate');
-    })->name('certificate');
-    Route::get('/profile', function () {
-        return Inertia::render('Profile');
-    })->name('profile');
-    Route::get('/certificate', function () {
-        return Inertia::render('Certificate');
-    })->name('certificate');
+    // Route::get('/dashboard', function () {
+    //     return Inertia::render('Member/Dashboard');
+    // })->name('dashboard');
+    Route::get('/dashboard', [\App\Http\Controllers\Member\DashboardController::class,'index'])->name('dashboard');
+    Route::resource('professionals',App\Http\Controllers\Member\ProfessionalController::class);
+    Route::get('membership',[App\Http\Controllers\Member\MembershipController::class,'index'])->name('membership');
+
+    Route::prefix('student')->group(function(){
+        Route::get('/',[App\Http\Controllers\Student\DashboardController::class,'index'])->name('student.dashboard');
+    })->name('student');
+
 });
+
+

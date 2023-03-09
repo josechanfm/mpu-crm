@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/inertia-vue3';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import ActionSection from '@/Components/ActionSection.vue';
 import Checkbox from '@/Components/Checkbox.vue';
@@ -30,7 +30,7 @@ const updateApiTokenForm = useForm({
     permissions: [],
 });
 
-const deleteApiTokenForm = useForm({});
+const deleteApiTokenForm = useForm();
 
 const displayingToken = ref(false);
 const managingPermissionsFor = ref(null);
@@ -142,11 +142,11 @@ const deleteApiToken = () => {
                     <template #content>
                         <div class="space-y-6">
                             <div v-for="token in tokens" :key="token.id" class="flex items-center justify-between">
-                                <div class="break-all">
+                                <div>
                                     {{ token.name }}
                                 </div>
 
-                                <div class="flex items-center ml-2">
+                                <div class="flex items-center">
                                     <div v-if="token.last_used_ago" class="text-sm text-gray-400">
                                         Last used {{ token.last_used_ago }}
                                     </div>
@@ -181,7 +181,7 @@ const deleteApiToken = () => {
                     Please copy your new API token. For your security, it won't be shown again.
                 </div>
 
-                <div v-if="$page.props.jetstream.flash.token" class="mt-4 bg-gray-100 px-4 py-2 rounded font-mono text-sm text-gray-500 break-all">
+                <div v-if="$page.props.jetstream.flash.token" class="mt-4 bg-gray-100 px-4 py-2 rounded font-mono text-sm text-gray-500">
                     {{ $page.props.jetstream.flash.token }}
                 </div>
             </template>

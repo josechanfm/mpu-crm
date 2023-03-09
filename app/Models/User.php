@@ -10,6 +10,10 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+use App\Notifications\SetPasswordNotification;
+use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
+
 
 class User extends Authenticatable
 {
@@ -19,11 +23,13 @@ class User extends Authenticatable
     use HasTeams;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use HasRoles;
+
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var string<int, string>
+     * @var string[]
      */
     protected $fillable = [
         'name', 'email', 'password',
@@ -32,7 +38,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $hidden = [
         'password',
@@ -44,7 +50,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be cast.
      *
-     * @var array<string, string>
+     * @var array
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
@@ -53,9 +59,27 @@ class User extends Authenticatable
     /**
      * The accessors to append to the model's array form.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function sendPasswordResetNotification($token)
+    {
+        if ($this->password === 'need-to-set') {
+            $this->notify(new SetPasswordNotification($token));
+            return;
+        }
+
+        $this->notify(new ResetPasswordNotification($token));
+    }
+
+    public function hasPasswordSet () {
+        return $this->password !== 'need-to-set';
+    }
+
+    public function member(){
+        return $this->hasOne(Member::class);
+    }
 }

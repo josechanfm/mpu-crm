@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
-import { router, useForm, usePage } from '@inertiajs/vue3';
+import { Inertia } from '@inertiajs/inertia';
+import { useForm, usePage } from '@inertiajs/inertia-vue3';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import ActionSection from '@/Components/ActionSection.vue';
 import ConfirmationModal from '@/Components/ConfirmationModal.vue';
@@ -29,8 +30,8 @@ const updateRoleForm = useForm({
     role: null,
 });
 
-const leaveTeamForm = useForm({});
-const removeTeamMemberForm = useForm({});
+const leaveTeamForm = useForm();
+const removeTeamMemberForm = useForm();
 
 const currentlyManagingRole = ref(false);
 const managingRoleFor = ref(null);
@@ -46,7 +47,7 @@ const addTeamMember = () => {
 };
 
 const cancelTeamInvitation = (invitation) => {
-    router.delete(route('team-invitations.destroy', invitation), {
+    Inertia.delete(route('team-invitations.destroy', invitation), {
         preserveScroll: true,
     });
 };
@@ -69,7 +70,7 @@ const confirmLeavingTeam = () => {
 };
 
 const leaveTeam = () => {
-    leaveTeamForm.delete(route('team-members.destroy', [props.team, usePage().props.user]));
+    leaveTeamForm.delete(route('team-members.destroy', [props.team, usePage().props.value.user]));
 };
 
 const confirmTeamMemberRemoval = (teamMember) => {
@@ -145,9 +146,16 @@ const displayableRole = (role) => {
                                             {{ role.name }}
                                         </div>
 
-                                        <svg v-if="addTeamMemberForm.role == role.key" class="ml-2 h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
+                                        <svg
+                                            v-if="addTeamMemberForm.role == role.key"
+                                            class="ml-2 h-5 w-5 text-green-400"
+                                            fill="none"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        ><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                     </div>
 
                                     <!-- Role Description -->
@@ -295,9 +303,16 @@ const displayableRole = (role) => {
                                         {{ role.name }}
                                     </div>
 
-                                    <svg v-if="updateRoleForm.role == role.key" class="ml-2 h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
+                                    <svg
+                                        v-if="updateRoleForm.role === role.key"
+                                        class="ml-2 h-5 w-5 text-green-400"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    ><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                 </div>
 
                                 <!-- Role Description -->

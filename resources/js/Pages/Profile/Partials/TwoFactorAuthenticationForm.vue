@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
-import { router, useForm, usePage } from '@inertiajs/vue3';
+import { Inertia } from '@inertiajs/inertia';
+import { useForm, usePage } from '@inertiajs/inertia-vue3';
 import ActionSection from '@/Components/ActionSection.vue';
 import ConfirmsPassword from '@/Components/ConfirmsPassword.vue';
 import DangerButton from '@/Components/DangerButton.vue';
@@ -26,7 +27,7 @@ const confirmationForm = useForm({
 });
 
 const twoFactorEnabled = computed(
-    () => ! enabling.value && usePage().props.user?.two_factor_enabled,
+    () => ! enabling.value && usePage().props.value.user?.two_factor_enabled,
 );
 
 watch(twoFactorEnabled, () => {
@@ -39,7 +40,7 @@ watch(twoFactorEnabled, () => {
 const enableTwoFactorAuthentication = () => {
     enabling.value = true;
 
-    router.post('/user/two-factor-authentication', {}, {
+    Inertia.post('/user/two-factor-authentication', {}, {
         preserveScroll: true,
         onSuccess: () => Promise.all([
             showQrCode(),
@@ -93,7 +94,7 @@ const regenerateRecoveryCodes = () => {
 const disableTwoFactorAuthentication = () => {
     disabling.value = true;
 
-    router.delete('/user/two-factor-authentication', {
+    Inertia.delete('/user/two-factor-authentication', {
         preserveScroll: true,
         onSuccess: () => {
             disabling.value = false;
@@ -106,11 +107,11 @@ const disableTwoFactorAuthentication = () => {
 <template>
     <ActionSection>
         <template #title>
-            雙重身份驗證
+            Two Factor Authentication
         </template>
 
         <template #description>
-            使用雙因素身份驗證為您的帳戶增加額外的安全性。
+            Add additional security to your account using two factor authentication.
         </template>
 
         <template #content>
@@ -146,7 +147,7 @@ const disableTwoFactorAuthentication = () => {
 
                     <div class="mt-4" v-html="qrCode" />
 
-                    <div v-if="setupKey" class="mt-4 max-w-xl text-sm text-gray-600">
+                    <div class="mt-4 max-w-xl text-sm text-gray-600" v-if="setupKey">
                         <p class="font-semibold">
                             Setup Key: <span v-html="setupKey"></span>
                         </p>

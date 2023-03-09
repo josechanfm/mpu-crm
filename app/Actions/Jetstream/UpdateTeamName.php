@@ -2,8 +2,6 @@
 
 namespace App\Actions\Jetstream;
 
-use App\Models\Team;
-use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Jetstream\Contracts\UpdatesTeamNames;
@@ -13,9 +11,12 @@ class UpdateTeamName implements UpdatesTeamNames
     /**
      * Validate and update the given team's name.
      *
-     * @param  array<string, string>  $input
+     * @param  mixed  $user
+     * @param  mixed  $team
+     * @param  array  $input
+     * @return void
      */
-    public function update(User $user, Team $team, array $input): void
+    public function update($user, $team, array $input)
     {
         Gate::forUser($user)->authorize('update', $team);
 
