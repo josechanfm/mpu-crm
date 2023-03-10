@@ -35,6 +35,8 @@ class OrganizationPolicy
         if($user->hasRole('admin')){
             return true;
         }
+        // dd($user);
+        // dd($organization);
         return $organization->hasUser($user);
     }
 

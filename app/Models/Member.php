@@ -44,6 +44,7 @@ class Member extends Model
     }
 
     public function certificates(){
-        return $this->belongsToMany(Certificate::class)->withPivot('display_name','number','issue_date','valid_from','valid_until','authorize_by','rank');
+        return $this->belongsToMany(Certificate::class)->withPivot(
+            'id','display_name','number','issue_date','valid_from','valid_until','authorize_by','rank','avata');
     }
 }

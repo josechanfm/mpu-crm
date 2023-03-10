@@ -1,5 +1,12 @@
 <script setup>
 //import { defineProps } from "vue";
+const cardNumberFormat = (format, num) => {
+    var len=(format.match(/0+/)[0].length) * -1;
+    return format.replace(/0+/, ('000000000'+num).slice(len));
+};
+const cidFormat = (num) => {
+    return ('0000'+num.toString(16)).slice(-3);
+};
 
 defineProps({
     title: String,
@@ -18,6 +25,7 @@ defineProps({
             </div>
             <div class="px-4 sm:px-0"></div>
         </div>
+        {{ card }}
         <div class="mt-5 md:mt-0 md:col-span-2">
             <div class="w-96 h-56 m-auto bg-red-100 rounded-lg relative text-white shadow-2xl transition-transform transform hover:scale-110">
                 <img class="relative object-cover w-full h-full rounded-lg" :src="card.background"
@@ -33,15 +41,15 @@ defineProps({
                                 {{ card.pivot.display_name }}
                             </p>
                         </div>
-                        <img class="w-14 h-14" :src="card.avata" />
+                        <img class="w-14 h-14" :src="card.pivot.avata" />
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div class="pt-1">
                             <p class="font-light">
-                                編號
+                                Number
                             </p>
                             <p class="font-medium tracking-more-wider">
-                                {{ card.pivot.number }}
+                                {{ cardNumberFormat(card.number_format, card.pivot.number) }}
                             </p>
                         </div>
                         <div class="pt-1">
@@ -77,10 +85,10 @@ defineProps({
 
                             <div class="">
                                 <p class="font-light text-xs">
-                                    CVV
+                                    CID
                                 </p>
                                 <p class="font-bold tracking-more-wider text-sm">
-                                    ···
+                                    {{ cidFormat(card.pivot.id) }}
                                 </p>
                             </div>
                         </div>

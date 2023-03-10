@@ -1,6 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Welcome from '@/Components/Welcome.vue';
+
 const data = [{
         title: 'Ant Design Title 1',
     }, {
@@ -52,15 +53,15 @@ defineProps({
                         <div class="bg-white relative shadow rounded-lg">
                             <div class="p-5">
                                 <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt=""
-                                    class="rounded-full mx-auto absolute w-32 h-32 shadow-md border-4 border-white transition duration-200 transform hover:scale-110">
+                                    class="rounded-full mx-auto absolute w-24 h-24 shadow-md border-4 border-white transition duration-200 transform hover:scale-110">
                             </div>
 
                             <div class="mt-16">
-                                <h1 class="font-bold text-center text-3xl text-gray-900">{{ member.display_name }}</h1>
-                                <p class="text-center text-sm text-gray-400 font-medium">澳門柔道總會</p>
+                                <h1 class="font-bold text-center text-3xl text-gray-900">澳門柔道總會</h1>
+                                <p class="text-center text-sm text-gray-400 font-medium">{{ member.display_name }}</p>
                                 <p>
                                     <span>
-
+                                        
                                     </span>
                                 </p>
                                 <div class="my-5 px-6">
