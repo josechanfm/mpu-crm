@@ -4,16 +4,17 @@ namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\AdminUser;
-use App\Models\Organization;
 use Inertia\Inertia;
+use App\Models\Organization;
+use App\Models\Certificate;
+use App\Models\Member;
 
-class OrganizationController extends Controller
+class CertificateController extends Controller
 {
-    
     public function __construct()
     {
         $this->authorizeResource(Organization::class);
+        $this->authorizeResource(Certificate::class);
     }
 
     /**
@@ -21,16 +22,13 @@ class OrganizationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Organization $organization)
     {
-        if(Auth()->user()->hasRole('admin')){
-            $organizations=Organization::all();
-        }else{
-            $organizations=AdminUser::find(Auth()->user()->id)->organizations;
-        }
-        return Inertia::render('Organization/Organization',[
-            'organizations' => $organizations
+        $this->authorize('view',$organization);
+        return Inertia::render('Organization/Certificate',[
+            'certificates'=>$organization->certificates,
         ]);
+
     }
 
     /**
@@ -60,9 +58,9 @@ class OrganizationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Organization $organization)
+    public function show(Organization $organization, Certificate $certificate)
     {
-        return redirect(route('organization.certificates.index',[$organization->id]));
+        return redirect(route('organization.certificate.memebers',[$organization->id,$certificate->id]));
     }
 
     /**
@@ -71,18 +69,11 @@ class OrganizationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Organization $organization)
-    {         
-
-        //$this->authorize('update' , $organization);
-
-
-        return Inertia::render('Organization/OrganizationEdit',[
-            'organization'=>$organization,
-        ]);
-        
+    public function edit($id)
+    {
+        //
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -106,4 +97,14 @@ class OrganizationController extends Controller
         //
     }
 
+    public function members(Organization $organization, Certificate $certificate){
+        $this->authorize('view',$organization);
+        $this->authorize('view',$certificate);
+        return Inertia::render('Organization/CertificateMember',[
+            'organization'=>$organization,
+            'certificate'=>$certificate,
+            'members'=>$certificate->members
+        ]);
+        
+    }
 }

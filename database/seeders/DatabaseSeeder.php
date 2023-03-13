@@ -29,7 +29,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             MemberSeeder::class,
-            OrganizationSeeder::class
+            OrganizationSeeder::class,
+            FormSeeder::class
         ]);
 
 

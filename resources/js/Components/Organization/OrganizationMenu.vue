@@ -11,7 +11,11 @@
           <template #icon>
             <PieChartOutlined />
           </template>
-          <span>Option 1</span>
+          <span>
+            <inertia-link href="/manage/organizations">
+              Organizations
+            </inertia-link>
+          </span>
         </a-menu-item>
         <a-menu-item key="2">
           <template #icon>

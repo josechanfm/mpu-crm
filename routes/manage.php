@@ -52,9 +52,11 @@ Route::middleware([
         Route::get('/',[App\Http\Controllers\Organization\DashboardController::class,'index']);
         Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class);
         Route::resource('organization.members', App\Http\Controllers\Organization\MemberController::class);
-        Route::resource('organization.members', App\Http\Controllers\Organization\MemberController::class);
+        Route::resource('organization.certificates', App\Http\Controllers\Organization\CertificateController::class);
+        Route::get('organization/{organization}/certificate/{certificate}/members', [App\Http\Controllers\Organization\CertificateController::class,'members'])->name('organization.certificate.memebers');
         Route::get('organization/{organization}/members/{member}/create_login', [App\Http\Controllers\Organization\MemberController::class,'createLogin']);
-        
+        Route::resource('organization.forms',App\Http\Controllers\Organization\FormController::class);
+
         //Route::resource('members', App\Http\Controllers\Organization\MemberController::class);
         // Route::prefix('/member')->group(function(){
             

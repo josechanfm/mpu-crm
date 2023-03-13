@@ -16,17 +16,20 @@ class CertificateSeeder extends Seeder
     public function run()
     {
         DB::table('certificates')->insert([
+            'organization_id'=>'1',
             'name'=>'裁判資格認證',
             'cert_title'=>'裁判資格認證',
             'cert_body'=>'澳門柔道總會',
             'description'=>'澳門柔道總會裁判資格認證<br><ul><li>aaa</li></ul>'
         ]);
         DB::table('certificates')->insert([
+            'organization_id'=>'1',
             'name'=>'考官資格認證',
             'cert_title'=>'考官資格認證',
             'cert_body'=>'澳門柔道總會',
             'description'=>'澳門柔道總會裁判資格認證<br><ul><li>aaa</li></ul>'
         ]);
+
         DB::table('certificate_member')->insert([
             'certificate_id'=>'1',
             'member_id'=>'1',

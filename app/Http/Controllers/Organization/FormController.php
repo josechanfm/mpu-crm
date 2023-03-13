@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\AdminUser;
 use App\Models\Organization;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Form;
 
-class OrganizationController extends Controller
+class FormController extends Controller
 {
-    
     public function __construct()
     {
         $this->authorizeResource(Organization::class);
+        $this->authorizeResource(Form::class);
     }
 
     /**
@@ -21,15 +21,12 @@ class OrganizationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Organization $organization)
     {
-        if(Auth()->user()->hasRole('admin')){
-            $organizations=Organization::all();
-        }else{
-            $organizations=AdminUser::find(Auth()->user()->id)->organizations;
-        }
-        return Inertia::render('Organization/Organization',[
-            'organizations' => $organizations
+        $this->authorize('view',$organization);
+        return Inertia::render('Organization/Form',[
+            'organization'=>$organization,
+            'forms'=>$organization->forms
         ]);
     }
 
@@ -51,7 +48,24 @@ class OrganizationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $organization = Organization::find($request->organization_id);
+
+        if($organization->hasUser(Auth()->user())){
+            $this->validate($request,[
+                'organization_id' => 'required',
+                'name'=>'required',
+                'title'=>'required',
+            ]);
+            $form=new Form();
+            $form->organization_id=$request->organization_id;
+            $form->name=$request->name;
+            $form->title=$request->title;
+            $form->description=$request->description;
+            $form->with_login=$request->with_login;
+            $form->with_member=$request->with_member;
+            $form->save();
+            return redirect()->back();
+        }
     }
 
     /**
@@ -60,9 +74,12 @@ class OrganizationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Organization $organization)
+    public function show(Organization $organization, Form $form)
     {
-        return redirect(route('organization.certificates.index',[$organization->id]));
+        $this->authorize('view',$organization);
+        $this->authorize('view',$form);
+
+        echo 'edit form';
     }
 
     /**
@@ -71,18 +88,14 @@ class OrganizationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Organization $organization)
-    {         
+    public function edit(Organization $organization, Form $form)
+    {
+        $this->authorize('update',$organization);
+        $this->authorize('update',$form);
 
-        //$this->authorize('update' , $organization);
-
-
-        return Inertia::render('Organization/OrganizationEdit',[
-            'organization'=>$organization,
-        ]);
-        
+        echo 'edit form';
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -105,5 +118,4 @@ class OrganizationController extends Controller
     {
         //
     }
-
 }

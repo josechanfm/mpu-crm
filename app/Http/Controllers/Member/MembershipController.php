@@ -18,6 +18,7 @@ class MembershipController extends Controller
         echo $digitLength;
         echo '<br>';
         echo preg_replace('/0+/', substr('0000000'.$cert->pivot->number, -5), $cert->number_format);
+
         return;
         return Inertia::render('Member/Membership',[
             'member'=>$member,

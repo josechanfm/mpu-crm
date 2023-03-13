@@ -11,7 +11,8 @@ class Certificate extends Model
     protected $appends=['cid','cert_number'];
 
     public function getCidAttribute(){
-        return substr('000'.strtoupper(base_convert($this->pivot->id,10,36)),-3);
+        return $this->id;
+        //return substr('000'.strtoupper(base_convert($this->pivot->id,10,36)),-3);
     }
 
     public function getCertNumberAttribute(){
@@ -20,6 +21,11 @@ class Certificate extends Model
     }
 
     public function members(){
-        return $this->belongsToMany(Member::class);
+        return $this->belongsToMany(Member::class)->withPivot(
+            'id','display_name','number','number_display','issue_date','valid_from','valid_until','authorize_by','rank','avata');
+    }
+
+    public function organization(){
+        return $this->belongsTo(Organization::class);
     }
 }

@@ -21,4 +21,12 @@ class Organization extends Model
     public function hasUser($user){
         return in_array($user->id,$this->adminUsers()->get()->pluck('id')->toArray());
     }
+
+    public function certificates(){
+        return $this->hasMany(Certificate::class);
+    }
+    public function forms(){
+        return $this->hasMany(Form::class);
+    }
+
 }
