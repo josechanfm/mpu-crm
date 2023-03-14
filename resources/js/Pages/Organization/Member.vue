@@ -1,5 +1,5 @@
 <template>
-    <OrganizationLayout title="Dashboard">
+    <OrganizationLayout title="Dashboard" :organization="organization">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 課程規劃
@@ -10,9 +10,9 @@
             <a-table :dataSource="members" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <inertia-link :href="'/manage/organization/'+record.pivot.organization_id+'/members/'+record.id">View</inertia-link>
-                        <inertia-link :href="'/manage/organization/'+record.pivot.organization_id+'/members/'+record.id+'/edit'">Edit</inertia-link>
-                        <a-button @click="editRecord(record)">Edit</a-button>
+                        <inertia-link :href="'/manage/organization/'+record.pivot.organization_id+'/members/'+record.id" class="ant-btn">View</inertia-link>
+                        <inertia-link :href="'/manage/organization/'+record.pivot.organization_id+'/members/'+record.id+'/edit'" class="ant-btn">Edit(new Page)</inertia-link>
+                        <a-button @click="editRecord(record)">Edit(Popup)</a-button>
                         <a-button @click="deleteRecord(record.id)">Delete</a-button>
                         <a-button @click="createLogin(record.id)">Create login</a-button>
                     </template>
@@ -69,7 +69,7 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['members'],
+    props: ['organization','members'],
     data() {
         return {
             modal:{

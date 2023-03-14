@@ -3,17 +3,18 @@
 namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
+use App\Models\Organization;
+use App\Models\Form;
+use App\Models\FormField;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Organization;
-use App\Models\Member;
 
-class MemberController extends Controller
+class FormFieldController extends Controller
 {
     public function __construct()
     {
         $this->authorizeResource(Organization::class);
-        $this->authorizeResource(Member::class);
+        $this->authorizeResource(Form::class);
     }
 
     /**
@@ -21,14 +22,12 @@ class MemberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Organization $organization)
+    public function index(Organization $organization, Form $form)
     {
-        $this->authorize('view',$organization);
-        return Inertia::render('Organization/Member',[
-            'organization' => $organization,
-            'members'=>$organization->members,
+        return Inertia::render('Organization/FormField',[
+            'form'=>$form,
+            'fields'=>$form->fields,
         ]);
-
     }
 
     /**
@@ -58,12 +57,9 @@ class MemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Organization $organization, Member $member)
+    public function show($id)
     {
-        return Inertia::render('Organization/MemberShow',[
-            //'member'=>$member->belongsToOrganization($organization)->first(),
-            'member'=>$member,
-        ]);
+        //
     }
 
     /**
@@ -72,12 +68,9 @@ class MemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Organization $organization, Member $member)
+    public function edit($id)
     {
-        return Inertia::render('Organization/MemberEdit',[
-            //'member'=>$member->belongsToOrganization($organization)->first(),
-            'member'=>$member,
-        ]);
+        
     }
 
     /**
@@ -98,20 +91,8 @@ class MemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Organization $organization, Form $form, FormField $field)
     {
-        //
+        $field->delete();        
     }
-
-    public function createLogin(Organization $organization, Member $member){
-        $this->authorize('update',$member);
-        if (!$member->hasUser()) {
-            $user = $member->createUser();
-        } else {
-            $user = $member->user;
-        }
-        Password::broker(config('fortify.passwords'))->sendResetLink(
-            [ 'email' => $user->email ]
-        );
-    }    
 }

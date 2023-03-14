@@ -63,9 +63,7 @@ class FormPolicy
         if($user->hasRole('admin')){
             return true;
         }
-        dd($form);
         return $form->organization->hasUser($user);
-
     }
 
     /**
@@ -77,7 +75,10 @@ class FormPolicy
      */
     public function delete(AdminUser $user, Form $form)
     {
-        //
+        if($user->hasRole('admin')){
+            return true;
+        }
+        return $form->organization->hasUser($user);
     }
 
     /**

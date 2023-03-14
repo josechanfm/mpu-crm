@@ -12,7 +12,7 @@
             <PieChartOutlined />
           </template>
           <span>
-            <inertia-link href="/manage/organizations">
+            <inertia-link :href="route('organizations.show',organization.id)">
               Organizations
             </inertia-link>
           </span>
@@ -21,7 +21,11 @@
           <template #icon>
             <DesktopOutlined />
           </template>
-          <span>Option 2</span>
+          <span>
+            <inertia-link :href="route('organization.members.index',organization.id)">
+              Members
+            </inertia-link>
+          </span>
         </a-menu-item>
         <a-menu-item key="3">
           <template #icon>
@@ -57,6 +61,7 @@
   <script>
   import { defineComponent, reactive, toRefs, watch } from 'vue';
   import { MenuFoldOutlined, MenuUnfoldOutlined, PieChartOutlined, MailOutlined, DesktopOutlined, InboxOutlined, AppstoreOutlined } from '@ant-design/icons-vue';
+  
   export default defineComponent({
     components: {
       MenuFoldOutlined,
@@ -67,6 +72,7 @@
       InboxOutlined,
       AppstoreOutlined,
     },
+    props: ['organization'],
     setup() {
       const state = reactive({
         collapsed: false,

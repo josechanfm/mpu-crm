@@ -78,7 +78,11 @@ class OrganizationPolicy
      */
     public function delete(AdminUser $user, Organization $organization)
     {
-        //
+        if($user->hasRole('admin')){
+            return true;
+        }
+        return $organization->hasUser($user);
+
     }
 
     /**

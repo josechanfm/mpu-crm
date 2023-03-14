@@ -9,7 +9,7 @@
                 <inertia-link href='/organization'>Organization </inertia-link>
             </div>
 
-            <OrganizationMenu :menuKeys='menuKeys' />
+            <OrganizationMenu :menuKeys='menuKeys' :organization="organization"/>
         </a-layout-sider>
         
         <a-layout>
@@ -79,6 +79,7 @@ import OrganizationMenu from '@/Components/Organization/OrganizationMenu.vue';
 
 defineProps({
     title: String,
+    organization:Object,
 });
 
 const menuKeys = reactive({

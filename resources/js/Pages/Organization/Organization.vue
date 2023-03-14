@@ -9,8 +9,9 @@
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
                         <a-button @click="editRecord(record)">View</a-button>
-                        <inertia-link :href="'/manage/organizations/'+record.id+'/edit'">Edit</inertia-link>
-                        <inertia-link :href="'/manage/organization/'+record.id+'/members'">Members</inertia-link>
+                        <inertia-link :href="route('organizations.edit',record.id)" class="ant-btn">Edit</inertia-link>
+                        <inertia-link :href="route('organization.members.index',record.id)" class="ant-btn">Members</inertia-link>
+                        <inertia-link :href="route('organization.forms.index',record.id)" class="ant-btn">Forms</inertia-link>
                     </template>
                     <template v-else-if="column.dataIndex=='state'">
                         {{teacherStateLabels[text]}}
@@ -45,9 +46,6 @@
             </a-form-item>
             <a-form-item label="手機" name="mobile">
                 <a-input v-model:value="modal.data.mobile" />
-            </a-form-item>
-            <a-form-item label="狀態" name="status">
-                <a-select v-model:value="modal.data.state" :options="employmentStates"/>
             </a-form-item>
         </a-form>
         <template #footer>

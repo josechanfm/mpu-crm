@@ -10,6 +10,13 @@ class Form extends Model
     use HasFactory;
 
     public function organization(){
-        return $this->belongsTo(Form::class);
+        return $this->belongsTo(Organization::class);
+    }
+
+    public function fields(){
+        return $this->hasMany(FormField::class);
+    }
+    public function hasChild(){
+        return $this->fields()->exists();
     }
 }

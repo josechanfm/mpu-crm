@@ -35,9 +35,11 @@ class FormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Organization $organization)
     {
-        //
+        return Inertia::render('Organization/FormEdit',[
+            'form'=>new Form()
+        ]);
     }
 
     /**
@@ -76,10 +78,10 @@ class FormController extends Controller
      */
     public function show(Organization $organization, Form $form)
     {
-        $this->authorize('view',$organization);
-        $this->authorize('view',$form);
+        // $this->authorize('view',$organization);
+        // $this->authorize('view',$form);
 
-        echo 'edit form';
+        // echo 'edit form';
     }
 
     /**
@@ -90,10 +92,12 @@ class FormController extends Controller
      */
     public function edit(Organization $organization, Form $form)
     {
-        $this->authorize('update',$organization);
-        $this->authorize('update',$form);
-
-        echo 'edit form';
+        //$this->authorize('update',$organization);
+        //$this->authorize('update',$form);
+        // return Inertia::render('Organization/FormEdit',[
+        //     'fields'=>$form->fields
+        // ]);
+        
     }
 
     /**
@@ -114,8 +118,14 @@ class FormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Organization $organization, Form $form)
     {
-        //
+        if($form->hasChild()){
+            return redirect()->back()->withErrors(['message'=>'No permission or restriced deletion of records with child records.']);
+        }else{
+            $form->delete();
+            return redirect()->back();
+        }
+        
     }
 }

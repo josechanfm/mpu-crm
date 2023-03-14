@@ -23,6 +23,8 @@ return new class extends Migration
             $table->boolean('with_member')->default(false);
             $table->timestamps();
         });
+
+
     }
 
     /**

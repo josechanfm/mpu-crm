@@ -6,39 +6,38 @@
             </h2>
         </template>
 
-        <a-form :model="organization" v-bind="layout" name="nest-messages" :validate-messages="validateMessages"
-            @finish="onFinish">
-            <a-form-item :name="abbr" label="Abbr" >
+        <a-form :model="organization" v-bind="layout" name="nest-messages" :validate-messages="validateMessages">
+            <a-form-item name="abbr" label="Abbr" >
                 <a-input v-model:value="organization.abbr" />
             </a-form-item>
-            <a-form-item :name="full_name" label="Full Name" >
+            <a-form-item name="full_name" label="Full Name" >
                 <a-input v-model:value="organization.full_name" />
             </a-form-item>
-            <a-form-item :name="title" label="Title" >
+            <a-form-item name="title" label="Title" >
                 <a-input v-model:value="organization.title" />
             </a-form-item>
-            <a-form-item :name="email" label="Email" >
+            <a-form-item name="email" label="Email" >
                 <a-input v-model:value="organization.email" />
             </a-form-item>
-            <a-form-item :name="phone" label="Phone" >
+            <a-form-item name="phone" label="Phone" >
                 <a-input v-model:value="organization.phone" />
             </a-form-item>
-            <a-form-item :name="address" label="Address" >
+            <a-form-item name="address" label="Address" >
                 <a-input v-model:value="organization.address" />
             </a-form-item>
-            <a-form-item :name="country" label="Country" >
+            <a-form-item name="country" label="Country" >
                 <a-input v-model:value="organization.country" />
             </a-form-item>
-            <a-form-item :name="href" label="Official Website" >
+            <a-form-item name="href" label="Official Website" >
                 <a-input v-model:value="organization.href" />
             </a-form-item>
-            <a-form-item :name="avata" label="Avata" >
+            <a-form-item name="avata" label="Avata" >
                 <a-input v-model:value="organization.avata" />
             </a-form-item>
-            <a-form-item :name="description" label="Description" >
+            <a-form-item name="description" label="Description" >
                 <a-input v-model:value="organization.description" />
             </a-form-item>
-            <a-form-item :name="content" label="Content" >
+            <a-form-item name="content" label="Content" >
                 <a-input v-model:value="organization.content" />
             </a-form-item>
             <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">

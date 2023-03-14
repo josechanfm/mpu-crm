@@ -62,7 +62,10 @@ class OrganizationController extends Controller
      */
     public function show(Organization $organization)
     {
-        return redirect(route('organization.certificates.index',[$organization->id]));
+        return Inertia::render('Organization/Dashboard2',[
+            'organization'=>$organization
+        ]);
+        //return redirect(route('organization.certificates.index',[$organization->id]));
     }
 
     /**

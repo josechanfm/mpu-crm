@@ -20,5 +20,11 @@ class FormSeeder extends Seeder
             'name'=>'first form',
             'title'=>'First form of title'
         ]);
+        DB::table('form_fields')->insert([
+            'form_id' => '1',
+            'field'=>'field 1',
+            'label'=>'label 1'
+        ]);
+
     }
 }

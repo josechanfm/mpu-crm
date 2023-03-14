@@ -5,15 +5,10 @@
                 Forms
             </h2>
         </template>
-        {{ form }}
-        <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Form</button>
-            <inertia-link :href="route('organization.forms.create',organization.id)" class="ant-btn">View</inertia-link>
-            <a-table :dataSource="forms" :columns="columns">
+            <a-table :dataSource="fields" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <inertia-link :href="route('organization.form.fields.index',{organization:record.organization_id,form:record.id})" class="ant-btn">Fields</inertia-link>
-                        <a-button @click="viewRecord(record)">Edit</a-button>
+                        <a-button @click="editRecord(record)">Edit</a-button>
                         <a-button @click="deleteRecord(record)">Delete</a-button>
                     </template>
                     <template v-else>
@@ -35,23 +30,26 @@
             :validate-messages="validateMessages"
         >
             <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item label="Organization Id" name="organization_id">
-                <a-input v-model:value="modal.data.organization_id" />
+            <a-form-item label="Field Name" name="field">
+                <a-input v-model:value="modal.data.field" />
             </a-form-item>
-            <a-form-item label="Name" name="name">
-                <a-input v-model:value="modal.data.name" />
+            <a-form-item label="Field Label" name="label">
+                <a-input v-model:value="modal.data.label" />
             </a-form-item>
-            <a-form-item label="Title" name="title">
-                <a-input v-model:value="modal.data.title" />
+            <a-form-item label="Type" name="type">
+                <a-input v-model:value="modal.data.type" />
             </a-form-item>
-            <a-form-item label="Description" name="description">
-                <a-input v-model:value="modal.data.description" />
+            <a-form-item label="Required" name="required">
+                <a-input v-model:value="modal.data.required" />
             </a-form-item>
-            <a-form-item label="Login" name="with_login">
-                <a-input v-model:value="modal.data.is_login" />
+            <a-form-item label="Rule" name="rule">
+                <a-input v-model:value="modal.data.rule" />
             </a-form-item>
-            <a-form-item label="Member" name="with_member">
-                <a-input v-model:value="modal.data.is_member" />
+            <a-form-item label="Validate" name="validate">
+                <a-input v-model:value="modal.data.validate" />
+            </a-form-item>
+            <a-form-item label="Remark" name="remark">
+                <a-textarea v-model:value="modal.data.remark" />
             </a-form-item>
         </a-form>
         <template #footer>
@@ -72,7 +70,7 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['organization','forms'],
+    props: ['form','fields'],
     data() {
         return {
             modal:{
@@ -83,17 +81,23 @@ export default {
             },
             columns:[
                 {
-                    title: 'Name',
-                    dataIndex: 'name',
+                    title: 'Field Name',
+                    dataIndex: 'field',
                 },{
-                    title: 'Title',
-                    dataIndex: 'title',
+                    title: 'Field Label',
+                    dataIndex: 'label',
                 },{
-                    title: 'With Login',
-                    dataIndex: 'with_login',
+                    title: 'Type',
+                    dataIndex: 'type',
                 },{
-                    title: 'With Member',
-                    dataIndex: 'with_member',
+                    title: 'Required',
+                    dataIndex: 'required',
+                },{
+                    title: 'Rule',
+                    dataIndex: 'required',
+                },{
+                    title: 'Validate',
+                    dataIndex: 'validate',
                 },{
                     title: 'Action',
                     dataIndex: 'operation',
@@ -124,16 +128,18 @@ export default {
     created(){
     },
     methods: {
-        viewRecord(record){
+        editRecord(record){
             this.modal.data={...record};
             this.modal.mode="EDIT";
             this.modal.isOpen=true;
         },
         deleteRecord(record){
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete(route('organization.forms.destroy', {organization:record.organization_id, form:record.id}),{
+            this.$inertia.delete(route('organization.form.fields.destroy', {
+                organization:this.form.organization_id, form:this.form.id, field:record.id
+            }),{
                 onSuccess: (page)=>{
-                    console.log(page);
+                    console.log('the field has been deleted!');
                 },
                 onError: (error)=>{
                     alert(error.message);

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('form_fields', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('form_id');
+            $table->foreignId('form_id')->constrained()->restrictOnDelete();
             $table->string('field');
             $table->string('label');
             $table->string('type')->default('input');
@@ -25,6 +25,8 @@ return new class extends Migration
             $table->text('remark')->nullable();
             $table->timestamps();
         });
+
+            
     }
 
     /**
