@@ -26,6 +26,7 @@ class CertificateController extends Controller
     {
         $this->authorize('view',$organization);
         return Inertia::render('Organization/Certificate',[
+            'organization' => $organization,
             'certificates'=>$organization->certificates,
         ]);
 

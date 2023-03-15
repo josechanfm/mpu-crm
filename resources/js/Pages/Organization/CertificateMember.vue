@@ -1,5 +1,5 @@
 <template>
-    <OrganizationLayout title="Dashboard">
+    <OrganizationLayout title="Dashboard" :organization="organization">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Members

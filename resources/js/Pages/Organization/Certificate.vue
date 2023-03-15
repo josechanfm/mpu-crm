@@ -1,5 +1,5 @@
 <template>
-    <OrganizationLayout title="Dashboard">
+    <OrganizationLayout title="Dashboard" :organization="organization">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 課程規劃
@@ -63,7 +63,7 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['certificates'],
+    props: ['organization','certificates'],
     data() {
         return {
             modal:{

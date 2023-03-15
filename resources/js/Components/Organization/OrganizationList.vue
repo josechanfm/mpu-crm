@@ -33,6 +33,8 @@
           <inertia-link :href="'/manage/organization/'+item.id+'/members'">Members</inertia-link>
           <br>
           <inertia-link :href="'/manage/organizations/'+item.id+'/edit'">Profile</inertia-link>
+          <br>
+          <inertia-link :href="'/manage/dashboard/'+item.id">Dashboard</inertia-link>
         </a-list-item>
       </template>
     </a-list>

@@ -49,8 +49,8 @@ Route::middleware([
         //         Route::get('/create_login/{member}',[App\Http\Controllers\Admin\MemberController::class,'createLogin']);
         //     })->name('manage.admin.member');        
         // })->name('manage.admin');
-        Route::get('selection',[App\Http\Controllers\Organization\SelectionController::class,'index']);
-        Route::get('/',[App\Http\Controllers\Organization\DashboardController::class,'index']);
+        Route::get('/',[App\Http\Controllers\Organization\SelectionController::class,'index']);
+        Route::get('/dashboard/{organization}',[App\Http\Controllers\Organization\DashboardController::class,'index']);
         Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class);
         Route::resource('organization.members', App\Http\Controllers\Organization\MemberController::class);
         Route::resource('organization.certificates', App\Http\Controllers\Organization\CertificateController::class);

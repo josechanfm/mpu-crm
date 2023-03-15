@@ -28,9 +28,17 @@ class OrganizationController extends Controller
         }else{
             $organizations=AdminUser::find(Auth()->user()->id)->organizations;
         }
-        return Inertia::render('Organization/Organization',[
-            'organizations' => $organizations
-        ]);
+
+        if($organizations->count()==1){
+            return redirect()->route('organizations.show',$organizations[0]->id);
+        }elseif($organizations->count()>1){
+            return Inertia::render('Organization/Selection',[
+                'organizations' => $organizations
+            ]);
+        }else{
+            echo '!!';
+        }
+
     }
 
     /**
@@ -62,7 +70,7 @@ class OrganizationController extends Controller
      */
     public function show(Organization $organization)
     {
-        return Inertia::render('Organization/Dashboard2',[
+        return Inertia::render('Organization/Dashboard',[
             'organization'=>$organization
         ]);
         //return redirect(route('organization.certificates.index',[$organization->id]));

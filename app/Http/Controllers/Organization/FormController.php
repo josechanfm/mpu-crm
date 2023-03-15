@@ -37,9 +37,7 @@ class FormController extends Controller
      */
     public function create(Organization $organization)
     {
-        return Inertia::render('Organization/FormEdit',[
-            'form'=>new Form()
-        ]);
+        //
     }
 
     /**
@@ -50,21 +48,21 @@ class FormController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+            'organization_id' => 'required',
+            'name'=>'required',
+            'title'=>'required',
+        ]);
         $organization = Organization::find($request->organization_id);
 
         if($organization->hasUser(Auth()->user())){
-            $this->validate($request,[
-                'organization_id' => 'required',
-                'name'=>'required',
-                'title'=>'required',
-            ]);
             $form=new Form();
             $form->organization_id=$request->organization_id;
             $form->name=$request->name;
             $form->title=$request->title;
             $form->description=$request->description;
-            $form->with_login=$request->with_login;
-            $form->with_member=$request->with_member;
+            $form->require_login=$request->require_login;
+            $form->require_member=$request->require_member;
             $form->save();
             return redirect()->back();
         }

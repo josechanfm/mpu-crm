@@ -12,8 +12,14 @@ class SelectionController extends Controller
 {
     public function index(){
         $organizations=AdminUser::find(Auth()->user()->id)->organizations;
-        return Inertia::render('Organization/Selection',[
-            'organizations' => $organizations
-        ]);
+        if($organizations->count()==1){
+            return redirect()->route('organizations.show',$organizations[0]->id);
+        }elseif($organizations->count()>1){
+            return Inertia::render('Organization/Selection',[
+                'organizations' => $organizations
+            ]);
+        }else{
+            echo '!!';
+        }
     }
 }

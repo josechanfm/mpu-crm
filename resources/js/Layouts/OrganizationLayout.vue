@@ -6,7 +6,7 @@
                 <inertia-link href='/organization'>Org </inertia-link>
             </div>
             <div class="m-4 text-center text-lg" v-else>
-                <inertia-link href='/organization'>Organization </inertia-link>
+                <inertia-link :href="route('organizations.show',organization)">Organization </inertia-link>
             </div>
 
             <OrganizationMenu :menuKeys='menuKeys' :organization="organization"/>

@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('title')->nullable();
             $table->text('description')->nullable();
-            $table->boolean('with_login')->default(false);
-            $table->boolean('with_member')->default(false);
+            $table->boolean('require_login')->default(false);
+            $table->boolean('require_member')->default(false);
             $table->timestamps();
         });
 

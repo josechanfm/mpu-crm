@@ -25,6 +25,7 @@ class FormFieldController extends Controller
     public function index(Organization $organization, Form $form)
     {
         return Inertia::render('Organization/FormField',[
+            'organization' => $organization,
             'form'=>$form,
             'fields'=>$form->fields,
         ]);
@@ -46,9 +47,28 @@ class FormFieldController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Organization $organization, Form $form, Request $request)
     {
-        //
+        $this->validate($request,[
+            'form_id' => 'required',
+            'field_name'=>'required',
+            'field_label'=>'required',
+        ]);
+
+        if($organization->hasUser(Auth()->user())){
+            $field=new FormField();
+            $field->form_id=$request->form_id;
+            $field->field_name=$request->field_name;
+            $field->field_label=$request->field_label;
+            $field->type=$request->type;
+            $field->required=$request->required;
+            $field->rule=$request->rule;
+            $field->validate=$request->validate;
+            $field->remark=$request->remark;
+            $field->save();
+            return redirect()->back();
+        }
+
     }
 
     /**
@@ -80,9 +100,26 @@ class FormFieldController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Organization $organization, Form $form, Request $request )
     {
-        //
+        $this->validate($request,[
+            'form_id' => 'required',
+            'field_name'=>'required',
+            'field_label'=>'required',
+        ]);
+        if($organization->hasUser(Auth()->user())){
+            $field=FormField::find($form->id);
+            $field->form_id=$request->form_id;
+            $field->field_name=$request->field_name;
+            $field->field_label=$request->field_label;
+            $field->type=$request->type;
+            $field->required=$request->required;
+            $field->rule=$request->rule;
+            $field->validate=$request->validate;
+            $field->remark=$request->remark;
+            $field->save();
+            return redirect()->back();
+        }
     }
 
     /**

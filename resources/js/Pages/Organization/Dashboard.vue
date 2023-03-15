@@ -1,13 +1,12 @@
 <template>
-    <OrganizationLayout title="Dashboard">
+    <OrganizationLayout title="Dashboard" :organization="organization">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Management Dashboard
             </h2>
         </template>
         <p>Club Management</p>
-        <OrganizationList :organizations="organizations"/>
-        <inertia-link href="/manage/organizations">All clubs</inertia-link>
+        {{ organization }}
     </OrganizationLayout>
 </template>
 
@@ -21,7 +20,7 @@ export default {
         OrganizationLayout,
         OrganizationList,
     },
-    props: ['organizations'],
+    props: ['organization'],
     data() {
         return {
 

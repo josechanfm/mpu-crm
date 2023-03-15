@@ -31,8 +31,23 @@
           <template #icon>
             <InboxOutlined />
           </template>
-          <span>Option 3</span>
+          <span>
+            <inertia-link :href="route('organization.certificates.index',organization.id)">
+              Certificates
+            </inertia-link>
+          </span>
         </a-menu-item>
+        <a-menu-item key="3">
+          <template #icon>
+            <InboxOutlined />
+          </template>
+          <span>
+            <inertia-link :href="route('organization.forms.index',organization.id)">
+              Forms
+            </inertia-link>
+          </span>
+        </a-menu-item>
+
         <a-sub-menu key="sub1">
           <template #icon>
             <MailOutlined />

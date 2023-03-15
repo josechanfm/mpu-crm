@@ -1,19 +1,17 @@
 <template>
-    <OrganizationLayout title="Dashboard">
+    <OrganizationLayout title="Dashboard" :organization="organization">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Forms
             </h2>
         </template>
-        {{ form }}
         <button @click="createRecord()"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Form</button>
-            <inertia-link :href="route('organization.forms.create',organization.id)" class="ant-btn">View</inertia-link>
             <a-table :dataSource="forms" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
                         <inertia-link :href="route('organization.form.fields.index',{organization:record.organization_id,form:record.id})" class="ant-btn">Fields</inertia-link>
-                        <a-button @click="viewRecord(record)">Edit</a-button>
+                        <a-button @click="editRecord(record)">Edit</a-button>
                         <a-button @click="deleteRecord(record)">Delete</a-button>
                     </template>
                     <template v-else>
@@ -35,9 +33,6 @@
             :validate-messages="validateMessages"
         >
             <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item label="Organization Id" name="organization_id">
-                <a-input v-model:value="modal.data.organization_id" />
-            </a-form-item>
             <a-form-item label="Name" name="name">
                 <a-input v-model:value="modal.data.name" />
             </a-form-item>
@@ -47,11 +42,11 @@
             <a-form-item label="Description" name="description">
                 <a-input v-model:value="modal.data.description" />
             </a-form-item>
-            <a-form-item label="Login" name="with_login">
-                <a-input v-model:value="modal.data.is_login" />
+            <a-form-item label="Require Login" name="require_login">
+                <a-input v-model:value="modal.data.require_login" />
             </a-form-item>
-            <a-form-item label="Member" name="with_member">
-                <a-input v-model:value="modal.data.is_member" />
+            <a-form-item label="Require Member" name="require_member">
+                <a-input v-model:value="modal.data.require_member" />
             </a-form-item>
         </a-form>
         <template #footer>
@@ -66,7 +61,6 @@
 
 <script>
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
-import { defineComponent, reactive } from 'vue';
 
 export default {
     components: {
@@ -124,11 +118,35 @@ export default {
     created(){
     },
     methods: {
-        viewRecord(record){
+        createRecord(record){
+            this.modal.data={};
+            this.modal.data.organization_id=this.organization.id;
+            this.modal.mode="CREATE";
+            this.modal.isOpen=true;
+        },
+        editRecord(record){
             this.modal.data={...record};
+            console.log(this.modal.data);
             this.modal.mode="EDIT";
             this.modal.isOpen=true;
         },
+        storeRecord(){
+            this.$refs.modalRef.validateFields().then(()=>{
+                console.log(this.modal.data.organization_id  );
+                this.$inertia.post(route('organization.forms.store',{organization:this.modal.data.organization_id}) , this.modal.data, {
+                    onSuccess:(page)=>{
+                        this.modal.data={};
+                        this.modal.isOpen=false;
+                    },
+                    onError:(err)=>{
+                        console.log(err);
+                    }
+                });
+            }).catch(err => {
+                console.log(err);
+            });
+        },
+
         deleteRecord(record){
             if (!confirm('Are you sure want to remove?')) return;
             this.$inertia.delete(route('organization.forms.destroy', {organization:record.organization_id, form:record.id}),{

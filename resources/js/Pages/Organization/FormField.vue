@@ -1,10 +1,12 @@
 <template>
-    <OrganizationLayout title="Dashboard">
+    <OrganizationLayout title="Dashboard" :organization="organization">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Forms
             </h2>
         </template>
+        <button @click="createRecord()"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Field</button>
             <a-table :dataSource="fields" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
@@ -19,6 +21,7 @@
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.mode=='CREATE'?'Create Form':'Edit Form'" width="60%" >
+            {{ modal.data }}
         <a-form
             ref="modalRef"
             :model="modal.data"
@@ -29,12 +32,11 @@
             :rules="rules"
             :validate-messages="validateMessages"
         >
-            <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item label="Field Name" name="field">
-                <a-input v-model:value="modal.data.field" />
+            <a-form-item label="Field Name" name="field_name">
+                <a-input v-model:value="modal.data.field_name" />
             </a-form-item>
-            <a-form-item label="Field Label" name="label">
-                <a-input v-model:value="modal.data.label" />
+            <a-form-item label="Field Label" name="field_label">
+                <a-input v-model:value="modal.data.field_label" />
             </a-form-item>
             <a-form-item label="Type" name="type">
                 <a-input v-model:value="modal.data.type" />
@@ -70,7 +72,7 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['form','fields'],
+    props: ['organization','form','fields'],
     data() {
         return {
             modal:{
@@ -82,10 +84,10 @@ export default {
             columns:[
                 {
                     title: 'Field Name',
-                    dataIndex: 'field',
+                    dataIndex: 'field_name',
                 },{
                     title: 'Field Label',
-                    dataIndex: 'label',
+                    dataIndex: 'field_label',
                 },{
                     title: 'Type',
                     dataIndex: 'type',
@@ -128,10 +130,55 @@ export default {
     created(){
     },
     methods: {
+        createRecord(){
+            this.modal.data={};
+            this.modal.data.form_id=this.form.id;
+            this.modal.mode="CREATE";
+            this.modal.isOpen=true;
+        },
         editRecord(record){
             this.modal.data={...record};
             this.modal.mode="EDIT";
             this.modal.isOpen=true;
+        },
+        storeRecord(){
+            this.$refs.modalRef.validateFields().then(()=>{
+                this.$inertia.post(route('organization.form.fields.store',{
+                    organization:this.organization.id,
+                    form:this.form.id
+                }), this.modal.data, {
+                    onSuccess:(page)=>{
+                        this.modal.data={};
+                        this.modal.isOpen=false;
+                    },
+                    onError:(err)=>{
+                        console.log(err);
+                    }
+                });
+            }).catch(err => {
+                console.log(err);
+            });
+        },
+        updateRecord(){
+            console.log(this.modal.data);
+            this.$refs.modalRef.validateFields().then(()=>{
+                this.$inertia.patch(route('organization.form.fields.update', {
+                    organization:this.organization.id,
+                    form:this.form.id,
+                    field:this.modal.data
+                }), this.modal.data, {
+                    onSuccess:(page)=>{
+                        this.modal.data={};
+                        this.modal.isOpen=false;
+                        console.log(page);
+                    },
+                    onError:(error)=>{
+                        console.log(error);
+                    }
+                });
+            }).catch(err => {
+                console.log("error", err);
+            });
         },
         deleteRecord(record){
             if (!confirm('Are you sure want to remove?')) return;

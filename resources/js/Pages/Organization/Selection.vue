@@ -1,10 +1,9 @@
 <template>
         <p>Club Management</p>
         <OrganizationList :organizations="organizations"/>
-        <inertia-link href="/manage/organizations">All clubs</inertia-link>
 
-        <div>
-            <inertia-link :href="route('organizations')">All clubs</inertia-link>
+        <div v-for="organization in organizations">
+            <inertia-link :href="route('organizations.show',organization.id)">All clubs</inertia-link>
         </div>
 </template>
 
