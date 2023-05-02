@@ -98,3 +98,14 @@ Route::middleware([
     })->name('teacher');
 });
 
+
+
+Route::middleware([
+    'auth:admin_web',
+    config('jetstream.auth_session'),
+    'role:department',
+])->group(function () {
+    Route::prefix('/manage')->group(function(){
+        Route::get('/department/{department}',[App\Http\Controllers\Department\DashboardController::class,'index']);
+    })->name('manage');
+});
