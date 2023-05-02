@@ -22,8 +22,8 @@ class FormSeeder extends Seeder
         ]);
         DB::table('form_fields')->insert([
             'form_id' => '1',
-            'field'=>'field 1',
-            'label'=>'label 1'
+            'field_name'=>'field 1',
+            'field_label'=>'label 1'
         ]);
 
     }
