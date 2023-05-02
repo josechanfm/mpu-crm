@@ -1,5 +1,5 @@
 <template>
-    <OrganizationLayout title="Dashboard" :organization="organization">
+    <DepartmentLayout title="Dashboard" :department="department">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Management Dashboard department
@@ -7,18 +7,16 @@
         </template>
         <p>Club Management</p>
         {{ department }}
-    </OrganizationLayout>
+    </DepartmentLayout>
 </template>
 
 <script>
-import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
-import OrganizationList from '@/Components/Organization/OrganizationList.vue';
+import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
 
 
 export default {
     components: {
-        OrganizationLayout,
-        OrganizationList,
+        DepartmentLayout,
     },
     props: ['department'],
     data() {

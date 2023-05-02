@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('admin_user_departments', function (Blueprint $table) {
+        Schema::create('admin_user_department', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('admin_user_id');
             $table->bigInteger('department_id');
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('admin_user_departments');
+        Schema::dropIfExists('admin_user_department');
     }
 };

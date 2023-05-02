@@ -106,6 +106,8 @@ Route::middleware([
     'role:department',
 ])->group(function () {
     Route::prefix('/manage')->group(function(){
-        Route::get('/department/{department}',[App\Http\Controllers\Department\DashboardController::class,'index']);
+        Route::get('department/{department}',[App\Http\Controllers\Department\DashboardController::class,'index']);
+        Route::resource('departments',App\Http\Controllers\Department\DepartmentController::class);
+        Route::resource('department/{department}/inquiries',App\Http\Controllers\Department\InquiryController::class);
     })->name('manage');
 });
