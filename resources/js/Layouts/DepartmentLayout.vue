@@ -31,7 +31,7 @@
                             </a-menu-item>
                             <a-menu-divider />
                             <a-menu-item>
-                                <a href="javascript:;">教師平臺</a>
+                                <a href="javascript:;">系統設置</a>
                             </a-menu-item>
                             <a-menu-item>
                                 <a href="javascript:;">行政管理後臺</a>

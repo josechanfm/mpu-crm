@@ -10,7 +10,7 @@ Route::group(['middleware' => config('fortify.middleware', ['admin_web'])], func
     $limiter = config('fortify.limiters.login');
 
     Route::get('/manage/login', function () {
-        return Inertia::render('Organization/Login');
+        return Inertia::render('Department/Login');
     })->middleware(['guest:'.config('fortify.guard')]);
     
     Route::post('/manage/login', [AuthenticatedSessionController::class, 'store'])
@@ -108,6 +108,6 @@ Route::middleware([
     Route::prefix('/manage')->group(function(){
         Route::get('department/{department}',[App\Http\Controllers\Department\DashboardController::class,'index']);
         Route::resource('departments',App\Http\Controllers\Department\DepartmentController::class);
-        Route::resource('department/{department}/inquiries',App\Http\Controllers\Department\InquiryController::class);
+        Route::resource('department/{department}/inquiries',App\Http\Controllers\Department\InquiryController::class)->names('department.inquiries');
     })->name('manage');
 });

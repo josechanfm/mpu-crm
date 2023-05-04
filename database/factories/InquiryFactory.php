@@ -14,16 +14,23 @@ class InquiryFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition($departmentId=0,$parentId=0)
     {
         return [
+            'department_id'=>$departmentId,
             'parent_id'=>1,
             'root_id'=>1,
-            'department_id'=>1,
             'title'=>$this->faker->text(5),
             'email'=>$this->faker->email,
             'phone'=>$this->faker->phoneNumber,
             'content'=>$this->faker->text,
+            'admin_user_id'=>2,
         ];
     }
+
+    // public function withParam($departmentId){
+    //     return $this->state([
+    //         'department_id' => $departmentId,
+    //     ]);
+    // }
 }

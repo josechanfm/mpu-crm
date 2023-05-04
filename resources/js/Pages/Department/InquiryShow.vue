@@ -5,23 +5,7 @@
                 客戶服務管理
             </h2>
         </template>
-            <a-table :dataSource="inquiries" :columns="columns" :row-key="record => record.root_id">
-                <template #bodyCell="{column, text, record, index}" >
-                    <template v-if="column.dataIndex=='operation'">
-                        <a-button @click="editRecord(record)">Edit</a-button>
-                        {{ record.department_id }}
-                        {{ record.id }}
-                        <inertia-link :href="route('department.inquiries.show', {department:record.department_id, inquiry:record.id})">View</inertia-link>
-
-                    </template>
-                    <template v-else-if="column.dataIndex=='state'">
-                        {{teacherStateLabels[text]}}
-                    </template>
-                    <template v-else>
-                        {{record[column.dataIndex]}}
-                    </template>
-                </template>
-            </a-table>
+        <CommentBox :inquiries="inquiries" @editModal="editRecord"/>
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
@@ -36,17 +20,17 @@
             :validate-messages="validateMessages"
         >
             <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item label="姓名(中文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_zh" />
+            <a-form-item label="姓名(中文)" name="title">
+                <a-input v-model:value="modal.data.title"/>
             </a-form-item>
-            <a-form-item label="姓名(外文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_fn" />
+            <a-form-item label="姓名(外文)" name="email">
+                <a-input v-model:value="modal.data.email" />
             </a-form-item>
             <a-form-item label="別名" name="nickname">
-                <a-input v-model:value="modal.data.nickname" />
+                <a-input v-model:value="modal.data.phone" />
             </a-form-item>
-            <a-form-item label="手機" name="mobile">
-                <a-input v-model:value="modal.data.mobile" />
+            <a-form-item label="手機" name="content">
+                <a-input v-model:value="modal.data.content" />
             </a-form-item>
         </a-form>
         <template #footer>
@@ -55,19 +39,24 @@
         </template>
     </a-modal>    
     <!-- Modal End-->
+
+
+
+    
     </DepartmentLayout>
 
 </template>
 
 <script>
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
-import { defineComponent, reactive } from 'vue';
+import CommentBox from '@/Components/Department/CommentBox.vue';
 
 export default {
     components: {
         DepartmentLayout,
+        CommentBox,
     },
-    props: ['department','inquiries'],
+    props: ['department','inquiries','inquiry'],
     data() {
         return {
             modal:{

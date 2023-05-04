@@ -22,7 +22,7 @@
             <DesktopOutlined />
           </template>
           <span>
-              Members
+              Staffs
           </span>
         </a-menu-item>
         <a-menu-item key="3">
@@ -30,7 +30,7 @@
             <InboxOutlined />
           </template>
           <span>
-              Certificates
+              Services
           </span>
         </a-menu-item>
         <a-menu-item key="3">

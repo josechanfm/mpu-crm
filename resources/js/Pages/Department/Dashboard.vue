@@ -5,7 +5,7 @@
                 Management Dashboard department
             </h2>
         </template>
-        <p>Club Management</p>
+        <p>Department Management</p>
         {{ department }}
     </DepartmentLayout>
 </template>

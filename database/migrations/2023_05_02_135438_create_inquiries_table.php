@@ -25,6 +25,10 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone');
             $table->string('language')->nullable();
+            $table->string('admin_user_id')->nullable();
+            $table->date('request_date')->nullable();
+            $table->date('response_date')->nullable();
+            $table->date('response')->nullable();
             $table->timestamps();
         });
     }
