@@ -8,7 +8,7 @@
         </div>
         <div class="max-w-lg w-full p-4 md:p-8 md:py-32 mx-auto flex flex-col justify-center md:justify-start">
             <h1 class="text-2xl font-medium mb-0 leading-loose">澳門理工學院</h1>
-            <p class="text-base mb-20 text-slate-600">客戶關係管理</p>
+            <p class="text-base mb-20 text-slate-600">綜合服務管理系統</p>
             <p class="font-medium text-xl mb-20">系統登入</p>
             <a-form>
                 <a-form-item name="email">

@@ -5,7 +5,7 @@
                 客戶服務管理
             </h2>
         </template>
-        <CommentBox :inquiries="inquiries" @editModal="editRecord"/>
+        <CommentBox :inquiries="inquiries" />
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >

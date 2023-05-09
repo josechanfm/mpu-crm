@@ -85,9 +85,11 @@ class InquiryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Department $department, Inquiry $inquiry, Request $request)
     {
-        //
+        $inquiry->response=$request->response;
+        $inquiry->save();
+        return redirect()->back();
     }
 
     /**
