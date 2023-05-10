@@ -13,9 +13,12 @@ class Inquiry extends Model
     }
     //each category might have multiple children
     public function children() {
-        return $this->hasMany(static::class, 'parent_id')->with('children')->with('adminUser')->orderBy('id', 'asc');
+        return $this->hasMany(static::class, 'parent_id')->with('children')->with('adminUser')->with('emails')->orderBy('id', 'asc');
     }
     public function adminUser(){
         return $this->belongsTo(AdminUser::class);
+    }
+    public function emails(){
+        return $this->hasMany(Email::class);
     }
 }

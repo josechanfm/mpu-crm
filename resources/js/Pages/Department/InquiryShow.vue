@@ -5,7 +5,7 @@
                 客戶服務管理
             </h2>
         </template>
-        <CommentBox :inquiries="inquiries" />
+        <CommentBox :inquiries="inquiries"  @emailBox="emailModal"/>
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
@@ -19,17 +19,16 @@
             :rules="rules"
             :validate-messages="validateMessages"
         >
-            <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item label="姓名(中文)" name="title">
-                <a-input v-model:value="modal.data.title"/>
+            <a-form-item label="Sender" name="sender">
+                <a-input v-model:value="modal.data.sender" />
             </a-form-item>
-            <a-form-item label="姓名(外文)" name="email">
-                <a-input v-model:value="modal.data.email" />
+            <a-form-item label="eMail" name="Email">
+                <a-input v-model:value="modal.data.email"/>
             </a-form-item>
-            <a-form-item label="別名" name="nickname">
-                <a-input v-model:value="modal.data.phone" />
+            <a-form-item label="subject" name="subject">
+                <a-input v-model:value="modal.data.subject" />
             </a-form-item>
-            <a-form-item label="手機" name="content">
+            <a-form-item label="Content" name="content">
                 <a-input v-model:value="modal.data.content" />
             </a-form-item>
         </a-form>
@@ -110,8 +109,10 @@ export default {
     created(){
     },
     methods: {
-        editRecord(record){
-            this.modal.data={...record};
+        emailModal(record){
+            console.log(record);
+            this.modal.data.email=record.email;
+            //this.modal.data={...record};
             this.modal.mode="EDIT";
             this.modal.title="修改";
             this.modal.isOpen=true;

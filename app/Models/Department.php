@@ -13,7 +13,7 @@ class Department extends Model
         return $this->belongsToMany(AdminUser::class);
     }
     public function inquiries(){
-        return $this->hasMany(Inquiry::class)->where('parent_id',0)->with('children')->orderBy('created_at','desc')->orderBy('id', 'desc');
+        return $this->hasMany(Inquiry::class)->where('parent_id',0)->with('children')->with('emails')->orderBy('created_at','desc')->orderBy('id', 'desc');
     }
     public function members(){
         return $this->belongsToMany(Member::class);

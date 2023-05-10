@@ -1,32 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\Department;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Email;
 use App\Models\Department;
-use App\Models\Inquiry;
 
-class InquiryController extends Controller
+class MailerController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Department::class);
-    }
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Department $department)
+    public function index()
     {
-        // $inquiry=Inquiry::with('children')->find(1);
-        // dd($inquiry);
-        return Inertia::render('Department/Inquiries',[
-            'department'=>$department,
-            'inquiries'=>$department->inquiries
+        $emails=Email::where('admin_user_id',auth()->user()->id)->with('media')->get();
+        return Inertia::render('Mailer/MailList',[
+            'department'=>Department::find(1),
+            'emails'=>$emails
         ]);
     }
 
@@ -48,7 +41,21 @@ class InquiryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //return response()->json($request->attachments);
+        $email=new Email();
+        $email->admin_user_id=auth()->user()->id;
+        $email->sender=$request->sender;
+        $email->receiver=$request->receiver;
+        $email->subject=$request->subject;
+        $email->content=$request->content;
+        $email->save();
+        if($request->file('attachments')){
+            foreach($request->attachments as $file){
+                $email->addMedia($file['originFileObj'])->setFileName($email->id.'_'.$file['uid'].'.'.substr(strrchr($file['name'], '.'), 1))->toMediaCollection('emailAttachments');
+            }
+        }
+
+        return response()->json($request->all());
     }
 
     /**
@@ -57,14 +64,9 @@ class InquiryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Department $department, Inquiry $inquiry)
+    public function show($id)
     {
-        $inquiries=Inquiry::where('id',$inquiry->root_id)->with('children')->with('adminUser')->with('emails')->get();
-        return Inertia::render('Department/InquiryShow',[
-            'department'=>$department,
-            'inquiries'=>$inquiries,
-            'inquiry'=>$inquiry
-        ]);
+        
     }
 
     /**
@@ -85,11 +87,9 @@ class InquiryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Department $department, Inquiry $inquiry, Request $request)
+    public function update(Request $request, $id)
     {
-        $inquiry->response=$request->response;
-        $inquiry->save();
-        return redirect()->back();
+        //
     }
 
     /**

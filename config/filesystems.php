@@ -55,7 +55,16 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
-
+        'media' => [
+            'driver' => 'local',
+            'root'   => public_path('media'),
+            'url'    => env('APP_URL').'/media',
+        ],
+        'emailAttachment' => [
+            'driver' => 'local',
+            'root'   => public_path('email/attachment'),
+            'url'    => env('APP_URL').'/email/attachment',
+        ],
     ],
 
     /*

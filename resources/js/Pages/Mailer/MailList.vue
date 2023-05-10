@@ -2,17 +2,22 @@
     <DepartmentLayout title="Dashboard" :department="department">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                客戶服務管理
+                課程規劃
             </h2>
         </template>
-            <a-table :dataSource="inquiries" :columns="columns" :row-key="record => record.root_id">
-                <template #bodyCell="{column, text, record, index}" >
+        <button @click="createRecord()"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Subject template</button>
+            <a-table :dataSource="emails" :columns="columns">
+                <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
                         <a-button @click="editRecord(record)">Edit</a-button>
-                        {{ record.department_id }}
-                        {{ record.id }}
-                        <inertia-link :href="route('manage.department.inquiries.show', {department:record.department_id, inquiry:record.id})">View</inertia-link>
-
+                        <a-button @click="deleteRecord(record.id)">Delete</a-button>
+                        <ul>
+                            <li v-for="file in record.media">
+                                {{ file }}
+                                <img :src="'/'+file.id+'/'+file.file_name"/>
+                            </li>
+                        </ul>
                     </template>
                     <template v-else-if="column.dataIndex=='state'">
                         {{teacherStateLabels[text]}}
@@ -25,29 +30,40 @@
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
-        <a-form
+            <a-form
             ref="modalRef"
             :model="modal.data"
             name="Teacher"
-            :label-col="{ span: 8 }"
-            :wrapper-col="{ span: 16 }"
+            :label-col="{ span: 2 }"
+            :wrapper-col="{ span: 22 }"
             autocomplete="off"
             :rules="rules"
             :validate-messages="validateMessages"
+            enctype="multipart/form-data"
+
+
         >
-            <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item label="姓名(中文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_zh" />
+            <a-form-item label="Sender" name="sender">
+                <a-input v-model:value="modal.data.sender" />
             </a-form-item>
-            <a-form-item label="姓名(外文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_fn" />
+            <a-form-item label="Receiver" name="receiver">
+                <a-input v-model:value="modal.data.receiver" />
             </a-form-item>
-            <a-form-item label="別名" name="nickname">
-                <a-input v-model:value="modal.data.nickname" />
+            <a-form-item label="eMail" name="Email">
+                <a-input v-model:value="modal.data.email"/>
             </a-form-item>
-            <a-form-item label="手機" name="mobile">
-                <a-input v-model:value="modal.data.mobile" />
+            <a-form-item label="subject" name="subject">
+                <a-input v-model:value="modal.data.subject" />
             </a-form-item>
+            <a-form-item label="Content" name="content">
+                <quill-editor v-model:value="modal.data.content" style="min-height:200px;" />
+            </a-form-item>
+            <a-upload v-model:file-list="modal.data.attachments" :multiple="false">
+                <a-button>
+                <upload-outlined></upload-outlined>
+                    Upload
+                </a-button>
+            </a-upload>
         </a-form>
         <template #footer>
             <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
@@ -61,13 +77,15 @@
 
 <script>
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
+import { quillEditor } from 'vue3-quill';
 import { defineComponent, reactive } from 'vue';
 
 export default {
     components: {
         DepartmentLayout,
+        quillEditor,
     },
-    props: ['department','inquiries'],
+    props: ['department','emails'],
     data() {
         return {
             modal:{
@@ -79,17 +97,17 @@ export default {
             teacherStateLabels:{},
             columns:[
                 {
-                    title: 'Id',
-                    dataIndex: 'id',
+                    title: '姓名(中文)',
+                    dataIndex: 'sender',
                 },{
-                    title: 'Title',
-                    dataIndex: 'title',
+                    title: '姓名(外文)',
+                    dataIndex: 'receiver',
                 },{
-                    title: 'Email',
-                    dataIndex: 'email',
+                    title: '別名',
+                    dataIndex: 'subject',
                 },{
-                    title: 'Phone',
-                    dataIndex: 'phone',
+                    title: '手機',
+                    dataIndex: 'country',
                 },{
                     title: '操作',
                     dataIndex: 'operation',
@@ -121,6 +139,12 @@ export default {
     created(){
     },
     methods: {
+        createRecord(){
+            this.modal.data={};
+            this.modal.mode="CREATE";
+            this.modal.title="新增問卷";
+            this.modal.isOpen=true;
+        },
         editRecord(record){
             this.modal.data={...record};
             this.modal.mode="EDIT";
@@ -128,8 +152,9 @@ export default {
             this.modal.isOpen=true;
         },
         storeRecord(){
+            console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post('/admin/teachers/', this.modal.data,{
+                this.$inertia.post('/manage/mailers/', this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -145,7 +170,7 @@ export default {
         updateRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch('/admin/teachers/' + this.modal.data.id, this.modal.data,{
+                this.$inertia.patch('/organization/teachers/' + this.modal.data.id, this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -160,6 +185,19 @@ export default {
             });
            
         },
+        deleteRecord(recordId){
+            console.log(recordId);
+            if (!confirm('Are you sure want to remove?')) return;
+            this.$inertia.delete('/organization/teachers/' + recordId,{
+                onSuccess: (page)=>{
+                    console.log(page);
+                },
+                onError: (error)=>{
+                    console.log(error);
+                }
+            });
+        },
+
     },
 }
 </script>
