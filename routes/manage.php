@@ -109,6 +109,8 @@ Route::middleware([
         Route::get('department/{department}',[App\Http\Controllers\Department\DashboardController::class,'index']);
         Route::resource('departments',App\Http\Controllers\Department\DepartmentController::class);
         Route::resource('department/{department}/inquiries',App\Http\Controllers\Department\InquiryController::class)->names('manage.department.inquiries');
+        Route::resource('notification_mailers',App\Http\Controllers\NotificationMailerController::class)->names('manage.notification_mailers');
+        Route::get('notification_mailer/send_mail',[App\Http\Controllers\NotificationMailerController::class,'sendMail']);
         Route::resource('mailers',App\Http\Controllers\MailerController::class)->names('manage.mailers');
     })->name('manage');
 });

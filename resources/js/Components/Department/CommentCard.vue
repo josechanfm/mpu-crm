@@ -29,6 +29,16 @@
                 <a-timeline-item v-for="email in inquiry.emails">
                   {{ formatDate(email.created_at) }} {{ email.subject }}<br>
                   {{ email.content }}
+                  <hr>
+                  Attachments:<br>
+                  <ul>
+                        <li v-for="file in email.media">
+                            <img :src="file.preview_url"/>
+                            <a :href="file.original_url" target="_blank">{{ file.file_name }}</a>
+
+                        </li>
+                    </ul>
+
                 </a-timeline-item>
               </a-timeline>
             </a-collapse-panel>
@@ -39,7 +49,7 @@
     </template>
 
     <p v-if="inquiry.children">
-      <CommentBox :inquiries="inquiry.children" @emailBox="emailModal"/>
+      <CommentCard :inquiries="inquiry.children" @emailBox="emailModal"/>
     </p>
   </a-comment>
 </template>
@@ -60,7 +70,7 @@ export default {
   props: ['inquiries'],
   data() {
     return {
-
+      activeKey:0
     }
   },
   methods: {
