@@ -59,6 +59,9 @@ class InquiryController extends Controller
      */
     public function show(Department $department, Inquiry $inquiry)
     {
+        // $inquiry=Inquiry::where('id',1)->with('emails')->get();
+        // dd($inquiry);
+
         $inquiries=Inquiry::where('id',$inquiry->root_id)->with('children')->with('adminUser')->with('emails')->get();
         return Inertia::render('Department/InquiryShow',[
             'department'=>$department,

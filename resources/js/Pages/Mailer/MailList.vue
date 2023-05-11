@@ -9,18 +9,12 @@
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Subject template</button>
             <a-table :dataSource="emails" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
-                    <template v-if="column.dataIndex=='operation'">
-                        <a-button @click="editRecord(record)">Edit</a-button>
-                        <a-button @click="deleteRecord(record.id)">Delete</a-button>
+                    <template v-if="column.dataIndex=='media'">
                         <ul>
                             <li v-for="file in record.media">
-                                {{ file }}
-                                <img :src="'/'+file.id+'/'+file.file_name"/>
+                                <a :href="file.original_url" target="_blank">{{ file.file_name }}</a><br>
                             </li>
                         </ul>
-                    </template>
-                    <template v-else-if="column.dataIndex=='state'">
-                        {{teacherStateLabels[text]}}
                     </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
@@ -29,48 +23,10 @@
             </a-table>
 
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
-            <a-form
-            ref="modalRef"
-            :model="modal.data"
-            name="Teacher"
-            :label-col="{ span: 2 }"
-            :wrapper-col="{ span: 22 }"
-            autocomplete="off"
-            :rules="rules"
-            :validate-messages="validateMessages"
-            enctype="multipart/form-data"
-
-
-        >
-            <a-form-item label="Sender" name="sender">
-                <a-input v-model:value="modal.data.sender" />
-            </a-form-item>
-            <a-form-item label="Receiver" name="receiver">
-                <a-input v-model:value="modal.data.receiver" />
-            </a-form-item>
-            <a-form-item label="eMail" name="Email">
-                <a-input v-model:value="modal.data.email"/>
-            </a-form-item>
-            <a-form-item label="subject" name="subject">
-                <a-input v-model:value="modal.data.subject" />
-            </a-form-item>
-            <a-form-item label="Content" name="content">
-                <quill-editor v-model:value="modal.data.content" style="min-height:200px;" />
-            </a-form-item>
-            <a-upload v-model:file-list="modal.data.attachments" :multiple="false">
-                <a-button>
-                <upload-outlined></upload-outlined>
-                    Upload
-                </a-button>
-            </a-upload>
-        </a-form>
-        <template #footer>
-            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
-            <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">Add</a-button>
-        </template>
-    </a-modal>    
-    <!-- Modal End-->
+        <a-modal v-model:visible="modal.isOpen" :title="modal.title" :footer="null" width="60%" >
+            <MailerCard :email="modal.data"/>
+        </a-modal>    
+        <!-- Modal End-->
     </DepartmentLayout>
 
 </template>
@@ -78,12 +34,14 @@
 <script>
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
 import { quillEditor } from 'vue3-quill';
+import MailerCard from '@/Components/Department/MailerCard.vue';
 import { defineComponent, reactive } from 'vue';
 
 export default {
     components: {
         DepartmentLayout,
         quillEditor,
+        MailerCard,
     },
     props: ['department','emails'],
     data() {
@@ -106,29 +64,10 @@ export default {
                     title: '別名',
                     dataIndex: 'subject',
                 },{
-                    title: '手機',
-                    dataIndex: 'country',
-                },{
                     title: '操作',
-                    dataIndex: 'operation',
-                    key: 'operation',
+                    dataIndex: 'media',
                 },
             ],
-            rules:{
-                name_zh:{required:true},
-                mobile:{required:true},
-                state:{required:true},
-            },
-            validateMessages:{
-                required: '${label} is required!',
-                types: {
-                    email: '${label} is not a valid email!',
-                    number: '${label} is not a valid number!',
-                },
-                number: {
-                    range: '${label} must be between ${min} and ${max}',
-                },
-            },
             labelCol: {
                 style: {
                 width: '150px',
