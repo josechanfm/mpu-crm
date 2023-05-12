@@ -12,7 +12,7 @@
             <PieChartOutlined />
           </template>
           <span>
-            <inertia-link :href="route('departments.show',department.id)">
+            <inertia-link :href="route('manage.departments.show',department.id)">
               Departmenst
             </inertia-link>
           </span>
@@ -22,7 +22,9 @@
             <DesktopOutlined />
           </template>
           <span>
-              Staffs
+            <inertia-link :href="route('manage.department.inquiries.index',department.id)">
+              Inquiries
+            </inertia-link>
           </span>
         </a-menu-item>
         <a-menu-item key="3">

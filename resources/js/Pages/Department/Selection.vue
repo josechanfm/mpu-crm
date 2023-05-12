@@ -1,6 +1,6 @@
 <template>
         <p>Club Management</p>
-        <DepartmenList :departmens="departmens"/>
+        <DepartmentList :departments="departments"/>
 
         <div v-for="organization in departmens">
             <inertia-link :href="route('departmens.show',organization.id)">All clubs</inertia-link>
@@ -9,15 +9,15 @@
 
 <script>
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
-import DepartmenList from '@/Components/Department/DepartmenList.vue';
+import DepartmentList from '@/Components/Department/DepartmentList.vue';
 
 
 export default {
     components: {
         DepartmentLayout,
-        DepartmenList,
+        DepartmentList,
     },
-    props: ['departmens'],
+    props: ['departments'],
     data() {
         return {
 

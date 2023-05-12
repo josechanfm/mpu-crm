@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Builder;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Builder::macro('whereLike', function($columns, $search) {
+            $this->where(function($query) use ($columns, $search) {
+              foreach(\Arr::wrap($columns) as $column) {
+                $query->orWhere($column,'LIKE', '%'.$search.'%');
+              }
+            });
+           
+            return $this;
+          });
     }
 }

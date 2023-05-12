@@ -22,8 +22,10 @@ class InquiryController extends Controller
      */
     public function index(Department $department)
     {
-        // $inquiry=Inquiry::with('children')->find(1);
-        // dd($inquiry);
+        $inquiries=$department->inquiries;
+        // $inquiries=Inquiry::whereBelongsTo($department)
+        //     ->whereLike(['title','content','response'],'語言')
+        //     ->get();
         return Inertia::render('Department/Inquiries',[
             'department'=>$department,
             'inquiries'=>$department->inquiries

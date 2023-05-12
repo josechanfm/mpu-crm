@@ -24,6 +24,7 @@
             <quill-editor v-if="email.is_html" v-model:value="email.content" style="min-height:200px;" :options="editorOption"/>
             <a-textarea v-else v-model:value="email.content" :rows="10"></a-textarea>
         </a-form-item>
+        <div>
             <div style="text-align:right">
                 <a-button @click="sendMail"  style="display:inline-block">Send</a-button>
             </div>
@@ -33,6 +34,7 @@
                     Upload
                 </a-button>
             </a-upload>
+        </div>            
     </a-form>
     
 </template>

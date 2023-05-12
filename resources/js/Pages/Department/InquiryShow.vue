@@ -5,8 +5,8 @@
                 客戶服務管理
             </h2>
         </template>
-        <CommentCard :inquiries="inquiries"  @emailBox="emailModal" @inquiryBox="inquiryModal"/>
         
+        <CommentCard :inquiries="inquiries" :selected="inquiry"  @emailBox="emailModal" @inquiryBox="inquiryModal"/>
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" :footer="false" width="60%" >

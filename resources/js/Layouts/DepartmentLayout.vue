@@ -6,7 +6,7 @@
                 <inertia-link href='/department'>Org </inertia-link>
             </div>
             <div class="m-4 text-center text-lg" v-else>
-                <inertia-link :href="route('departments.show',department)">Department </inertia-link>
+                <inertia-link :href="route('manage.departments.show',department)">Department </inertia-link>
             </div>
 
             <DepartmentMenu :menuKeys='menuKeys' :department="department"/>

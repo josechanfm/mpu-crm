@@ -50,7 +50,7 @@ Route::middleware([
         //     })->name('manage.admin.member');        
         // })->name('manage.admin');
         Route::get('/',[App\Http\Controllers\Organization\SelectionController::class,'index']);
-        Route::get('/dashboard/{organization}',[App\Http\Controllers\Organization\DashboardController::class,'index']);
+        // Route::get('/dashboard/{organization}',[App\Http\Controllers\Organization\DashboardController::class,'index']);
         Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class);
         Route::resource('organization.members', App\Http\Controllers\Organization\MemberController::class);
         Route::resource('organization.certificates', App\Http\Controllers\Organization\CertificateController::class);
@@ -106,6 +106,7 @@ Route::middleware([
     'role:department',
 ])->group(function () {
     Route::prefix('/manage')->group(function(){
+        Route::get('dashboard/{department}',[App\Http\Controllers\Department\DashboardController::class,'index']);
         Route::get('department/{department}',[App\Http\Controllers\Department\DashboardController::class,'index'])->name('manage.department');
         Route::resource('departments',App\Http\Controllers\Department\DepartmentController::class)->names('manage.departments');
         Route::resource('department/{department}/inquiries',App\Http\Controllers\Department\InquiryController::class)->names('manage.department.inquiries');

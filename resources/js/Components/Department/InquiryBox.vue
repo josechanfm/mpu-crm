@@ -1,5 +1,4 @@
 <template>
-    {{ inquiry }}
     <a-form
         ref="modalRef"
         :model="inquiry"

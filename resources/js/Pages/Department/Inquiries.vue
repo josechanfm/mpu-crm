@@ -5,23 +5,21 @@
                 客戶服務管理
             </h2>
         </template>
-            <a-table :dataSource="inquiries" :columns="columns" :row-key="record => record.root_id">
-                <template #bodyCell="{column, text, record, index}" >
-                    <template v-if="column.dataIndex=='operation'">
-                        <a-button @click="editRecord(record)">Edit</a-button>
-                        {{ record.department_id }}
-                        {{ record.id }}
-                        <inertia-link :href="route('manage.department.inquiries.show', {department:record.department_id, inquiry:record.id})">View</inertia-link>
-
-                    </template>
-                    <template v-else-if="column.dataIndex=='state'">
-                        {{teacherStateLabels[text]}}
-                    </template>
-                    <template v-else>
-                        {{record[column.dataIndex]}}
-                    </template>
+        search box
+        <a-table :dataSource="inquiries" :columns="columns" :row-key="record => record.root_id">
+            <template #bodyCell="{column, text, record, index}" >
+                <template v-if="column.dataIndex=='operation'">
+                    <a-button @click="editRecord(record)">Edit</a-button>
+                    <inertia-link :href="route('manage.department.inquiries.show', {department:record.department_id, inquiry:record.id})">View</inertia-link>
                 </template>
-            </a-table>
+                <template v-else-if="column.dataIndex=='state'">
+                    {{teacherStateLabels[text]}}
+                </template>
+                <template v-else>
+                    {{record[column.dataIndex]}}
+                </template>
+            </template>
+        </a-table>
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >

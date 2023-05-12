@@ -4,12 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Inquiry extends Model
 {
     use HasFactory;
     protected $fillable=['email','name','token'];
+
+    public function department(){
+        return $this->belongsTo(Department::class);
+    }
     public function parent() {
         return $this->belongsToOne(static::class, 'parent_id');
     }
