@@ -46,9 +46,23 @@ class InquiryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Department $department, Request $request)
     {
-        //
+        $inquiry=new Inquiry();
+        $inquiry->department_id=$request->department_id;
+        $inquiry->parent_id=$request->parent_id;
+        $inquiry->root_id=$request->root_id;
+        $inquiry->email=$request->email;
+        $inquiry->phone=$request->phone;
+        //$inquiry->language=$request->language;
+        //$inquiry->honorific=$request->honorific;
+        $inquiry->name=$request->name;
+        $inquiry->title=$request->title;
+        $inquiry->content=$request->content;
+        $inquiry->response=$request->response;
+        $inquiry->admin_user_id=auth()->user()->id;
+        $inquiry->save();
+        return redirect()->back();
     }
 
     /**
@@ -91,6 +105,7 @@ class InquiryController extends Controller
     public function update(Department $department, Inquiry $inquiry, Request $request)
     {
         $inquiry->response=$request->response;
+        $inquiry->response_date=date('Y-m-d H:i:s');
         $inquiry->save();
         return redirect()->back();
     }

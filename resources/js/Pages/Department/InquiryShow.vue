@@ -5,11 +5,16 @@
                 客戶服務管理
             </h2>
         </template>
-        <CommentCard :inquiries="inquiries"  @emailBox="emailModal"/>
+        <CommentCard :inquiries="inquiries"  @emailBox="emailModal" @inquiryBox="inquiryModal"/>
+        
 
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
-            <MailerCard :email="modal.data"/>
+        <a-modal v-model:visible="modal.isOpen" :title="modal.title" :footer="false" width="60%" >
+            <MailerBox v-if="modal.model=='email'" :email="modal.data"/>
+            <InquiryBox  v-else-if="modal.model=='inquiry'" :inquiry="modal.data"/>
+            <div v-else>
+                <p>No Modal content available</p>
+            </div>
         <!-- <template #footer>
             <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
             <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">Add</a-button>
@@ -24,13 +29,15 @@
 <script>
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
 import CommentCard from '@/Components/Department/CommentCard.vue';
-import MailerCard from '@/Components/Department/MailerCard.vue';
+import MailerBox from '@/Components/Department/MailerBox.vue';
+import InquiryBox from '@/Components/Department/InquiryBox.vue';
 
 export default {
     components: {
         DepartmentLayout,
         CommentCard,
-        MailerCard
+        MailerBox,
+        InquiryBox
     },
     props: ['department','inquiries','inquiry'],
     data() {
@@ -41,46 +48,6 @@ export default {
                 title:"Modal",
                 mode:""
             },
-            // teacherStateLabels:{},
-            // columns:[
-            //     {
-            //         title: 'Id',
-            //         dataIndex: 'id',
-            //     },{
-            //         title: 'Title',
-            //         dataIndex: 'title',
-            //     },{
-            //         title: 'Email',
-            //         dataIndex: 'email',
-            //     },{
-            //         title: 'Phone',
-            //         dataIndex: 'phone',
-            //     },{
-            //         title: '操作',
-            //         dataIndex: 'operation',
-            //         key: 'operation',
-            //     },
-            // ],
-            // rules:{
-            //     name_zh:{required:true},
-            //     mobile:{required:true},
-            //     state:{required:true},
-            // },
-            // validateMessages:{
-            //     required: '${label} is required!',
-            //     types: {
-            //         email: '${label} is not a valid email!',
-            //         number: '${label} is not a valid number!',
-            //     },
-            //     number: {
-            //         range: '${label} must be between ${min} and ${max}',
-            //     },
-            // },
-            // labelCol: {
-            //     style: {
-            //     width: '150px',
-            //     },
-            // },
         }
     },
     created(){
@@ -88,12 +55,23 @@ export default {
     methods: {
         emailModal(record){
             console.log(record);
+            this.modal.data={},
+            this.modal.model='email',
             this.modal.data.sender='no-replay@mpu.edu.mo';
             this.modal.data.receiver=record.email;
             this.modal.data.subject=record.title;
             this.modal.data.content="your response content here";
             this.modal.mode="EDIT";
             this.modal.title="e-Mail composer";
+            this.modal.isOpen=true;
+        },
+        inquiryModal(record){
+            console.log(record);
+            this.modal.data={},
+            this.modal.model='inquiry',
+            this.modal.data={...record}
+            this.modal.mode="EDIT";
+            this.modal.title="Inquiry";
             this.modal.isOpen=true;
         },
         // storeRecord(){

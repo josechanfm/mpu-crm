@@ -2,7 +2,7 @@
     <a-form
         ref="modalRef"
         :model="email"
-        name="Teacher"
+        name="Mailerbox"
         :label-col="{ span: 2 }"
         :wrapper-col="{ span: 22 }"
         autocomplete="off"

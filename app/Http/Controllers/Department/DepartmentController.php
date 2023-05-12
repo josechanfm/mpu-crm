@@ -70,11 +70,10 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-        dd($department);
-        // return Inertia::render('Department/Dashboard',[
-        //     'department'=>$department
-        // ]);
-        //return redirect(route('department.certificates.index',[$department->id]));
+        return Inertia::render('Department/Dashboard',[
+            'department'=>$department
+        ]);
+        return redirect(route('department.certificates.index',[$department->id]));
     }
 
     /**

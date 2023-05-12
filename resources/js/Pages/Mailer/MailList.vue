@@ -24,7 +24,7 @@
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" :footer="null" width="60%" >
-            <MailerCard :email="modal.data"/>
+            <MailerBox :email="modal.data"/>
         </a-modal>    
         <!-- Modal End-->
     </DepartmentLayout>
@@ -34,14 +34,14 @@
 <script>
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
 import { quillEditor } from 'vue3-quill';
-import MailerCard from '@/Components/Department/MailerCard.vue';
+import MailerBox from '@/Components/Department/MailerBox.vue';
 import { defineComponent, reactive } from 'vue';
 
 export default {
     components: {
         DepartmentLayout,
         quillEditor,
-        MailerCard,
+        MailerBox,
     },
     props: ['department','emails'],
     data() {
