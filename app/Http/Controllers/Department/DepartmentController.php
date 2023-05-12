@@ -13,7 +13,7 @@ class DepartmentController extends Controller
     
     public function __construct()
     {
-        $this->authorizeResource(Department::class);
+        //$this->authorizeResource(Department::class);
     }
 
     /**
@@ -23,12 +23,11 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        if(Auth()->user()->hasRole('admin')){
+        if(auth()->user()->hasRole('admin')){
             $departments=Department::all();
         }else{
             $departments=AdminUser::find(Auth()->user()->id)->departments;
         }
-
         if($departments->count()==1){
             return redirect()->route('departments.show',$departments[0]->id);
         }elseif($departments->count()>1){
