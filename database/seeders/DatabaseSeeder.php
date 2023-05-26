@@ -29,11 +29,10 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             MemberSeeder::class,
-            OrganizationSeeder::class,
             DepartmentSeeder::class,
             FormSeeder::class,
             InquirySeeder::class,
-            EmailSeeder::class,
+            //EmailSeeder::class,
         ]);
 
 

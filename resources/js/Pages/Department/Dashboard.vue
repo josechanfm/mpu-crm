@@ -1,12 +1,12 @@
 <template>
-    <DepartmentLayout title="Dashboard" :department="department">
+    <DepartmentLayout title="Dashboard" :department="departments[0]">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Management Dashboard department
             </h2>
         </template>
         <p>Department Management</p>
-        {{ department }}
+        {{ departments }}
     </DepartmentLayout>
 </template>
 
@@ -18,7 +18,7 @@ export default {
     components: {
         DepartmentLayout,
     },
-    props: ['department'],
+    props: ['departments'],
     data() {
         return {
 
