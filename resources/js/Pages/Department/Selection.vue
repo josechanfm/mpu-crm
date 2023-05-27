@@ -2,8 +2,8 @@
         <p>Club Management</p>
         <DepartmentList :departments="departments"/>
 
-        <div v-for="organization in departmens">
-            <inertia-link :href="route('departmens.show',organization.id)">All clubs</inertia-link>
+        <div v-for="department in departmens">
+            <inertia-link :href="route('departmens.show',department.id)">All clubs</inertia-link>
         </div>
 </template>
 

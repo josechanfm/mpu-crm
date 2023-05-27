@@ -109,7 +109,7 @@ export default {
         updateRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch('/organization/teachers/' + this.modal.data.id, this.modal.data,{
+                this.$inertia.patch('/department/teachers/' + this.modal.data.id, this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -127,7 +127,7 @@ export default {
         deleteRecord(recordId){
             console.log(recordId);
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete('/organization/teachers/' + recordId,{
+            this.$inertia.delete('/department/teachers/' + recordId,{
                 onSuccess: (page)=>{
                     console.log(page);
                 },

@@ -1,14 +1,14 @@
 export default [
     {
-        key: 'organizationAdmin',
+        key: 'departmentAdmin',
         icon: 'BankOutlined',
         title: '會籍系統',
         children: [
             // {
             //     // icon: 'PieChartOutlined',
-            //     key: 'organizationMembers',
+            //     key: 'departmentMembers',
             //     title: '課程規劃',
-            //     route: 'organization.member',
+            //     route: 'department.member',
             // }, 
     //      {
     //             // icon: 'PieChartOutlined',

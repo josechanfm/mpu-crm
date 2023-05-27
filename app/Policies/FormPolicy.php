@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\Form;
 use App\Models\AdminUser;
-use App\Models\Organization;
+use App\Models\Department;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class FormPolicy
@@ -34,7 +34,7 @@ class FormPolicy
         if($user->hasRole('admin')){
             return true;
         }
-        return $form->organization->hasUser($user);
+        return $form->department->hasUser($user);
     }
 
     /**
@@ -45,7 +45,7 @@ class FormPolicy
      */
     public function create(AdminUser $user)
     {
-        if($user->hasRole(['admin','organization'])){
+        if($user->hasRole(['admin','department'])){
             return true;
         }
 
@@ -63,7 +63,7 @@ class FormPolicy
         if($user->hasRole('admin')){
             return true;
         }
-        return $form->organization->hasUser($user);
+        return $form->department->hasUser($user);
     }
 
     /**
@@ -78,7 +78,7 @@ class FormPolicy
         if($user->hasRole('admin')){
             return true;
         }
-        return $form->organization->hasUser($user);
+        return $form->department->hasUser($user);
     }
 
     /**

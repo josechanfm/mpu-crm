@@ -17,8 +17,6 @@ class DashboardController extends Controller
 
     public function index()
     {
-        //$this->authorize('view',$department);
-        //session(['organization' => $organization]);
         return Inertia::render('Department/Dashboard',[
             'departments' => auth()->user()->departments
         ]);

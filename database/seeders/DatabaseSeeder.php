@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Organization;
+use App\Models\Department;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -38,8 +38,7 @@ class DatabaseSeeder extends Seeder
 
         $roleMaster=Role::create(['name'=>'master','guard_name' => 'admin_web']);
         $roleAdmin=Role::create(['name'=>'admin','guard_name' => 'admin_web']);
-        $roleOrganization=Role::create(['name'=>'organization','guard_name' => 'admin_web']);
-        $roleDeportment=Role::create(['name'=>'department','guard_name' => 'admin_web']);
+        $roleDepartment=Role::create(['name'=>'department','guard_name' => 'admin_web']);
         $roleMember=Role::create(['name'=>'member','guard_name' => 'web']);
 
         // $permissionCourse=Permission::create(['name'=>'manage course','guard_name' => 'admin_web']);
@@ -62,8 +61,8 @@ class DatabaseSeeder extends Seeder
         // $roleAdmin->givePermissionTo($permissionGuardian);
         // $roleAdmin->givePermissionTo($permissionAttendance);
 
-        // $roleOrganization->givePermissionTo($permissionStudent);
-        // $roleOrganization->givePermissionTo($permissionAttendance);
+        // $roleDepartment->givePermissionTo($permissionStudent);
+        // $roleDepartment->givePermissionTo($permissionAttendance);
 
         $admin=\App\Models\AdminUser::factory([
             'name' => 'Master',
@@ -78,15 +77,14 @@ class DatabaseSeeder extends Seeder
             'password'=> Hash::make('password')
         ])->create();
         $admin->assignRole('admin');
-        $admin->assignRole('organization');
         $admin->assignRole('department');
 
-        $organization=\App\Models\AdminUser::factory([
-            'name' => 'Organization',
-            'email' => 'organization@example.com',
+        $department=\App\Models\AdminUser::factory([
+            'name' => 'Department',
+            'email' => 'department@example.com',
             'password'=> Hash::make('password')
         ])->create();
-        $organization->assignRole('organization');
+        $department->assignRole('department');
 
         $member=\App\Models\User::factory([
             'name' => 'Member',
