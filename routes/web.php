@@ -24,6 +24,8 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('inquiry',[\App\Http\Controllers\InquiryController::class,'index'])->name('inquiry');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
