@@ -15,20 +15,20 @@ return new class extends Migration
     {
         Schema::create('inquiries', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('department_id')->nullable();
-            $table->bigInteger('parent_id')->default(0);
-            $table->bigInteger('root_id')->default(0);
-            $table->string('honorific')->nullable();
-            $table->string('name')->nullable(); 
-            $table->string('title');
-            $table->string('content')->nullable();
-            $table->string('email');
-            $table->string('phone');
-            $table->string('language')->nullable();
-            $table->string('admin_user_id')->nullable();
-            $table->date('request_date')->nullable();
-            $table->date('response_date')->nullable();
-            $table->date('response')->nullable();
+            $table->char('lang',2);
+            $table->string('origin')->nullable();
+            $table->string('degree')->nullable();
+            $table->string('admission')->nullable();
+            $table->string('profile')->nullable();
+            $table->string('apply')->nullable();
+            $table->string('surname')->nullable();
+            $table->string('givenname')->nullable();
+            $table->string('email')->nullable();
+            $table->string('areacode')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('subjects')->nullable();
+            $table->string('token')->nullable();
+            $table->text('question')->nullable();
             $table->timestamps();
         });
     }

@@ -9,8 +9,8 @@ class Form extends Model
 {
     use HasFactory;
 
-    public function organization(){
-        return $this->belongsTo(Organization::class);
+    public function department(){
+        return $this->belongsTo(Department::class);
     }
 
     public function fields(){

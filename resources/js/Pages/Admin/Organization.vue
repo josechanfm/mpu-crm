@@ -7,7 +7,7 @@
         </template>
         <button @click="createRecord()"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Subject template</button>
-            <a-table :dataSource="organizations" :columns="columns">
+            <a-table :dataSource="departments" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
                         <a-button @click="editRecord(record)">Edit</a-button>
@@ -69,7 +69,7 @@ export default {
     components: {
         AdminLayout,
     },
-    props: ['organizations'],
+    props: ['departments'],
     data() {
         return {
             modal:{
@@ -137,7 +137,7 @@ export default {
         },
         storeRecord(){
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post('/organization/teachers/', this.modal.data,{
+                this.$inertia.post('/department/teachers/', this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -153,7 +153,7 @@ export default {
         updateRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch('/organization/teachers/' + this.modal.data.id, this.modal.data,{
+                this.$inertia.patch('/department/teachers/' + this.modal.data.id, this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -171,7 +171,7 @@ export default {
         deleteRecord(recordId){
             console.log(recordId);
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete('/organization/teachers/' + recordId,{
+            this.$inertia.delete('/department/teachers/' + recordId,{
                 onSuccess: (page)=>{
                     console.log(page);
                 },

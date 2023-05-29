@@ -24,7 +24,9 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('inquiry',[\App\Http\Controllers\InquiryController::class,'index'])->name('inquiry');
+Route::resource('inquiry',\App\Http\Controllers\InquiryController::class)->names('inquiry');
+Route::get('question/{inquiry}/{token}',[\App\Http\Controllers\InquiryController::class,'question'])->name('question');
+Route::get('inquiry/get_question',[\App\Http\Controllers\InquiryController::class,'getQuestion'])->name('inquiry.getQuestion');
 
 Route::middleware([
     'auth:sanctum',

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use App\Models\Organization;
+use App\Models\Dpartment;
 
 class Member extends Model
 {
@@ -35,12 +35,12 @@ class Member extends Model
         return $this->user()->exists();
     }
 
-    public function organizations(){
-        return $this->belongsToMany(Organization::class);
+    public function departments(){
+        return $this->belongsToMany(Dpartment::class);
     }
 
-    public function belongsToOrganization($organization){
-        return $this->belongsToMany(Organization::class)->wherePivot('organization_id', $organization->id);
+    public function belongsToDpartment($department){
+        return $this->belongsToMany(Dpartment::class)->wherePivot('department_id', $department->id);
     }
 
     public function certificates(){

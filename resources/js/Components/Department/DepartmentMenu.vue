@@ -12,8 +12,8 @@
             <PieChartOutlined />
           </template>
           <span>
-            <inertia-link :href="route('manage.departments.show',department.id)">
-              Departmenst
+            <inertia-link :href="route('manage.department',department.id)">
+              Department
             </inertia-link>
           </span>
         </a-menu-item>
