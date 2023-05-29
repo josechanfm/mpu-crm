@@ -55,12 +55,16 @@ class InquiryController extends Controller
         $inquiry->subjects=json_encode($request->subjects);
         $inquiry->token=hash('crc32',time().'mpu-crm');
         $inquiry->save();
+        return to_route('question',[
+            'inquiry'=>$inquiry->id,
+            'token'=>$inquiry->token
+        ]);
         // return redirect()->route('question',[
         //     'inquiry'=>$inquiry->id,
         //     'token'=>$inquiry->token
         // ]);
         //redirect()->route('inquiry.question',[$inquiry->id,$inquiry->token]);
-        return response()->json($inquiry);
+        //return response()->json($inquiry);
     }
 
     /**
@@ -115,11 +119,9 @@ class InquiryController extends Controller
             return response("false");
         }
         $subjects=json_decode($inquiry->subjects);
-        $faqs=Faq::where(function($q) use($subjects){
-            foreach($subjects as $s){
-                $q->orWhereJsonContains('tags',$s);
-            }
-        })->get();
+        $subjects=['PRO'];
+        $faqs=Faq::getByTags($subjects);
+        dd($faqs);
         return Inertia::render('Inquiry/Question',[
             'inquiry'=>$inquiry,
             'faqs'=>$faqs,

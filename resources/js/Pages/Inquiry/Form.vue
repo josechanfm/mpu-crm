@@ -342,11 +342,14 @@ export default {
         onFinish(){
             console.log("Finish and submit");
             console.log(this.inquiry);
-            axios.post(route('inquiry.store'),this.inquiry)
-                .then(response=>{
-                    console.log(response.data);
-                    window.location.href= './question/'+response.data.id+"/"+response.data.token;
-                });
+            this.$inertia.post(route('inquiry.store'),this.inquiry,{
+                onSuccess:(page)=>{
+                    console.log(page);
+                },
+                onError:(err)=>{
+                    console.log(err);
+                }
+            });
 
         }
     },
