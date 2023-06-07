@@ -5,18 +5,23 @@
                 客戶服務管理
             </h2>
         </template>
-        search box
+        List of Inquiry
         <a-table :dataSource="inquiries" :columns="columns" :row-key="record => record.root_id">
             <template #bodyCell="{column, text, record, index}" >
                 <template v-if="column.dataIndex=='operation'">
-                    <a-button @click="editRecord(record)">Edit</a-button>
-                    <inertia-link :href="route('manage.department.inquiries.show', {department:record.department_id, inquiry:record.id})">View</inertia-link>
+                    <a-button @click="viewRecord(record)">View</a-button>
+                    <inertia-link :href="route('manage.department.inquiries.show', {department:record.department_id, inquiry:record.id})">Response</inertia-link>
                 </template>
-                <template v-else-if="column.dataIndex=='state'">
-                    {{teacherStateLabels[text]}}
+                <template v-else-if="column.dataIndex=='phone'">
+                    {{ record['areacode'] }} - {{ record['phone'] }}
                 </template>
                 <template v-else>
-                    {{record[column.dataIndex]}}
+                    <span v-if="column.options">
+                        {{ optionFind(column.options, text) }}
+                    </span>
+                    <span v-else>
+                        {{record[column.dataIndex]}}
+                    </span>
                 </template>
             </template>
         </a-table>
@@ -30,21 +35,40 @@
             :label-col="{ span: 8 }"
             :wrapper-col="{ span: 16 }"
             autocomplete="off"
-            :rules="rules"
-            :validate-messages="validateMessages"
         >
-            <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item label="姓名(中文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_zh" />
+            <a-form-item :label="fields.origin.short">
+                {{ optionFind(fields.origin.options,modal.data.origin) }}
             </a-form-item>
-            <a-form-item label="姓名(外文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_fn" />
+            <a-form-item :label="fields.degree.short">
+                {{ optionFind(fields.degree.options,modal.data.degree) }}
             </a-form-item>
-            <a-form-item label="別名" name="nickname">
-                <a-input v-model:value="modal.data.nickname" />
+            <a-form-item :label="fields.admission.short">
+                {{ optionFind(fields.admission.options,modal.data.admission) }}
             </a-form-item>
-            <a-form-item label="手機" name="mobile">
-                <a-input v-model:value="modal.data.mobile" />
+            <a-form-item :label="fields.profile.short">
+                {{ optionFind(fields.profile.options,modal.data.profile) }}
+            </a-form-item>
+
+            <a-form-item :label="fields.surname.short">
+                {{ modal.data.surname }}
+            </a-form-item>
+            <a-form-item :label="fields.givenname.short">
+                {{ modal.data.givenname }}
+            </a-form-item>
+            <a-form-item :label="fields.email.short">
+                {{ modal.data.email }}
+            </a-form-item>
+            <a-form-item :label="fields.phone.short">
+                {{ modal.data.areacode }} - {{ modal.data.phone }}
+            </a-form-item>
+            <a-form-item :label="fields.subjects.short">
+                {{ modal.data.subjects }}
+            </a-form-item>
+            <a-form-item label="Question">
+                {{ modal.data.question }}
+            </a-form-item>
+            <a-form-item label="Has question">
+                {{ modal.data.has_question }}
             </a-form-item>
         </a-form>
         <!-- <template #footer>
@@ -65,7 +89,7 @@ export default {
     components: {
         DepartmentLayout,
     },
-    props: ['department','inquiries'],
+    props: ['department','inquiries','fields'],
     data() {
         return {
             modal:{
@@ -77,16 +101,36 @@ export default {
             teacherStateLabels:{},
             columns:[
                 {
-                    title: 'Id',
-                    dataIndex: 'id',
+                    title: this.fields.origin.short,
+                    dataIndex: 'origin',
+                    options:this.fields.origin.options,
                 },{
-                    title: 'Title',
-                    dataIndex: 'title',
+                    title: this.fields.degree.short,
+                    dataIndex: 'degree',
+                    options:this.fields.degree.options,
                 },{
-                    title: 'Email',
+                    title: this.fields.admission.short,
+                    dataIndex: 'admission',
+                    options:this.fields.admission.options,
+                },{
+                    title: this.fields.profile.short,
+                    dataIndex: 'profile',
+                    options:this.fields.profile.options,
+                },{
+                    title: this.fields.apply.short,
+                    dataIndex: 'apply',
+                    options:this.fields.apply.options,
+                },{
+                    title: this.fields.givenname.short,
+                    dataIndex: 'givenname',
+                },{
+                    title: this.fields.surname.short,
+                    dataIndex: 'surname',
+                },{
+                    title: this.fields.email.short,
                     dataIndex: 'email',
                 },{
-                    title: 'Phone',
+                    title: this.fields.phone.short,
                     dataIndex: 'phone',
                 },{
                     title: '操作',
@@ -94,35 +138,25 @@ export default {
                     key: 'operation',
                 },
             ],
-            rules:{
-                name_zh:{required:true},
-                mobile:{required:true},
-                state:{required:true},
-            },
-            validateMessages:{
-                required: '${label} is required!',
-                types: {
-                    email: '${label} is not a valid email!',
-                    number: '${label} is not a valid number!',
-                },
-                number: {
-                    range: '${label} must be between ${min} and ${max}',
-                },
-            },
-            labelCol: {
-                style: {
-                width: '150px',
-                },
-            },
         }
     },
     created(){
     },
     methods: {
-        editRecord(record){
+        optionFind(options,item){
+            var label=options.find(option=>option.value==item)['label'].split(" ");
+            return label[0];
+        },
+        getOptionItem(options,item){
+            var items=options.filter(option => {
+                return item.includes(option['value']);
+            });
+            return items;
+        },
+        viewRecord(record){
             this.modal.data={...record};
             this.modal.mode="EDIT";
-            this.modal.title="修改";
+            this.modal.title="View";
             this.modal.isOpen=true;
         },
         storeRecord(){

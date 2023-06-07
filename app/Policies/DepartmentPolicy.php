@@ -20,7 +20,6 @@ class DepartmentPolicy
     public function viewAny(AdminUser $user)
     {
         return true;
-        //return $department->hasUser($user);
     }
 
     /**
@@ -32,12 +31,14 @@ class DepartmentPolicy
      */
     public function view(AdminUser $user, Department $department)
     {
-        if($user->hasRole('admin')){
+        $user=auth()->user();
+        if($department->hasRight($user) || $user->hasRole('master')){
             return true;
         }
+        return false;
         // dd($user);
         // dd($department);
-        return $department->hasUser($user);
+        //return $department->hasRight($user);
     }
 
     /**
@@ -48,7 +49,7 @@ class DepartmentPolicy
      */
     public function create(AdminUser $user)
     {
-        if($user->hasRole(['admin','department'])){
+        if($user->hasRole(['master','department'])){
             return true;
         }
 
@@ -63,7 +64,7 @@ class DepartmentPolicy
      */
     public function update(AdminUser $user, Department $department)
     {
-        if($user->hasRole('admin')){
+        if($user->hasRole('master')){
             return true;
         }
         return $department->hasUser($user);
@@ -78,7 +79,7 @@ class DepartmentPolicy
      */
     public function delete(AdminUser $user, Department $department)
     {
-        if($user->hasRole('admin')){
+        if($user->hasRole('master')){
             return true;
         }
         return $department->hasUser($user);

@@ -57,14 +57,15 @@ return [
         ],
         'media' => [
             'driver' => 'local',
-            'root'   => public_path('media'),
+            'root'   => public_path('/media'),
             'url'    => env('APP_URL').'/media',
         ],
-        'emailAttachment' => [
+        'inquiryQuestion' => [
             'driver' => 'local',
-            'root'   => public_path('email/attachment'),
-            'url'    => env('APP_URL').'/email/attachment',
+            'root'   => public_path('/media/inquiry/question'),
+            'url'    => env('APP_URL').'/media/inquiry/question',
         ],
+
     ],
 
     /*

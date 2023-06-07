@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Config;
 use App\Models\Inquiry;
+use App\Models\Question;
 use App\Models\Faq;
 
 class InquiryController extends Controller
@@ -16,7 +18,13 @@ class InquiryController extends Controller
      */
     public function index()
     {
+        $fields=Config::where('division','inquiry_form')->get()->toArray();
+        $fields=array_column($fields,null,'label');
+        $fields=array_map(function($field){
+            return json_decode($field['value']);
+        },$fields);
         return Inertia::render('Inquiry/Form',[
+            'fields'=>Config::inquiryFormFields(),
             'lang'=>'zh',
         ]);
 
@@ -41,6 +49,7 @@ class InquiryController extends Controller
     public function store(Request $request)
     {
         $inquiry=new Inquiry();
+        $inquiry->department_id=1;
         $inquiry->lang=$request->lang;
         $inquiry->origin=$request->origin;
         $inquiry->degree=$request->degree;
@@ -55,16 +64,10 @@ class InquiryController extends Controller
         $inquiry->subjects=json_encode($request->subjects);
         $inquiry->token=hash('crc32',time().'mpu-crm');
         $inquiry->save();
-        return to_route('question',[
+        return to_route('inquiry.answerQuestion',[
             'inquiry'=>$inquiry->id,
             'token'=>$inquiry->token
         ]);
-        // return redirect()->route('question',[
-        //     'inquiry'=>$inquiry->id,
-        //     'token'=>$inquiry->token
-        // ]);
-        //redirect()->route('inquiry.question',[$inquiry->id,$inquiry->token]);
-        //return response()->json($inquiry);
     }
 
     /**
@@ -75,7 +78,7 @@ class InquiryController extends Controller
      */
     public function show(Inquiry $inquiry)
     {
-        return redirect()->route('question',[
+        return redirect()->route('inquiry.question',[
             'inquiry'=>$inquiry->id,
             'token'=>$inquiry->token
         ]);
@@ -114,22 +117,57 @@ class InquiryController extends Controller
     {
         //
     }
-    public function question(Inquiry $inquiry,$token){
+    public function answerQuestion(Inquiry $inquiry,$token){
+        if($inquiry->has_question){
+            return to_route('inquiry.index');
+        };
         if($inquiry->token!=$token){
-            return response("false");
-        }
+            return to_route('inquiry.index');
+        };
+        if($inquiry->has_question){
+            return to_route('inquiry.index');
+        };
+        // $inquiry->has_question=true;
+        // $inquiry->save();
         $subjects=json_decode($inquiry->subjects);
-        $subjects=['PRO'];
         $faqs=Faq::getByTags($subjects);
-        dd($faqs);
         return Inertia::render('Inquiry/Question',[
             'inquiry'=>$inquiry,
             'faqs'=>$faqs,
         ]);
     }
+    public function noQuestion(Inquiry $inquiry){
+        $inquiry->has_question=false;
+        $inquiry->save();
+        return to_route('inquiry.thankQuestion');
+    }
+
+    public function submitQuestion(Inquiry $inquiry, Request $request){
+        if($inquiry->token!=$request->token){
+            return to_route('inquiry.index');
+        };
+        $inquiry->has_question=true;
+        $inquiry->question=$request->content;
+        $inquiry->save();
+        if($request->file('fileList')){
+            foreach($request->file('fileList') as $file){
+                $inquiry->addMedia($file['originFileObj'])
+                    ->toMediaCollection('questionAttachments');
+            }
+        }
+        return to_route('inquiry.thankQuestion');
+    }
+    public function thankQuestion(){
+        return Inertia::render('Inquiry/ThankQuestion',[
+
+        ]);
+
+    }
+
     public function getQuestion(){
         $faqs=Faq::all();
         return response()->json($faqs);
     }
 
 }
+

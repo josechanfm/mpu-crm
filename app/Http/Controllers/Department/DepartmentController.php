@@ -13,7 +13,7 @@ class DepartmentController extends Controller
     
     public function __construct()
     {
-        //$this->authorizeResource(Department::class);
+        $this->authorizeResource(Department::class);
     }
 
     /**
@@ -28,8 +28,10 @@ class DepartmentController extends Controller
         }else{
             $departments=AdminUser::find(Auth()->user()->id)->departments;
         }
+
         if($departments->count()==1){
-            return redirect()->route('departments.show',$departments[0]->id);
+            return to_route('manage.departments.show',$departments[0]->id);
+            //return redirect()->route('departments.show',$departments[0]->id);
         }elseif($departments->count()>1){
             return Inertia::render('Department/Selection',[
                 'departments' => $departments
@@ -72,7 +74,7 @@ class DepartmentController extends Controller
         return Inertia::render('Department/Dashboard',[
             'department'=>$department
         ]);
-        return redirect(route('department.certificates.index',[$department->id]));
+        //return redirect(route('department.certificates.index',[$department->id]));
     }
 
     /**

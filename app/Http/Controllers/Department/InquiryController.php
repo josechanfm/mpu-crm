@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Department;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Config;
 use App\Models\Department;
 use App\Models\Inquiry;
+use App\Models\Response;
+use Mail;
 
 class InquiryController extends Controller
 {
@@ -22,13 +25,11 @@ class InquiryController extends Controller
      */
     public function index(Department $department)
     {
-        $inquiries=$department->inquiries;
-        // $inquiries=Inquiry::whereBelongsTo($department)
-        //     ->whereLike(['title','content','response'],'語言')
-        //     ->get();
+        $this->authorize('view',$department);
         return Inertia::render('Department/Inquiries',[
             'department'=>$department,
-            'inquiries'=>$department->inquiries
+            'inquiries'=>$department->inquiries,
+            'fields'=>Config::inquiryFormFields(),
         ]);
     }
 
@@ -75,13 +76,15 @@ class InquiryController extends Controller
      */
     public function show(Department $department, Inquiry $inquiry)
     {
-        // $inquiry=Inquiry::where('id',1)->with('emails')->get();
-        // dd($inquiry);
+        // $inquiry=Inquiry::where('id',1)->with('emails')->first();
+        // dd($inquiry->department );
 
-        $inquiries=Inquiry::where('id',$inquiry->root_id)->with('children')->with('adminUser')->with('emails')->get();
+        //$inquiries=Inquiry::where('id',$inquiry->root_id)->with('children')->with('adminUser')->with('emails')->get();
+        $inquiry=$inquiry->with('department')->with('responses')->first();
+        // $inquiry->ssubjects=json_decode($inquiry->subjects,true);
+
         return Inertia::render('Department/InquiryShow',[
-            'department'=>$department,
-            'inquiries'=>$inquiries,
+            'fields'=>Config::inquiryFormFields(),
             'inquiry'=>$inquiry
         ]);
     }
@@ -122,4 +125,47 @@ class InquiryController extends Controller
     {
         //
     }
+    public function response(Department $department, Request $request){
+        $response = new Response();
+        $response->inquiry_id=$request->inquiry_id;
+        $response->title=$request->title;
+        $response->remark=$request->remark;
+        $response->by_email=$request->by_email;
+        $response->email_address=$request->email_address;
+        $response->email_subject=$request->email_subject;
+        $response->email_content=$request->email_content;
+        $response->admin_id=auth()->user()->id;
+        $response->save();
+
+        if($request->file('fileList')){
+            foreach($request->file('fileList') as $file){
+                $response->addMedia($file['originFileObj'])
+                    ->toMediaCollection('responseAttachments');
+            }
+        };
+        if($request->by_email){
+            $email=[
+                'address'=>$response->email_address,
+                'title'=>$response->email_subject,
+                'body'=>$response->email_content,
+                'media'=>$response->media
+                ];
+            $this->sendEmail($email);
+        }
+        return redirect()->back();
+        
+    }
+    public function sendEmail($email){
+        Mail::send('emails.generalMail',$email, function($message) use($email){
+            $message->to($email["address"])
+                    ->subject($email["title"]);
+            if(isset($email['media'])){
+                foreach($email['media'] as $file){
+                    $message->attach(public_path('media/'.$file->id.'/'.$file->file_name));
+                }
+            }
+        });
+    }
+
+    
 }

@@ -13,7 +13,11 @@ class Department extends Model
         return $this->belongsToMany(AdminUser::class);
     }
     public function inquiries(){
-        return $this->hasMany(Inquiry::class)->where('parent_id',0)->with('children')->with('emails')->orderBy('created_at','desc')->orderBy('id', 'desc');
+        return $this->hasMany(Inquiry::class)->with('responses');
+        //return $this->hasMany(Inquiry::class)->where('parent_id',0)->with('children')->with('emails')->orderBy('created_at','desc')->orderBy('id', 'desc');
+    }
+    public function faqs(){
+        return $this->hasMany(Faq::class);
     }
     public function members(){
         return $this->belongsToMany(Member::class);
@@ -21,5 +25,9 @@ class Department extends Model
 
     public function hasUser($user){
         return in_array($user->id,$this->adminUsers()->get()->pluck('id')->toArray());
+    }
+
+    public function hasRight(){
+        return in_array(auth()->user()->id,$this->adminUsers()->get()->pluck('id')->toArray());
     }
 }

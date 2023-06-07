@@ -15,12 +15,13 @@ return new class extends Migration
     {
         Schema::create('inquiries', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('department_id');
             $table->char('lang',2);
             $table->string('origin')->nullable();
             $table->string('degree')->nullable();
             $table->string('admission')->nullable();
             $table->string('profile')->nullable();
-            $table->string('apply')->nullable();
+            $table->boolean('apply')->default(false);
             $table->string('surname')->nullable();
             $table->string('givenname')->nullable();
             $table->string('email')->nullable();
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('subjects')->nullable();
             $table->string('token')->nullable();
+            $table->boolean('has_question')->default(false);
             $table->text('question')->nullable();
             $table->timestamps();
         });

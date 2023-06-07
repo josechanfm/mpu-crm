@@ -8,7 +8,6 @@ use App\Models\Email;
 use App\Models\Department;
 use App\Mail\InquiryMail;
 use App\Models\Inquiry;
-use App\Notifications\InquiryResponseNotification;
 use Notification;
 use Mail;
 
@@ -132,8 +131,6 @@ class MailerController extends Controller
                 $message->attach($file);
             }
         });
-        //Mail::to($email->receiver)->send(new InquiryMail($mailData));
-        //Notification::route('mail','josechan@ipm.edu.mo')->notify(new InquiryResponseNotification($response));
 
     }
 }

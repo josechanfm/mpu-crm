@@ -17,79 +17,63 @@ class InquirySeeder extends Seeder
      */
     public function run()
     {
-        // $faker = Faker::create();
-        // DB::table('inquiries')->insertGetId([
-        //     'department_id'=>1,
-        //     'parent_id'=>0,
-        //     'root_id'=>1,
-        //     'title'=>'哪些課程',
-        //     'email'=>$faker->email,
-        //     'phone'=>$faker->phoneNumber,
-        //     'content'=>'澳門理工大學提供哪些課程?',
-        //     'admin_user_id'=>1,
-        // ]);
-        // $id=DB::table('inquiries')->insertGetId([
-        //     'department_id'=>1,
-        //     'parent_id'=>0,
-        //     'root_id'=>2,
-        //     'title'=>'學制',
-        //     'email'=>$faker->email,
-        //     'phone'=>$faker->phoneNumber,
-        //     'content'=>'課程採用甚麼學制?',
-        //     'admin_user_id'=>1,
-        // ]);
-        // DB::table('inquiries')->insertGetId([
-        //     'department_id'=>1,
-        //     'parent_id'=>2,
-        //     'root_id'=>2,
-        //     'title'=>'學制 follow 1',
-        //     'email'=>$faker->email,
-        //     'phone'=>$faker->phoneNumber,
-        //     'content'=>'課程採用甚麼學制? follow up 1',
-        //     'admin_user_id'=>1,
-        // ]);
-        // $id=DB::table('inquiries')->insertGetId([
-        //     'department_id'=>1,
-        //     'parent_id'=>2,
-        //     'root_id'=>2,
-        //     'title'=>'學制 follow 2',
-        //     'email'=>$faker->email,
-        //     'phone'=>$faker->phoneNumber,
-        //     'content'=>'課程採用甚麼學制? follow up 2',
-        //     'admin_user_id'=>1,
-        // ]);
-        // $id=DB::table('inquiries')->insertGetId([
-        //     'department_id'=>1,
-        //     'parent_id'=>0,
-        //     'root_id'=>5,
-        //     'title'=>'授課語言',
-        //     'email'=>$faker->email,
-        //     'phone'=>$faker->phoneNumber,
-        //     'content'=>'課程採用甚麼語言授課?',
-        //     'admin_user_id'=>1,
-        // ]);
-        // $id=DB::table('inquiries')->insertGetId([
-        //     'department_id'=>1,
-        //     'parent_id'=>5,
-        //     'root_id'=>5,
-        //     'title'=>'授課語言 follow up 1',
-        //     'email'=>$faker->email,
-        //     'phone'=>$faker->phoneNumber,
-        //     'content'=>'課程採用甚麼語言授課? follow up 1',
-        //     'admin_user_id'=>1,
-        // ]);
-        // DB::table('inquiries')->insertGetId([
-        //     'department_id'=>1,
-        //     'parent_id'=>0,
-        //     'root_id'=>6,
-        //     'title'=>'課程限制',
-        //     'email'=>$faker->email,
-        //     'phone'=>$faker->phoneNumber,
-        //     'content'=>'課程是否限制文科或理科組別學生報考?',
-        //     'content'=>$faker->text,
-        //     'admin_user_id'=>1,
-        // ]);
+        DB::table('inquiries')->insert([
+            'department_id'=>1,
+            'lang'=>'zh',
+            'origin'=>'MO',
+            'degree'=>'B',
+            'admission'=>'EXAM',
+            'profile'=>'STD',
+            'apply'=>false,
+            'surname'=>'surname',
+            'givenname'=>'givenname',
+            'email'=>'example@example.com',
+            'areacode'=>'853',
+            'phone'=>'123456',
+            'subjects'=>'["ADM"]',
+            'token'=>hash('crc32',time().'1'),
+            'has_question'=>false,
+            'question'=>'content of my question',
+        ]);
+        DB::table('responses')->insert([
+            'inquiry_id'=>1,
+            'title'=>'question title',
+            'remark'=>'remark of my question',
+            'by_email'=>true,
+            'email_address'=>'mail address',
+            'email_subject'=>'email subject',
+            'email_content'=>'email content',
+            'admin_id'=>1
+        ]);
 
+        DB::table('inquiries')->insert([
+            'department_id'=>1,
+            'lang'=>'zh',
+            'origin'=>'MO',
+            'degree'=>'B',
+            'admission'=>'EXAM',
+            'profile'=>'STD',
+            'apply'=>false,
+            'surname'=>'surname2',
+            'givenname'=>'givenname2',
+            'email'=>'example@example.com2',
+            'areacode'=>'85322',
+            'phone'=>'12345622',
+            'subjects'=>'["ADM"]',
+            'token'=>hash('crc32',time().'1'),
+            'has_question'=>false,
+            'question'=>'content of my question 2',
+        ]);
+        DB::table('responses')->insert([
+            'inquiry_id'=>2,
+            'title'=>'question title',
+            'remark'=>'remark of my question',
+            'by_email'=>true,
+            'email_address'=>'mail address',
+            'email_subject'=>'email subject',
+            'email_content'=>'email content',
+            'admin_id'=>1
+        ]);
         
     }
 }

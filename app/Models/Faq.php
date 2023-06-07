@@ -12,7 +12,7 @@ class Faq extends Model
     public static function getByTags($subjects){
         return Faq::where(function ($q) use ($subjects){
                     foreach($subjects as $s){
-                        $q->orWhereJsonContains('tags',$s);
+                        $q->orWhereJsonContains('subjects',$s);
                     }
                 })->get();
         // $faqs=Faq::where(function($q) use($subjects){

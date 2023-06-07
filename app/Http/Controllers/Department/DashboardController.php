@@ -17,9 +17,24 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return Inertia::render('Department/Dashboard',[
-            'departments' => auth()->user()->departments
-        ]);
+        if(auth()->user()->hasRole('master')){
+            $departments=Department::all();
+        }else{
+            $departments=auth()->user()->departments;
+        }
+        $count=$departments->count();
+
+        if($count==0){
+            return redirect('/');
+        }else if($count==1){
+            return Inertia::render('Department/Dashboard',[
+                'department' => auth()->user()->departments[0],
+            ]);
+        }else{
+            return Inertia::render('Department/Selection',[
+                'departments' => $departments
+            ]);
+        }
 
     }
     

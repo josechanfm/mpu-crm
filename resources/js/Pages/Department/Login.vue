@@ -35,7 +35,7 @@
 
                 <a-form-item>
                     <a-checkbox name="remember" v-model:checked="form.remember">Remember Me</a-checkbox>
-
+                    <a href="/" class="float-right">前台</a>
                     <!--                    <inertia-link :href="route('password.request')" class="float-right">Forget Password?</inertia-link>-->
                 </a-form-item>
 

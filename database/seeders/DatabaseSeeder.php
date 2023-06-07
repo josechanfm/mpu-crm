@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             DepartmentSeeder::class,
             FormSeeder::class,
             FaqSeeder::class,
-            //InquirySeeder::class,
+            InquirySeeder::class,
             //EmailSeeder::class,
         ]);
 

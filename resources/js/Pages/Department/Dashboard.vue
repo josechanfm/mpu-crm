@@ -1,12 +1,13 @@
 <template>
-    <DepartmentLayout title="Dashboard" :department="departments[0]">
+    <DepartmentLayout title="Dashboard" :department="department">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Management Dashboard department
+                Department
             </h2>
         </template>
-        <p>Department Management</p>
-        {{ departments }}
+        <a-typography-title :level="3">{{ department.name_zh }}</a-typography-title>
+        <div v-html="department.landing_zh"></div>
+
     </DepartmentLayout>
 </template>
 
@@ -18,7 +19,7 @@ export default {
     components: {
         DepartmentLayout,
     },
-    props: ['departments'],
+    props: ['department'],
     data() {
         return {
 

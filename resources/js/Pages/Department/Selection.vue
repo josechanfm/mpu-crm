@@ -1,21 +1,29 @@
 <template>
-        <p>Club Management</p>
-        <DepartmentList :departments="departments"/>
+        <DepartmentLayout title="Dashboard" :department="departments[0]">
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                Management Dashboard department
+            </h2>
+        </template>
+        <p>You belongs to more than one department Please select which one you wanna to get into?</p>
+        <ol class="list-decimal">
+            <li v-for="department in departments">
+                <inertia-link :href="route('manage.departments.show',department.id)">
+                    {{ department.abbr }} - {{ department.name_zh }}
+                </inertia-link>
+            </li>
+        </ol>
 
-        <div v-for="department in departmens">
-            <inertia-link :href="route('departmens.show',department.id)">All clubs</inertia-link>
-        </div>
+    </DepartmentLayout>
+    
 </template>
 
 <script>
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
-import DepartmentList from '@/Components/Department/DepartmentList.vue';
-
 
 export default {
     components: {
         DepartmentLayout,
-        DepartmentList,
     },
     props: ['departments'],
     data() {

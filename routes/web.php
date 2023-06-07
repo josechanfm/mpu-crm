@@ -24,9 +24,14 @@ Route::get('/', function () {
     ]);
 });
 
-Route::resource('inquiry',\App\Http\Controllers\InquiryController::class)->names('inquiry');
-Route::get('question/{inquiry}/{token}',[\App\Http\Controllers\InquiryController::class,'question'])->name('question');
-Route::get('inquiry/get_question',[\App\Http\Controllers\InquiryController::class,'getQuestion'])->name('inquiry.getQuestion');
+Route::prefix('inquiry')->group(function(){
+    Route::resource('/',\App\Http\Controllers\InquiryController::class)->names('inquiry');
+    Route::get('get_question',[\App\Http\Controllers\InquiryController::class,'getQuestion'])->name('inquiry.getQuestion');
+    Route::get('answer_question/{inquiry}/{token}',[\App\Http\Controllers\InquiryController::class,'answerQuestion'])->name('inquiry.answerQuestion');
+    Route::post('submit_question/{inquiry}',[\App\Http\Controllers\InquiryController::class,'submitQuestion'])->name('inquiry.submitQuestion');
+    Route::patch('no_question/{inquiry}',[\App\Http\Controllers\InquiryController::class,'noQuestion'])->name('inquiry.noQuestion');
+    Route::get('thank_question',[\App\Http\Controllers\InquiryController::class,'thankQuestion'])->name('inquiry.thankQuestion');
+});
 
 Route::middleware([
     'auth:sanctum',
