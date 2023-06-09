@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -13,7 +14,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('admin_users', function (Blueprint $table) {
+        $driver = Schema::getConnection()->getDriverName();
+
+        Schema::create('admin_users', function (Blueprint $table) use ($driver) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
@@ -22,9 +25,18 @@ return new class extends Migration
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
+            $table->string('guid')->nullable();
+            $table->string('domain')->nullable();
             $table->timestamps();
+            if ($driver !== 'sqlsrv') {
+                $table->unique('guid');
+            }
         });
+    
     }
+
+
+
 
     /**
      * Reverse the migrations.

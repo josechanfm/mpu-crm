@@ -16,16 +16,25 @@ Route::group(['middleware' => config('fortify.middleware', ['admin_web'])], func
             $limiter ? 'throttle:'.$limiter : null,
         ])
     )->name('manage.login');
-    Route::post('/manage/logout', [AuthenticatedSessionController::class, 'destroy'])
+    Route::get('/manage/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('manage.logout');
 });
 
+Route::middleware([
+    'auth:admin_web',
+    config('jetstream.auth_session'),
+])->group(function() {
+    Route::get('abcd', function () {
+        dd('what is');
+        return Inertia::render('GeneralStaff',[
+        ]);
+    });
+});
 
 
 Route::middleware([
     'auth:admin_web',
     config('jetstream.auth_session'),
-    'role:department'
 ])->group(function () {
     Route::prefix('/manage')->group(function(){
         Route::get('/',[App\Http\Controllers\Department\DashboardController::class,'index']);

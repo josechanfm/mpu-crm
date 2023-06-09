@@ -18,29 +18,29 @@ class UserSeeder extends Seeder
     {
         
         DB::table('users')->insert([
-            'name' => 'Admin',
-            'identity' => 'admin',
-            'email' => 'admin@example.com',
+            'name' => 'Member',
+            'identity' => 'member',
+            'email' => 'member@example.com',
             'password'=> Hash::make('password')
         ]);
 
-        DB::table('users')->insert([
-            'name' => 'David Ma',
-            'identity' => 'student',
-            'email' => 'david@example.com',
-            'password'=> Hash::make('password')
-        ]);
+        // DB::table('users')->insert([
+        //     'name' => 'David Ma',
+        //     'identity' => 'student',
+        //     'email' => 'david@example.com',
+        //     'password'=> Hash::make('password')
+        // ]);
         
-        DB::table('teams')->insert([
-            'user_id' => '1',
-            'name' => 'team',
-            'personal_team' => '1',
-        ]);
-        DB::table('teams')->insert([
-            'user_id' => '2',
-            'name' => 'team',
-            'personal_team' => '1',
-        ]);
+        // DB::table('teams')->insert([
+        //     'user_id' => '1',
+        //     'name' => 'team',
+        //     'personal_team' => '1',
+        // ]);
+        // DB::table('teams')->insert([
+        //     'user_id' => '2',
+        //     'name' => 'team',
+        //     'personal_team' => '1',
+        // ]);
 
         DB::table('team_user')->insert([
             'team_id' => '1',

@@ -26,6 +26,10 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'admin@example.com',
         //     'password' => Hash::make('password'),
         // ]);
+        $roleMaster=Role::create(['name'=>'master','guard_name' => 'admin_web']);
+        $roleAdmin=Role::create(['name'=>'admin','guard_name' => 'admin_web']);
+        $roleDepartment=Role::create(['name'=>'department','guard_name' => 'admin_web']);
+        $roleMember=Role::create(['name'=>'member','guard_name' => 'web']);
 
         $this->call([
             MemberSeeder::class,
@@ -33,14 +37,10 @@ class DatabaseSeeder extends Seeder
             FormSeeder::class,
             FaqSeeder::class,
             InquirySeeder::class,
+            //UserSeeder::class,
             //EmailSeeder::class,
         ]);
 
-
-        $roleMaster=Role::create(['name'=>'master','guard_name' => 'admin_web']);
-        $roleAdmin=Role::create(['name'=>'admin','guard_name' => 'admin_web']);
-        $roleDepartment=Role::create(['name'=>'department','guard_name' => 'admin_web']);
-        $roleMember=Role::create(['name'=>'member','guard_name' => 'web']);
 
         // $permissionCourse=Permission::create(['name'=>'manage course','guard_name' => 'admin_web']);
         // $permissionOffer=Permission::create(['name'=>'manage offer','guard_name' => 'admin_web']);
@@ -70,29 +70,30 @@ class DatabaseSeeder extends Seeder
             'email' => 'master@example.com',
             'password'=> Hash::make('password')
         ])->create();
-        $admin->assignRole('master');
+
+        //$admin->assignRole('master');
 
         $admin=\App\Models\AdminUser::factory([
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'password'=> Hash::make('password')
         ])->create();
-        $admin->assignRole('admin');
-        $admin->assignRole('department');
+        //$admin->assignRole('admin');
+        //$admin->assignRole('department');
 
         $department=\App\Models\AdminUser::factory([
             'name' => 'Department',
             'email' => 'department@example.com',
             'password'=> Hash::make('password')
         ])->create();
-        $department->assignRole('department');
+        //$department->assignRole('department');
 
         $member=\App\Models\User::factory([
             'name' => 'Member',
             'email' => 'member@example.com',
             'password'=> Hash::make('password')
         ])->withPersonalTeam()->create();
-        $member->assignRole('member');
+        //$member->assignRole('member');
 
     }
 }

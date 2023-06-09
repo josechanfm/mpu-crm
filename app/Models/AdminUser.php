@@ -11,9 +11,11 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use LdapRecord\Laravel\Auth\HasLdapUser;
+use LdapRecord\Laravel\Auth\LdapAuthenticatable;
+use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
 
-
-class AdminUser extends Authenticatable
+class AdminUser extends Authenticatable implements LdapAuthenticatable
 {
     use HasApiTokens;
     use HasFactory;
@@ -22,6 +24,8 @@ class AdminUser extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
     use HasRoles;
+    use Notifiable, AuthenticatesWithLdap;
+    use HasLdapUser;
 
 
     /**
@@ -30,7 +34,7 @@ class AdminUser extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'username','email', 'password',
     ];
 
     /**

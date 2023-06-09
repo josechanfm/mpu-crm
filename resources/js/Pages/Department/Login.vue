@@ -11,10 +11,10 @@
             <p class="text-base mb-20 text-slate-600">綜合服務管理系統</p>
             <p class="font-medium text-xl mb-20">系統登入</p>
             <a-form>
-                <a-form-item name="email">
+                <a-form-item name="username">
                     <a-input
-                        placeholder="Email"
-                        v-model:value="form.email"
+                        placeholder="Username"
+                        v-model:value="form.username"
                         size="large"
                     >
                         <template #prefix>
@@ -22,6 +22,7 @@
                         </template>
                     </a-input>
                 </a-form-item>
+                <InputError class="mt-2" :message="$page.props.errors.username" />
 
                 <a-form-item name="password">
                     <a-input-password placeholder="Password" size="large" v-model:value="form.password"
@@ -32,15 +33,17 @@
                         </template>
                     </a-input-password>
                 </a-form-item>
+                
 
                 <a-form-item>
                     <a-checkbox name="remember" v-model:checked="form.remember">Remember Me</a-checkbox>
+                    <a-checkbox name="local" v-model:checked="form.local">Local Account</a-checkbox>
                     <a href="/" class="float-right">前台</a>
                     <!--                    <inertia-link :href="route('password.request')" class="float-right">Forget Password?</inertia-link>-->
                 </a-form-item>
 
                 <a-form-item class="!mt-16">
-                    <a-button @click="login" block type="primary" size="large">Login</a-button>
+                    <a-button @click="login" block type="primary" size="large">Login..</a-button>
                 </a-form-item>
             </a-form>
         </div>
@@ -48,18 +51,21 @@
 </template>
 
 <script>
-import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
+import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
+import InputError from '@/Components/InputError.vue';
+
 export default {
     name: "Login",
     components: {
         UserOutlined,
-        LockOutlined
+        LockOutlined,
+        InputError
     },
     setup() {
         const rules = {
-            email: [
+            username: [
                 {required: true, message: '请输入邮箱'},
-                {type: 'email', message: '请输入正确的邮箱'}
+                //{type: 'email', message: '请输入正确的邮箱'}
             ],
             password: [
                 {required: true, message: '请输入密码'}
@@ -71,9 +77,10 @@ export default {
     data () {
         return {
             form: this.$inertia.form({
-                email: '',
+                username: '',
                 password: '',
-                remember: false
+                remember: false,
+                local:false
             })
         }
     },
