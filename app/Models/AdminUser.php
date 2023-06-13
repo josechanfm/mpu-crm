@@ -74,4 +74,8 @@ class AdminUser extends Authenticatable implements LdapAuthenticatable
         dd($this->departments);
 
     }
+
+    public function hasRight(){
+        
+    }
 }

@@ -1,60 +1,60 @@
 <template>
-    <DepartmentLayout title="Dashboard" :department="inquiry.department">
+    <DepartmentLayout title="Dashboard" :department="enquiry.department">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 客戶服務管理
             </h2>
         </template>
         <a-collapse>
-            <a-collapse-panel header="Inquiry Form">
+            <a-collapse-panel header="Enquiry Form">
                 <ol class="list-disc pl-10">
                     <li>
                         <p class="font-bold">{{fields.origin.question }}</p>
-                        <p>{{ optionFind(inquiry.origin,fields.origin.options) }}</p>
+                        <p>{{ optionFind(enquiry.origin,fields.origin.options) }}</p>
                     </li>
                     <li>
                         <p class="font-bold">{{fields.degree.question }}</p>
-                        <p>{{ optionFind(inquiry.degree,fields.degree.options) }}</p>
+                        <p>{{ optionFind(enquiry.degree,fields.degree.options) }}</p>
                     </li>
                     <li>
                         <p class="font-bold">{{fields.admission.question }}</p>
-                        <p>{{ optionFind(inquiry.admission,fields.admission.options) }}</p>
+                        <p>{{ optionFind(enquiry.admission,fields.admission.options) }}</p>
                     </li>
                     <li>
                         <p class="font-bold">{{fields.profile.question }}</p>
-                        <p>{{ optionFind(inquiry.profile,fields.profile.options) }}</p>
+                        <p>{{ optionFind(enquiry.profile,fields.profile.options) }}</p>
                     </li>
                     <li>
                         <p class="font-bold">{{fields.apply.question }}</p>
-                        <p>{{ optionFind(inquiry.apply,fields.apply.options) }}</p>
+                        <p>{{ optionFind(enquiry.apply,fields.apply.options) }}</p>
                     </li>
                     <li>
                         <p class="font-bold">Name</p>
-                        <p>{{ inquiry.givenname }}, {{ inquiry.surname }}</p>
+                        <p>{{ enquiry.givenname }}, {{ enquiry.surname }}</p>
                     </li>
                     <li>
                         <p class="font-bold">{{fields.email.question }}</p>
-                        <p>{{ inquiry.email }}</p>
+                        <p>{{ enquiry.email }}</p>
                     </li>
                     <li>
                         <p class="font-bold">{{fields.phone.question }}</p>
-                        <p>{{ inquiry.areacode }} - {{ inquiry.phone }}</p>
+                        <p>{{ enquiry.areacode }} - {{ enquiry.phone }}</p>
                     </li>
                     <li>
                         <p class="font-bold">{{fields.subjects.question }}</p>
-                        <p v-for="item in optionFilter(inquiry.subjects,fields.subjects.options)">{{ item.label }}</p>
+                        <p v-for="item in optionFilter(enquiry.subjects,fields.subjects.options)">{{ item.label }}</p>
                     </li>
                 </ol>
             </a-collapse-panel>
-            <a-collapse-panel :header="'Question: '+inquiry.question.substring(0,30)">
-                {{ inquiry.question }}
+            <a-collapse-panel :header="'Question: '+enquiry.question.substring(0,30)">
+                {{ enquiry.question }}
                 <ol>
-                    <li v-for="file in inquiry.media">
+                    <li v-for="file in enquiry.media">
                         <img :src="file.original_url" width="100"/>
                     </li>
                 </ol>
             </a-collapse-panel>
-            <a-collapse-panel v-for="response in inquiry.responses" :header="'Response at: '+response.created_at" >
+            <a-collapse-panel v-for="response in enquiry.responses" :header="'Response at: '+response.created_at" >
                 <p>{{ response.title }}</p>
                 <p>{{ response.remark }}</p>
                 <span v-if="response.by_email">
@@ -128,7 +128,7 @@
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
 import CommentCard from '@/Components/Department/CommentCard.vue';
 import MailerBox from '@/Components/Department/MailerBox.vue';
-import InquiryBox from '@/Components/Department/InquiryBox.vue';
+import EnquiryBox from '@/Components/Department/EnquiryBox.vue';
 import { UploadOutlined } from '@ant-design/icons-vue';
 
 export default {
@@ -136,14 +136,14 @@ export default {
         DepartmentLayout,
         CommentCard,
         MailerBox,
-        InquiryBox,
+        EnquiryBox,
         UploadOutlined,
     },
-    props: ['fields', 'inquiry'],
+    props: ['fields', 'enquiry'],
     data() {
         return {
             response:{
-                inquiry_id:this.inquiry.id,
+                enquiry_id:this.enquiry.id,
                 title:null,
                 remark:null,
                 by_email: false,
@@ -175,7 +175,7 @@ export default {
             return items;
         },
         onFinish(){
-            this.$inertia.post(route('department.inquiry.response'),this.response,{
+            this.$inertia.post(route('enquiry.response'),this.response,{
                 onSuccess:(page)=>{
                     this.response={};
                     console.log(page);

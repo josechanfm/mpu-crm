@@ -73,7 +73,7 @@ defineProps({
 
       <h1 class="text-center text-xl my-4  bg-white py-2 rounded-md border-b-2 cursor-pointer  text-gray-600">Service</h1>
       <div class="bg-white rounded-md list-none  text-center ">
-        <li class="py-3 border-b-2"><inertia-link :href="route('inquiry.index')">Inquiry</inertia-link></li>
+        <li class="py-3 border-b-2"><inertia-link :href="route('enquiry.index')">Enquiry</inertia-link></li>
         <li class="py-3 border-b-2"><a href="#" class="list-none  hover:text-indigo-600">Models</a></li>
         <li class="py-3 border-b-2"><a href="#" class="list-none  hover:text-indigo-600">Pricing</a></li>
         <li class="py-3 border-b-2"><a href="#" class="list-none  hover:text-indigo-600">Hire</a></li>

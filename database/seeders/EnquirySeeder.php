@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Inquiry;
+use App\Models\Enquiry;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
 
-class InquirySeeder extends Seeder
+class EnquirySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,7 +17,7 @@ class InquirySeeder extends Seeder
      */
     public function run()
     {
-        DB::table('inquiries')->insert([
+        DB::table('enquiries')->insert([
             'department_id'=>1,
             'lang'=>'zh',
             'origin'=>'MO',
@@ -36,7 +36,7 @@ class InquirySeeder extends Seeder
             'question'=>'content of my question',
         ]);
         DB::table('responses')->insert([
-            'inquiry_id'=>1,
+            'enquiry_id'=>1,
             'title'=>'question title',
             'remark'=>'remark of my question',
             'by_email'=>true,
@@ -46,7 +46,7 @@ class InquirySeeder extends Seeder
             'admin_id'=>1
         ]);
 
-        DB::table('inquiries')->insert([
+        DB::table('enquiries')->insert([
             'department_id'=>1,
             'lang'=>'zh',
             'origin'=>'MO',
@@ -65,7 +65,7 @@ class InquirySeeder extends Seeder
             'question'=>'content of my question 2',
         ]);
         DB::table('responses')->insert([
-            'inquiry_id'=>2,
+            'enquiry_id'=>2,
             'title'=>'question title',
             'remark'=>'remark of my question',
             'by_email'=>true,

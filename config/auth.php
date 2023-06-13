@@ -86,7 +86,7 @@ return [
                 'model' => App\Models\AdminUser::class,
                 'sync_passwords' => false,
                 'sync_attributes' => [
-                    //'name' => 'cn',
+                    'name' => 'cn',
                     'email' => 'mail',
                     'username' => 'samaccountname',
                 ],

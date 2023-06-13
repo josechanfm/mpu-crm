@@ -17,6 +17,7 @@ class DashboardController extends Controller
 
     public function index()
     {
+        session()->forget('currentDepartmentId');
         if(auth()->user()->hasRole('master')){
             $departments=Department::all();
         }else{
@@ -25,12 +26,14 @@ class DashboardController extends Controller
         $count=$departments->count();
 
         if($count==0){
-            return redirect('/');
+            return redirect('/staff');
         }else if($count==1){
+            session(['currentDepartmentId'=>$departments[0]->id]);
             return Inertia::render('Department/Dashboard',[
                 'department' => auth()->user()->departments[0],
             ]);
         }else{
+            session(['currentDepartmentId'=>$departments[0]->id]);
             return Inertia::render('Department/Selection',[
                 'departments' => $departments
             ]);

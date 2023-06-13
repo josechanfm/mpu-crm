@@ -1,8 +1,8 @@
 <template>
     <a-form
         ref="modalRef"
-        :model="inquiry"
-        name="InquiryBox"
+        :model="enquiry"
+        name="EnquiryBox"
         :label-col="{ span: 2 }"
         :wrapper-col="{ span: 22 }"
         autocomplete="off"
@@ -11,30 +11,30 @@
         enctype="multipart/form-data"
     >
         <a-form-item label="Title" name="title">
-            <a-input v-model:value="inquiry.title"/>
+            <a-input v-model:value="enquiry.title"/>
         </a-form-item>
         <a-form-item label="Email" name="email">
-            <a-input v-model:value="inquiry.email"/>
+            <a-input v-model:value="enquiry.email"/>
         </a-form-item>
         <a-form-item label="Phone" name="phone">
-            <a-input v-model:value="inquiry.phone"/>
+            <a-input v-model:value="enquiry.phone"/>
         </a-form-item>
         <a-form-item label="Content" name="content">
             <div style="background-color: white;">
-              <quill-editor v-model:value="inquiry.content" style="min-height:200px;" />
+              <quill-editor v-model:value="enquiry.content" style="min-height:200px;" />
             </div>
         </a-form-item>
         <a-form-item label="Response" name="response">
             <div style="background-color: white;">
-              <quill-editor v-model:value="inquiry.response" style="min-height:200px;" />
+              <quill-editor v-model:value="enquiry.response" style="min-height:200px;" />
             </div>
         </a-form-item>
         <div>
             <div style="text-align:right">
-                <a-button @click="updateInquiry"  style="display:inline-block" v-if="inquiry.id">Update</a-button>
-                <a-button @click="storeInquiry"  style="display:inline-block" v-else >Create</a-button>
+                <a-button @click="updateEnquiry"  style="display:inline-block" v-if="enquiry.id">Update</a-button>
+                <a-button @click="storeEnquiry"  style="display:inline-block" v-else >Create</a-button>
             </div>
-            <a-upload v-model:file-list="inquiry.files" :multiple="false">
+            <a-upload v-model:file-list="enquiry.files" :multiple="false">
                 <a-button>
                 <upload-outlined accept="image/png, image/jpeg,.doc,.docx,.pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"></upload-outlined>
                     Upload
@@ -61,7 +61,7 @@ export default {
     UploadOutlined, 
   },
 //   emits:['emailBox'],
-  props: ['inquiry'],
+  props: ['enquiry'],
   data() {
     return {
       editorOption: {
@@ -89,18 +89,18 @@ export default {
   },
   methods: {
     switchRichTextMode(){
-        this.inquiry.is_html=!this.inquiry.is_html;
+        this.enquiry.is_html=!this.enquiry.is_html;
     },
-    storeInquiry(){
-        console.log(this.inquiry)
+    storeEnquiry(){
+        console.log(this.enquiry)
         this.$refs.modalRef.validateFields().then(()=>{
             this.$inertia.post(
-                route('manage.department.inquiries.store', 
+                route('manage.department.enquiries.store', 
                     { 
-                        department: this.inquiry.department_id, 
+                        department: this.enquiry.department_id, 
                     }
                 ),
-                this.inquiry, 
+                this.enquiry, 
                 {
                     onSuccess: (page) => {
                         console.log(page);
@@ -114,18 +114,18 @@ export default {
             console.log(err);
         });
     },
-    updateInquiry(){
-        console.log(this.inquiry)
+    updateEnquiry(){
+        console.log(this.enquiry)
         this.$refs.modalRef.validateFields().then(()=>{
 
             this.$inertia.patch(
-                route('manage.department.inquiries.update', 
+                route('manage.department.enquiries.update', 
                     { 
-                        department: this.inquiry.department_id, 
-                        inquiry: this.inquiry.id 
+                        department: this.enquiry.department_id, 
+                        enquiry: this.enquiry.id 
                     }
                 ), 
-                this.inquiry, {
+                this.enquiry, {
                     onSuccess: (page) => {
                         console.log(page);
                     },

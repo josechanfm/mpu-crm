@@ -31,7 +31,7 @@ class DepartmentPolicy
      */
     public function view(AdminUser $user, Department $department)
     {
-        $user=auth()->user();
+        //$user=auth()->user();
         if($department->hasRight($user) || $user->hasRole('master')){
             return true;
         }
@@ -49,10 +49,9 @@ class DepartmentPolicy
      */
     public function create(AdminUser $user)
     {
-        if($user->hasRole(['master','department'])){
+        if($user->hasRole(['master','admin'])){
             return true;
         }
-
     }
 
     /**
@@ -62,12 +61,13 @@ class DepartmentPolicy
      * @param  \App\Models\Department  $department
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(AdminUser $user, Department $department)
+    public function update()
     {
-        if($user->hasRole('master')){
+        if(auth()->user()->hasRole('master')){
             return true;
         }
-        return $department->hasUser($user);
+        $department=Department::find(session('currentDepartmentId'));
+        return $department->hasRight(auth()->user());
     }
 
     /**

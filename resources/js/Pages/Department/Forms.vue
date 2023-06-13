@@ -1,21 +1,16 @@
 <template>
-    <MasterLayout title="Dashboard">
+    <DepartmentLayout title="Dashboard" :department="department">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Admin users
+                客戶服務管理
             </h2>
         </template>
-        <a-button @click="createRecord">Add Admin User</a-button>
-        <a-table :dataSource="adminUsers" :columns="columns" :row-key="record => record.root_id">
+        <a-button @click="createRecord">Add Faq</a-button>
+        <a-table :dataSource="forms" :columns="columns" :row-key="record => record.root_id">
             <template #bodyCell="{column, text, record, index}" >
                 <template v-if="column.dataIndex=='operation'">
                     <a-button @click="editRecord(record)">Edit</a-button>
-                    <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
-                </template>
-                <template v-else-if="column.dataIndex=='departments'">
-                    <ol>
-                        <li v-for="department in record.departments">{{ department.name_zh }}</li>    
-                    </ol>
+                    <inertia-link class="ant-btn" :href="route('manage.form.fields.index', {form:record.id})">Fields</inertia-link>
                 </template>
                 <template v-else>
                     {{record[column.dataIndex]}}
@@ -23,37 +18,25 @@
             </template>
         </a-table>
 
-
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
         <a-form
             ref="modalRef"
             :model="modal.data"
-            name="Teacher"
+            name="Forms"
             layout="vertical"
             autocomplete="off"
-            :ruels="rules"
+            :rules="rules"
             :validate-messages="validateMessages"
         >
-            <a-form-item label="Name" name="name">
-                <a-input v-model:value="modal.data.name"                 />
+            <a-form-item label="Name" name="name" :rules="{required:true}">
+                <a-input v-model:value="modal.data.name" />
             </a-form-item>
-            <a-form-item label="Email" name="email">
-                <a-input v-model:value="modal.data.email"/>
+            <a-form-item label="Title" name="title" :rules="{required:true}">
+                <a-input v-model:value="modal.data.title" />
             </a-form-item>
-            <a-form-item label="Password" name="password">
-                <a-input v-model:value="modal.data.password"/>
-            </a-form-item>
-            <a-form-item label="Retype Password" name="retype_password">
-                <a-input v-model:value="modal.data.retype_password"/>
-            </a-form-item>
-            <a-form-item label="Departments" name="departments">
-                <a-select 
-                    mode="multiple"
-                    v-model:value="modal.data.departments" 
-                    :options="departments" 
-                    :fieldNames="{value:'id',label:'abbr_zh'}"
-                />
+            <a-form-item label="Description" name="description" :rules="{required:true}">
+                <quill-editor v-model:value="modal.data.description" style="min-height:200px;" />
             </a-form-item>
         </a-form>
         <template #footer>
@@ -62,18 +45,20 @@
         </template>
     </a-modal>    
     <!-- Modal End-->
+    </DepartmentLayout>
 
-    </MasterLayout>
 </template>
 
 <script>
-import MasterLayout from '@/Layouts/MasterLayout.vue';
+import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
+import { quillEditor } from 'vue3-quill';
 
 export default {
     components: {
-        MasterLayout
+        DepartmentLayout,
+        quillEditor
     },
-    props: ['departments','adminUsers'],
+    props: ['department','forms'],
     data() {
         return {
             modal:{
@@ -82,16 +67,14 @@ export default {
                 title:"Modal",
                 mode:""
             },
+            teacherStateLabels:{},
             columns:[
                 {
                     title: 'Name',
                     dataIndex: 'name',
                 },{
-                    title: 'Email',
-                    dataIndex: 'email',
-                },{
-                    title: 'Departments',
-                    dataIndex: 'departments',
+                    title: 'Title',
+                    dataIndex: 'title',
                 },{
                     title: '操作',
                     dataIndex: 'operation',
@@ -99,10 +82,9 @@ export default {
                 },
             ],
             rules:{
-                name:{required:true},
-                email:{required:true},
-                password:{required:true},
-                retype_password:{required:true},
+                name_zh:{required:true},
+                mobile:{required:true},
+                state:{required:true},
             },
             validateMessages:{
                 required: '${label} is required!',
@@ -114,20 +96,22 @@ export default {
                     range: '${label} must be between ${min} and ${max}',
                 },
             },
-
         }
+    },
+    created(){
     },
     methods: {
         createRecord(){
             this.modal.data={};
-            //this.modal.data.department_id = [];
+            this.modal.data.department_id = this.department.id;
+            this.modal.data.category_id=1;
             this.modal.mode="CREATE";
             this.modal.title="新增";
             this.modal.isOpen=true;
         },
         editRecord(record){
+            console.log(record);
             this.modal.data={...record};
-            this.modal.data.departments=record.departments.map(department=>({value:department.id,label:department.abbr_zh}));
             this.modal.mode="EDIT";
             this.modal.title="修改";
             this.modal.isOpen=true;
@@ -135,7 +119,7 @@ export default {
         storeRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post(route('master.adminUsers.store'),this.modal.data, {
+                this.$inertia.post(route('manage.department.faqs.store',{department:this.department.id}),this.modal.data, {
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -151,7 +135,7 @@ export default {
         updateRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch(route('master.adminUsers.update',this.modal.data.id),this.modal.data, {
+                this.$inertia.patch(route('manage.department.faqs.update',{department:this.department.id, faq:this.modal.data.id}),this.modal.data, {
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;

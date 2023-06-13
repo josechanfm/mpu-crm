@@ -12,8 +12,8 @@
             <PieChartOutlined />
           </template>
           <span>
-            <inertia-link :href="route('manage.departments.show',department.id)">
-              Department
+            <inertia-link :href="route('manage.dashboard')">
+              Department(s)
             </inertia-link>
           </span>
         </a-menu-item>
@@ -22,17 +22,17 @@
             <DesktopOutlined />
           </template>
           <span>
-            <inertia-link :href="route('manage.department.inquiries.index',department.id)">
-              Inquiries
+            <inertia-link :href="route('manage.enquiries.index')">
+              Enquiries
             </inertia-link>
           </span>
         </a-menu-item>
-        <a-menu-item key="3">
+        <a-menu-item key="3" v-if="$page.props.currentUser.roles.includes('admin') || $page.props.currentUser.roles.includes('master')">
           <template #icon>
             <InboxOutlined />
           </template>
           <span>
-            <inertia-link :href="route('manage.department.faqs.index',department.id)">
+            <inertia-link :href="route('manage.faqs.index')">
               Faqs
             </inertia-link>
           </span>
@@ -42,7 +42,9 @@
             <InboxOutlined />
           </template>
           <span>
+            <inertia-link :href="route('manage.forms.index')">
               Forms
+            </inertia-link>
           </span>
         </a-menu-item>
 

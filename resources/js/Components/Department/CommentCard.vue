@@ -1,36 +1,36 @@
 <template>
-  <a-comment v-for="inquiry in inquiries" :style="'background-color:' + (inquiry.id == selected.id ? 'oldlace' : '')" class="pb-3 p-5">
+  <a-comment v-for="enquiry in enquiries" :style="'background-color:' + (enquiry.id == selected.id ? 'oldlace' : '')" class="pb-3 p-5">
     <template #avatar>
       <a-avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />
     </template>
     <template #author>
       <div>
-        {{ inquiry.email }}, {{ inquiry.phone }}
+        {{ enquiry.email }}, {{ enquiry.phone }}
       </div>
 
     </template>
     <template #datetime>
-      Created: at: {{ inquiry.created_at }}
-      Responsed at: {{ inquiry.response_date }}
+      Created: at: {{ enquiry.created_at }}
+      Responsed at: {{ enquiry.response_date }}
     </template>
     <template #content>
-      <a-typography-title :level="5">{{ inquiry.title }}</a-typography-title>
-      <p>{{ inquiry.content }}</p>
+      <a-typography-title :level="5">{{ enquiry.title }}</a-typography-title>
+      <p>{{ enquiry.content }}</p>
     </template>
-    <div v-html="inquiry.response" class="bg-white py-1 my-2"></div>
+    <div v-html="enquiry.response" class="bg-white py-1 my-2"></div>
     <div class="my-2">
-      <a-button @click="emailModal(inquiry)">Email</a-button>
-      <a-button @click="inquiryModal(inquiry)">Edit Inquiry</a-button>
-      <a-button @click="inquiryFollowupModal(inquiry)">Followup Inquiry</a-button>
+      <a-button @click="emailModal(enquiry)">Email</a-button>
+      <a-button @click="enquiryModal(enquiry)">Edit Enquiry</a-button>
+      <a-button @click="enquiryFollowupModal(enquiry)">Followup Enquiry</a-button>
       <div class="float-right">
-        <p> Staff: {{ inquiry.admin_user.name }}</p>
+        <p> Staff: {{ enquiry.admin_user.name }}</p>
       </div>
     </div>
     <div>
       <a-collapse v-model:activeKey="activeKey">
-        <a-collapse-panel key="1" :header="'You have ' + inquiry.emails.length + ' emails'">
+        <a-collapse-panel key="1" :header="'You have ' + enquiry.emails.length + ' emails'">
           <a-timeline>
-            <a-timeline-item v-for="email in inquiry.emails">
+            <a-timeline-item v-for="email in enquiry.emails">
               {{ formatDate(email.created_at) }} {{ email.subject }}<br>
               {{ email.content }}
               <hr>
@@ -48,8 +48,8 @@
       </a-collapse>
 
     </div>
-    <p v-if="inquiry.children">
-      <CommentCard :inquiries="inquiry.children" :selected="selected" @emailBox="emailModal" @inquiryBox="inquiryModal" />
+    <p v-if="enquiry.children">
+      <CommentCard :enquiries="enquiry.children" :selected="selected" @emailBox="emailModal" @enquiryBox="enquiryModal" />
     </p>
 
   </a-comment>
@@ -67,8 +67,8 @@ export default {
     quillEditor,
     dayjs,
   },
-  emits: ['emailBox', 'inquiryBox'],
-  props: ['inquiries','selected'],
+  emits: ['emailBox', 'enquiryBox'],
+  props: ['enquiries','selected'],
   data() {
     return {
       activeKey: 0
@@ -80,14 +80,14 @@ export default {
       return date.format('YYYY-MM-DD hh:ss');
 
     },
-    updateInquiry(inquiry) {
+    updateEnquiry(enquiry) {
       this.$inertia.patch(
-        route('manage.department.inquiries.update',
+        route('manage.department.enquiries.update',
           {
-            department: inquiry.department_id, inquiry: inquiry.id
+            department: enquiry.department_id, enquiry: enquiry.id
           }
         ),
-        inquiry, {
+        enquiry, {
         onSuccess: (page) => {
           console.log(page);
         },
@@ -100,13 +100,13 @@ export default {
     emailModal(record) {
       this.$emit('emailBox', record)
     },
-    inquiryModal(record) {
-      this.$emit('inquiryBox', record)
+    enquiryModal(record) {
+      this.$emit('enquiryBox', record)
     },
-    inquiryFollowupModal(record) {
+    enquiryFollowupModal(record) {
       record.parent_id = record.id;
       record.id = null;
-      this.$emit('inquiryBox', record)
+      this.$emit('enquiryBox', record)
     }
   },
 }

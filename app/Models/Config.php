@@ -9,16 +9,16 @@ class Config extends Model
 {
     use HasFactory;
 
-    public static function inquiryFormFields(){
-        $fields=Config::where('division','inquiry_form')->get()->toArray();
+    public static function enquiryFormFields(){
+        $fields=Config::where('division','enquiry_form')->get()->toArray();
         $fields=array_column($fields,null,'label');
         $fields=array_map(function($field){
             return json_decode($field['value']);
         },$fields);
         return $fields;
     }
-    public static function inquirySubjects(){
-        $item=Config::where('division','inquiry_form')->where('label','subjects')->first();
+    public static function enquirySubjects(){
+        $item=Config::where('division','enquiry_form')->where('label','subjects')->first();
         return json_decode($item->value)->options;
     }
 }

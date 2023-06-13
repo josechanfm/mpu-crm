@@ -7,11 +7,10 @@
             <div class="h-full w-full bg-blue-500"></div>
         </div>
         <div class="max-w-lg w-full p-4 md:p-8 md:py-32 mx-auto flex flex-col justify-center md:justify-start">
-            <h1 class="text-2xl font-medium mb-0 leading-loose">澳門理工學院</h1>
-            <p class="text-base mb-20 text-slate-600">綜合服務管理系統</p>
-            <p class="font-medium text-xl mb-20">系統登入</p>
-            <a-form>
-                <a-form-item name="username">
+            <AuthenticationCardLogo class="mb-10"/>
+            <h1 class="text-2xl font-medium mb-10 leading-loose">綜合服務管理系統</h1>
+            <a-form ref="loginForm" :model="form" name="LoginForm">
+                <a-form-item name="username" :rules="[{required:true,message:'請輸入帳號名稱'}]">
                     <a-input
                         placeholder="Username"
                         v-model:value="form.username"
@@ -24,10 +23,11 @@
                 </a-form-item>
                 <InputError class="mt-2" :message="$page.props.errors.username" />
 
-                <a-form-item name="password">
-                    <a-input-password placeholder="Password" size="large" v-model:value="form.password"
-                                      @keydown.enter="login">
-                        >
+                <a-form-item name="password" :rules="[{required:true,message:'請輸入密碼'}]">
+                    <a-input-password 
+                        placeholder="Password" size="large" v-model:value="form.password"
+                        @keydown.enter="login">
+                    >
                         <template #prefix>
                             <LockOutlined/>
                         </template>
@@ -43,7 +43,7 @@
                 </a-form-item>
 
                 <a-form-item class="!mt-16">
-                    <a-button @click="login" block type="primary" size="large">Login..</a-button>
+                    <a-button @click="login" block type="primary" size="large">Login</a-button>
                 </a-form-item>
             </a-form>
         </div>
@@ -53,26 +53,15 @@
 <script>
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
 import InputError from '@/Components/InputError.vue';
+import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 
 export default {
     name: "Login",
     components: {
         UserOutlined,
         LockOutlined,
-        InputError
-    },
-    setup() {
-        const rules = {
-            username: [
-                {required: true, message: '请输入邮箱'},
-                //{type: 'email', message: '请输入正确的邮箱'}
-            ],
-            password: [
-                {required: true, message: '请输入密码'}
-            ]
-        }
-
-        return { rules }
+        InputError,
+        AuthenticationCardLogo
     },
     data () {
         return {

@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Email;
 use App\Models\Department;
-use App\Mail\InquiryMail;
-use App\Models\Inquiry;
+use App\Mail\EnquiryMail;
+use App\Models\Enquiry;
 use Notification;
 use Mail;
 

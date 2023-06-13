@@ -4,32 +4,25 @@ namespace App\Http\Controllers\Department;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
-use App\Models\Config;
 use App\Models\Department;
-use App\Models\Faq;
+use Inertia\Inertia;
 
-class FaqController extends Controller
+class FormController extends Controller
 {
-    public function __construct()
-    {
-        //$this->authorizeResource(Department::class);
-    }
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Department $department)
     {
         $department=Department::find(session('currentDepartmentId'));
         //$this->authorize('view',$department);
-        return Inertia::render('Department/Faqs',[
-            'department'=>$department,
-            'faqs'=>$department->faqs,
-            'fields'=>Config::enquiryFormFields()
+        return Inertia::render('Department/Forms',[
+            'department' => $department,
+            'forms'=>$department->forms,
         ]);
+
     }
 
     /**
@@ -50,18 +43,7 @@ class FaqController extends Controller
      */
     public function store(Request $request)
     {
-        $department=Department::find($request->department_id);
-        $this->authorize('create',$department);
-
-        $faq=new Faq;
-        $faq->department_id=$request->department_id;
-        $faq->category_id=$request->category_id;
-        $faq->degree=json_encode($request->degree);
-        $faq->subjects=json_encode($request->subjects);
-        $faq->question_zh=$request->question_zh;    
-        $faq->answer_zh=$request->answer_zh;
-        $faq->save();
-        return redirect()->back();
+        //
     }
 
     /**
@@ -70,9 +52,9 @@ class FaqController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Department $department, Faq $faq)
+    public function show($id)
     {
-        dd($faq);
+        //
     }
 
     /**
@@ -93,17 +75,9 @@ class FaqController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Faq $faq, Request $request)
+    public function update(Request $request, $id)
     {
-        $this->authorize('create',$faq->department);
-        $faq->department_id=$request->department_id;
-        $faq->category_id=$request->category_id;
-        $faq->degree=json_encode($request->degree);
-        $faq->subjects=json_encode($request->subjects);
-        $faq->question_zh=$request->question_zh;    
-        $faq->answer_zh=$request->answer_zh;
-        $faq->save();
-        return redirect()->back();
+        //
     }
 
     /**
@@ -117,4 +91,3 @@ class FaqController extends Controller
         //
     }
 }
-

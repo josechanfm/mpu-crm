@@ -5,12 +5,12 @@
                 客戶服務管理
             </h2>
         </template>
-        List of Inquiry
-        <a-table :dataSource="inquiries" :columns="columns" :row-key="record => record.root_id">
+        List of Enquiry
+        <a-table :dataSource="enquiries" :columns="columns" :row-key="record => record.root_id">
             <template #bodyCell="{column, text, record, index}" >
                 <template v-if="column.dataIndex=='operation'">
                     <a-button @click="viewRecord(record)">View</a-button>
-                    <inertia-link :href="route('manage.department.inquiries.show', {department:record.department_id, inquiry:record.id})">Response</inertia-link>
+                    <inertia-link :href="route('manage.enquiries.show', { enquiry:record.id})">Response</inertia-link>
                 </template>
                 <template v-else-if="column.dataIndex=='phone'">
                     {{ record['areacode'] }} - {{ record['phone'] }}
@@ -89,7 +89,7 @@ export default {
     components: {
         DepartmentLayout,
     },
-    props: ['department','inquiries','fields'],
+    props: ['department','enquiries','fields'],
     data() {
         return {
             modal:{

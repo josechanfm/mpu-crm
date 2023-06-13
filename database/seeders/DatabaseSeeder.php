@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
             DepartmentSeeder::class,
             FormSeeder::class,
             FaqSeeder::class,
-            InquirySeeder::class,
+            EnquirySeeder::class,
             //UserSeeder::class,
             //EmailSeeder::class,
         ]);
@@ -66,6 +66,7 @@ class DatabaseSeeder extends Seeder
         // $roleDepartment->givePermissionTo($permissionAttendance);
 
         $admin=\App\Models\AdminUser::factory([
+            'username'=>'master',
             'name' => 'Master',
             'email' => 'master@example.com',
             'password'=> Hash::make('password')
@@ -74,6 +75,7 @@ class DatabaseSeeder extends Seeder
         //$admin->assignRole('master');
 
         $admin=\App\Models\AdminUser::factory([
+            'username'=>'admin',
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'password'=> Hash::make('password')
@@ -82,8 +84,15 @@ class DatabaseSeeder extends Seeder
         //$admin->assignRole('department');
 
         $department=\App\Models\AdminUser::factory([
+            'username'=>'department',
             'name' => 'Department',
             'email' => 'department@example.com',
+            'password'=> Hash::make('password')
+        ])->create();
+        $department=\App\Models\AdminUser::factory([
+            'username'=>'wsvong',
+            'name' => 'Seng',
+            'email' => 'wsvong@mpu.edu.mo',
             'password'=> Hash::make('password')
         ])->create();
         //$department->assignRole('department');

@@ -2,11 +2,11 @@
     <MasterLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Admin users
+                Department
             </h2>
         </template>
-        <a-button @click="createRecord">Add Admin User</a-button>
-        <a-table :dataSource="adminUsers" :columns="columns" :row-key="record => record.root_id">
+        <a-button @click="createRecord">Add Department</a-button>
+        <a-table :dataSource="departments" :columns="columns" :row-key="record => record.root_id">
             <template #bodyCell="{column, text, record, index}" >
                 <template v-if="column.dataIndex=='operation'">
                     <a-button @click="editRecord(record)">Edit</a-button>
@@ -35,25 +35,11 @@
             :ruels="rules"
             :validate-messages="validateMessages"
         >
-            <a-form-item label="Name" name="name">
-                <a-input v-model:value="modal.data.name"                 />
+            <a-form-item label="Abbr" name="abbr_zh">
+                <a-input v-model:value="modal.data.abbr_zh"/>
             </a-form-item>
-            <a-form-item label="Email" name="email">
-                <a-input v-model:value="modal.data.email"/>
-            </a-form-item>
-            <a-form-item label="Password" name="password">
-                <a-input v-model:value="modal.data.password"/>
-            </a-form-item>
-            <a-form-item label="Retype Password" name="retype_password">
-                <a-input v-model:value="modal.data.retype_password"/>
-            </a-form-item>
-            <a-form-item label="Departments" name="departments">
-                <a-select 
-                    mode="multiple"
-                    v-model:value="modal.data.departments" 
-                    :options="departments" 
-                    :fieldNames="{value:'id',label:'abbr_zh'}"
-                />
+            <a-form-item label="Name" name="name_zh">
+                <a-input v-model:value="modal.data.name_zh"/>
             </a-form-item>
         </a-form>
         <template #footer>
@@ -73,7 +59,7 @@ export default {
     components: {
         MasterLayout
     },
-    props: ['departments','adminUsers'],
+    props: ['departments'],
     data() {
         return {
             modal:{
@@ -84,14 +70,11 @@ export default {
             },
             columns:[
                 {
-                    title: 'Name',
-                    dataIndex: 'name',
+                    title: 'Abbr',
+                    dataIndex: 'abbr_zh',
                 },{
-                    title: 'Email',
-                    dataIndex: 'email',
-                },{
-                    title: 'Departments',
-                    dataIndex: 'departments',
+                    title: 'Department',
+                    dataIndex: 'name_zh',
                 },{
                     title: '操作',
                     dataIndex: 'operation',
@@ -99,10 +82,8 @@ export default {
                 },
             ],
             rules:{
-                name:{required:true},
-                email:{required:true},
-                password:{required:true},
-                retype_password:{required:true},
+                abbr_zh:{required:true},
+                name_zh:{required:true},
             },
             validateMessages:{
                 required: '${label} is required!',
@@ -127,7 +108,7 @@ export default {
         },
         editRecord(record){
             this.modal.data={...record};
-            this.modal.data.departments=record.departments.map(department=>({value:department.id,label:department.abbr_zh}));
+            //this.modal.data.departments=record.departments.map(department=>({value:department.id,label:department.abbr_zh}));
             this.modal.mode="EDIT";
             this.modal.title="修改";
             this.modal.isOpen=true;

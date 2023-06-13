@@ -7,8 +7,6 @@
         </template>
         <a-typography-title :level="3">{{ department.name_zh }}</a-typography-title>
         <div v-html="department.landing_zh"></div>
-        {{ $page.props.currentUser.roles }}
-        {{ $page.props.currentUser.roles.includes('name.admin') }}
     </DepartmentLayout>
 </template>
 

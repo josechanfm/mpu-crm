@@ -2,7 +2,7 @@
 {{-- Header --}}
 <x-slot:header>
 <x-mail::header :url="config('app.url')">
-{{ config('app.name') }} Inquiry service
+{{ config('app.name') }} Enquiry service
 </x-mail::header>
 </x-slot:header>
 

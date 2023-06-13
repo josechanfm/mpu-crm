@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('responses', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('inquiry_id');
+            $table->bigInteger('enquiry_id');
             $table->text('title')->nullable();
             $table->text('remark');
             $table->boolean('by_email');

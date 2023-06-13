@@ -17,7 +17,7 @@ class EmailFactory extends Factory
     public function definition()
     {
         return [
-            'inquiry_id'=>$this->faker->numberBetween(1,10),
+            'enquiry_id'=>$this->faker->numberBetween(1,10),
             'admin_user_id'=>'1',
             'sender'=>'no-replay@mpu.edu.mo',
             'receiver'=>$this->faker->email,

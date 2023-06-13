@@ -65,14 +65,14 @@ export default {
     components: {
         UploadOutlined
     },
-    props: ['inquiry', 'faqs'],
+    props: ['enquiry', 'faqs'],
     data() {
         return {
             followup: {
                 has_question: false,
-                inquiry_id: this.inquiry.id,
+                enquiry_id: this.enquiry.id,
                 content: '',
-                token:this.inquiry.token
+                token:this.enquiry.token
             }
         }
     },
@@ -83,7 +83,7 @@ export default {
                     alert("請寫下你的問題.\nPlease write your question.");
                     return false;
                 }
-                this.$inertia.post(route('inquiry.submitQuestion', { inquiry: this.inquiry }), this.followup, {
+                this.$inertia.post(route('enquiry.submitQuestion', { enquiry: this.enquiry }), this.followup, {
                     onSuccess: (page) => {
                         this.followup=null;
                         console.log(page);
@@ -93,7 +93,7 @@ export default {
                     }
                 });
             } else {
-                this.$inertia.patch(route('inquiry.noQuestion', { inquiry: this.inquiry }), {
+                this.$inertia.patch(route('enquiry.noQuestion', { enquiry: this.enquiry }), {
                     onSuccess: (page) => {
                         this.followup=null;
                         console.log(page);

@@ -31,24 +31,35 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Fortify::authenticateUsing(function ($request) {
-            if($request->local){
-                $adminLocal='admin_local';
-                $adminUser=AdminUser::where('username', $request->username)->first();
-                $validated=$adminUser && Hash::check($request->password,$adminUser->password);
-                config(['fortify.guard' => $adminLocal]);
-                Auth::shouldUse($adminLocal);
-                $validated = Auth::validate([
-                    'username' => $request->username,
-                    'password' => $request->password
-                ]);
+
+            if(config('fortify.guard')=='admin_web'){
+                if($request->local){
+                    $adminLocal='admin_local';
+                    $adminUser=AdminUser::where('username', $request->username)->first();
+                    $validated=$adminUser && Hash::check($request->password,$adminUser->password);
+                    config(['fortify.guard' => $adminLocal]);
+                    Auth::shouldUse($adminLocal);
+                    $validated = Auth::validate([
+                        'username' => $request->username,
+                        'password' => $request->password
+                    ]);
+                }else{
+                    Auth::shouldUse(config('fortify.guard'));
+                    config(['fortify.username' => 'username']);
+                    $validated = Auth::validate([
+                        //'mail' => $request->email,
+                        'samaccountname' => $request->username,
+                        'password' => $request->password
+                    ]);
+                }
             }else{
                 Auth::shouldUse(config('fortify.guard'));
                 $validated = Auth::validate([
-                    //'mail' => $request->email,
-                    'samaccountname' => $request->username,
+                    'email' => $request->email,
                     'password' => $request->password
                 ]);
             }
+            
             return $validated ? Auth::getLastAttempted() : null;
         });
     }

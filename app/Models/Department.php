@@ -12,21 +12,24 @@ class Department extends Model
     public function adminUsers(){
         return $this->belongsToMany(AdminUser::class);
     }
-    public function inquiries(){
-        return $this->hasMany(Inquiry::class)->with('responses');
-        //return $this->hasMany(Inquiry::class)->where('parent_id',0)->with('children')->with('emails')->orderBy('created_at','desc')->orderBy('id', 'desc');
+    public function enquiries(){
+        return $this->hasMany(Enquiry::class)->with('responses');
     }
     public function faqs(){
         return $this->hasMany(Faq::class);
     }
+    public function forms(){
+        return $this->hasMany(Form::class);
+    }
+
+
+
     public function members(){
         return $this->belongsToMany(Member::class);
     }
-
     public function hasUser($user){
         return in_array($user->id,$this->adminUsers()->get()->pluck('id')->toArray());
     }
-
     public function hasRight(){
         return in_array(auth()->user()->id,$this->adminUsers()->get()->pluck('id')->toArray());
     }

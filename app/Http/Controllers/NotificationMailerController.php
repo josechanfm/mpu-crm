@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Email;
 use App\Models\Department;
-use App\Models\Inquiry;
-use App\Notifications\InquiryResponseNotification;
+use App\Models\Enquiry;
+use App\Notifications\EnquiryResponseNotification;
 use Notification;
 
 class NotificationMailerController extends Controller
@@ -121,7 +121,7 @@ class NotificationMailerController extends Controller
             // 'id'=>100,
             'footer'=>'mpu all right reserved...'
         ];
-        Notification::route('mail','josechan@ipm.edu.mo')->notify(new InquiryResponseNotification($response));
+        Notification::route('mail','josechan@ipm.edu.mo')->notify(new EnquiryResponseNotification($response));
 
     }
 }

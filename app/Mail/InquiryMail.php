@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class InquiryMail extends Mailable
+class EnquiryMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $mailData;
@@ -31,7 +31,7 @@ class InquiryMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Inquiry Mail',
+            subject: 'Enquiry Mail',
         );
     }
 

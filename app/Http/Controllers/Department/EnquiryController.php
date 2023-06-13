@@ -7,15 +7,15 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Config;
 use App\Models\Department;
-use App\Models\Inquiry;
+use App\Models\Enquiry;
 use App\Models\Response;
 use Mail;
 
-class InquiryController extends Controller
+class EnquiryController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Department::class);
+        //$this->authorizeResource(Department::class);
     }
 
     /**
@@ -23,13 +23,14 @@ class InquiryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Department $department)
+    public function index()
     {
-        $this->authorize('view',$department);
-        return Inertia::render('Department/Inquiries',[
+        $department=Department::find(session('currentDepartmentId'));
+        //$this->authorize('view',$department);
+        return Inertia::render('Department/Enquiries',[
             'department'=>$department,
-            'inquiries'=>$department->inquiries,
-            'fields'=>Config::inquiryFormFields(),
+            'enquiries'=>$department->enquiries,
+            'fields'=>Config::enquiryFormFields(),
         ]);
     }
 
@@ -51,20 +52,20 @@ class InquiryController extends Controller
      */
     public function store(Department $department, Request $request)
     {
-        $inquiry=new Inquiry();
-        $inquiry->department_id=$request->department_id;
-        $inquiry->parent_id=$request->parent_id;
-        $inquiry->root_id=$request->root_id;
-        $inquiry->email=$request->email;
-        $inquiry->phone=$request->phone;
-        //$inquiry->language=$request->language;
-        //$inquiry->honorific=$request->honorific;
-        $inquiry->name=$request->name;
-        $inquiry->title=$request->title;
-        $inquiry->content=$request->content;
-        $inquiry->response=$request->response;
-        $inquiry->admin_user_id=auth()->user()->id;
-        $inquiry->save();
+        $enquiry=new Enquiry();
+        $enquiry->department_id=$request->department_id;
+        $enquiry->parent_id=$request->parent_id;
+        $enquiry->root_id=$request->root_id;
+        $enquiry->email=$request->email;
+        $enquiry->phone=$request->phone;
+        //$enquiry->language=$request->language;
+        //$enquiry->honorific=$request->honorific;
+        $enquiry->name=$request->name;
+        $enquiry->title=$request->title;
+        $enquiry->content=$request->content;
+        $enquiry->response=$request->response;
+        $enquiry->admin_user_id=auth()->user()->id;
+        $enquiry->save();
         return redirect()->back();
     }
 
@@ -74,18 +75,13 @@ class InquiryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Department $department, Inquiry $inquiry)
+    public function show(Enquiry $enquiry)
     {
-        // $inquiry=Inquiry::where('id',1)->with('emails')->first();
-        // dd($inquiry->department );
-
-        //$inquiries=Inquiry::where('id',$inquiry->root_id)->with('children')->with('adminUser')->with('emails')->get();
-        $inquiry=$inquiry->with('department')->with('responses')->first();
-        // $inquiry->ssubjects=json_decode($inquiry->subjects,true);
-
-        return Inertia::render('Department/InquiryShow',[
-            'fields'=>Config::inquiryFormFields(),
-            'inquiry'=>$inquiry
+        $this->authorize('view',$enquiry->department);
+        $enquiry=$enquiry->with('department')->with('responses')->first();
+        return Inertia::render('Department/EnquiryShow',[
+            'fields'=>Config::enquiryFormFields(),
+            'enquiry'=>$enquiry
         ]);
     }
 
@@ -107,11 +103,11 @@ class InquiryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Department $department, Inquiry $inquiry, Request $request)
+    public function update(Department $department, Enquiry $enquiry, Request $request)
     {
-        $inquiry->response=$request->response;
-        $inquiry->response_date=date('Y-m-d H:i:s');
-        $inquiry->save();
+        $enquiry->response=$request->response;
+        $enquiry->response_date=date('Y-m-d H:i:s');
+        $enquiry->save();
         return redirect()->back();
     }
 
@@ -127,7 +123,7 @@ class InquiryController extends Controller
     }
     public function response(Department $department, Request $request){
         $response = new Response();
-        $response->inquiry_id=$request->inquiry_id;
+        $response->enquiry_id=$request->enquiry_id;
         $response->title=$request->title;
         $response->remark=$request->remark;
         $response->by_email=$request->by_email;

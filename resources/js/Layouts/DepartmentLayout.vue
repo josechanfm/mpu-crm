@@ -6,7 +6,9 @@
                 <inertia-link href='/department'>Org </inertia-link>
             </div>
             <div class="m-4 text-center text-lg" v-else>
-                <inertia-link :href="route('manage.dashboard')">Department </inertia-link>
+                
+                <inertia-link :href="route('manage.departments.show',department.id)">{{ department.abbr_zh }}</inertia-link>
+                
             </div>
 
             <DepartmentMenu :menuKeys='menuKeys' :department="department"/>
@@ -34,7 +36,7 @@
                                 <a href="javascript:;">系統設置</a>
                             </a-menu-item>
                             <a-menu-item>
-                                <a href="javascript:;">行政管理後臺</a>
+                                <inertia-link :href="route('master')">行政管理後臺</inertia-link>
                             </a-menu-item>
                             <a-menu-item @click="logout">
                                 <a>登出</a>

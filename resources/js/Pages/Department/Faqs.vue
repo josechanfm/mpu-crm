@@ -121,6 +121,7 @@ export default {
             this.modal.isOpen=true;
         },
         editRecord(record){
+            console.log(record);
             this.modal.data={...record};
             this.modal.data.degree=JSON.parse(this.modal.data.degree);
             this.modal.data.subjects=JSON.parse(this.modal.data.subjects);
@@ -131,7 +132,7 @@ export default {
         storeRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post(route('manage.department.faqs.store',{department:this.department.id}),this.modal.data, {
+                this.$inertia.post(route('manage.faqs.store',{department:this.department.id}),this.modal.data, {
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -147,7 +148,7 @@ export default {
         updateRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch(route('manage.department.faqs.update',{department:this.department.id, faq:this.modal.data.id}),this.modal.data, {
+                this.$inertia.patch(route('manage.faqs.update',{faq:this.modal.data.id}),this.modal.data, {
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;

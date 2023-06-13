@@ -1,6 +1,5 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import Welcome from '@/Components/Welcome.vue';
 
 const data = [{
         title: 'Ant Design Title 1',
@@ -57,7 +56,7 @@ defineProps({
                             </div>
 
                             <div class="mt-16">
-                                <h1 class="font-bold text-center text-3xl text-gray-900">澳門柔道總會</h1>
+                                <h1 class="font-bold text-center text-3xl text-gray-900">Macao Polytechnic University</h1>
                                 <p class="text-center text-sm text-gray-400 font-medium">{{ member.display_name }}</p>
                                 <p>
                                     <span>

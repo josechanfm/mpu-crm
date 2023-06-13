@@ -24,13 +24,13 @@ Route::get('/', function () {
     ]);
 });
 
-Route::prefix('inquiry')->group(function(){
-    Route::resource('/',\App\Http\Controllers\InquiryController::class)->names('inquiry');
-    Route::get('get_question',[\App\Http\Controllers\InquiryController::class,'getQuestion'])->name('inquiry.getQuestion');
-    Route::get('answer_question/{inquiry}/{token}',[\App\Http\Controllers\InquiryController::class,'answerQuestion'])->name('inquiry.answerQuestion');
-    Route::post('submit_question/{inquiry}',[\App\Http\Controllers\InquiryController::class,'submitQuestion'])->name('inquiry.submitQuestion');
-    Route::patch('no_question/{inquiry}',[\App\Http\Controllers\InquiryController::class,'noQuestion'])->name('inquiry.noQuestion');
-    Route::get('thank_question',[\App\Http\Controllers\InquiryController::class,'thankQuestion'])->name('inquiry.thankQuestion');
+Route::prefix('enquiry')->group(function(){
+    Route::resource('/',\App\Http\Controllers\EnquiryController::class)->names('enquiry');
+    Route::get('get_question',[\App\Http\Controllers\EnquiryController::class,'getQuestion'])->name('enquiry.getQuestion');
+    Route::get('answer_question/{enquiry}/{token}',[\App\Http\Controllers\EnquiryController::class,'answerQuestion'])->name('enquiry.answerQuestion');
+    Route::post('submit_question/{enquiry}',[\App\Http\Controllers\EnquiryController::class,'submitQuestion'])->name('enquiry.submitQuestion');
+    Route::patch('no_question/{enquiry}',[\App\Http\Controllers\EnquiryController::class,'noQuestion'])->name('enquiry.noQuestion');
+    Route::get('thank_question',[\App\Http\Controllers\EnquiryController::class,'thankQuestion'])->name('enquiry.thankQuestion');
 });
 
 Route::middleware([

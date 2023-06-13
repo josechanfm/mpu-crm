@@ -16,7 +16,7 @@ class ConfigSeeder extends Seeder
     public function run()
     {
         DB::table('configs')->insert([
-            'division'=>'inquiry_form',
+            'division'=>'enquiry_form',
             'label'=>'origin',
             'value'=>'{
                 "question":"擬入讀本校之學生現時所持有之證件 Type of personal Identification document held by the candidate",
@@ -32,7 +32,7 @@ class ConfigSeeder extends Seeder
         ]);
 
         DB::table('configs')->insert([
-            'division'=>'inquiry_form',
+            'division'=>'enquiry_form',
             'label'=>'degree',
             'value'=>'{
                 "question":"入讀課程類別 Apply programme",
@@ -45,7 +45,7 @@ class ConfigSeeder extends Seeder
             }'
         ]);
         DB::table('configs')->insert([
-            'division'=>'inquiry_form',
+            'division'=>'enquiry_form',
             'label'=>'admission',
             'value'=>'{
                 "question":"入學途徑 Admission route",
@@ -64,7 +64,7 @@ class ConfigSeeder extends Seeder
             }'
         ]);
         DB::table('configs')->insert([
-            'division'=>'inquiry_form',
+            'division'=>'enquiry_form',
             'label'=>'profile',
             'value'=>'{
                 "question":"簡介 Profiles",
@@ -79,7 +79,7 @@ class ConfigSeeder extends Seeder
             }'
         ]);
         DB::table('configs')->insert([
-            'division'=>'inquiry_form',
+            'division'=>'enquiry_form',
             'label'=>'apply',
             'value'=>'{
                 "question":"是否已報讀澳理大學位課程? Have you submitted an application for admission in current year?",
@@ -91,7 +91,7 @@ class ConfigSeeder extends Seeder
             }'
         ]);
         DB::table('configs')->insert([
-            'division'=>'inquiry_form',
+            'division'=>'enquiry_form',
             'label'=>'surname',
             'value'=>'{
                 "question":"姓 Surname",
@@ -99,7 +99,7 @@ class ConfigSeeder extends Seeder
             }'
         ]);
         DB::table('configs')->insert([
-            'division'=>'inquiry_form',
+            'division'=>'enquiry_form',
             'label'=>'givenname',
             'value'=>'{
                 "question":"名 Given Name",
@@ -107,7 +107,7 @@ class ConfigSeeder extends Seeder
             }'
         ]);
         DB::table('configs')->insert([
-            'division'=>'inquiry_form',
+            'division'=>'enquiry_form',
             'label'=>'email',
             'value'=>'{
                 "question":"電郵 Email",
@@ -115,7 +115,7 @@ class ConfigSeeder extends Seeder
             }'
         ]);
         DB::table('configs')->insert([
-            'division'=>'inquiry_form',
+            'division'=>'enquiry_form',
             'label'=>'contact_number',
             'value'=>'{
                 "question": "聯絡電話 phone number",
@@ -123,7 +123,7 @@ class ConfigSeeder extends Seeder
             }'
         ]);
         DB::table('configs')->insert([
-            'division'=>'inquiry_form',
+            'division'=>'enquiry_form',
             'label'=>'areacode',
             'value'=>'{
                 "question":"區號 Area code",
@@ -131,7 +131,7 @@ class ConfigSeeder extends Seeder
             }'
         ]);
         DB::table('configs')->insert([
-            'division'=>'inquiry_form',
+            'division'=>'enquiry_form',
             'label'=>'phone',
             'value'=>'{
                 "question":"電話 Phone number",
@@ -139,7 +139,7 @@ class ConfigSeeder extends Seeder
             }'
         ]);
         DB::table('configs')->insert([
-            'division'=>'inquiry_form',
+            'division'=>'enquiry_form',
             'label'=>'subjects',
             'value'=>'{
                 "question":"主旨 Subject",
@@ -159,7 +159,7 @@ class ConfigSeeder extends Seeder
         ]);
     
         DB::table('configs')->insert([
-            'division'=>'inquiry_form',
+            'division'=>'enquiry_form',
             'label'=>'agree',
             'value'=>'{
                 "question":"本人同意澳門理工大學就招生資訊或活動發送電郵或短訊予本人。<br>I give my consent to Macau Polytechnic University for send me emails or SMS regarding admissions information or activities.",

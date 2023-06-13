@@ -12,7 +12,7 @@
             <PieChartOutlined />
           </template>
           <span>
-            aaa
+            <inertia-link :href="route('master.adminUsers.index')">Admin Users</inertia-link>
           </span>
         </a-menu-item>
         <a-menu-item key="2">
@@ -20,7 +20,7 @@
             <DesktopOutlined />
           </template>
           <span>
-            bbb
+            <inertia-link :href="route('master.departments.index')">Departments</inertia-link>
           </span>
         </a-menu-item>
         <a-menu-item key="3">

@@ -11,7 +11,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Inquiry extends Model implements HasMedia
+class Enquiry extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
