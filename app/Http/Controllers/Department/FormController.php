@@ -4,25 +4,31 @@ namespace App\Http\Controllers\Department;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Department;
 use Inertia\Inertia;
+use App\Models\Form;
+use App\Models\Department;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class FormController extends Controller
 {
+    public function __construct()
+    {
+        // $this->authorizeResource(Organization::class);
+        // $this->authorizeResource(Form::class);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Department $department)
+    public function index()
     {
         $department=Department::find(session('currentDepartmentId'));
-        //$this->authorize('view',$department);
         return Inertia::render('Department/Forms',[
-            'department' => $department,
-            'forms'=>$department->forms,
+            'department'=>$department,
+            'forms'=>$department->forms
         ]);
-
     }
 
     /**
@@ -43,7 +49,19 @@ class FormController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'name'=>'required',
+            'title'=>'required',
+        ]);
+
+            $form=new Form();
+            $form->name=$request->name;
+            $form->title=$request->title;
+            $form->description=$request->description;
+            $form->require_login=$request->require_login;
+            $form->require_member=$request->require_member;
+            $form->save();
+            return redirect()->back();
     }
 
     /**
@@ -52,9 +70,12 @@ class FormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Form $form)
     {
-        //
+        // $this->authorize('view',$organization);
+        // $this->authorize('view',$form);
+
+        echo 'edit form';
     }
 
     /**
@@ -63,9 +84,14 @@ class FormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Form $form)
     {
-        //
+        //$this->authorize('update',$organization);
+        //$this->authorize('update',$form);
+        // return Inertia::render('Admin/FormEdit',[
+        //     'fields'=>$form->fields
+        // ]);
+        
     }
 
     /**
@@ -77,7 +103,25 @@ class FormController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'id' => 'required',
+            'name'=>'required',
+            'title'=>'required',
+            // 'image'=>'array',
+            // 'image.*.originFileObj' => 'image|mimes:jpeg,jpg,gif,png|max:1024'
+        ]);
+        $form=Form::find($request->id);
+        $form->name=$request->name;
+        $form->title=$request->title;
+        $form->description=$request->description;
+        $form->require_login=$request->require_login;
+        $form->require_member=$request->require_member;
+        if($request->file('image')){
+            $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('image');
+        }
+        $form->save();
+        return redirect()->back();
+        
     }
 
     /**
@@ -86,8 +130,17 @@ class FormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Form $form)
     {
-        //
+        if($form->hasChild()){
+            return redirect()->back()->withErrors(['message'=>'No permission or restriced deletion of records with child records.']);
+        }else{
+            $form->delete();
+            return redirect()->back();
+        }
     }
+
+    public function deleteMedia(Media $media){
+        $media->delete();
+    }    
 }

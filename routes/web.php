@@ -32,6 +32,9 @@ Route::prefix('enquiry')->group(function(){
     Route::patch('no_question/{enquiry}',[\App\Http\Controllers\EnquiryController::class,'noQuestion'])->name('enquiry.noQuestion');
     Route::get('thank_question',[\App\Http\Controllers\EnquiryController::class,'thankQuestion'])->name('enquiry.thankQuestion');
 });
+Route::resource('forms',\App\Http\Controllers\FormController::class)->names('forms');
+
+
 
 Route::middleware([
     'auth:sanctum',

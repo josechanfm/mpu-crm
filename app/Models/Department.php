@@ -19,7 +19,7 @@ class Department extends Model
         return $this->hasMany(Faq::class);
     }
     public function forms(){
-        return $this->hasMany(Form::class);
+        return $this->hasMany(Form::class)->with('media');
     }
 
 
