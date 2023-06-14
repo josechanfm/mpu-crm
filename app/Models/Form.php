@@ -21,6 +21,9 @@ class Form extends Model
     public function fields(){
         return $this->hasMany(FormField::class);
     }
+    public function filleds(){
+        return $this->hasMany(Filled::class)->with('fields');
+    }
     public function hasChild(){
         return $this->fields()->exists();
     }

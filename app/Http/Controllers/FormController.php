@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Form;
-use App\Models\Response;
-use App\Models\ResponseField;
+use App\Models\Filled;
+use App\Models\FilledField;
 
 class FormController extends Controller
 {
@@ -18,12 +18,13 @@ class FormController extends Controller
      */
     public function index()
     {
-        if(Auth()->user()){
-            $forms=Form::where('published',1)->get();
-        }else{
-            $forms=Form::where('published',1)->where('for_member',0)->get();
-        }
-        return Inertia::render('Forms/Form',[
+        // if(Auth()->user()){
+        //     $forms=Form::where('published',1)->get();
+        // }else{
+        //     $forms=Form::where('published',1)->where('for_member',0)->get();
+        // }
+        $forms=Form::where('published',1)->where('for_member',0)->get();
+        return Inertia::render('Form/Form',[
             'forms'=>$forms
         ]);
     }
@@ -50,19 +51,26 @@ class FormController extends Controller
             // $this->validate($request,[
             //     'form_id'=>'required',
             // ]);
-                $response=new Response();
-                $response->form_id=$request->form['id'];
-                $response->member_id=Auth()->user()->id;
-                $response->save();
-                
+                $filled=new Filled();
+                $filled->form_id=$request->form['id'];
+                //$filled->member_id=auth()->user()->id;
+                $filled->save();
                 foreach($request->fields as $key=>$value){
-                    $field=new ResponseField();
-                    $field->response_id=$response->id;
-                    $field->field_name=$key;
+                    $field=new FilledField();
+                    $field->filled_id=$filled->id;
+                    $field->form_field_id=$key;
                     $field->field_value=$value;
                     $field->save();
                 }
-                return redirect()->back();
+                $form=Form::find($filled->form_id);
+                return Inertia::render('Form/Thanks',[
+                    'form'=>$form,
+                    'filled'=>$filled,
+                ]);
+        
+                //return redirect()->route('form.thanks',$filled);
+                //return to_route('form.thanks', ['form'=>$request->form['id']]);
+                //return to_route('form.thanks',$request->form['id']);
     }
 
     /**
@@ -77,7 +85,7 @@ class FormController extends Controller
         if($form->require_member==1 && !Auth()->user()){
             return redirect('forms');
         }
-        return Inertia::render('Forms/FormDefault',[
+        return Inertia::render('Form/FormDefault',[
             'form'=>$form,
         ]);
         
@@ -116,4 +124,5 @@ class FormController extends Controller
     {
         //
     }
+
 }

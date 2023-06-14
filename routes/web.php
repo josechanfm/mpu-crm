@@ -35,7 +35,6 @@ Route::prefix('enquiry')->group(function(){
 Route::resource('forms',\App\Http\Controllers\FormController::class)->names('forms');
 
 
-
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

@@ -40,15 +40,15 @@
             <a-form-item label="類型" name="type">
                 <a-select v-model:value="modal.data.type" placeholder="欄位類型" :options="fieldTypes"/>
             </a-form-item>
-            <a-form-item label="必填" name="require">
-                <a-switch v-model:checked="modal.data.require" :unCheckedValue="0" :checkedValue="1"/>
+            <a-form-item label="必填" name="required">
+                <a-switch v-model:checked="modal.data.required" :unCheckedValue="0" :checkedValue="1"/>
             </a-form-item>
             <!-- <a-form-item label="規則" name="rule">
                 <a-input v-model:value="modal.data.rule" />
-            </a-form-item>
-            <a-form-item label="驗證" name="validate">
-                <a-input v-model:value="modal.data.validate" />
             </a-form-item> -->
+            <a-form-item label="在資料欄" name="in_column" v-if="modal.data.required">
+                <a-switch v-model:checked="modal.data.in_column" :unCheckedValue="0" :checkedValue="1"/>
+            </a-form-item>
             <a-form-item label="備注" name="remark">
                 <a-textarea v-model:value="modal.data.remark" />
             </a-form-item>
@@ -107,6 +107,9 @@ export default {
                     title: '必填',
                     dataIndex: 'required',
                 },{
+                    title: '在資料欄顯示',
+                    dataIndex: 'in_column',
+                },{
                     title: '操作',
                     dataIndex: 'operation',
                     key: 'operation',
@@ -143,13 +146,14 @@ export default {
             this.modal.isOpen=true;
         },
         editRecord(record){
+            console.log(record);
             this.modal.data={...record};
             this.modal.mode="EDIT";
             this.modal.isOpen=true;
         },
         storeRecord(){
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post(route('form.fields.store',{
+                this.$inertia.post(route('manage.form.fields.store',{
                     form:this.form.id
                 }), this.modal.data, {
                     onSuccess:(page)=>{
@@ -167,7 +171,7 @@ export default {
         updateRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch(route('form.fields.update', {
+                this.$inertia.patch(route('manage.form.fields.update', {
                     form:this.form.id,
                     field:this.modal.data
                 }), this.modal.data, {

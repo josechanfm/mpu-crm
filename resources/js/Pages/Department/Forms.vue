@@ -10,6 +10,7 @@
             <a-table :dataSource="forms" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
+                        <inertia-link :href="route('manage.forms.show',{form:record.id})" class="ant-btn">已填表格</inertia-link>
                         <inertia-link :href="route('manage.form.fields.index',{form:record.id})" class="ant-btn">資料欄位</inertia-link>
                         <a-button @click="editRecord(record)">修改</a-button>
                         <a-button @click="deleteRecord(record)">刪除</a-button>
@@ -32,7 +33,6 @@
             :rules="rules"
             :validate-messages="validateMessages"
         >
-            <a-input type="hidden" v-model:value="modal.data.id"/>
             <a-form-item label="Name" name="name">
                 <a-input v-model:value="modal.data.name" />
             </a-form-item>
@@ -40,14 +40,21 @@
                 <a-input v-model:value="modal.data.title" />
             </a-form-item>
             <a-form-item label="Description" name="description">
-                <a-input v-model:value="modal.data.description" />
+                <quill-editor v-model:value="modal.data.description" style="min-height:200px;" />
             </a-form-item>
             <a-form-item label="Require Login" name="require_login">
                 <a-switch v-model:checked="modal.data.require_login" :unCheckedValue="0" :checkedValue="1"/>
+                <span class="pl-3">For public and required login</span>
             </a-form-item>
-            <a-form-item label="Require Member" name="require_member">
-                <a-switch v-model:checked="modal.data.require_member" :unCheckedValue="0" :checkedValue="1"/>
+            <a-form-item label="For Member" name="for_member">
+                <a-switch v-model:checked="modal.data.for_member" :unCheckedValue="0" :checkedValue="1"/>
+                <span class="pl-3">For staff with login</span>
             </a-form-item>
+            <a-form-item label="Published" name="published">
+                <a-switch v-model:checked="modal.data.published" :unCheckedValue="0" :checkedValue="1"/>
+                <span class="pl-3">Form visible for targeted user</span>
+            </a-form-item>
+
             <a-form-item label="Banner image" name="cert_logo">
                 <div v-if="modal.data.media.length" >
                     <inertia-link :href="route('admin.form-delete-media',modal.data.media[0].id)" class="float-right text-red-500">
@@ -85,12 +92,14 @@
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
 import { UploadOutlined } from '@ant-design/icons-vue';
 import Icon, { RestFilled } from '@ant-design/icons-vue';
+import { quillEditor } from 'vue3-quill';
 
 export default {
     components: {
         DepartmentLayout,
         UploadOutlined,
-        RestFilled        
+        RestFilled,
+        quillEditor,   
     },
     props: ['department','forms'],
     data() {
@@ -108,6 +117,9 @@ export default {
                 },{
                     title: 'Title',
                     dataIndex: 'title',
+                },{
+                    title: 'Require_login',
+                    dataIndex: 'require_login',
                 },{
                     title: 'For Member',
                     dataIndex: 'for_member',
@@ -146,16 +158,21 @@ export default {
     methods: {
         createRecord(record){
             this.modal.data={};
+            this.modal.data.department_id=this.department.id;
+            this.modal.data.require_login=false;
+            this.modal.data.for_member=false;
             this.modal.data.media=[];
             this.modal.mode="CREATE";
             this.modal.isOpen=true;
         },
         editRecord(record){
+            console.log(record);
             this.modal.data={...record};
             this.modal.mode="EDIT";
             this.modal.isOpen=true;
         },
         storeRecord(){
+            console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
                 this.$inertia.post(route('manage.forms.store') , this.modal.data, {
                     onSuccess:(page)=>{

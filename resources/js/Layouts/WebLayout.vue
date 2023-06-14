@@ -43,7 +43,7 @@ const logout = () => {
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
-                                    <img src="/storage/aeemm_logo.jpg" style="width:64px"/>
+                                    <img src="/images/mpu_banner.png" style="height:58px"/>
                                 </Link>
                             </div>
 

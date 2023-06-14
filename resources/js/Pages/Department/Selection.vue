@@ -1,5 +1,5 @@
 <template>
-        <DepartmentLayout title="Dashboard" :department="departments[0]">
+    <DepartmentLayout title="Dashboard" :department="departments[0]">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Management Dashboard department
@@ -8,14 +8,13 @@
         <p>You belongs to more than one department Please select which one you wanna to get into?</p>
         <ol class="list-decimal">
             <li v-for="department in departments">
-                <inertia-link :href="route('manage.departments.show',department.id)">
+                <inertia-link :href="route('manage.departments.show', department.id)">
                     {{ department.abbr }} - {{ department.name_zh }}
                 </inertia-link>
             </li>
         </ol>
 
     </DepartmentLayout>
-    
 </template>
 
 <script>

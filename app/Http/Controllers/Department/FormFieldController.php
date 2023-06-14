@@ -60,7 +60,7 @@ class FormFieldController extends Controller
             $field->field_name=$request->field_name;
             $field->field_label=$request->field_label;
             $field->type=$request->type;
-            $field->require=$request->require;
+            $field->required=$request->required;
             $field->rule=$request->rule;
             $field->validate=$request->validate;
             $field->remark=$request->remark;
@@ -110,7 +110,7 @@ class FormFieldController extends Controller
             $field->field_name=$request->field_name;
             $field->field_label=$request->field_label;
             $field->type=$request->type;
-            $field->require=$request->require;
+            $field->required=$request->required;
             $field->remark=$request->remark;
             $field->save();
             return redirect()->back();
