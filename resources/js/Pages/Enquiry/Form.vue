@@ -1,6 +1,8 @@
 <template>
     <div class="p-5 bg-gray-200">
-        <img src="/images/mpu_banner.png" width="300"/>
+        <a href="/">
+            <img src="/images/mpu_banner.png" width="300"/>
+        </a>
     </div>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -119,34 +121,34 @@ export default {
         return {
             lang:this.$page.props.lang, 
             enquiry:{
-                lang:'zh',
-                origin:null,
-                degree:null,
-                admission:null,
-                profile:null,
-                apply:null,
-                applyNumber:null,
-                surname:null,
-                givenname:null,
-                email:null,
-                areacode:null,
-                phone:null,
-                subjects:null,
-                agree:null,
-                // lang: 'zh',
-                // origin: 'MO',
-                // degree: 'B',
-                // admission: 'EXAM',
-                // profile: 'STD',
-                // apply:true,
+                // lang:'zh',
+                // origin:null,
+                // degree:null,
+                // admission:null,
+                // profile:null,
+                // apply:null,
                 // applyNumber:null,
-                // surname: 'Jose',
-                // givenname: 'Chan',
-                // email: 'josechan@ipm.edu.mo',
-                // areacode: '853',
-                // phone: '63860836',
-                // subjects: ['ADM'],
+                // surname:null,
+                // givenname:null,
+                // email:null,
+                // areacode:null,
+                // phone:null,
+                // subjects:null,
                 // agree:null,
+                lang: 'zh',
+                origin: 'MO',
+                degree: 'B',
+                admission: 'EXAM',
+                profile: 'STD',
+                apply:true,
+                applyNumber:null,
+                surname: 'Jose',
+                givenname: 'Chan',
+                email: 'josechan@ipm.edu.mo',
+                areacode: '853',
+                phone: '63860836',
+                subjects: ['ADM'],
+                agree:null,
             },
             radioStyle:{
                 display: 'flex',
@@ -209,10 +211,14 @@ export default {
             }
         }
     },
+    mounted(){
+        this.enquiry={};
+    },
     methods: {
         onFinish(){
             this.$inertia.post(route('enquiry.store'),this.enquiry,{
                 onSuccess:(page)=>{
+                    this.enquiry={}
                     console.log(page);
                 },
                 onError:(err)=>{

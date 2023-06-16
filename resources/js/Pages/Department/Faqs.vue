@@ -121,9 +121,10 @@ export default {
             this.modal.isOpen=true;
         },
         editRecord(record){
-            console.log(record);
             this.modal.data={...record};
-            this.modal.data.degree=JSON.parse(this.modal.data.degree);
+            if(this.modal.data.degree!=''){
+                this.modal.data.degree=JSON.parse(this.modal.data.degree);
+            }
             this.modal.data.subjects=JSON.parse(this.modal.data.subjects);
             this.modal.mode="EDIT";
             this.modal.title="修改";

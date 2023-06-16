@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('responses', function (Blueprint $table) {
+        Schema::create('enquiry_responses', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('enquiry_id');
+            $table->bigInteger('enquiry_question_id');
             $table->text('title')->nullable();
             $table->text('remark');
             $table->boolean('by_email');
@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('email_subject')->nullable();
             $table->text('email_content')->nullable();
             $table->bigInteger('admin_id');
+            $table->string('token')->nullable();
+            $table->boolean('has_question')->nullable();
             $table->timestamps();
         });
     }
@@ -34,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('responses');
+        Schema::dropIfExists('enquiry_responses');
     }
 };

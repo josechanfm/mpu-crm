@@ -59,7 +59,7 @@ class FormController extends Controller
             $form->title=$request->title;
             $form->description=$request->description;
             $form->require_login=$request->require_login;
-            $form->for_member=$request->for_member;
+            $form->for_staff=$request->for_staff;
             $form->published=$request->published;
             $form->save();
             return redirect()->back();
@@ -138,7 +138,7 @@ class FormController extends Controller
         $form->title=$request->title;
         $form->description=$request->description;
         $form->require_login=$request->require_login;
-        $form->for_member=$request->for_member;
+        $form->for_staff=$request->for_staff;
         $form->published=$request->published;
         if($request->file('image')){
             $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('image');

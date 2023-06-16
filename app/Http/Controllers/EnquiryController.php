@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Config;
 use App\Models\Enquiry;
-use App\Models\Question;
+use App\Models\EnquiryQuestion;
 use App\Models\Faq;
 
 class EnquiryController extends Controller
@@ -67,7 +67,7 @@ class EnquiryController extends Controller
         $enquiry->areacode=$request->areacode;
         $enquiry->phone=$request->phone;
         $enquiry->subjects=json_encode($request->subjects);
-        $enquiry->token=hash('crc32',time().'mpu-crm');
+        $enquiry->token=Enquiry::token();
         $enquiry->save();
         return to_route('enquiry.answerQuestion',[
             'enquiry'=>$enquiry->id,
@@ -129,19 +129,26 @@ class EnquiryController extends Controller
         if($enquiry->token!=$token){
             return to_route('enquiry.index');
         };
-        if($enquiry->has_question){
-            return to_route('enquiry.index');
+        if($enquiry->has_question!==null){
+            return Inertia::render('Error',[
+                'message'=>'The inquiry question already submit!'
+            ]);
         };
         // $enquiry->has_question=true;
         // $enquiry->save();
         $subjects=json_decode($enquiry->subjects);
-        $faqs=Faq::getByTags($subjects);
+        $faqs=Faq::getBySubjects($subjects);
         return Inertia::render('Enquiry/Question',[
             'enquiry'=>$enquiry,
             'faqs'=>$faqs,
         ]);
     }
     public function noQuestion(Enquiry $enquiry){
+        if($enquiry->has_question!==null){
+            return Inertia::render('Error',[
+                'message'=>'The inquiry question already submit!'
+            ]);
+        }
         $enquiry->has_question=false;
         $enquiry->save();
         return to_route('enquiry.thankQuestion');
@@ -151,13 +158,23 @@ class EnquiryController extends Controller
         if($enquiry->token!=$request->token){
             return to_route('enquiry.index');
         };
+        if($enquiry->has_question!==null){
+            return Inertia::render('Error',[
+                'message'=>'The inquiry question already submit!'
+            ]);
+        }
         $enquiry->has_question=true;
-        $enquiry->question=$request->content;
         $enquiry->save();
+        $enquiry_question= new EnquiryQuestion();
+        $enquiry_question->enquiry_id=$enquiry->id;
+        $enquiry_question->content=$request->content;
+        $enquiry_question->token=Enquiry::token();
+        $enquiry_question->save();
+
         if($request->file('fileList')){
             foreach($request->file('fileList') as $file){
-                $enquiry->addMedia($file['originFileObj'])
-                    ->toMediaCollection('questionAttachments');
+                $enquiry_question->addMedia($file['originFileObj'])
+                    ->toMediaCollection('enquiryQuestionAttachments');
             }
         }
         return to_route('enquiry.thankQuestion');

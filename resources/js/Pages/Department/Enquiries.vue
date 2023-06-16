@@ -5,8 +5,8 @@
                 客戶服務管理
             </h2>
         </template>
-        List of Enquiry
-        <a-table :dataSource="enquiries" :columns="columns" :row-key="record => record.root_id">
+        <a-typography-title :level="4">List of Enquiry</a-typography-title>
+        <a-table :dataSource="department.enquiries" :columns="columns" :row-key="record => record.root_id">
             <template #bodyCell="{column, text, record, index}" >
                 <template v-if="column.dataIndex=='operation'">
                     <a-button @click="viewRecord(record)">View</a-button>
@@ -14,6 +14,9 @@
                 </template>
                 <template v-else-if="column.dataIndex=='phone'">
                     {{ record['areacode'] }} - {{ record['phone'] }}
+                </template>
+                <template v-else-if="column.dataIndex=='questions'">
+                    {{record[column.dataIndex].length }}
                 </template>
                 <template v-else>
                     <span v-if="column.options">
@@ -132,6 +135,9 @@ export default {
                 },{
                     title: this.fields.phone.short,
                     dataIndex: 'phone',
+                },{
+                    title: 'Questions',
+                    dataIndex: 'questions',
                 },{
                     title: '操作',
                     dataIndex: 'operation',

@@ -21,9 +21,9 @@ class FormController extends Controller
         // if(Auth()->user()){
         //     $forms=Form::where('published',1)->get();
         // }else{
-        //     $forms=Form::where('published',1)->where('for_member',0)->get();
+        //     $forms=Form::where('published',1)->where('for_staff',0)->get();
         // }
-        $forms=Form::where('published',1)->where('for_member',0)->get();
+        $forms=Form::where('published',1)->where('for_staff',0)->get();
         return Inertia::render('Form/Form',[
             'forms'=>$forms
         ]);
@@ -79,10 +79,11 @@ class FormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Form $form)
     {
-        $form=Form::with('fields')->find($id);
-        if($form->require_member==1 && !Auth()->user()){
+        //$form=Form::with('fields')->find($id);
+        $form->fields;
+        if($form->require_login==1 && !Auth()->user()){
             return redirect('forms');
         }
         return Inertia::render('Form/FormDefault',[

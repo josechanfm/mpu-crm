@@ -10,8 +10,14 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $member=auth()->user()->member;
+        if(!$member){
+            return Inertia::render('Error',[
+                'message'=>"You don't have membership record!"
+            ]);
+        };
         return Inertia::render('Member/Dashboard',[
-            'member'=>auth()->user()->member
+            'member'=>$member
         ]);
     }
     

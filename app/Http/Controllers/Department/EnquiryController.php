@@ -8,7 +8,7 @@ use Inertia\Inertia;
 use App\Models\Config;
 use App\Models\Department;
 use App\Models\Enquiry;
-use App\Models\Response;
+use App\Models\EnquiryResponse;
 use Mail;
 
 class EnquiryController extends Controller
@@ -65,6 +65,7 @@ class EnquiryController extends Controller
         $enquiry->content=$request->content;
         $enquiry->response=$request->response;
         $enquiry->admin_user_id=auth()->user()->id;
+        $enquiry->token=hash('crc32',time().'1');
         $enquiry->save();
         return redirect()->back();
     }
@@ -78,10 +79,12 @@ class EnquiryController extends Controller
     public function show(Enquiry $enquiry)
     {
         $this->authorize('view',$enquiry->department);
-        $enquiry=$enquiry->with('department')->with('responses')->first();
+        //$enquiry=$enquiry->with('responses');
+        $enquiry->department;
+        $enquiry->questions;
         return Inertia::render('Department/EnquiryShow',[
             'fields'=>Config::enquiryFormFields(),
-            'enquiry'=>$enquiry
+            'enquiry'=>$enquiry,
         ]);
     }
 
@@ -122,8 +125,8 @@ class EnquiryController extends Controller
         //
     }
     public function response(Department $department, Request $request){
-        $response = new Response();
-        $response->enquiry_id=$request->enquiry_id;
+        $response = new EnquiryResponse();
+        $response->enquiry_question_id=$request->enquiry_question_id;
         $response->title=$request->title;
         $response->remark=$request->remark;
         $response->by_email=$request->by_email;
@@ -131,14 +134,19 @@ class EnquiryController extends Controller
         $response->email_subject=$request->email_subject;
         $response->email_content=$request->email_content;
         $response->admin_id=auth()->user()->id;
+        $response->token=Enquiry::token();
+
         $response->save();
 
         if($request->file('fileList')){
             foreach($request->file('fileList') as $file){
                 $response->addMedia($file['originFileObj'])
-                    ->toMediaCollection('responseAttachments');
+                    ->toMediaCollection('enquiryResponseAttachments');
             }
         };
+        $folloupQuestionLink='<p><a href="'.env('APP_URL').'/enquiry/ticket/'.$response->id.'/'.$response->token.'">跟進問題 Follow-up question</a><p>';
+        $response->email_content.= $folloupQuestionLink;
+
         if($request->by_email){
             $email=[
                 'address'=>$response->email_address,

@@ -46,8 +46,8 @@
                 <a-switch v-model:checked="modal.data.require_login" :unCheckedValue="0" :checkedValue="1"/>
                 <span class="pl-3">For public and required login</span>
             </a-form-item>
-            <a-form-item label="For Member" name="for_member">
-                <a-switch v-model:checked="modal.data.for_member" :unCheckedValue="0" :checkedValue="1"/>
+            <a-form-item label="For Member" name="for_staff">
+                <a-switch v-model:checked="modal.data.for_staff" :unCheckedValue="0" :checkedValue="1"/>
                 <span class="pl-3">For staff with login</span>
             </a-form-item>
             <a-form-item label="Published" name="published">
@@ -121,8 +121,8 @@ export default {
                     title: 'Require_login',
                     dataIndex: 'require_login',
                 },{
-                    title: 'For Member',
-                    dataIndex: 'for_member',
+                    title: 'For Staff',
+                    dataIndex: 'for_staff',
                 },{
                     title: 'Published',
                     dataIndex: 'published',
@@ -160,7 +160,7 @@ export default {
             this.modal.data={};
             this.modal.data.department_id=this.department.id;
             this.modal.data.require_login=false;
-            this.modal.data.for_member=false;
+            this.modal.data.for_staff=false;
             this.modal.data.media=[];
             this.modal.mode="CREATE";
             this.modal.isOpen=true;

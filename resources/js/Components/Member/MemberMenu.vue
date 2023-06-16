@@ -7,7 +7,7 @@
         <inertia-link :href="route(item.route)" :target="item.target">{{ item.title }}</inertia-link>
       </a-menu-item>
     </a-menu>
-  </template>
+</template>
   <script>
   import { defineComponent, ref } from 'vue';
   import { HomeOutlined, VerifiedOutlined, AppstoreOutlined, IdcardOutlined, BankOutlined, EditOutlined, SettingOutlined } from '@ant-design/icons-vue';
@@ -29,32 +29,32 @@
             icon:'home-outlined',
             title:'主頁',
             route:'dashboard',
-        },{
-            key:'professionals.index',
-            icon:'verified-outlined',
-            title:'專業認證',
-            route:'professionals.index',
-        },{
-            key:'membership',
-            icon:'idcard-outlined',
-            title:'會籍',
-            route:'membership',
-        },{
-            key:'courses',
-            icon:'bank-outlined',
-            title:'課程',
-            route:'courses',
-        },{
-            key:'forms.index',
-            icon:'edit-outlined',
-            title:"報名",
-            route:'forms.index',
-        },{
-            key:'admin.index',
-            icon:'appstore-outlined',
-            title:'行政管理',
-            route:'admin.index',
-            target:'_blank'
+        // },{
+        //     key:'professionals.index',
+        //     icon:'verified-outlined',
+        //     title:'專業認證',
+        //     route:'professionals.index',
+        // },{
+        //     key:'membership',
+        //     icon:'idcard-outlined',
+        //     title:'會籍',
+        //     route:'membership',
+        // },{
+        //     key:'courses',
+        //     icon:'bank-outlined',
+        //     title:'課程',
+        //     route:'courses',
+        // },{
+        //     key:'forms.index',
+        //     icon:'edit-outlined',
+        //     title:"報名",
+        //     route:'forms.index',
+        // },{
+        //     key:'admin.index',
+        //     icon:'appstore-outlined',
+        //     title:'行政管理',
+        //     route:'admin.index',
+        //     target:'_blank'
         },
       ]);
       return {
@@ -63,7 +63,6 @@
       };
     },
     created(){
-        this.current[0]=route().current();
     }
   });
   </script>

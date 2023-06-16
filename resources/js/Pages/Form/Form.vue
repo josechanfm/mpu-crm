@@ -1,39 +1,17 @@
 <template>
-    <MemberLayout title="Dashboard" v-if="$page.props.user">
+
+    <WebLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 表格例表
             </h2>
         </template>
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-            <div class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
                 <a-table :dataSource="forms" :columns="columns">
                     <template #bodyCell="{column, text, record, index}">
                         <template v-if="column.dataIndex=='operation'">
-                            資料欄位
-                            <inertia-link :href="route('forms.show',record.id)" class="float-right text-red-500">Apply</inertia-link>
-                        </template>
-                        <template v-else>
-                            {{record[column.dataIndex]}}
-                        </template>
-                    </template>
-                </a-table>
-            </div>
-        </div>
-    </MemberLayout>
-    <WebLayout title="Dashboard" v-else>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                表格例表
-            </h2>
-        </template>
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-            <div class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
-                <a-table :dataSource="forms" :columns="columns">
-                    <template #bodyCell="{column, text, record, index}">
-                        <template v-if="column.dataIndex=='operation'">
-                            資料欄位
-                            <inertia-link :href="route('forms.show',record.id)" class="float-right text-red-500">Apply</inertia-link>
+                            <a @click="toApply(record)">Apply</a>
                         </template>
                         <template v-else>
                             {{record[column.dataIndex]}}
@@ -47,8 +25,8 @@
 </template>
 
 <script>
-import MemberLayout from '@/Layouts/MemberLayout.vue';
 import WebLayout from '@/Layouts/WebLayout.vue';
+import { Inertia } from '@inertiajs/inertia';
 
 export default {
     components: {
@@ -66,8 +44,11 @@ export default {
                     title: 'Title',
                     dataIndex: 'title',
                 },{
-                    title: 'For Member',
-                    dataIndex: 'for_member',
+                    title: 'Login',
+                    dataIndex: 'require_login',
+                },{
+                    title: 'For staff',
+                    dataIndex: 'for_staff',
                 },{
                     title: 'Published',
                     dataIndex: 'published',
@@ -101,6 +82,13 @@ export default {
     created(){
     },
     methods: {
+        toApply(record){
+            if(record.require_login==0 || this.$page.props.user){
+                Inertia.get(route('forms.show',record.id));
+            }else{
+                alert("login requierd");
+            }
+        }
     },
 }
 </script>

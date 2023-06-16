@@ -5,120 +5,149 @@
                 客戶服務管理
             </h2>
         </template>
+        <!-- Enquirer basic info-->
+        <a-card title="Contact Info">
+            <template #extra>
+                <!-- <a-button type="primary">Edit</a-button> -->
+            </template>
+            <a-descriptions :column="2">
+                <a-descriptions-item label="Surname">{{ enquiry.surname }}</a-descriptions-item>
+                <a-descriptions-item label="Givenname">{{ enquiry.givenname }}</a-descriptions-item>
+                <a-descriptions-item label="Phone">{{ enquiry.areacode }} - {{ enquiry.phone }}</a-descriptions-item>
+                <a-descriptions-item label="Email">{{ enquiry.email }}</a-descriptions-item>
+            </a-descriptions>
+        </a-card>
+        <!--// Enquirer basic info-->
+        <!-- Question and Response list -->
         <a-collapse>
-            <a-collapse-panel header="Enquiry Form">
+            <!-- Enquiry From-->
+            <a-collapse-panel header="Enquiry Form" style="background-color: #FADBD8;">
                 <ol class="list-disc pl-10">
                     <li>
-                        <p class="font-bold">{{fields.origin.question }}</p>
-                        <p>{{ optionFind(enquiry.origin,fields.origin.options) }}</p>
+                        <p class="font-bold">{{ fields.origin.question }}</p>
+                        <p>{{ optionFind(enquiry.origin, fields.origin.options) }}</p>
                     </li>
                     <li>
-                        <p class="font-bold">{{fields.degree.question }}</p>
-                        <p>{{ optionFind(enquiry.degree,fields.degree.options) }}</p>
+                        <p class="font-bold">{{ fields.degree.question }}</p>
+                        <p>{{ optionFind(enquiry.degree, fields.degree.options) }}</p>
                     </li>
                     <li>
-                        <p class="font-bold">{{fields.admission.question }}</p>
-                        <p>{{ optionFind(enquiry.admission,fields.admission.options) }}</p>
+                        <p class="font-bold">{{ fields.admission.question }}</p>
+                        <p>{{ optionFind(enquiry.admission, fields.admission.options) }}</p>
                     </li>
                     <li>
-                        <p class="font-bold">{{fields.profile.question }}</p>
-                        <p>{{ optionFind(enquiry.profile,fields.profile.options) }}</p>
+                        <p class="font-bold">{{ fields.profile.question }}</p>
+                        <p>{{ optionFind(enquiry.profile, fields.profile.options) }}</p>
                     </li>
                     <li>
-                        <p class="font-bold">{{fields.apply.question }}</p>
-                        <p>{{ optionFind(enquiry.apply,fields.apply.options) }}</p>
+                        <p class="font-bold">{{ fields.apply.question }}</p>
+                        <p>{{ optionFind(enquiry.apply, fields.apply.options) }}</p>
                     </li>
                     <li>
                         <p class="font-bold">Name</p>
                         <p>{{ enquiry.givenname }}, {{ enquiry.surname }}</p>
                     </li>
                     <li>
-                        <p class="font-bold">{{fields.email.question }}</p>
+                        <p class="font-bold">{{ fields.email.question }}</p>
                         <p>{{ enquiry.email }}</p>
                     </li>
                     <li>
-                        <p class="font-bold">{{fields.phone.question }}</p>
+                        <p class="font-bold">{{ fields.phone.question }}</p>
                         <p>{{ enquiry.areacode }} - {{ enquiry.phone }}</p>
                     </li>
                     <li>
-                        <p class="font-bold">{{fields.subjects.question }}</p>
-                        <p v-for="item in optionFilter(enquiry.subjects,fields.subjects.options)">{{ item.label }}</p>
+                        <p class="font-bold">{{ fields.subjects.question }}</p>
+                        <p v-for="item in optionFilter(enquiry.subjects, fields.subjects.options)">{{ item.label }}</p>
                     </li>
                 </ol>
             </a-collapse-panel>
-            <a-collapse-panel :header="'Question: '+enquiry.question.substring(0,30)">
-                {{ enquiry.question }}
-                <ol>
-                    <li v-for="file in enquiry.media">
-                        <img :src="file.original_url" width="100"/>
-                    </li>
-                </ol>
-            </a-collapse-panel>
-            <a-collapse-panel v-for="response in enquiry.responses" :header="'Response at: '+response.created_at" >
-                <p>{{ response.title }}</p>
-                <p>{{ response.remark }}</p>
-                <span v-if="response.by_email">
-                    <p>Email: {{ response.email_address }}</p>
-                    <p>Subject: {{ response.email_subject }}</p>
-                    <p>Content: {{ response.email_content }}</p>
-                </span>
-                <ol>
-                    <li v-for="file in response.media">
-                        <img :src="file.original_url" width="100"/>
-                    </li>
-                </ol>
-            </a-collapse-panel>
+            <!--// Enquiry From-->
+            <!-- Enquiry question-->
+            <template v-for="question in enquiry.questions">
+                <a-collapse-panel :header="questionNubmer(question)" >
+                    <template #extra>
+                        <a-button type="primary" @click="toResponse(question)">回應</a-button>
+                        {{ dateFormat(question.created_at) }}
+                    </template>
+                    {{ question.content }}
+                    <ol>
+                        <li v-for="file in question.media">
+                            <img :src="file.original_url" width="100" />
+                        </li>
+                    </ol>
+                    <!-- Enquiry question response-->
+                    <template v-for="response in question.responses">
+                        <a-collapse>
+                            <a-collapse-panel :header="responseNumber(response)" :style="responseStyle">
+                                <template #extra>{{ dateFormat(response.created_at) }}</template>
+                                    <a-typography-title :level="4">{{ response.title }}</a-typography-title>
+                                    <p>{{ response.remark }}</p>
+                                    <span v-if="response.by_email">
+                                        <p>Email: {{ response.email_address }}</p>
+                                        <p>Subject: {{ response.email_subject }}</p>
+                                        <p>Content: {{ response.email_content }}</p>
+                                    </span>
+                                    <ol>
+                                        <li v-for="file in response.media">
+                                            <img :src="file.original_url" width="100" />
+                                        </li>
+                                    </ol>
+
+                            </a-collapse-panel>
+                        </a-collapse>
+                        
+                        <hr>
+                    </template>
+                    <!--// Enquiry question response-->
+                </a-collapse-panel>
+            </template>
+            <!--// Enquiry question-->
         </a-collapse>
-        <a-divider/>
-        <a-divider style="height: 2px; background-color: #7cb305" />
-        <a-card title="Response">
-            <a-form 
-                ref="refResponse" 
-                name="response" 
-                :model="response" 
-                layout="vertical" 
-                @finish="onFinish"
-            >
-                <a-form-item name="title" label="Title" :rules="[{required:true,message:'Summary of your response.'}]">
-                    <a-input v-model:value="response.title" />
-                </a-form-item>
-                <a-form-item name="remark" label="Remark" :rules="[{required:true,message:'required your response remark'}]">
-                    <a-textarea v-model:value="response.remark" :rows="10"></a-textarea>
-                </a-form-item>
-                <p><a-switch v-model:checked="response.by_email" label="aaa"/>&nbsp;&nbsp;Response by email</p>
-                <span v-if="response.by_email">
-                    <a-form-item name="email_address" label="email" :rules="[{required:true,type:'email',message:'aaaaaa'}]">
-                        <a-input v-model:value="response.email_address"/>
+        <!--// Question and Response list -->
+
+        <!-- Response box -->
+        <template v-if="myResponse.enquiry_question_id">
+            <a-divider style="height: 2px; background-color: #7cb305" />
+            <a-card :title="'Response' + questionNubmer(myResponse.question)">
+                <template #extra><a-button type="link" @click="closeResponse" >關閉回應</a-button></template>
+                <a-form ref="refResponse" name="response" :model="myResponse" layout="vertical" @finish="onFinish">
+                    <a-form-item name="title" label="Title" :rules="[{ required: true, message: 'Summary of your response.' }]">
+                        <a-input v-model:value="myResponse.title" />
                     </a-form-item>
-                    <a-form-item name="email_subject" label="Subject" :rules="[{required:true}]">
-                        <a-input v-model:value="response.email_subject"/>
+                    <a-form-item name="remark" label="Remark"
+                        :rules="[{ required: true, message: 'required your response remark' }]">
+                        <a-textarea v-model:value="myResponse.remark" :rows="10"></a-textarea>
                     </a-form-item>
-                    <a-form-item name="email_content" label="Content" :rules="[{required:true}]">
-                        <a-textarea v-model:value="response.email_content" :rows="10"></a-textarea>
+                    <p><a-switch v-model:checked="myResponse.by_email" label="Email" />&nbsp;&nbsp;Response by email</p>
+                    <span v-if="myResponse.by_email">
+                        <a-form-item name="email_address" label="email"
+                            :rules="[{ required: true, type: 'email', message: 'aaaaaa' }]">
+                            <a-input v-model:value="myResponse.email_address" />
+                        </a-form-item>
+                        <a-form-item name="email_subject" label="Subject" :rules="[{ required: true }]">
+                            <a-input v-model:value="myResponse.email_subject" />
+                        </a-form-item>
+                        <a-form-item name="email_content" label="Content" :rules="[{ required: true }]">
+                            <a-textarea v-model:value="myResponse.email_content" :rows="10"></a-textarea>
+                        </a-form-item>
+                    </span>
+                    <a-form-item name="fileList">
+                        <a-upload v-model:file-list="myResponse.fileList" :beforeUpload="() => false" :max-count="10"
+                            list-type="picture">
+                            <a-button>
+                                <upload-outlined></upload-outlined>
+                                Upload
+                            </a-button>
+                        </a-upload>
                     </a-form-item>
-                </span>
+                    <a-form-item>
+                        <a-button type="primary" html-type="submit">Submit</a-button>
+                    </a-form-item>
 
-
-                <a-form-item name="fileList">
-                    <a-upload 
-                        v-model:file-list="response.fileList"
-                        :beforeUpload="()=>false"
-                        :max-count="10"
-                        list-type="picture"
-                    >
-                        <a-button>
-                            <upload-outlined></upload-outlined>
-                            Upload
-                        </a-button>
-                    </a-upload>
-                </a-form-item>
-
-                <a-form-item>
-                    <a-button type="primary" html-type="submit">Submit</a-button>
-                </a-form-item>
-
-            </a-form>
-        </a-card>
+                </a-form>
+            </a-card>
+        </template>
+        <!--// Response box -->
 
 
     </DepartmentLayout>
@@ -130,6 +159,7 @@ import CommentCard from '@/Components/Department/CommentCard.vue';
 import MailerBox from '@/Components/Department/MailerBox.vue';
 import EnquiryBox from '@/Components/Department/EnquiryBox.vue';
 import { UploadOutlined } from '@ant-design/icons-vue';
+import dayjs from 'dayjs';
 
 export default {
     components: {
@@ -142,15 +172,15 @@ export default {
     props: ['fields', 'enquiry'],
     data() {
         return {
-            response:{
-                enquiry_id:this.enquiry.id,
-                title:null,
-                remark:null,
+            myResponse: {
+                enquiry_question_id: null,
+                title: null,
+                remark: null,
                 by_email: false,
                 email_address: null,
                 email_subject: null,
                 email_content: null,
-                fileList:[],
+                fileList: [],
             },
             radioStyle: {
                 display: 'flex',
@@ -158,33 +188,55 @@ export default {
                 lineHeight: '30px',
                 marginLeft: '0'
             },
+            responseStyle:"background: #A3E4D7;border-radius: 4px;margin-bottom: 24px;border: 0;overflow: hidden"
         }
     },
     created() {
     },
     methods: {
-        optionFind(value,options){
+        toResponse(question){
+            console.log(question);
+            this.myResponse.enquiry_question_id=question.id;
+            this.myResponse.question=question;
+        },
+        closeResponse(){
+            this.myResponse={};
+        },
+        dateFormat(date, format = 'YYYY-MM-DD HH:mm') {
+            return dayjs(date).format(format);
+        },
+        optionFind(value, options) {
             return options.find(option => {
-                return option['value']==value;
+                return option['value'] == value;
             })['label'];
         },
-        optionFilter(values,options){
-            var items=options.filter(option => {
+        optionFilter(values, options) {
+            var items = options.filter(option => {
                 return values.includes(option['value']);
             });
             return items;
         },
-        onFinish(){
-            this.$inertia.post(route('enquiry.response'),this.response,{
-                onSuccess:(page)=>{
-                    this.response={};
+        onFinish() {
+            this.$inertia.post(route('enquiry.response'), this.myResponse, {
+                onSuccess: (page) => {
+                    this.myResponse = {};
                     console.log(page);
                 },
-                onError:(err)=>{
+                onError: (err) => {
                     console.log(err);
                 }
             });
-            console.log(this.response);
+            console.log(this.myResponse);
+        },
+        questionNubmer(question){
+            var caption='提問編號 #'+ question.id;
+            if(question.enquiry_response_id){
+                caption += ', 追問回應編號#'+ question.enquiry_response_id
+            }
+            return caption;
+        },
+        responseNumber(response){
+            return '回應編號 #'+ response.id
         }
     },
 }

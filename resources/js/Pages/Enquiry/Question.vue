@@ -76,6 +76,9 @@ export default {
             }
         }
     },
+    mounted(){
+        this.followup.has_question=false
+    },
     methods: {
         onSubmits() {
             if (this.followup.has_question) {

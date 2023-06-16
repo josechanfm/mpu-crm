@@ -22,7 +22,7 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('home');
 
 Route::prefix('enquiry')->group(function(){
     Route::resource('/',\App\Http\Controllers\EnquiryController::class)->names('enquiry');
@@ -31,6 +31,8 @@ Route::prefix('enquiry')->group(function(){
     Route::post('submit_question/{enquiry}',[\App\Http\Controllers\EnquiryController::class,'submitQuestion'])->name('enquiry.submitQuestion');
     Route::patch('no_question/{enquiry}',[\App\Http\Controllers\EnquiryController::class,'noQuestion'])->name('enquiry.noQuestion');
     Route::get('thank_question',[\App\Http\Controllers\EnquiryController::class,'thankQuestion'])->name('enquiry.thankQuestion');
+    Route::get('ticket/{response}/{token}',[\App\Http\Controllers\EnquiryTicketController::class,'ticket'])->name('enquiry.ticket');
+    Route::post('ticket',[\App\Http\Controllers\EnquiryTicketController::class,'store'])->name('enquiry.ticket.store');
 });
 Route::resource('forms',\App\Http\Controllers\FormController::class)->names('forms');
 

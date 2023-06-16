@@ -60,10 +60,20 @@ return [
             'root'   => public_path('/media'),
             'url'    => env('APP_URL').'/media',
         ],
-        'inquiryQuestion' => [
+        'inquiry' => [
             'driver' => 'local',
-            'root'   => public_path('/media/inquiry/question'),
-            'url'    => env('APP_URL').'/media/inquiry/question',
+            'root'   => public_path('/media/inquiry'),
+            'url'    => env('APP_URL').'/media/inquiry',
+            'permissions' =>[
+                'file'=>[
+                    'public'=> 0774,
+                    'private'=>0600,
+                ],
+                'dir'=>[
+                    'public'=>0775,
+                    'private'=>0775,
+                ]
+            ]
         ],
 
     ],

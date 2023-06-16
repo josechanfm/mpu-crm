@@ -43,7 +43,8 @@ class EnquirySeeder extends Seeder
             'email_address'=>'mail address',
             'email_subject'=>'email subject',
             'email_content'=>'email content',
-            'admin_id'=>1
+            'admin_id'=>1,
+            'token'=>hash('crc32',time().'1'),
         ]);
 
         DB::table('enquiries')->insert([
@@ -72,7 +73,8 @@ class EnquirySeeder extends Seeder
             'email_address'=>'mail address',
             'email_subject'=>'email subject',
             'email_content'=>'email content',
-            'admin_id'=>1
+            'admin_id'=>1,
+            'token'=>hash('crc32',time().'1'),
         ]);
         
     }
