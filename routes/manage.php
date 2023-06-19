@@ -37,10 +37,9 @@ Route::middleware([
         Route::get('/',[App\Http\Controllers\Department\DashboardController::class,'index']);
         Route::get('dashboard',[App\Http\Controllers\Department\DashboardController::class,'index'])->name('manage.dashboard');
         Route::resource('departments',App\Http\Controllers\Department\DepartmentController::class)->names('manage.departments');
+        Route::resource('enquiry/questions',App\Http\Controllers\Department\EnquiryQuestionController::class)->names('manage.enquiry.questions');
+        Route::post('enquiry/question/response',[App\Http\Controllers\Department\EnquiryQuestionController::class,'response'])->name('manage.enquiry.question.response');
         Route::resource('enquiries',App\Http\Controllers\Department\EnquiryController::class)->names('manage.enquiries');
-        //Route::resource('department/{department}/enquiries',App\Http\Controllers\Department\EnquiryController::class)->names('manage.department.enquiries');
-        //Route::post('department/enquiry/response',[App\Http\Controllers\Department\EnquiryController::class,'response'])->name('department.enquiry.response');
-        Route::post('enquiry/response',[App\Http\Controllers\Department\EnquiryController::class,'response'])->name('enquiry.response');
         //Route::resource('department/{department}/faqs',App\Http\Controllers\Department\FaqController::class)->names('manage.department.faqs');
         Route::resource('faqs',App\Http\Controllers\Department\FaqController::class)->names('manage.faqs');
         //Route::resource('department/{department}/forms',App\Http\Controllers\Department\FormController::class)->names('manage.department.forms');

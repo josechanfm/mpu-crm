@@ -15,6 +15,10 @@ class EnquiryQuestion extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
 
+    public function enquiry(){
+        return $this->belongsTo(Enquiry::class);
+    }
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this

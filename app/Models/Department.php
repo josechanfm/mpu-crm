@@ -13,7 +13,7 @@ class Department extends Model
         return $this->belongsToMany(AdminUser::class);
     }
     public function enquiries(){
-        return $this->hasMany(Enquiry::class)->with('questions');
+        return $this->hasMany(Enquiry::class)->where('has_question',1)->where('is_closed',0)->with('questions');
     }
     public function faqs(){
         return $this->hasMany(Faq::class);
@@ -22,7 +22,12 @@ class Department extends Model
         return $this->hasMany(Form::class)->with('media');
     }
 
-
+    public function enquiryQuestions(){
+        return $this->hasManyThrough(EnquiryQuestion::class, Enquiry::class)->with('enquiry');
+    }
+    public function enquiryQuestionsOpen(){
+        return $this->hasManyThrough(EnquiryQuestion::class, Enquiry::class,'department_id','enquiry_id')->where('enquiry_questions.is_closed',0)->with('enquiry');
+    }
 
     public function members(){
         return $this->belongsToMany(Member::class);

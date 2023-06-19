@@ -37,15 +37,17 @@ class EnquiryTicketController extends Controller
             ]);
         }
 
-        $response->has_question=true;
-        $response->save();
         $enquiryQuestion=new EnquiryQuestion();
         $enquiryQuestion->enquiry_id=$response->question->enquiry_id;
         $enquiryQuestion->parent_id=$response->enquiry_question_id;
         $enquiryQuestion->enquiry_response_id=$response->id;
         $enquiryQuestion->content=$request->content;
         $enquiryQuestion->token=Enquiry::token();
+        $enquiryQuestion->is_closed=false;
         $enquiryQuestion->save();
+        $response->has_question=true;
+        $response->save();
+
         return Inertia::render('Enquiry/ThankQuestion',[
 
         ]);

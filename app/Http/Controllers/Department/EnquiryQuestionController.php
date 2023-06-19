@@ -9,9 +9,10 @@ use App\Models\Config;
 use App\Models\Department;
 use App\Models\Enquiry;
 use App\Models\EnquiryResponse;
+use App\Models\EnquiryQuestion;
 use Mail;
 
-class EnquiryController extends Controller
+class EnquiryQuestionController extends Controller
 {
     public function __construct()
     {
@@ -27,9 +28,9 @@ class EnquiryController extends Controller
     {
         $department=Department::find(session('currentDepartmentId'));
         //$this->authorize('view',$department);
-        return Inertia::render('Department/Enquiries',[
+        $department->enquiryQuestionsOpen;
+        return Inertia::render('Department/Enquiry/Questions',[
             'department'=>$department,
-            'enquiries'=>$department->enquiries,
             'fields'=>Config::enquiryFormFields(),
         ]);
     }
@@ -76,15 +77,17 @@ class EnquiryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Enquiry $enquiry)
+    public function show(EnquiryQuestion $question)
     {
-        $this->authorize('view',$enquiry->department);
-        //$enquiry=$enquiry->with('responses');
-        $enquiry->department;
-        $enquiry->questions;
-        return Inertia::render('Department/EnquiryShow',[
+        // $this->authorize('view',$enquiry->department);
+        $this->authorize('view',$question->enquiry->department);
+        $enquiry=Enquiry::with('questions')->find($question->enquiry_id);
+        $question->enquiry->questions;
+        return Inertia::render('Department/Enquiry/QuestionShow',[
+            'department'=>$question->enquiry->department,
             'fields'=>Config::enquiryFormFields(),
             'enquiry'=>$enquiry,
+            'active_question'=>$question->id,
         ]);
     }
 
@@ -125,8 +128,6 @@ class EnquiryController extends Controller
         //
     }
     public function response(Department $department, Request $request){
-        dd($request->by_email());
-
         $response = new EnquiryResponse();
         $response->enquiry_question_id=$request->enquiry_question_id;
         $response->title=$request->title;
@@ -137,9 +138,8 @@ class EnquiryController extends Controller
         $response->email_content=$request->email_content;
         $response->admin_id=auth()->user()->id;
         $response->token=Enquiry::token();
-
         $response->save();
-
+        
         if($request->file('fileList')){
             foreach($request->file('fileList') as $file){
                 $response->addMedia($file['originFileObj'])
@@ -158,6 +158,10 @@ class EnquiryController extends Controller
                 ];
             $this->sendEmail($email);
         }
+        $enquiryQuestion=EnquiryQuestion::find($response->enquiry_question_id);
+        $enquiryQuestion->is_closed=$request->is_closed;
+        $enquiryQuestion->save();
+        
         return redirect()->back();
         
     }

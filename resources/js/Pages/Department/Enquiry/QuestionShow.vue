@@ -1,5 +1,5 @@
 <template>
-    <DepartmentLayout title="Dashboard" :department="enquiry.department">
+    <DepartmentLayout title="Dashboard" :department="department">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 客戶服務管理
@@ -19,9 +19,9 @@
         </a-card>
         <!--// Enquirer basic info-->
         <!-- Question and Response list -->
-        <a-collapse>
+        <a-collapse v-model:activeKey="activeKey">
             <!-- Enquiry From-->
-            <a-collapse-panel header="Enquiry Form" style="background-color: #FADBD8;">
+            <a-collapse-panel header="Enquiry Form" style="background-color: #FADBD8;" key="question">
                 <ol class="list-disc pl-10">
                     <li>
                         <p class="font-bold">{{ fields.origin.question }}</p>
@@ -63,8 +63,8 @@
             </a-collapse-panel>
             <!--// Enquiry From-->
             <!-- Enquiry question-->
-            <template v-for="question in enquiry.questions">
-                <a-collapse-panel :header="questionNubmer(question)" >
+            <template v-for="question in enquiry.questions" :key="question.id">
+                <a-collapse-panel :header="questionNubmer(question)">
                     <template #extra>
                         <a-button type="primary" @click="toResponse(question)">回應</a-button>
                         {{ dateFormat(question.created_at) }}
@@ -92,7 +92,6 @@
                                             <img :src="file.original_url" width="100" />
                                         </li>
                                     </ol>
-
                             </a-collapse-panel>
                         </a-collapse>
                         
@@ -110,7 +109,8 @@
             <a-divider style="height: 2px; background-color: #7cb305" />
             <a-card :title="'Response' + questionNubmer(myResponse.question)">
                 <template #extra><a-button type="link" @click="closeResponse" >關閉回應</a-button></template>
-                <a-form ref="refResponse" name="response" :model="myResponse" layout="vertical" @finish="onFinish">
+                <a-form ref="refResponseForm" name="response" :model="myResponse" layout="vertical" @finish="onFinish">
+                    <p><a-switch v-model:checked="myResponse.is_closed"/>&nbsp;&nbsp;Closed</p>
                     <a-form-item name="title" label="Title" :rules="[{ required: true, message: 'Summary of your response.' }]">
                         <a-input v-model:value="myResponse.title" />
                     </a-form-item>
@@ -169,7 +169,7 @@ export default {
         EnquiryBox,
         UploadOutlined,
     },
-    props: ['fields', 'enquiry'],
+    props: ['fields','department', 'enquiry','active_question'],
     data() {
         return {
             myResponse: {
@@ -188,16 +188,25 @@ export default {
                 lineHeight: '30px',
                 marginLeft: '0'
             },
-            responseStyle:"background: #A3E4D7;border-radius: 4px;margin-bottom: 24px;border: 0;overflow: hidden"
+            responseStyle:"background: #A3E4D7;border-radius: 4px;margin-bottom: 24px;border: 0;overflow: hidden",
+            activeKey:[],
         }
     },
     created() {
+        this.activeKey.push(this.active_question)
     },
     methods: {
         toResponse(question){
-            console.log(question);
+            if(question.is_closed){
+                if(!confirm('This Question is already CLOSED, would you like to response the question again?')){
+                    return;
+                }
+            }
+            console.log(question)
             this.myResponse.enquiry_question_id=question.id;
             this.myResponse.question=question;
+            window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
+
         },
         closeResponse(){
             this.myResponse={};
@@ -217,7 +226,11 @@ export default {
             return items;
         },
         onFinish() {
-            this.$inertia.post(route('enquiry.response'), this.myResponse, {
+            // this.data= {...this.myResponse};
+            // //this.$delete(data,'question');
+            // console.log(data);
+
+            this.$inertia.post(route('manage.enquiry.question.response'), this.myResponse, {
                 onSuccess: (page) => {
                     this.myResponse = {};
                     console.log(page);
@@ -226,18 +239,22 @@ export default {
                     console.log(err);
                 }
             });
-            console.log(this.myResponse);
+            //console.log(this.myResponse);
         },
         questionNubmer(question){
             var caption='提問編號 #'+ question.id;
             if(question.enquiry_response_id){
                 caption += ', 追問回應編號#'+ question.enquiry_response_id
             }
+            if(question.is_closed){
+                caption += ' (Closed)'
+            }
             return caption;
         },
         responseNumber(response){
             return '回應編號 #'+ response.id
-        }
+        },
     },
+
 }
 </script>
