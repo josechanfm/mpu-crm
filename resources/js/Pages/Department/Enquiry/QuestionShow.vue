@@ -72,7 +72,15 @@
                     {{ question.content }}
                     <ol>
                         <li v-for="file in question.media">
-                            <img :src="file.original_url" width="100" />
+                            <a :href="file.original_url" target="_blank">
+                                <template v-if="file.mime_type.includes('image/')">
+                                    <img :src="file.original_url" width="100" />
+                                </template>
+                                <template v-else>
+                                    {{ file.file_name }}
+                                </template>
+                            </a>
+
                         </li>
                     </ol>
                     <!-- Enquiry question response-->
@@ -80,21 +88,28 @@
                         <a-collapse>
                             <a-collapse-panel :header="responseNumber(response)" :style="responseStyle">
                                 <template #extra>{{ dateFormat(response.created_at) }}</template>
-                                    <a-typography-title :level="4">{{ response.title }}</a-typography-title>
-                                    <p>{{ response.remark }}</p>
-                                    <span v-if="response.by_email">
-                                        <p>Email: {{ response.email_address }}</p>
-                                        <p>Subject: {{ response.email_subject }}</p>
-                                        <p>Content: {{ response.email_content }}</p>
-                                    </span>
-                                    <ol>
-                                        <li v-for="file in response.media">
-                                            <img :src="file.original_url" width="100" />
-                                        </li>
-                                    </ol>
+                                <a-typography-title :level="4">{{ response.title }}</a-typography-title>
+                                <p>{{ response.remark }}</p>
+                                <span v-if="response.by_email">
+                                    <p>Email: {{ response.email_address }}</p>
+                                    <p>Subject: {{ response.email_subject }}</p>
+                                    <p>Content: {{ response.email_content }}</p>
+                                </span>
+                                <ol>
+                                    <li v-for="file in response.media">
+                                        <a :href="file.original_url" target="_blank">
+                                            <template v-if="file.mime_type.includes('image/')">
+                                                <img :src="file.original_url" width="100" />
+                                            </template>
+                                            <template v-else>
+                                                {{ file.file_name }}
+                                            </template>
+                                        </a>
+                                    </li>
+                                </ol>
                             </a-collapse-panel>
                         </a-collapse>
-                        
+
                         <hr>
                     </template>
                     <!--// Enquiry question response-->
@@ -108,28 +123,32 @@
         <template v-if="myResponse.enquiry_question_id">
             <a-divider style="height: 2px; background-color: #7cb305" />
             <a-card :title="'Response' + questionNubmer(myResponse.question)">
-                <template #extra><a-button type="link" @click="closeResponse" >關閉回應</a-button></template>
+                <template #extra><a-button type="link" @click="closeResponse">關閉回應</a-button></template>
                 <a-form ref="refResponseForm" name="response" :model="myResponse" layout="vertical" @finish="onFinish">
-                    <p><a-switch v-model:checked="myResponse.is_closed"/>&nbsp;&nbsp;Closed</p>
-                    <a-form-item name="title" label="Title" :rules="[{ required: true, message: 'Summary of your response.' }]">
+                    <p><a-switch v-model:checked="myResponse.is_closed" />&nbsp;&nbsp;Closed</p>
+                    <a-form-item name="title" label="Title"
+                        :rules="[{ required: true, message: 'Summarize your response.' }]">
                         <a-input v-model:value="myResponse.title" />
                     </a-form-item>
                     <a-form-item name="remark" label="Remark"
-                        :rules="[{ required: true, message: 'required your response remark' }]">
+                        :rules="[{ required: true, message: 'Required your response remark' }]">
                         <a-textarea v-model:value="myResponse.remark" :rows="10"></a-textarea>
                     </a-form-item>
                     <p><a-switch v-model:checked="myResponse.by_email" label="Email" />&nbsp;&nbsp;Response by email</p>
                     <span v-if="myResponse.by_email">
-                        <a-form-item name="email_address" label="email"
-                            :rules="[{ required: true, type: 'email', message: 'aaaaaa' }]">
+                        <a-form-item name="email_address" label="Email"
+                            :rules="[{ required: true, type: 'email', message: 'Reciever Email Address' }]">
                             <a-input v-model:value="myResponse.email_address" />
                         </a-form-item>
-                        <a-form-item name="email_subject" label="Subject" :rules="[{ required: true }]">
+                        <a-form-item name="email_subject" label="Subject"
+                            :rules="[{ required: true, message: 'Subject title of the Email' }]">
                             <a-input v-model:value="myResponse.email_subject" />
                         </a-form-item>
-                        <a-form-item name="email_content" label="Content" :rules="[{ required: true }]">
-                            <a-textarea v-model:value="myResponse.email_content" :rows="10"></a-textarea>
+                        <a-form-item name="email_content" label="Content"
+                            :rules="[{ required: true, message: 'Content Body of the Email' }]">
+                            <quill-editor v-model:value="myResponse.email_content" style="min-height:200px;" />
                         </a-form-item>
+                        <p>A link will be added at the end of the email</p>
                     </span>
                     <a-form-item name="fileList">
                         <a-upload v-model:file-list="myResponse.fileList" :beforeUpload="() => false" :max-count="10"
@@ -158,6 +177,7 @@ import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
 import CommentCard from '@/Components/Department/CommentCard.vue';
 import MailerBox from '@/Components/Department/MailerBox.vue';
 import EnquiryBox from '@/Components/Department/EnquiryBox.vue';
+import { quillEditor } from 'vue3-quill';
 import { UploadOutlined } from '@ant-design/icons-vue';
 import dayjs from 'dayjs';
 
@@ -168,8 +188,9 @@ export default {
         MailerBox,
         EnquiryBox,
         UploadOutlined,
+        quillEditor,
     },
-    props: ['fields','department', 'enquiry','active_question'],
+    props: ['fields', 'department', 'enquiry', 'active_question'],
     data() {
         return {
             myResponse: {
@@ -188,28 +209,27 @@ export default {
                 lineHeight: '30px',
                 marginLeft: '0'
             },
-            responseStyle:"background: #A3E4D7;border-radius: 4px;margin-bottom: 24px;border: 0;overflow: hidden",
-            activeKey:[],
+            responseStyle: "background: #A3E4D7;border-radius: 4px;margin-bottom: 24px;border: 0;overflow: hidden",
+            activeKey: [],
         }
     },
     created() {
         this.activeKey.push(this.active_question)
     },
     methods: {
-        toResponse(question){
-            if(question.is_closed){
-                if(!confirm('This Question is already CLOSED, would you like to response the question again?')){
+        toResponse(question) {
+            if (question.is_closed) {
+                if (!confirm('This Question is already CLOSED, would you like to response the question again?')) {
                     return;
                 }
             }
-            console.log(question)
-            this.myResponse.enquiry_question_id=question.id;
-            this.myResponse.question=question;
+            this.myResponse.enquiry_question_id = question.id;
+            this.myResponse.question = question;
             window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
 
         },
-        closeResponse(){
-            this.myResponse={};
+        closeResponse() {
+            this.myResponse = {};
         },
         dateFormat(date, format = 'YYYY-MM-DD HH:mm') {
             return dayjs(date).format(format);
@@ -241,18 +261,18 @@ export default {
             });
             //console.log(this.myResponse);
         },
-        questionNubmer(question){
-            var caption='提問編號 #'+ question.id;
-            if(question.enquiry_response_id){
-                caption += ', 追問回應編號#'+ question.enquiry_response_id
+        questionNubmer(question) {
+            var caption = '提問編號 #' + question.id;
+            if (question.enquiry_response_id) {
+                caption += ', 追問回應編號#' + question.enquiry_response_id
             }
-            if(question.is_closed){
+            if (question.is_closed) {
                 caption += ' (Closed)'
             }
             return caption;
         },
-        responseNumber(response){
-            return '回應編號 #'+ response.id
+        responseNumber(response) {
+            return '回應編號 #' + response.id
         },
     },
 

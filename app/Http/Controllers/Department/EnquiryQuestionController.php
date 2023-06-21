@@ -146,20 +146,25 @@ class EnquiryQuestionController extends Controller
                     ->toMediaCollection('enquiryResponseAttachments');
             }
         };
-        $folloupQuestionLink='<p><a href="'.env('APP_URL').'/enquiry/ticket/'.$response->id.'/'.$response->token.'">跟進問題 Follow-up question</a><p>';
-        $response->email_content.= $folloupQuestionLink;
+        //$folloupQuestionLink='<p><a href="'.env('APP_URL').'/enquiry/ticket/'.$response->id.'/'.$response->token.'">跟進問題 Follow-up question</a><p>';
+        // $response->email_content.= $folloupQuestionLink;
+
+        $link='<a href="'.env('APP_URL').'/enquiry/ticket/'.$response->id.'/'.$response->token.'">';
+        $email_body=$response->email_content;
+        $email_body=str_replace('//*',$link,$email_body);
+        $email_body=str_replace('*//','</a>',$email_body);
 
         if($request->by_email){
             $email=[
                 'address'=>$response->email_address,
                 'title'=>$response->email_subject,
-                'body'=>$response->email_content,
+                'body'=>$email_body,
                 'media'=>$response->media
                 ];
             $this->sendEmail($email);
         }
         $enquiryQuestion=EnquiryQuestion::find($response->enquiry_question_id);
-        $enquiryQuestion->is_closed=$request->is_closed;
+        $enquiryQuestion->is_closed=isset($request->is_closed)?$request->is_closed:0;
         $enquiryQuestion->save();
         
         return redirect()->back();

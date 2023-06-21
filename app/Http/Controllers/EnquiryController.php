@@ -68,6 +68,7 @@ class EnquiryController extends Controller
         $enquiry->phone=$request->phone;
         $enquiry->subjects=json_encode($request->subjects);
         $enquiry->token=Enquiry::token();
+        $enquiry->is_closed=isset($request->is_closed)?$request->is_closed:0;
         $enquiry->save();
         return to_route('enquiry.answerQuestion',[
             'enquiry'=>$enquiry->id,
@@ -165,11 +166,12 @@ class EnquiryController extends Controller
         }
         $enquiry->has_question=true;
         $enquiry->save();
-        $enquiry_question= new EnquiryQuestion();
-        $enquiry_question->enquiry_id=$enquiry->id;
-        $enquiry_question->content=$request->content;
-        $enquiry_question->token=Enquiry::token();
-        $enquiry_question->save();
+        $enquiryQuestion= new EnquiryQuestion();
+        $enquiryQuestion->enquiry_id=$enquiry->id;
+        $enquiryQuestion->content=$request->content;
+        $enquiryQuestion->token=Enquiry::token();
+        $enquiryQuestion->is_closed=isset($request->is_closed)?$request->is_closed:0;
+        $enquiryQuestion->save();
 
         if($request->file('fileList')){
             foreach($request->file('fileList') as $file){
@@ -186,9 +188,10 @@ class EnquiryController extends Controller
 
     }
 
-    public function getQuestion(){
-        $faqs=Faq::all();
-        return response()->json($faqs);
+    public function faqs(){
+        return Inertia::render('Enquiry/Faqs',[
+            'faqs'=>Faq::all()
+        ]);
     }
 
 }

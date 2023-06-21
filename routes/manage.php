@@ -41,7 +41,7 @@ Route::middleware([
         Route::post('enquiry/question/response',[App\Http\Controllers\Department\EnquiryQuestionController::class,'response'])->name('manage.enquiry.question.response');
         Route::resource('enquiries',App\Http\Controllers\Department\EnquiryController::class)->names('manage.enquiries');
         //Route::resource('department/{department}/faqs',App\Http\Controllers\Department\FaqController::class)->names('manage.department.faqs');
-        Route::resource('faqs',App\Http\Controllers\Department\FaqController::class)->names('manage.faqs');
+        Route::resource('enquiry/faqs',App\Http\Controllers\Department\FaqController::class)->names('manage.enquiry.faqs');
         //Route::resource('department/{department}/forms',App\Http\Controllers\Department\FormController::class)->names('manage.department.forms');
         Route::resource('forms',App\Http\Controllers\Department\FormController::class)->names('manage.forms');
         Route::resource('form/{form}/fields',App\Http\Controllers\Department\FormFieldController::class)->names('manage.form.fields');

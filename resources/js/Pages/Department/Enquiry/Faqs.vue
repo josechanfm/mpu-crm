@@ -12,6 +12,12 @@
                     <a-button @click="editRecord(record)">Edit</a-button>
                     <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
                 </template>
+                <template v-else-if="column.dataIndex=='degree'">
+                    {{ fields.degree.options.find(d=>d.value==text).label }}
+                </template>
+                <template v-else-if="column.dataIndex=='subjects'">
+                    <div v-html="gatherSubjectLables(text)"/>
+                </template>
                 <template v-else>
                     {{record[column.dataIndex]}}
                 </template>
@@ -81,8 +87,11 @@ export default {
             teacherStateLabels:{},
             columns:[
                 {
-                    title: 'Id',
-                    dataIndex: 'id',
+                    title: 'Degree',
+                    dataIndex: 'degree',
+                },{
+                    title: 'Subjects',
+                    dataIndex: 'subjects',
                 },{
                     title: 'Title',
                     dataIndex: 'question_zh',
@@ -122,9 +131,6 @@ export default {
         },
         editRecord(record){
             this.modal.data={...record};
-            if(this.modal.data.degree!=''){
-                this.modal.data.degree=JSON.parse(this.modal.data.degree);
-            }
             this.modal.data.subjects=JSON.parse(this.modal.data.subjects);
             this.modal.mode="EDIT";
             this.modal.title="修改";
@@ -133,7 +139,7 @@ export default {
         storeRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post(route('manage.faqs.store',{department:this.department.id}),this.modal.data, {
+                this.$inertia.post(route('manage.enquiry.faqs.store',{department:this.department.id}),this.modal.data, {
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -149,7 +155,7 @@ export default {
         updateRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch(route('manage.faqs.update',{faq:this.modal.data.id}),this.modal.data, {
+                this.$inertia.patch(route('manage.enquiry.faqs.update',{faq:this.modal.data.id}),this.modal.data, {
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -162,8 +168,16 @@ export default {
             }).catch(err => {
                 console.log("error", err);
             });
-           
         },
+        gatherSubjectLables(items){
+            return this.fields.subjects.options.reduce((a,c)=>{
+                        if(JSON.parse(items).includes(c.value)){
+                            a+=c.label+"<br>"
+                        }
+                        return a
+                    }, '') 
+
+        }
     },
 }
 </script>

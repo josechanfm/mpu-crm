@@ -26,7 +26,7 @@ Route::get('/', function () {
 
 Route::prefix('enquiry')->group(function(){
     Route::resource('/',\App\Http\Controllers\EnquiryController::class)->names('enquiry');
-    Route::get('get_question',[\App\Http\Controllers\EnquiryController::class,'getQuestion'])->name('enquiry.getQuestion');
+    Route::get('faqs',[\App\Http\Controllers\EnquiryController::class,'faqs'])->name('enquiry.faqs');
     Route::get('answer_question/{enquiry}/{token}',[\App\Http\Controllers\EnquiryController::class,'answerQuestion'])->name('enquiry.answerQuestion');
     Route::post('submit_question/{enquiry}',[\App\Http\Controllers\EnquiryController::class,'submitQuestion'])->name('enquiry.submitQuestion');
     Route::patch('no_question/{enquiry}',[\App\Http\Controllers\EnquiryController::class,'noQuestion'])->name('enquiry.noQuestion');

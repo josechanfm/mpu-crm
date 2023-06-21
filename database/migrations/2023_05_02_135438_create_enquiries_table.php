@@ -28,8 +28,9 @@ return new class extends Migration
             $table->string('areacode')->nullable();
             $table->string('phone')->nullable();
             $table->string('subjects')->nullable();
-            $table->boolean('has_question')->default(false);
+            $table->boolean('has_question')->nullable();
             $table->string('token')->nullable();
+            $table->boolean('is_closed')->default(0);
             $table->timestamps();
         });
     }

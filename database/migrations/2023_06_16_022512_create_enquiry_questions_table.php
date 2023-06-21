@@ -19,6 +19,7 @@ return new class extends Migration
             $table->bigInteger('parent_id')->nullable();
             $table->text('content');
             $table->string('token');
+            $table->boolean('is_closed')->default(0);
             $table->timestamps();
         });
     }

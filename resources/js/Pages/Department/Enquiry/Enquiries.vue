@@ -16,6 +16,7 @@
                     {{ record['areacode'] }} - {{ record['phone'] }}
                 </template>
                 <template v-else-if="column.dataIndex=='questions'">
+                    {{ record.questions.filter((q)=>q.is_closed==0).length }} / 
                     {{record[column.dataIndex].length }}
                 </template>
                 <template v-else>

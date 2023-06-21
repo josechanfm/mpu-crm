@@ -27,7 +27,7 @@ class EnquiryController extends Controller
     {
         $department=Department::find(session('currentDepartmentId'));
         //$this->authorize('view',$department);
-        return Inertia::render('Department/Enquiries',[
+        return Inertia::render('Department/Enquiry/Enquiries',[
             'department'=>$department,
             'enquiries'=>$department->enquiries,
             'fields'=>Config::enquiryFormFields(),
@@ -82,7 +82,7 @@ class EnquiryController extends Controller
         //$enquiry=$enquiry->with('responses');
         $enquiry->department;
         $enquiry->questions;
-        return Inertia::render('Department/EnquiryShow',[
+        return Inertia::render('Department/Enquiry/EnquiryShow',[
             'fields'=>Config::enquiryFormFields(),
             'enquiry'=>$enquiry,
         ]);

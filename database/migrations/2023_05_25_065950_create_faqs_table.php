@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('degree')->nullable();
             $table->string('subjects')->nullable();
             $table->string('question_zh');
-            $table->text('answer_zh');
+            $table->longText('answer_zh');
             $table->string('question_en')->nullable();
             $table->text('answer_en')->nullable();
             $table->string('question_pt')->nullable();

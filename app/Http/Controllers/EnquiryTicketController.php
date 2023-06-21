@@ -43,7 +43,7 @@ class EnquiryTicketController extends Controller
         $enquiryQuestion->enquiry_response_id=$response->id;
         $enquiryQuestion->content=$request->content;
         $enquiryQuestion->token=Enquiry::token();
-        $enquiryQuestion->is_closed=false;
+        $enquiryQuestion->is_closed=isset($request->is_closed)?$request->is_closed:0;
         $enquiryQuestion->save();
         $response->has_question=true;
         $response->save();

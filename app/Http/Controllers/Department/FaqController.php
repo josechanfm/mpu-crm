@@ -25,7 +25,7 @@ class FaqController extends Controller
     {
         $department=Department::find(session('currentDepartmentId'));
         //$this->authorize('view',$department);
-        return Inertia::render('Department/Faqs',[
+        return Inertia::render('Department/Enquiry/Faqs',[
             'department'=>$department,
             'faqs'=>$department->faqs,
             'fields'=>Config::enquiryFormFields()
@@ -98,8 +98,8 @@ class FaqController extends Controller
         $this->authorize('create',$faq->department);
         $faq->department_id=$request->department_id;
         $faq->category_id=$request->category_id;
-        $faq->degree=json_encode($request->degree);
-        $faq->subjects=json_encode($request->subjects);
+        $faq->degree=$request->degree;
+        $faq->subjects=$request->subjects;
         $faq->question_zh=$request->question_zh;    
         $faq->answer_zh=$request->answer_zh;
         $faq->save();
