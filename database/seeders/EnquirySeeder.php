@@ -33,10 +33,16 @@ class EnquirySeeder extends Seeder
             'subjects'=>'["ADM"]',
             'token'=>hash('crc32',time().'1'),
             'has_question'=>false,
-            'question'=>'content of my question',
         ]);
-        DB::table('responses')->insert([
+        DB::table('enquiry_questions')->insert([
             'enquiry_id'=>1,
+            'parent_id'=>NULL,
+            'content'=>'my question 1 is ...',
+            'token'=>'token001',
+            'is_closed'=>0
+        ]);
+        DB::table('enquiry_responses')->insert([
+            'enquiry_question_id'=>1,
             'title'=>'question title',
             'remark'=>'remark of my question',
             'by_email'=>true,
@@ -63,10 +69,16 @@ class EnquirySeeder extends Seeder
             'subjects'=>'["ADM"]',
             'token'=>hash('crc32',time().'1'),
             'has_question'=>false,
-            'question'=>'content of my question 2',
         ]);
-        DB::table('responses')->insert([
+        DB::table('enquiry_questions')->insert([
             'enquiry_id'=>2,
+            'parent_id'=>NULL,
+            'content'=>'my question 2 is ...',
+            'token'=>'token002',
+            'is_closed'=>0
+        ]);
+        DB::table('enquiry_responses')->insert([
+            'enquiry_question_id'=>2,
             'title'=>'question title',
             'remark'=>'remark of my question',
             'by_email'=>true,
