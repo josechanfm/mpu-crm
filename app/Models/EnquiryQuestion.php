@@ -15,6 +15,8 @@ class EnquiryQuestion extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
 
+    protected $casts=['files'=>'json'];
+
     public function enquiry(){
         return $this->belongsTo(Enquiry::class);
     }

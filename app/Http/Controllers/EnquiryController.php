@@ -8,6 +8,8 @@ use App\Models\Config;
 use App\Models\Enquiry;
 use App\Models\EnquiryQuestion;
 use App\Models\Faq;
+use Illuminate\Support\Facades\Storage;
+
 
 class EnquiryController extends Controller
 {
@@ -124,6 +126,7 @@ class EnquiryController extends Controller
         //
     }
     public function answerQuestion(Enquiry $enquiry,$token){
+            
         if($enquiry->has_question){
             return to_route('enquiry.index');
         };
@@ -137,9 +140,9 @@ class EnquiryController extends Controller
         };
         // $enquiry->has_question=true;
         // $enquiry->save();
-        $subjects=json_decode($enquiry->subjects);
+        $subjects=$enquiry->subjects;
         $faqs=Faq::getBySubjects($subjects);
-        return Inertia::render('Enquiry/Question',[
+        return Inertia::render('Enquiry/AnswerQuestion',[
             'enquiry'=>$enquiry,
             'faqs'=>$faqs,
         ]);
@@ -164,6 +167,7 @@ class EnquiryController extends Controller
                 'message'=>'The inquiry question already submit!'
             ]);
         }
+        //  dd($request->file());
         $enquiry->has_question=true;
         $enquiry->save();
         $enquiryQuestion= new EnquiryQuestion();
@@ -172,13 +176,20 @@ class EnquiryController extends Controller
         $enquiryQuestion->token=Enquiry::token();
         $enquiryQuestion->is_closed=isset($request->is_closed)?$request->is_closed:0;
         $enquiryQuestion->save();
-
+        $destinationPath='/inquire_qurestions/'.$enquiryQuestion->id;
+        $fileList=[];
         if($request->file('fileList')){
             foreach($request->file('fileList') as $file){
-                $enquiry_question->addMedia($file['originFileObj'])
-                    ->toMediaCollection('enquiryQuestionAttachments');
+                $fileName=$file['originFileObj']->getClientOriginalName();
+                $file['originFileObj']->move(public_path($destinationPath), $fileName);
+                $fileList[]=(Object)[
+                    'path'=>$destinationPath,
+                    'file_name'=>$fileName,
+                ];
             }
         }
+        $enquiryQuestion->files=$fileList;
+        $enquiryQuestion->save();
         return to_route('enquiry.thankQuestion');
     }
     public function thankQuestion(){

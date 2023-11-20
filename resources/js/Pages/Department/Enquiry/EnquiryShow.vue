@@ -168,8 +168,6 @@
             </a-card>
         </template>
         <!--// Response box -->
-
-
     </DepartmentLayout>
 </template>
 

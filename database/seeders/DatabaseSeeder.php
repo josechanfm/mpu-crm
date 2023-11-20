@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
         $roleMember=Role::create(['name'=>'member','guard_name' => 'web']);
 
         $this->call([
+            ConfigSeeder::class,
             MemberSeeder::class,
             DepartmentSeeder::class,
             FormSeeder::class,

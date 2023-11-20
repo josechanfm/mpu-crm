@@ -10,7 +10,7 @@ class Enquiry extends Model
 {
     use HasFactory;
 
-
+    protected $casts=['subjects'=>'array'];
     protected $fillable=['email','name','token'];
 
     

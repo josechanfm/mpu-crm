@@ -1,4 +1,10 @@
 <template>
+        <div class="p-5 bg-gray-200">
+        <a href="/">
+            <img src="/images/mpu_banner.png" width="300" />
+        </a>
+    </div>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
@@ -21,6 +27,10 @@
                     autocomplete="off"
                     enctype="multipart/form-data"
                 >
+                <template v-if="this.enquiry.subjects.includes('OTH') && this.enquiry.subjects.length==1">
+                    directly to question
+                </template>
+                <template v-else>
                     <p>是否尚有查詢? Still have Questions? </p>
                     <a-form-item>
                         <a-radio-group v-model:value="followup.has_question">
@@ -28,6 +38,7 @@
                             <a-radio :value='false'>否 No</a-radio>
                         </a-radio-group>
                     </a-form-item>
+                </template>
                     <template v-if="followup.has_question">
                         <label>請寫下你的問題 Please write your question.</label>
                         <a-form-item>
@@ -37,14 +48,15 @@
                             <a-form-item name="fileList">
                                 <a-upload 
                                     v-model:file-list="followup.fileList"
-                                    :beforeUpload="()=>false"
-                                    :max-count="10"
-                                    list-type="picture"
+                                    :beforeUpload="beforeUpload"
+                                    :max-count="5"
                                 >
                                     <a-button>
                                         <upload-outlined></upload-outlined>
-                                        Upload
+                                        上載檔案 Upload
                                     </a-button>
+                                    <p>檔案格式doc, docx, pdf, jpg, png，最多上傳5個檔案，每個檔案限5M<br>File format: doc, docx, pdf, jpg, png. Up to 5 files can be uploaded. Each file is limited to 5M.</p>
+
                                 </a-upload>
                             </a-form-item>
                         </div>
@@ -60,14 +72,17 @@
 
 <script>
 import { UploadOutlined } from '@ant-design/icons-vue';
+import { message, Upload } from 'ant-design-vue';
 
 export default {
     components: {
-        UploadOutlined
+        UploadOutlined,
+        message
     },
     props: ['enquiry', 'faqs'],
     data() {
         return {
+            validFormat:['image/jpeg','image/png','application/pdf','application/zip'],
             followup: {
                 has_question: false,
                 enquiry_id: this.enquiry.id,
@@ -77,9 +92,23 @@ export default {
         }
     },
     mounted(){
-        this.followup.has_question=false
+        this.followup.has_question=this.enquiry.subjects.includes('OTH')
     },
     methods: {
+        beforeUpload(file){
+            var isOverSize=file.size/1024/1024 > 3;
+            var isFormatInvalid=!this.validFormat.includes(file.type);
+            if(isOverSize || isFormatInvalid){
+                message.error({
+                    content:()=>'檔案格式或大小超過限制. The file format or size exceeds the limit.',
+                    class:'custom-class',
+                    style:{
+                        marginTop:'50vh'
+                    }
+                });
+                return false || Upload.LIST_IGNORE;
+            }
+        },
         onSubmits() {
             if (this.followup.has_question) {
                 if (this.followup.content.length == '') {

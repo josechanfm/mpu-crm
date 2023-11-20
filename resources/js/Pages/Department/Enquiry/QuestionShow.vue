@@ -5,6 +5,7 @@
                 客戶服務管理
             </h2>
         </template>
+        
         <!-- Enquirer basic info-->
         <a-card title="Contact Info">
             <template #extra>
@@ -69,18 +70,11 @@
                         <a-button type="primary" @click="toResponse(question)">回應</a-button>
                         {{ dateFormat(question.created_at) }}
                     </template>
-                    {{ question.content }}
                     <ol>
-                        <li v-for="file in question.media">
-                            <a :href="file.original_url" target="_blank">
-                                <template v-if="file.mime_type.includes('image/')">
-                                    <img :src="file.original_url" width="100" />
-                                </template>
-                                <template v-else>
+                        <li v-for="file in question.files">
+                            <a :href="file.path+'/'+file.file_name" target="_blank">
                                     {{ file.file_name }}
-                                </template>
                             </a>
-
                         </li>
                     </ol>
                     <!-- Enquiry question response-->
