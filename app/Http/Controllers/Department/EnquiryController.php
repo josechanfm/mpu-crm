@@ -26,10 +26,12 @@ class EnquiryController extends Controller
     public function index()
     {
         $department=Department::find(session('currentDepartmentId'));
+        $department->enquiries;
+        
         //$this->authorize('view',$department);
         return Inertia::render('Department/Enquiry/Enquiries',[
             'department'=>$department,
-            'enquiries'=>$department->enquiries,
+            //'enquiries'=>$department->enquiries,
             'fields'=>Config::enquiryFormFields(),
         ]);
     }

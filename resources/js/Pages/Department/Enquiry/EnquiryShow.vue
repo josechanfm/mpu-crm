@@ -21,7 +21,7 @@
         <!-- Question and Response list -->
         <a-collapse>
             <!-- Enquiry From-->
-            <a-collapse-panel header="Enquiry Form" style="background-color: #FADBD8;">
+            <a-collapse-panel :header="'查詢 #'+ enquiry.id" style="background-color: #FADBD8;">
                 <ol class="list-disc pl-10">
                     <li>
                         <p class="font-bold">{{ fields.origin.question }}</p>
@@ -44,8 +44,8 @@
                         <p>{{ optionFind(enquiry.apply, fields.apply.options) }}</p>
                     </li>
                     <li>
-                        <p class="font-bold">Name</p>
-                        <p>{{ enquiry.givenname }}, {{ enquiry.surname }}</p>
+                        <p class="font-bold">{{ fields.surname.question }},{{ fields.givenname.question }}</p>
+                        <p>{{ enquiry.surname }}, {{ enquiry.givenname }}</p>
                     </li>
                     <li>
                         <p class="font-bold">{{ fields.email.question }}</p>
@@ -147,7 +147,7 @@
                         </a-form-item>
                         <a-form-item name="email_content" label="Content"
                             :rules="[{ required: true, message: 'Content Body of the Email' }]">
-                            <quill-editor v-model:value="myResponse.email_content" style="min-height:200px;" />
+                            <a-textarea v-model:value="myResponse.email_content" style="min-height:200px;" />
                         </a-form-item>
                         <p>A link will be added at the end of the email</p>
                     </span>
@@ -178,7 +178,7 @@ import MailerBox from '@/Components/Department/MailerBox.vue';
 import EnquiryBox from '@/Components/Department/EnquiryBox.vue';
 import { UploadOutlined } from '@ant-design/icons-vue';
 import dayjs from 'dayjs';
-
+import { quillEditor } from 'vue3-quill';
 export default {
     components: {
         DepartmentLayout,
@@ -186,6 +186,7 @@ export default {
         MailerBox,
         EnquiryBox,
         UploadOutlined,
+        quillEditor
     },
     props: ['fields', 'enquiry'],
     data() {
@@ -220,6 +221,8 @@ export default {
             }
             this.myResponse.enquiry_question_id=question.id;
             this.myResponse.question=question;
+            this.myResponse.remark='Re: MPU admission enquiry - ”#ticket no.' +question.enquiry_id +'-'+ question.id + '"'
+            this.myResponse.email_content='Re: MPU admission enquiry - ”#ticket no.' +question.enquiry_id +'-'+ question.id + '"'
             window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
 
         },
@@ -263,7 +266,9 @@ export default {
             return caption;
         },
         responseNumber(response){
-            return '回應編號 #'+ response.id
+            console.log(response);
+            return '回應編號 #'+ response.id +" of "+response.enquiry_question_id
+
         },
     },
 

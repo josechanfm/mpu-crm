@@ -29,6 +29,7 @@ class EnquiryQuestion extends Model implements HasMedia
             ->nonQueued();
     }
 
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('enquiryQuestionAttachments')->useDisk('inquiry');

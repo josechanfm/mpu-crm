@@ -68,7 +68,7 @@ class EnquiryController extends Controller
         $enquiry->email=$request->email;
         $enquiry->areacode=$request->areacode;
         $enquiry->phone=$request->phone;
-        $enquiry->subjects=$request->subjects;
+        $enquiry->subjects=json_encode($request->subjects);
         $enquiry->token=Enquiry::token();
         $enquiry->is_closed=isset($request->is_closed)?$request->is_closed:0;
         $enquiry->save();
@@ -155,7 +155,6 @@ class EnquiryController extends Controller
         }
         $enquiry->has_question=false;
         $enquiry->save();
-        //return to_route('enquiry.thankQuestion');
         return to_route('enquiry.thankQuestion');
     }
 
@@ -170,38 +169,32 @@ class EnquiryController extends Controller
         }
         //  dd($request->file());
         $enquiry->has_question=true;
-        //$enquiry->save();
+        $enquiry->save();
         $enquiryQuestion= new EnquiryQuestion();
         $enquiryQuestion->enquiry_id=$enquiry->id;
         $enquiryQuestion->content=$request->content;
         $enquiryQuestion->token=Enquiry::token();
         $enquiryQuestion->is_closed=isset($request->is_closed)?$request->is_closed:0;
-        //$enquiryQuestion->save();
-
+        $enquiryQuestion->save();
+        $destinationPath='/inquire_qurestions/'.$enquiryQuestion->id;
+        $fileList=[];
         if($request->file('fileList')){
             foreach($request->file('fileList') as $file){
-                //$enquiryQuestion->addMedia($file['originFileObj'])->toMediaCollection('enquiryQuestionAttachments');
+                $fileName=$file['originFileObj']->getClientOriginalName();
+                $file['originFileObj']->move(public_path($destinationPath), $fileName);
+                $fileList[]=(Object)[
+                    'path'=>$destinationPath,
+                    'file_name'=>$fileName,
+                ];
             }
-        };
-        //return $this->thankQuestion($enquiryQuestion);
-        return to_route('enquiry.thankQuestion',['eq'=>'12']);
+        }
+        $enquiryQuestion->files=$fileList;
+        $enquiryQuestion->save();
+        return to_route('enquiry.thankQuestion');
     }
-    public function thankQuestion(Request $request){
-        //dd($request->enquiry_id);
-        if($request->eq){
-            $enquiryQuestion=EnquiryQuestion::find($request->eq);
-            if($enquiryQuestion->enquiry->token!==$request->t){
-                return Inertia::render('Error',[
-                    'message'=>'Request prohibited!'
-                ]);
-    
-            }
-        }else{
-            $enquiryQuestion=null;
-        };
-        
+    public function thankQuestion(){
         return Inertia::render('Enquiry/ThankQuestion',[
-            'enquiryQuestion'=>$enquiryQuestion
+
         ]);
 
     }

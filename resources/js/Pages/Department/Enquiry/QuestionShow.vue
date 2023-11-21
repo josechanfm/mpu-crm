@@ -70,13 +70,21 @@
                         <a-button type="primary" @click="toResponse(question)">回應</a-button>
                         {{ dateFormat(question.created_at) }}
                     </template>
+                    {{ question.content }}
+                    <a-divider/>
                     <ol>
-                        <li v-for="file in question.files">
-                            <a :href="file.path+'/'+file.file_name" target="_blank">
+                        <li v-for="file in question.media">
+                            <a :href="file.original_url" target="_blank">
+                                <template v-if="file.mime_type.includes('image/')">
+                                    <img :src="file.original_url" width="100" />
+                                </template>
+                                <template v-else>
                                     {{ file.file_name }}
+                                </template>
                             </a>
                         </li>
                     </ol>
+
                     <!-- Enquiry question response-->
                     <template v-for="response in question.responses">
                         <a-collapse>

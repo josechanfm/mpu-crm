@@ -93,7 +93,7 @@ export default {
                     title: 'Subjects',
                     dataIndex: 'subjects',
                 },{
-                    title: 'Title',
+                    title: 'Question',
                     dataIndex: 'question_zh',
                 },{
                     title: '操作',

@@ -56,8 +56,8 @@ class FaqController extends Controller
         $faq=new Faq;
         $faq->department_id=$request->department_id;
         $faq->category_id=$request->category_id;
-        $faq->degree=json_encode($request->degree);
-        $faq->subjects=json_encode($request->subjects);
+        $faq->degree=$request->degree;
+        $faq->subjects=$request->subjects;
         $faq->question_zh=$request->question_zh;    
         $faq->answer_zh=$request->answer_zh;
         $faq->save();

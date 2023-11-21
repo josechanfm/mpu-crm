@@ -46,11 +46,17 @@
                         </a-form-item>
                         <div class="flow-root">
                             <a-form-item name="fileList">
-                                <a-upload v-model:file-list="followup.fileList" list-type="picture" :beforeUpload="beforeUpload" :max-count="5">
+                                <a-upload 
+                                    v-model:file-list="followup.fileList"
+                                    :beforeUpload="beforeUpload"
+                                    :max-count="5"
+                                >
                                     <a-button>
                                         <upload-outlined></upload-outlined>
-                                        Upload
+                                        上載檔案 Upload
                                     </a-button>
+                                    <p>檔案格式doc, docx, pdf, jpg, png，最多上傳5個檔案，每個檔案限5M<br>File format: doc, docx, pdf, jpg, png. Up to 5 files can be uploaded. Each file is limited to 5M.</p>
+
                                 </a-upload>
                             </a-form-item>
                         </div>
@@ -67,6 +73,7 @@
 <script>
 import { UploadOutlined } from '@ant-design/icons-vue';
 import { message, Upload } from 'ant-design-vue';
+
 export default {
     components: {
         UploadOutlined,
@@ -75,11 +82,7 @@ export default {
     props: ['enquiry', 'faqs'],
     data() {
         return {
-            uploadValidator:{
-                fileSize:5, //Magabyte
-                validFormat:['image/jpeg','image/png','application/pdf','application/zip'],
-            },
-            
+            validFormat:['image/jpeg','image/png','application/pdf','application/zip'],
             followup: {
                 has_question: false,
                 enquiry_id: this.enquiry.id,
@@ -93,11 +96,11 @@ export default {
     },
     methods: {
         beforeUpload(file){
-            var isOverSize=file.size/1024/1024 > this.uploadValidator.fileSize;
-            var isFormatInvalid=!this.uploadValidator.validFormat.includes(file.type);
+            var isOverSize=file.size/1024/1024 > 3;
+            var isFormatInvalid=!this.validFormat.includes(file.type);
             if(isOverSize || isFormatInvalid){
                 message.error({
-                    content:()=>'檔案格式不符或大小超過限制. The file format does not match or the size exceeds the limit.',
+                    content:()=>'檔案格式或大小超過限制. The file format or size exceeds the limit.',
                     class:'custom-class',
                     style:{
                         marginTop:'50vh'
