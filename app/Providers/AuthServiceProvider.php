@@ -51,8 +51,6 @@ class AuthServiceProvider extends ServiceProvider
                         'samaccountname' => $request->username,
                         'password' => $request->password
                     ]);
-                    dd(['validated'=>$validated,'requests'=>$request->all()]);
-                    
                 }
             }else{
                 Auth::shouldUse(config('fortify.guard'));
