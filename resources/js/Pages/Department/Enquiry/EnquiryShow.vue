@@ -70,6 +70,7 @@
                         {{ dateFormat(question.created_at) }}
                     </template>
                     {{ question.content }}
+                    {{ question.media }}
                     <ol>
                         <li v-for="file in question.media">
                             <a :href="file.original_url" target="_blank">

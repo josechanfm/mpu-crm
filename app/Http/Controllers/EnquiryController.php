@@ -170,21 +170,21 @@ class EnquiryController extends Controller
         }
         //  dd($request->file());
         $enquiry->has_question=true;
-        //$enquiry->save();
+        $enquiry->save();
         $enquiryQuestion= new EnquiryQuestion();
         $enquiryQuestion->enquiry_id=$enquiry->id;
         $enquiryQuestion->content=$request->content;
         $enquiryQuestion->token=Enquiry::token();
         $enquiryQuestion->is_closed=isset($request->is_closed)?$request->is_closed:0;
-        //$enquiryQuestion->save();
+        $enquiryQuestion->save();
 
         if($request->file('fileList')){
             foreach($request->file('fileList') as $file){
-                //$enquiryQuestion->addMedia($file['originFileObj'])->toMediaCollection('enquiryQuestionAttachments');
+                $enquiryQuestion->addMedia($file['originFileObj'])->toMediaCollection('enquiryQuestionAttachments');
             }
         };
         //return $this->thankQuestion($enquiryQuestion);
-        return to_route('enquiry.thankQuestion',['eq'=>'12']);
+        return to_route('enquiry.thankQuestion',['eq'=>$enquiryQuestion->id,'t'=>$enquiry->token]);
     }
     public function thankQuestion(Request $request){
         //dd($request->enquiry_id);

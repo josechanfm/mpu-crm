@@ -31,7 +31,6 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Fortify::authenticateUsing(function ($request) {
-
             if(config('fortify.guard')=='admin_web'){
                 if($request->local){
                     $adminLocal='admin_local';
@@ -46,11 +45,13 @@ class AuthServiceProvider extends ServiceProvider
                 }else{
                     Auth::shouldUse(config('fortify.guard'));
                     config(['fortify.username' => 'username']);
+
                     $validated = Auth::validate([
                         //'mail' => $request->email,
-                        'samaccountname' => $request->username,
-                        'password' => $request->password
+                        'samaccountname' => 'josechan',//$request->username,
+                        'password' => 'setembro01'//$request->password
                     ]);
+                    dd($validated);
                 }
             }else{
                 Auth::shouldUse(config('fortify.guard'));
