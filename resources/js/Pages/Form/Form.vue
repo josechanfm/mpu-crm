@@ -30,7 +30,6 @@ import { Inertia } from '@inertiajs/inertia';
 
 export default {
     components: {
-        MemberLayout,
         WebLayout,
     },
     props: ['forms'],
