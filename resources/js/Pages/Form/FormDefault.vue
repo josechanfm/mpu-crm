@@ -21,10 +21,14 @@
                                 <a-input v-model:value="$page.props.user.id" />
                             </a-form-item>                        
                         </div>
-
                         <div v-if="field.type=='input'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
                                 <a-input v-model:value="formData[field.id]" />
+                            </a-form-item>                        
+                        </div>
+                        <div v-else-if="field.type=='number'">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
+                                <a-input-number v-model:value="formData[field.id]" />
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='select'">

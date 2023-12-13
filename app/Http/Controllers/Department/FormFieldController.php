@@ -13,8 +13,8 @@ class FormFieldController extends Controller
 {
     public function __construct()
     {
-        // $this->authorizeResource(Organization::class);
-        // $this->authorizeResource(Form::class);
+        //$this->authorizeResource(Department::class);
+        $this->authorizeResource(Form::class);
     }
 
     /**
@@ -24,8 +24,9 @@ class FormFieldController extends Controller
      */
     public function index(Form $form)
     {
+        $this->authorize('view',$form);
         return Inertia::render('Department/FormFields',[
-            'department'=>$form->department,
+            'department'=>session('department'),
             'form'=>$form,
             'fields'=>$form->fields,
         ]);
@@ -51,21 +52,24 @@ class FormFieldController extends Controller
     {
         $this->validate($request,[
             'form_id' => 'required',
-            'field_name'=>'required',
             'field_label'=>'required',
+            'type'=>'required',
         ]);
 
-            $field=new FormField();
-            $field->form_id=$request->form_id;
-            $field->field_name=$request->field_name;
-            $field->field_label=$request->field_label;
-            $field->type=$request->type;
-            $field->required=$request->required;
-            $field->rule=$request->rule;
-            $field->validate=$request->validate;
-            $field->remark=$request->remark;
-            $field->save();
-            return redirect()->back();
+        $field=new FormField();
+        $field->form_id=$request->form_id;
+        $field->field_name=$request->field_name;
+        $field->field_label=$request->field_label;
+        $field->type=$request->type;
+        $field->options=json_encode($request->options);
+        $field->required=isset($request->required)?$request->required:false;
+        $field->in_column=isset($request->in_column)?$request->in_column:false;
+        $field->direction=isset($request->direction)?$request->direction:'H';
+        $field->rule=$request->rule;
+        $field->validate=$request->validate;
+        $field->remark=$request->remark;
+        $field->save();
+        return redirect()->back();
 
     }
 
@@ -102,18 +106,21 @@ class FormFieldController extends Controller
     {
         $this->validate($request,[
             'form_id' => 'required',
-            'field_name'=>'required',
             'field_label'=>'required',
+            'type'=>'required',
         ]);
-            $field=FormField::find($request->id);
-            $field->form_id=$request->form_id;
-            $field->field_name=$request->field_name;
-            $field->field_label=$request->field_label;
-            $field->type=$request->type;
-            $field->required=$request->required;
-            $field->remark=$request->remark;
-            $field->save();
-            return redirect()->back();
+        $field=FormField::find($request->id);
+        $field->form_id=$request->form_id;
+        $field->field_name=$request->field_name;
+        $field->field_label=$request->field_label;
+        $field->type=$request->type;
+        $field->options=json_encode($request->options);
+        $field->direction=isset($request->direction)?$request->direction:'H';
+        $field->required=isset($request->required)?$request->required:false;
+        $field->in_column=isset($request->in_column)?$request->in_column:false;
+        $field->remark=$request->remark;
+        $field->save();
+        return redirect()->back();
     }
 
     /**
@@ -122,8 +129,19 @@ class FormFieldController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Organization $organization, Form $form, FormField $field)
+    public function destroy(Department $department, Form $form, FormField $field)
     {
         $field->delete();        
+    }
+
+    public function fieldsSequence(Form $form, Request $request){
+        foreach($request->all() as $record){
+            $field=FormField::find($record['id']);
+            if($field->form_id==$record['form_id']){
+                $field->sequence=$record['sequence'];
+                $field->save();
+            }
+        }
+        return redirect()->back();
     }
 }

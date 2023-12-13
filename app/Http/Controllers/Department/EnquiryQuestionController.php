@@ -26,7 +26,8 @@ class EnquiryQuestionController extends Controller
      */
     public function index()
     {
-        $department=Department::find(session('currentDepartmentId'));
+        //$department=Department::find(session('currentDepartmentId'));
+        $department=session('department');
         //$this->authorize('view',$department);
         $department->enquiryQuestionsOpen;
         return Inertia::render('Department/Enquiry/Questions',[

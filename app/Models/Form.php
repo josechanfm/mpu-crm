@@ -13,6 +13,7 @@ class Form extends Model
 {
     use HasFactory;
     use InteractsWithMedia;
+    protected $fillable=['department_id','name','title','welcome','description','thankyou','require_login','for_staff','published'];
 
     public function department(){
         return $this->belongsTo(Department::class);

@@ -25,6 +25,7 @@
         "@tinymce/tinymce-vue": "^4.0.7",
         "ant-design-vue": "^3.2.15",
         "quill": "^1.3.7",
+        "vue-draggable-next": "^2.2.1",
         "vue3-quill": "^0.3.0",
         "vue3-quill-editor-vite": "^0.0.4"
     }

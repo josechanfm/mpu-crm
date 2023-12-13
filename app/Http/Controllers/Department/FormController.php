@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\Department;
 
 use App\Http\Controllers\Controller;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Form;
-use App\Models\Department;
+use App\Models\Entry;
+use App\Models\EntryRecord;
+use App\Models\Event;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class FormController extends Controller
 {
     public function __construct()
     {
-        // $this->authorizeResource(Organization::class);
-        // $this->authorizeResource(Form::class);
+        //$this->authorizeResource(Department::class);
+        $this->authorizeResource(Form::class);
     }
 
     /**
@@ -24,10 +27,17 @@ class FormController extends Controller
      */
     public function index()
     {
-        $department=Department::find(session('currentDepartmentId'));
+        //dd(Form::find($formId)->entries()->delete());
+        // echo ($entries);
+        // echo ($form);
+        //dd(Department::find(session('department')->id)->forms);
+        //$this->authorize('view',$department);
+        //dd(session('department'));
+        $department=session('department');
+        $department->forms;
         return Inertia::render('Department/Forms',[
-            'department'=>$department,
-            'forms'=>$department->forms
+            'department' => $department
+            //'forms'=>Department::find(session('department')->id)->forms
         ]);
     }
 
@@ -38,7 +48,19 @@ class FormController extends Controller
      */
     public function create()
     {
-        //
+        $form=Form::make([
+            'department_id'=>session('department')->id,
+            'require_login'=>false,
+            'for_staff'=>false,
+            'published'=>false
+        ]);
+        $form->media;
+        return Inertia::render('Department/Form',[
+            //'department' => Department::find(session('department')->id),
+            //'forms'=>Department::find(session('department')->id)->forms
+            'department' => Department::find($form->department_id),
+            'form'=>$form
+        ]);
     }
 
     /**
@@ -50,19 +72,23 @@ class FormController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
+            'department_id' => 'required',
             'name'=>'required',
             'title'=>'required',
         ]);
-            $form=new Form();
-            $form->department_id=session('currentDepartmentId');
-            $form->name=$request->name;
-            $form->title=$request->title;
-            $form->description=$request->description;
-            $form->require_login=$request->require_login;
-            $form->for_staff=$request->for_staff;
-            $form->published=$request->published;
-            $form->save();
-            return redirect()->back();
+        $department = Department::find($request->department_id);
+        Form::create($request->all());
+        // $form=new Form();
+        // $form->department_id=$request->department_id;
+        // $form->name=$request->name;
+        // $form->title=$request->title;
+        // $form->description=$request->description;
+        // $form->require_login=$request->require_login;
+        // $form->for_staff=$request->for_staff;
+        // $form->published=$request->published;
+        // $form->save();
+        return to_route('manage.forms.index');
+        return redirect()->back();
     }
 
     /**
@@ -71,34 +97,12 @@ class FormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Form $form)
+    public function show(Department $department, Form $form)
     {
-        $department=Department::find(session('currentDepartmentId'));
-        $form=Form::with('fields')->find($form->id);
-        $filleds=$form->filleds;
-        $columns=[(object)['title'=>'Nubmer','dataIndex'=>'uid']];
-        foreach($form->fields as $field){
-            if($field->in_column){
-                $columns[]=(object)['title'=>$field->field_label,'dataIndex'=>$field->field_name];
-                foreach($filleds as $k=>$filled){
-                    foreach($filled->fields as $ff){
-                        if($ff->form_field_id==$field->id){
-                            $filleds[$k][$field->field_name]=$ff->field_value;
-                        }
-                    }
-                    
-                }
-            }
-        }
-        $columns[]=(object)['title'=>'Submit at','dataIndex'=>'created_at'];
-        $columns[]=(object)['title'=>'Action','dataIndex'=>'operation'];
+        // $this->authorize('view',$department);
+        // $this->authorize('view',$form);
 
-        return Inertia::render('Department/Filleds',[
-            'department'=>$department,
-            'form'=>$form,
-            'filleds'=>$filleds,
-            'columns'=>$columns
-        ]);
+        echo 'edit form';
     }
 
     /**
@@ -109,11 +113,14 @@ class FormController extends Controller
      */
     public function edit(Form $form)
     {
-        //$this->authorize('update',$organization);
-        //$this->authorize('update',$form);
-        // return Inertia::render('Admin/FormEdit',[
-        //     'fields'=>$form->fields
-        // ]);
+        //dd(Department::find($form->department_id));
+        $form->media;
+        return Inertia::render('Department/Form',[
+            //'department' => Department::find(session('department')->id),
+            //'forms'=>Department::find(session('department')->id)->forms
+            'department' => Department::find($form->department_id),
+            'form'=>$form
+        ]);
         
     }
 
@@ -124,28 +131,34 @@ class FormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Form $form)
     {
         $this->validate($request,[
-            'id' => 'required',
+            'department_id' => 'required',
             'name'=>'required',
             'title'=>'required',
-            // 'image'=>'array',
-            // 'image.*.originFileObj' => 'image|mimes:jpeg,jpg,gif,png|max:1024'
         ]);
-        $form=Form::find($request->id);
-        $form->name=$request->name;
-        $form->title=$request->title;
-        $form->description=$request->description;
-        $form->require_login=$request->require_login;
-        $form->for_staff=$request->for_staff;
-        $form->published=$request->published;
+        $department = Department::find($request->department_id);
+        if($department->id!=session('department')->id){
+            return redirect()->back();
+        };
+        $form->update($request->all());
+        // $form->name=$request->name;
+        // $form->title=$request->title;
+        // $form->description=$request->description;
+        // $form->require_login=$request->require_login;
+        // $form->for_member=$request->for_member;
+        // $form->published=$request->published;
+        // $form->with_attendance=$request->with_attendance;
+        // $form->save();
+        //dd($request->file('image'));
         if($request->file('image')){
-            $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('image');
+            //dd($request->file('image')[0]['originFileObj']->originalName);
+            
+                $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('form_banner');
+            
         }
-        $form->save();
         return redirect()->back();
-        
     }
 
     /**
@@ -154,7 +167,7 @@ class FormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Form $form)
+    public function destroy(Department $department, Form $form)
     {
         if($form->hasChild()){
             return redirect()->back()->withErrors(['message'=>'No permission or restriced deletion of records with child records.']);
@@ -163,8 +176,46 @@ class FormController extends Controller
             return redirect()->back();
         }
     }
+    public function backup(Form $form){
+        //return response()->json($form);
+        $data=new \stdClass();
+        $form->fields;
+        //$data->form=Form::with('fields')->find($formId);
+        $data->form=$form;
+
+        if($data->form){
+            $data->entries=Entry::where('form_id',3)->with('records')->get();
+            $file=\Storage::put('dbbackup/'.$data->form->department_id.'/form_'.$data->form->id.'_'.time().'.txt',json_encode($data));
+            if($file){
+                $data->entries;
+            };
+            //dd($file);
+            $ids=Entry::where('form_id',$data->form->id)->pluck('id')->toArray();
+            EntryRecord::whereIn('entry_id',$ids)->delete();
+            Entry::where('form_id',$data->form->id)->delete();
+        }
+        return response()->json($data);
+    }
 
     public function deleteMedia(Media $media){
         $media->delete();
-    }    
+    }
+
+    public function createEventAttendees(Request $request, Form $form){
+        $event=Event::where('form_id',$form->id)->first();
+        if(empty($event)){
+            $event=new Event();
+        }
+        $event->department_id=$form->department_id;
+        $event->category_code='FORM';
+        $event->title_en=$form->title;
+        $event->credit=0;
+        $event->start_date=null;
+        $event->end_date=null;
+        $event->form_id=$form->id;
+        $event->with_attendance=true;
+        $event->save();
+        $event->entries()->syncWithoutDetaching($request->all());      
+        return redirect()->back();
+    }
 }

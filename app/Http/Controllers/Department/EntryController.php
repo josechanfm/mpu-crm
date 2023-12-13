@@ -7,8 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\Department;
 use App\Models\Form;
 use Inertia\Inertia;
+use App\Exports\EntryExport;
+use Maatwebsite\Excel\Facades\Excel;
 
-class FilledController extends Controller
+
+class EntryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,32 +20,14 @@ class FilledController extends Controller
      */
     public function index(Form $form)
     {
-        //$department=Department::find(session('currentDepartmentId'));
-        $department=session('department');
-        $form=Form::with('fields')->find($form->id);
-        $filleds=$form->filleds;
-        $columns=[(object)['title'=>'Nubmer','dataIndex'=>'uid']];
-        foreach($form->fields as $field){
-            if($field->in_column){
-                $columns[]=(object)['title'=>ucfirst($field->field_name),'dataIndex'=>$field->field_name];
-                foreach($filleds as $k=>$filled){
-                    foreach($filled->fields as $ff){
-                        if($ff->field_name==$field->field_name){
-                            $filleds[$k][$field->field_name]=$ff->field_value;
-                        }
-                    }
-                    
-                }
-            }
-        }
-        $columns[]=(object)['title'=>'Submit at','dataIndex'=>'created_at'];
-        $columns[]=(object)['title'=>'Action','dataIndex'=>'operation'];
-
-        return Inertia::render('Department/Filleds',[
-            'department'=>$department,
+        //$form=Form::with('fields')->find($form->id);
+        $entries=$form->tableEntries();
+        $form->fields;
+        return Inertia::render('Department/FormEntries',[
+            'organization'=>session('department'),
             'form'=>$form,
-            'filleds'=>$filleds,
-            'columns'=>$columns
+            'entries'=>$entries,
+            'entryColumns'=>$form->entry_columns()
         ]);
         
     }
@@ -97,7 +82,7 @@ class FilledController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {   
         //
     }
 
@@ -110,5 +95,9 @@ class FilledController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function export(Form $form){
+        return Excel::download(new EntryExport($form), 'member.xlsx');
     }
 }

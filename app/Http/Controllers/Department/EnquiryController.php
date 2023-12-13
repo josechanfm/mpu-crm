@@ -25,7 +25,8 @@ class EnquiryController extends Controller
      */
     public function index()
     {
-        $department=Department::find(session('currentDepartmentId'));
+        //$department=Department::find(session('currentDepartmentId'));
+        $department=session('department');
         $department->enquiries;
         
         //$this->authorize('view',$department);

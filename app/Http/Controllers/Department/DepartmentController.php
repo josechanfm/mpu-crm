@@ -67,7 +67,10 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-        session(['currentDepartmentId'=>$department->id]);
+        //session(['currentDepartmentId'=>$department->id]);
+        session(['department'=>$department]);
+        //dd(session('department'));
+
         $this->authorize('view',$department);
 
         return Inertia::render('Department/Dashboard',[
@@ -86,8 +89,6 @@ class DepartmentController extends Controller
     {         
 
         //$this->authorize('update' , $department);
-
-
         return Inertia::render('Department/DepartmentEdit',[
             'department'=>$department,
         ]);

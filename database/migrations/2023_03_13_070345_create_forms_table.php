@@ -18,7 +18,9 @@ return new class extends Migration
             $table->bigInteger('department_id');
             $table->string('name');
             $table->string('title')->nullable();
+            $table->text('welcome')->nullable();
             $table->text('description')->nullable();
+            $table->text('thankyou')->nullable();
             $table->boolean('require_login')->default(false);
             $table->boolean('for_staff')->default(false);
             $table->boolean('published')->default(false);
