@@ -1,12 +1,18 @@
 <script setup>
+import { ref } from "vue";
+import { Inertia } from "@inertiajs/inertia";
 import { Head, Link } from '@inertiajs/inertia-vue3';
+import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
     laravelVersion: String,
     phpVersion: String,
+    title: String,
 });
+const showingNavigationDropdown = ref(false);
+
 </script>
 
 <template>
@@ -15,11 +21,10 @@ defineProps({
     <header>
         <!-- navbar and menu -->
         <nav class="shadow">
-
             <div class="flex justify-between items-center py-6 px-10 container mx-auto">
-
                 <div>
-                    <h1 class="text-2xl font-bold bg-gradient-to-tr from-indigo-600 to-green-600 bg-clip-text text-transparent hover:cursor-pointer">
+                    <h1
+                        class="text-2xl font-bold bg-gradient-to-tr from-indigo-600 to-green-600 bg-clip-text text-transparent hover:cursor-pointer">
                         <a href="/">
                             WIRE
                         </a>
@@ -27,18 +32,29 @@ defineProps({
                 </div>
 
                 <div>
-                    <div class="hover:cursor-pointer sm:hidden">
-                        <spnan class="h-1 rounded-full block w-8 mb-1 bg-gradient-to-tr from-indigo-600 to-green-600">
-                        </spnan>
-                        <spnan class="h-1 rounded-full block w-8 mb-1 bg-gradient-to-tr from-indigo-600 to-green-600">
-                        </spnan>
-                        <spnan class="h-1 rounded-full block w-8 mb-1 bg-gradient-to-tr from-indigo-600 to-green-600">
-                        </spnan>
+                    <!-- Hamburger -->
+                    <div class="-mr-2 flex items-center sm:hidden">
+                        <button
+                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 bg-white hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition"
+                            @click="showingNavigationDropdown = !showingNavigationDropdown">
+                            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                <path :class="{
+                                    hidden: showingNavigationDropdown,
+                                    'inline-flex': !showingNavigationDropdown,
+                                }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                                <path :class="{
+                                    hidden: !showingNavigationDropdown,
+                                    'inline-flex': showingNavigationDropdown,
+                                }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
                     </div>
                     <div class="flex items-center">
                         <ul class="sm:flex space-x-4 hidden items-center">
-                            <li><a href="https://www.mpu.edu.mo" class="text-gray-700 hover:text-indigo-600 text-md ">MPU</a></li>
-                            <li><a href="https://www.mpu.edu.mo/en/services.php" target="_blank" class="text-gray-700 hover:text-indigo-600 text-md ">Services</a></li>
+                            <li><a href="https://www.mpu.edu.mo"
+                                    class="text-gray-700 hover:text-indigo-600 text-md ">MPU</a></li>
+                            <li><a href="https://www.mpu.edu.mo/en/services.php" target="_blank"
+                                    class="text-gray-700 hover:text-indigo-600 text-md ">Services</a></li>
                         </ul>
                         <div class="md:flex items-center hidden space-x-4 ml-8 lg:ml-12">
                             <h1 class="text-text-gray-600  py-2 hover:cursor-pointer hover:text-indigo-600"><inertia-link
@@ -51,15 +67,49 @@ defineProps({
                     </div>
                 </div>
             </div>
+
+            <!-- Responsive Navigation Menu -->
+            <div :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
+                class="sm:hidden bg-white">
+                <div class="pt-2 pb-3 space-y-1">
+                    <ResponsiveNavLink href="#">
+                        Main
+                    </ResponsiveNavLink>
+                </div>
+
+                <!-- Responsive Settings Options -->
+                <div class="pt-4 pb-1 border-t border-gray-200">
+                    <div class="mt-3 space-y-1">
+                        <ul class="pl-5">
+                            <li>
+                                <a href="https://www.mpu.edu.mo" target="_blank"
+                                    class="text-gray-700 hover:text-indigo-600 text-md ">
+                                    MPU
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.mpu.edu.mo" target="_blank"
+                                    class="text-gray-700 hover:text-indigo-600 text-md ">
+                                    Services
+                                </a>
+
+                            </li>
+                        </ul>
+                        <ResponsiveNavLink :href="route('login')" :active="route().current('login')">登入</ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('manage.login')" :active="route().current('login')">後台</ResponsiveNavLink>
+
+                    </div>
+                </div>
+            </div>
         </nav>
     </header>
-            <!-- Page Heading -->
-            <header v-if="$slots.header" class="bg-gray-100 shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <slot name="header" />
-                </div>
-            </header>
-   
+    <!-- Page Heading -->
+    <header v-if="$slots.header" class="bg-gray-100 shadow">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <slot name="header" />
+        </div>
+    </header>
+
     <main>
         <!-- section hero -->
         <section>
@@ -89,11 +139,14 @@ defineProps({
                             class="text-center text-xl my-4  bg-white py-2 rounded-md border-b-2 cursor-pointer  text-gray-600">
                             Service</h1>
                         <div class="bg-white rounded-md list-none  text-center ">
-                            <li class="py-3 border-b-2"><inertia-link :href="route('enquiry.index')">Enquiry</inertia-link></li>
-                            <li class="py-3 border-b-2"><inertia-link :href="route('forms.index')">Forms</inertia-link></li>
-                            <li class="py-3 border-b-2"><a href="http://www.mpu.edu.mo" target="_blank" class="list-none  hover:text-indigo-600">Feature</a>
+                            <li class="py-3 border-b-2"><inertia-link :href="route('enquiry.index')">Enquiry</inertia-link>
                             </li>
-                            <li class="py-3 border-b-2"><a href="#" class="list-none  hover:text-indigo-600">Feature</a></li>
+                            <li class="py-3 border-b-2"><inertia-link :href="route('forms.index')">Forms</inertia-link></li>
+                            <li class="py-3 border-b-2"><a href="http://www.mpu.edu.mo" target="_blank"
+                                    class="list-none  hover:text-indigo-600">Feature</a>
+                            </li>
+                            <li class="py-3 border-b-2"><a href="#" class="list-none  hover:text-indigo-600">Feature</a>
+                            </li>
                             <li class="py-3 "><a href="#" class="list-none border-b-2 hover:text-indigo-600">Feature</a>
                             </li>
                         </div>
@@ -103,5 +156,4 @@ defineProps({
 
         </section>
 
-    </main>
-</template>
+</main></template>
