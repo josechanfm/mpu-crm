@@ -86,8 +86,8 @@ export default {
         this.email.is_html=!this.email.is_html;
     },
     sendMail(){
-        console.log(this.email)
-        return true;
+        // console.log(this.email)
+        // return true;
         this.$refs.modalRef.validateFields().then(()=>{
             this.$inertia.post('/manage/mailers/', this.email,{
                 onSuccess:(page)=>{

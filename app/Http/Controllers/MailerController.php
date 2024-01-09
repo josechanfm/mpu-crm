@@ -111,7 +111,7 @@ class MailerController extends Controller
         // $receiver=['email'=>'josechan@mpu.edu.mo'];
         $mailData=[
             'email'=>$email->receiver,
-            'title'=>$email->subject,
+            'subject'=>$email->subject,
             'body'=>$email->content,
         ];
         // $response=[
@@ -126,7 +126,7 @@ class MailerController extends Controller
         // ];
         Mail::send('emails.generalMail',$mailData, function($message) use($mailData, $email){
             $message->to($mailData["email"],$mailData["email"])
-                    ->subject($mailData["title"]);
+                    ->subject($mailData["subject"]);
             foreach($email->media as $file){
                 $message->attach($file);
             }

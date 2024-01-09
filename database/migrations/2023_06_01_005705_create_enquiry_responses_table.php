@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::create('enquiry_responses', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('enquiry_question_id');
+            $table->foreignId('enquiry_question_id');
             $table->text('title')->nullable();
             $table->text('remark');
             $table->boolean('by_email');
             $table->string('email_address')->nullable();
             $table->string('email_subject')->nullable();
             $table->text('email_content')->nullable();
-            $table->bigInteger('admin_id');
+            $table->foreignId('admin_id');
             $table->string('token')->nullable();
             $table->boolean('has_question')->nullable();
             $table->timestamps();

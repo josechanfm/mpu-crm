@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('faqs', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('department_id');
+            $table->foreignId('department_id');
             $table->integer('category_id');
             $table->string('degree')->nullable();
             $table->string('subjects')->nullable();

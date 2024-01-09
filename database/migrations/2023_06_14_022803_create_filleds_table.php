@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('filleds', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('form_id');
+            $table->foreignId('form_id');
             $table->boolean('staff')->default(false);
             $table->bigInteger('user_id')->nullable();
             $table->timestamps();

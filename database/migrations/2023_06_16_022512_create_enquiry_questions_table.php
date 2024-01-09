@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('enquiry_questions', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('enquiry_id');
-            $table->bigInteger('parent_id')->nullable();
+            $table->foreignId('enquiry_id');
+            $table->foreignId('parent_id')->nullable();
             $table->text('content');
             $table->string('token');
             $table->boolean('is_closed')->default(0);

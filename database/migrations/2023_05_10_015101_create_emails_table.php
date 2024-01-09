@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('emails', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('emailable_id')->nullable();
+            $table->foreignId('emailable_id')->nullable();
             $table->string('emailable_type')->nullable();
-            $table->bigInteger('admin_user_id');
+            $table->foreignId('admin_user_id');
             $table->string('sender');
             $table->string('receiver');
             $table->string('cc')->nullable();

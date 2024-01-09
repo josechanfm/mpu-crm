@@ -29,6 +29,7 @@
                 </template>
             </template>
         </a-table>
+        <p>Shows only enquiries with question and not yet closed.</p>
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
@@ -92,7 +93,7 @@ export default {
     components: {
         DepartmentLayout,
     },
-    props: ['department','questions','fields'],
+    props: ['department','fields'],
     data() {
         return {
             modal:{
@@ -129,6 +130,9 @@ export default {
                 },{
                     title: 'Question',
                     dataIndex: 'content',
+                },{
+                    title: 'User',
+                    dataIndex: 'user_id',
                 },{
                     title: '操作',
                     dataIndex: 'operation',

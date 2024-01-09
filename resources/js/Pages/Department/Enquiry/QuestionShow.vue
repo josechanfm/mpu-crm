@@ -67,6 +67,7 @@
             <template v-for="question in enquiry.questions" :key="question.id">
                 <a-collapse-panel :header="questionNubmer(question)">
                     <template #extra>
+                        {{ question.admin_user.name }}
                         <a-button type="primary" @click="toResponse(question)">回應</a-button>
                         {{ dateFormat(question.created_at) }}
                     </template>
@@ -89,7 +90,7 @@
                     <template v-for="response in question.responses">
                         <a-collapse>
                             <a-collapse-panel :header="responseNumber(response)" :style="responseStyle">
-                                <template #extra>{{ dateFormat(response.created_at) }}</template>
+                                <template #extra>{{response.admin_user.name}}@{{ dateFormat(response.created_at) }}</template>
                                 <a-typography-title :level="4">{{ response.title }}</a-typography-title>
                                 <p>{{ response.remark }}</p>
                                 <span v-if="response.by_email">
@@ -180,7 +181,7 @@ import CommentCard from '@/Components/Department/CommentCard.vue';
 import MailerBox from '@/Components/Department/MailerBox.vue';
 import EnquiryBox from '@/Components/Department/EnquiryBox.vue';
 import { quillEditor } from 'vue3-quill';
-import { UploadOutlined } from '@ant-design/icons-vue';
+import { ConsoleSqlOutlined, UploadOutlined } from '@ant-design/icons-vue';
 import dayjs from 'dayjs';
 
 export default {
@@ -225,8 +226,11 @@ export default {
                     return;
                 }
             }
-            this.myResponse.enquiry_question_id = question.id;
-            this.myResponse.question = question;
+            this.myResponse.email_address=this.enquiry.email
+            this.myResponse.email_subject="Ticket No."+question.id+"/"+this.enquiry.id
+            this.myResponse.title="Ticket No."+question.id+"/"+this.enquiry.id
+            this.myResponse.enquiry_question_id = question.id
+            this.myResponse.question = question
             window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
 
         },

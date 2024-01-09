@@ -10,7 +10,7 @@
             @change="handleTableChange">
             <template #bodyCell="{ column, text, record, index }">
                 <template v-if="column.dataIndex == 'operation'">
-                    <a-button @click="editRecord(record)">Edit</a-button>
+                    <a-button @click="viewRecord(record)">Edit</a-button>
                 </template>
                 <template v-else-if="column.dataIndex == 'created_at'">
                     {{ dateFormat(record.created_at) }}

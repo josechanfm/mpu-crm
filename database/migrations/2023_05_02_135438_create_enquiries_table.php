@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('enquiries', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('department_id');
+            $table->foreignId('department_id');
             $table->char('lang',2);
             $table->string('origin')->nullable();
             $table->string('degree')->nullable();

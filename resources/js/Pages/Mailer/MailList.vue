@@ -83,6 +83,8 @@ export default {
             this.modal.mode="CREATE";
             this.modal.title="新增問卷";
             this.modal.isOpen=true;
+            this.modal.data.sender="josechan@ipm.edu.mo"
+            this.modal.data.receiver="josechan@mpu.edu.mo"
         },
         editRecord(record){
             this.modal.data={...record};

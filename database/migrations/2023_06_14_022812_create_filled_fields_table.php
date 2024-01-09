@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('filled_fields', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('filled_id');
+            $table->foreignId('filled_id');
             $table->string('field_name');
             $table->text('field_value');
             $table->timestamps();

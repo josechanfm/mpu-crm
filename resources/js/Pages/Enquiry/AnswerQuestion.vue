@@ -27,18 +27,20 @@
                     autocomplete="off"
                     enctype="multipart/form-data"
                 >
-                <template v-if="this.enquiry.subjects.includes('OTH') && this.enquiry.subjects.length==1">
-                    directly to question
-                </template>
-                <template v-else>
-                    <p>是否尚有查詢? Still have Questions? </p>
-                    <a-form-item>
-                        <a-radio-group v-model:value="followup.has_question">
-                            <a-radio :value='true'>是 Yes</a-radio>
-                            <a-radio :value='false'>否 No</a-radio>
-                        </a-radio-group>
-                    </a-form-item>
-                </template>
+                    <!-- Check if subject only select other, jump to question box directly. -->
+                    <template v-if="this.enquiry.subjects.includes('OTH') && this.enquiry.subjects.length==1">
+                        <!-- dummy row, show the question box directly -->
+                    </template>
+                    <template v-else>
+                        <p>是否尚有查詢? Still have Questions? </p>
+                        <a-form-item>
+                            <a-radio-group v-model:value="followup.has_question">
+                                <a-radio :value='true'>是 Yes</a-radio>
+                                <a-radio :value='false'>否 No</a-radio>
+                            </a-radio-group>
+                        </a-form-item>
+                    </template>
+
                     <template v-if="followup.has_question">
                         <label>請寫下你的問題 Please write your question.</label>
                         <a-form-item>

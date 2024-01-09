@@ -14,6 +14,11 @@ class EnquiryResponse extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
+    protected $appends=['admin_user'];
+
+    public function getAdminUserAttribute(){
+        return AdminUser::find($this->admin_id);
+    }
 
     public function registerMediaConversions(Media $media = null): void
     {

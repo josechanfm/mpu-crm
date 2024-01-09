@@ -15,8 +15,13 @@ class EnquiryQuestion extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
 
-    protected $casts=['files'=>'json'];
 
+    protected $casts=['files'=>'json'];
+    protected $appends=['admin_user'];
+
+    public function getAdminuserAttribute(){
+        return AdminUser::find($this->admin_id);
+    }
     public function enquiry(){
         return $this->belongsTo(Enquiry::class);
     }

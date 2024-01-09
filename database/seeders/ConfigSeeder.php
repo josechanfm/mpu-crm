@@ -177,16 +177,16 @@ class ConfigSeeder extends Seeder
                   "labelEn": "China"
                 },{
                   "countryCode": "853",
-                  "labelZh": "中國,澳門",
-                  "labelEn": "China, Macao"
+                  "labelZh": "澳門",
+                  "labelEn": "Macao"
                 },{
                   "countryCode": "852",
-                  "labelZh": "中國,香港",
-                  "labelEn": "China,Hong Kong"
+                  "labelZh": "香港",
+                  "labelEn": "Hong Kong"
                 },{
                   "countryCode": "886",
-                  "labelZh": "中國,台灣",
-                  "labelEn": "China,Taiwan"
+                  "labelZh": "台灣",
+                  "labelEn": "Taiwan"
                 },{
                   "countryCode": "1",
                   "labelZh": "美國",
