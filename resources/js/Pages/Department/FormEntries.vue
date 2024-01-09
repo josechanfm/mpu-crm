@@ -1,5 +1,5 @@
 <template>
-    <OrganizationLayout title="Dashboard">
+    <DepartmentLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Management Dashboard department
@@ -44,15 +44,15 @@
 
 
 
-    </OrganizationLayout>
+    </DepartmentLayout>
 </template>
 
 <script>
-import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
+import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
 
 export default {
     components: {
-        OrganizationLayout,
+        DepartmentLayout,
     },
     props: ['form','entries','entryColumns'],
     data() {

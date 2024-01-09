@@ -8,12 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Config extends Model
 {
     use HasFactory;
+    protected $casts=['value'=>'json'];
 
+    public static function item($division){
+        return Config::where('division',$division)->first();
+    }
     public static function enquiryFormFields(){
         $fields=Config::where('division','enquiry_form')->get()->toArray();
         $fields=array_column($fields,null,'label');
         $fields=array_map(function($field){
-            return json_decode($field['value']);
+             return $field['value'];
         },$fields);
         return $fields;
     }

@@ -166,6 +166,106 @@ class ConfigSeeder extends Seeder
                 "short":"同意"
             }'
         ]);
+        DB::table('configs')->insert([
+            'division'=>'phone_country_codes',
+            'label'=>'phone_country_code',
+            'value'=>'
+            [
+                {
+                  "countryCode": "86",
+                  "labelZh": "中國",
+                  "labelEn": "China"
+                },{
+                  "countryCode": "853",
+                  "labelZh": "中國,澳門",
+                  "labelEn": "China, Macao"
+                },{
+                  "countryCode": "852",
+                  "labelZh": "中國,香港",
+                  "labelEn": "China,Hong Kong"
+                },{
+                  "countryCode": "886",
+                  "labelZh": "中國,台灣",
+                  "labelEn": "China,Taiwan"
+                },{
+                  "countryCode": "1",
+                  "labelZh": "美國",
+                  "labelEn": "United States"
+                },{
+                  "countryCode": "1",
+                  "labelZh": "加拿大",
+                  "labelEn": "Canada"
+                },{
+                  "countryCode": "44",
+                  "labelZh": "英國",
+                  "labelEn": "United Kingdom"
+                },{
+                  "countryCode": "61",
+                  "labelZh": "澳大利亞",
+                  "labelEn": "Australia"
+                },{
+                  "countryCode": "91",
+                  "labelZh": "印度",
+                  "labelEn": "India"
+                },{
+                  "countryCode": "81",
+                  "labelZh": "日本",
+                  "labelEn": "Japan"
+                },{
+                  "countryCode": "49",
+                  "labelZh": "德國",
+                  "labelEn": "Germany"
+                },{
+                  "countryCode": "33",
+                  "labelZh": "法國",
+                  "labelEn": "France"
+                },{
+                  "countryCode": "55",
+                  "labelZh": "巴西",
+                  "labelEn": "Brazil"
+                },{
+                  "countryCode": "52",
+                  "labelZh": "墨西哥",
+                  "labelEn": "Mexico"
+                },{
+                  "countryCode": "27",
+                  "labelZh": "南非",
+                  "labelEn": "South Africa"
+                },{
+                  "countryCode": "7",
+                  "labelZh": "俄羅斯",
+                  "labelEn": "Russia"
+                },{
+                  "countryCode": "34",
+                  "labelZh": "西班牙",
+                  "labelEn": "Spain"
+                },{
+                  "countryCode": "39",
+                  "labelZh": "意大利",
+                  "labelEn": "Italy"
+                },{
+                  "countryCode": "31",
+                  "labelZh": "荷蘭",
+                  "labelEn": "Netherlands"
+                },{
+                  "countryCode": "65",
+                  "labelZh": "新加坡",
+                  "labelEn": "Singapore"
+                },{
+                  "countryCode": "82",
+                  "labelZh": "韓國",
+                  "labelEn": "South Korea"
+                },{
+                  "countryCode": "966",
+                  "labelZh": "沙特阿拉伯",
+                  "labelEn": "Saudi Arabia"
+                },{
+                  "countryCode": "971",
+                  "labelZh": "阿拉伯聯合酋長國",
+                  "labelEn": "United Arab Emirates"
+                }
+              ]'
+        ]);
 
     }
 }

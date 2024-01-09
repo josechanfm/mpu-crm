@@ -5,6 +5,7 @@
                 客戶服務管理
             </h2>
         </template>
+        {{ enquiry.email }}
         <!-- Enquirer basic info-->
         <a-card title="Contact Info">
             <template #extra>
@@ -222,8 +223,9 @@ export default {
             }
             this.myResponse.enquiry_question_id=question.id;
             this.myResponse.question=question;
-            this.myResponse.remark='Re: MPU admission enquiry - ”#ticket no.' +question.enquiry_id +'-'+ question.id + '"'
-            this.myResponse.email_content='Re: MPU admission enquiry - ”#ticket no.' +question.enquiry_id +'-'+ question.id + '"'
+            this.myResponse.title='Re: MPU admission enquiry - ”#ticket no.' +question.enquiry_id +'-'+ question.id + '"'
+            this.myResponse.email_address=this.enquiry.email
+            this.myResponse.email_subject='Re: MPU admission enquiry - ”#ticket no.' +question.enquiry_id +'-'+ question.id + '"'
             window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
 
         },

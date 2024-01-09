@@ -20,18 +20,15 @@ class EnquiryController extends Controller
      */
     public function index()
     {
-        $fields=Config::where('division','enquiry_form')->get()->toArray();
-        $fields=array_column($fields,null,'label');
-        $fields=array_map(function($field){
-            return json_decode($field['value']);
-        },$fields);
+        $fields=Config::enquiryFormFields();
         if(!isset($fields) && sizeof($fields)==0){
             return Inertia::render('Error',[
                 'message'=>'Enquiry Config missing or data corrupted!'
             ]);
         };
         return Inertia::render('Enquiry/Form',[
-            'fields'=>Config::enquiryFormFields(),
+            'fields'=>$fields,
+            'phone_country_codes'=>Config::item('phone_country_codes'),
             'lang'=>'zh',
         ]);
 

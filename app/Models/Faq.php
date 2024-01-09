@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Faq extends Model
 {
     use HasFactory;
+    protected $fillable=['department_id','category_id','degree','subjects','question_zh','answer_zh','question_ne','answer_en','question_pt','answer_pt'];
+    protected $casts = ['subjects'=>'json'];
+    
 
     public static function getBySubjects($subjects){
         return Faq::where(function ($q) use ($subjects){

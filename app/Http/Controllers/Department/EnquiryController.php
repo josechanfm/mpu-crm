@@ -27,8 +27,8 @@ class EnquiryController extends Controller
     {
         //$department=Department::find(session('currentDepartmentId'));
         $department=session('department');
+        $department->refresh();
         $department->enquiries;
-        
         //$this->authorize('view',$department);
         return Inertia::render('Department/Enquiry/Enquiries',[
             'department'=>$department,

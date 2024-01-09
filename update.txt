@@ -1,0 +1,52 @@
+2024-01-05
+1. 入學途徑 Admission route
+readmore links, both 台灣居民身份證 TAIWAN ID, 外國護照 PASSPORT link to the same url.
+
+2. country code with dropdown
+
+3. Upload file. entity too large. 5M
+
+4. question box : directly to question 
+
+5. admin enquiry list also show no questions.
+
+6. question accountable goes to the last question response person.
+
+7. email followup question, mail connection faild
+
+8. 
+1. List all, with pagination.
+2. List ongoing, not yet finished.
+3. both could add sorting(accending/descending every columns), seaching/filter by words and/or date period, period number. some could put on dashboard page.
+4. export to excel. by period of date.
+
+9. Admin response page.
+Remark content shift to title.
+Response by email content also shift to title.
+Email address auto show.
+
+10. Admin page, Enquiry and Question both are similar, might need to clearfy the usage.
+
+11. FAQ array to string convertion error.
+
+
+12. FAQ table show created date and last updated date.
+13. FAQ table with sorting feature.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

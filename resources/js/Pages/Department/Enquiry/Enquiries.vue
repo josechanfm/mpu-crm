@@ -6,85 +6,32 @@
             </h2>
         </template>
         <a-typography-title :level="4">List of Enquiry</a-typography-title>
-        <div class="ant-table">
-            <div class="ant-table-container">
-                <div class="ant-table-content">
-                    <table style="table-layout: auto;">
-                        <thead class="ant-table-thead">
-                            <tr>
-                                <th class="ant-table-cell" colstart="0" colend="0">日期</th>
-                                <th class="ant-table-cell" colstart="1" colend="1">查詢編號</th>
-                                <th class="ant-table-cell" colstart="2" colend="2">證件類別(持有證件)</th>
-                                <th class="ant-table-cell" colstart="3" colend="3">課程類別(入讀課程)</th>
-                                <th class="ant-table-cell" colstart="4" colend="4">入學途徑</th>
-                                <th class="ant-table-cell" colstart="5" colend="5">姓, 名</th>
-                                <th class="ant-table-cell" colstart="6" colend="6">電話</th>
-                                <th class="ant-table-cell" colstart="7" colend="7">跟進人員</th>
-                                <th class="ant-table-cell" colstart="8" colend="8">跟進情況</th>
-                                <th class="ant-table-cell" colstart="9" colend="9">操作</th>
-                            </tr>
-                        </thead>
-                        <tbody class="ant-table-tbody">
-                            <tr v-for="record in department.enquiries">
-                                <td class="ant-table-cell">
-                                    {{ dateFormat(record.created_at) }}</td>
-                                <td class="ant-table-cell">{{ record.id }}</td>
-                                <td class="ant-table-cell">
-                                    {{ optionFind(fields.origin.options, record.origin) }}
-                                </td>
-                                <td class="ant-table-cell">
-                                    {{ optionFind(fields.degree.options, record.degree) }}
-                                </td>
-                                <td class="ant-table-cell">{{ record.admission }}</td>
-                                <td class="ant-table-cell">{{ record.surname }}, {{ record.givenname }}</td>
-                                <td class="ant-table-cell">{{ record.phone }}</td>
-                                <td class="ant-table-cell">
-                                    <ol>
-                                        <li v-for="question in record.questions">
-                                            {{ question.user_id }}
-                                        </li>
-                                    </ol>
-                                </td>
-                                <td class="ant-table-cell">
-                                    {{ record.questions.filter((q) => q.is_closed == 0).length }} /
-                                    {{ record.questions.length }}
-                                </td>
-                                <td class="ant-table-cell">
-                                    <a-button @click="viewRecord(record)">View</a-button>
-                                    <inertia-link :href="route('manage.enquiries.show', { enquiry: record.id })">Response</inertia-link>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-<!--
-        <a-table :dataSource="department.enquiries" :columns="columns" :row-key="record => record.root_id">
+        <a-table :dataSource="department.enquiries" :columns="columns" :rowKey="record => record.id"
+            @change="handleTableChange">
             <template #bodyCell="{ column, text, record, index }">
                 <template v-if="column.dataIndex == 'operation'">
-                    <a-button @click="viewRecord(record)">View</a-button>
-                    <inertia-link :href="route('manage.enquiries.show', { enquiry: record.id })">Response</inertia-link>
+                    <a-button @click="editRecord(record)">Edit</a-button>
                 </template>
-                <template v-else-if="column.dataIndex == 'phone'">
-                    {{ record['areacode'] }} - {{ record['phone'] }}
+                <template v-else-if="column.dataIndex == 'created_at'">
+                    {{ dateFormat(record.created_at) }}
+                    <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
                 </template>
-                <template v-else-if="column.dataIndex == 'questions'">
-                    {{ record.questions.filter((q) => q.is_closed == 0).length }} /
-                    {{ record[column.dataIndex].length }}
+                <template v-else-if="column.dataIndex == 'origin'">
+                    {{ optionFind(fields.origin.options, record.origin) }}
+                </template>
+                <template v-else-if="column.dataIndex == 'degree'">
+                    {{ optionFind(fields.degree.options, record.degree) }}
+                </template>
+                <template v-else-if="column.dataIndex == 'full_name'">
+                    {{ record.surname }}, {{ record.givenname }}
                 </template>
                 <template v-else>
-                    <span v-if="column.options">
-                        {{ optionFind(column.options, text) }}
-                    </span>
-                    <span v-else>
-                        {{ record[column.dataIndex] }}
-                    </span>
+                    {{ record[column.dataIndex] }}
                 </template>
             </template>
         </a-table>
--->
+
+
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
             <a-form ref="modalRef" :model="modal.data" name="Teacher" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }"
@@ -125,7 +72,7 @@
                 </a-form-item>
             </a-form>
             <template #footer>
-                <a-button @click="modal.isOpen=false">Close</a-button>
+                <a-button @click="modal.isOpen = false">Close</a-button>
             </template>
         </a-modal>
         <!-- Modal End-->
@@ -155,25 +102,47 @@ export default {
             columns: [
                 {
                     title: '日期',
-                    dataIndex: 'date',
+                    dataIndex: 'created_at',
+                    sorter: {
+                        compare: (a, b) => {
+                            console.log(a)
+                            return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+                        }
+                    }
+
                 }, {
                     title: '查詢編號',
-                    dataIndex: 'date',
+                    dataIndex: 'id',
+                    sorter: (a, b) => a.id - b.id
                 }, {
                     title: '證件類別(持有證件)',
                     dataIndex: 'origin',
+                    sorter: (a, b) => a.origin.localeCompare(b.origin),
+                    filters: this.fields.origin.options,
+                    filterMultiple: false,
+                    onFilter: (value, record) => record.origin == value
                 }, {
                     title: '課程類別(入讀課程)',
                     dataIndex: 'degree',
+                    sorter: (a, b) => a.degree.localeCompare(b.degree),
+                    filters: this.fields.degree.options,
+                    filterMultiple: false,
+                    onFilter: (value, record) => record.degree == value
                 }, {
                     title: '入學途徑',
                     dataIndex: 'admission',
+                    sorter: (a, b) => a.admission.localeCompare(b.admission),
+                    filters: this.fields.admission.options,
+                    filterMultiple: false,
+                    onFilter: (value, record) => record.admission == value
                 }, {
                     title: '姓, 名',
                     dataIndex: 'full_name',
+                    sorter: (a, b) => a.surname.localeCompare(b.surname)
                 }, {
                     title: '電話',
                     dataIndex: 'phone',
+                    sorter: (a, b) => a.phone.localeCompare(b.phone)
                 }, {
                     title: '跟進人員',
                     dataIndex: 'id',
@@ -189,6 +158,9 @@ export default {
         }
     },
     created() {
+        this.fields.origin.options.forEach(o => o.text = o.label)
+        this.fields.degree.options.forEach(o => o.text = o.label)
+        this.fields.admission.options.forEach(o => o.text = o.label)
     },
     methods: {
         optionFind(options, item) {
@@ -243,6 +215,11 @@ export default {
         dateFormat(date, format = 'YY-MM-DD HH:mm') {
             return dayjs(date).format(format);
         },
+        handleTableChange(pag, filters, sorter) {
+            //console.log('params', pag, filters, sorter);
+
+        },
+
 
     },
 }

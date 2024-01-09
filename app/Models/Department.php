@@ -13,7 +13,7 @@ class Department extends Model
         return $this->belongsToMany(AdminUser::class);
     }
     public function enquiries(){
-        return $this->hasMany(Enquiry::class)->where('has_question',1)->with('questions');
+        return $this->hasMany(Enquiry::class)->with('questions');
     }
     public function faqs(){
         return $this->hasMany(Faq::class);

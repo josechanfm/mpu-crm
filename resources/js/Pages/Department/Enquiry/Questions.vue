@@ -10,7 +10,6 @@
             <template #bodyCell="{column, text, record, index}" >
                 <template v-if="column.dataIndex=='operation'">
                     <a-button @click="viewRecord(record)">View</a-button>
-
                     <inertia-link :href="route('manage.enquiry.questions.show', { question:record.id})">Response</inertia-link>
                 </template>
                 <template v-else-if="column.dataIndex=='givenname'">
@@ -53,7 +52,6 @@
             <a-form-item :label="fields.profile.short">
                 {{ optionFind(fields.profile.options,modal.data.profile) }}
             </a-form-item>
-
             <a-form-item :label="fields.surname.short">
                 {{ modal.data.surname }}
             </a-form-item>
@@ -108,18 +106,26 @@ export default {
                 {
                     title: this.fields.givenname.short,
                     dataIndex: 'givenname',
+                    sorter: (a, b) => a.enquiry.givenname.localeCompare(b.enquiry.givenname)
                 },{
                     title: this.fields.surname.short,
                     dataIndex: 'surname',
+                    sorter: (a, b) => a.enquiry.surname.localeCompare(b.enquiry.surname),
                 },{
                     title: this.fields.email.short,
                     dataIndex: 'email',
+                    sorter: (a, b) => a.enquiry.email.localeCompare(b.enquiry.email),
                 },{
                     title: this.fields.phone.short,
                     dataIndex: 'phone',
+                    sorter: (a, b) => a.enquiry.phone.localeCompare(b.enquiry.phone),
                 },{
                     title: 'Created at',
                     dataIndex: 'created_at',
+                    sorter: (a, b) => {
+                        return new Date(a.enquiry.created_at).getTime() > new Date(b.enquiry.created_at).getTime()
+                        //a.enquiry.phone.localeCompare(b.enquiry.)
+                    },
                 },{
                     title: 'Question',
                     dataIndex: 'content',

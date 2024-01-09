@@ -25,6 +25,9 @@ class FaqController extends Controller
     {
         //$department=Department::find(session('currentDepartmentId'));
         $department=session('department');
+        $department->refresh();
+        //dd(Faq::find(6));
+        //dd($department->faqs->fresh());
         //$this->authorize('view',$department);
         return Inertia::render('Department/Enquiry/Faqs',[
             'department'=>$department,
@@ -97,13 +100,15 @@ class FaqController extends Controller
     public function update(Faq $faq, Request $request)
     {
         $this->authorize('create',$faq->department);
-        $faq->department_id=$request->department_id;
-        $faq->category_id=$request->category_id;
-        $faq->degree=$request->degree;
-        $faq->subjects=$request->subjects;
-        $faq->question_zh=$request->question_zh;    
-        $faq->answer_zh=$request->answer_zh;
-        $faq->save();
+        $faq->update($request->all());
+    //dd($request->all());
+        // $faq->department_id=$request->department_id;
+        // $faq->category_id=$request->category_id;
+        // $faq->degree=$request->degree;
+        // $faq->subjects=$request->subjects;
+        // $faq->question_zh=$request->question_zh;    
+        // $faq->answer_zh=$request->answer_zh;
+        // $faq->save();
         return redirect()->back();
     }
 

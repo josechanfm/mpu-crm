@@ -6,17 +6,28 @@
             </h2>
         </template>
         <a-button @click="createRecord">Add Faq</a-button>
-        <a-table :dataSource="faqs" :columns="columns" :row-key="record => record.root_id">
+        <a-table 
+            :dataSource="faqs" 
+            :columns="columns" 
+            :rowKey=" record  => record.id"
+            @change="handleTableChange"
+        >
             <template #bodyCell="{column, text, record, index}" >
                 <template v-if="column.dataIndex=='operation'">
                     <a-button @click="editRecord(record)">Edit</a-button>
                     <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
                 </template>
                 <template v-else-if="column.dataIndex=='degree'">
-                    {{ fields.degree.options.find(d=>d.value==text).label }}
+                    {{ fields.degree.options.find(d=>d.value==record[column.dataIndex]).label }}
                 </template>
                 <template v-else-if="column.dataIndex=='subjects'">
                     <div v-html="gatherSubjectLables(text)"/>
+                </template>
+                <template v-else-if="column.dataIndex=='created_at'">
+                    {{ formatDate(record[column.dataIndex]) }}
+                </template>
+                <template v-else-if="column.dataIndex=='updated_at'">
+                    {{ formatDate(record[column.dataIndex]) }}
                 </template>
                 <template v-else>
                     {{record[column.dataIndex]}}
@@ -69,6 +80,7 @@
 <script>
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
 import { quillEditor } from 'vue3-quill';
+import dayjs from 'dayjs';
 
 export default {
     components: {
@@ -78,6 +90,7 @@ export default {
     props: ['department','faqs','fields'],
     data() {
         return {
+            dateFormat:'YY-MM-DD HH:mm',
             modal:{
                 isOpen:false,
                 data:{},
@@ -89,12 +102,27 @@ export default {
                 {
                     title: 'Degree',
                     dataIndex: 'degree',
+                    filters:this.fields.degree.options,
+                    filterMultiple:false,
+                    onFilter:(value,record)=>record.degree.includes(value)
                 },{
                     title: 'Subjects',
                     dataIndex: 'subjects',
+                    filters:this.fields.subjects.options,
+                    filterMultiple:false,
+                    onFilter:(value,record)=>record.subjects.includes(value)
                 },{
                     title: 'Question',
                     dataIndex: 'question_zh',
+                    sorter:{
+                        compare:(a,b)=>a.question_zh.localeCompare(b.question_zh)
+                    }
+                },{
+                    title: 'Created At',
+                    dataIndex: 'created_at',
+                },{
+                    title: 'Updated At',
+                    dataIndex: 'updated_at',
                 },{
                     title: '操作',
                     dataIndex: 'operation',
@@ -119,6 +147,8 @@ export default {
         }
     },
     created(){
+        this.fields.degree.options.forEach(o=>o.text=o.label)
+        this.fields.subjects.options.forEach(o=>o.text=o.label)
     },
     methods: {
         createRecord(){
@@ -130,8 +160,10 @@ export default {
             this.modal.isOpen=true;
         },
         editRecord(record){
+            console.log(record);
             this.modal.data={...record};
-            this.modal.data.subjects=JSON.parse(this.modal.data.subjects);
+            console.log(this.modal.data.subjects);
+            this.modal.data.subjects=this.modal.data.subjects;
             this.modal.mode="EDIT";
             this.modal.title="修改";
             this.modal.isOpen=true;
@@ -171,13 +203,21 @@ export default {
         },
         gatherSubjectLables(items){
             return this.fields.subjects.options.reduce((a,c)=>{
-                        if(JSON.parse(items).includes(c.value)){
+                        if(items.includes(c.value)){
                             a+=c.label+"<br>"
                         }
                         return a
                     }, '') 
 
-        }
+        },
+        formatDate(date, format = 'YYYY-MM-DD HH:mm') {
+            return dayjs(date).format(format);
+        },
+        handleTableChange(pag,filters,sorter){
+            //console.log('params', pag, filters, sorter);
+
+        },
+
     },
 }
 </script>
