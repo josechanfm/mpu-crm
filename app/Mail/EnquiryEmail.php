@@ -9,10 +9,11 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class EnquiryMail extends Mailable
+class EnquiryEmail extends Mailable
 {
     use Queueable, SerializesModels;
     public $mailData;
+
     /**
      * Create a new message instance.
      *
@@ -31,8 +32,12 @@ class EnquiryMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Enquiry Mail',
+            subject: 'Enquiry Email',
         );
+    }
+
+    public function build(){
+        return $this->view('emails.generalMail',$this->mailData);
     }
 
     /**
@@ -40,12 +45,12 @@ class EnquiryMail extends Mailable
      *
      * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content()
-    {
-        return new Content(
-            view: 'emails.generalMail',
-        );
-    }
+    // public function content()
+    // {
+    //     return new Content(
+    //         view: 'emails.generalMail',
+    //     );
+    // }
 
     /**
      * Get the attachments for the message.
@@ -56,5 +61,4 @@ class EnquiryMail extends Mailable
     {
         return [];
     }
-
 }

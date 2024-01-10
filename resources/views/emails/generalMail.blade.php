@@ -4,6 +4,7 @@
     <title>Macao Polytechnic University</title>
 </head>
 <body>
-    {!! $body !!}
+    <p>Testing email</p>
+    {{ $body}}
 </body>
 </html>

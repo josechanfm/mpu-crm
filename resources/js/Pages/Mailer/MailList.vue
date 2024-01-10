@@ -9,7 +9,10 @@
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Subject template</button>
             <a-table :dataSource="emails" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
-                    <template v-if="column.dataIndex=='media'">
+                    <template v-if="column.dataIndex=='operation'">
+                        <a-button @click="editRecord(record)">Edit</a-button>
+                    </template>
+                    <template v-else-if="column.dataIndex=='media'">
                         <ul>
                             <li v-for="file in record.media">
                                 <a :href="file.original_url" target="_blank">{{ file.file_name }}</a><br>
@@ -64,8 +67,11 @@ export default {
                     title: '別名',
                     dataIndex: 'subject',
                 },{
-                    title: '操作',
+                    title: 'Media',
                     dataIndex: 'media',
+                },{
+                    title: '操作',
+                    dataIndex: 'operation',
                 },
             ],
             labelCol: {

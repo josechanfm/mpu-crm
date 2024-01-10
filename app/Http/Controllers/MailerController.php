@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Email;
 use App\Models\Department;
-use App\Mail\EnquiryMail;
+use App\Mail\EnquiryEmail;
 use App\Models\Enquiry;
 use Notification;
-use Mail;
+//use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class MailerController extends Controller
 {
@@ -21,6 +22,7 @@ class MailerController extends Controller
     public function index()
     {
         $emails=Email::where('admin_user_id',auth()->user()->id)->with('media')->get();
+        //dd($emails);
         return Inertia::render('Mailer/MailList',[
             'department'=>Department::find(1),
             'emails'=>$emails
@@ -46,6 +48,11 @@ class MailerController extends Controller
     public function store(Request $request)
     {
         // return response()->json($request->all());
+        if(isset($request->id)){
+            $email=Email::find($request->id);
+            Mail::to($email->receiver)->send(new EnquiryEmail($email));
+            return response()->json($request->all());
+        };
         $email=new Email();
         $email->admin_user_id=auth()->user()->id;
         $email->sender=$request->sender;
@@ -58,7 +65,7 @@ class MailerController extends Controller
                 $email->addMedia($file['originFileObj'])->setFileName($email->id.'_'.$file['uid'].'.'.substr(strrchr($file['name'], '.'), 1))->toMediaCollection('emailAttachments');
             }
         }
-        $this->sendEmail($email);
+        Mail::to($email->receiver)->send(new EnquiryEmail($email));
         return response()->json($request->all());
     }
 
@@ -107,30 +114,4 @@ class MailerController extends Controller
         //
     }
 
-    public function sendEmail($email){
-        // $receiver=['email'=>'josechan@mpu.edu.mo'];
-        $mailData=[
-            'email'=>$email->receiver,
-            'subject'=>$email->subject,
-            'body'=>$email->content,
-        ];
-        // $response=[
-        //     'greeting'=>'Dr. xxx',
-        //     'body'=>$email->content,
-        //     'thanks'=>'Thank you this is from mpu.edu.mo',
-        //     'cc'=>[],//$email->cc, //preg_split('/ (@|vs) /', $input);
-        //     'actionText'=>'',
-        //     'actionUrl'=>'',
-        //     'id'=>'',
-        //     'footer'=>'mpu all right reserved...'
-        // ];
-        Mail::send('emails.generalMail',$mailData, function($message) use($mailData, $email){
-            $message->to($mailData["email"],$mailData["email"])
-                    ->subject($mailData["subject"]);
-            foreach($email->media as $file){
-                $message->attach($file);
-            }
-        });
-
-    }
 }

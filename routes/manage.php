@@ -34,7 +34,6 @@ Route::middleware([
     config('jetstream.auth_session'),
 ])->group(function () {
     Route::prefix('/manage')->group(function(){
-        Route::get('email/test',[App\Http\Controllers\Department\EmailController::class,'test'])->name('manage.email.test');
         Route::get('/',[App\Http\Controllers\Department\DashboardController::class,'index']);
         Route::get('dashboard',[App\Http\Controllers\Department\DashboardController::class,'index'])->name('manage.dashboard');
         Route::resource('departments',App\Http\Controllers\Department\DepartmentController::class)->names('manage.departments');
