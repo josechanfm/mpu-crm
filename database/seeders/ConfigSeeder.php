@@ -87,7 +87,11 @@ class ConfigSeeder extends Seeder
                 "options":[
                     {"value":false,"label":"否 No"},
                     {"value":true,"label":"是 Yes"}
-                ]
+                ],
+                "other":{
+                     "value":"OTH",
+                     "label":"Other"
+                }
             }'
         ]);
         DB::table('configs')->insert([

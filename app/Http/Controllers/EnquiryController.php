@@ -21,6 +21,7 @@ class EnquiryController extends Controller
     public function index()
     {
         $fields=Config::enquiryFormFields();
+        //dd($fields);
         if(!isset($fields) && sizeof($fields)==0){
             return Inertia::render('Error',[
                 'message'=>'Enquiry Config missing or data corrupted!'
