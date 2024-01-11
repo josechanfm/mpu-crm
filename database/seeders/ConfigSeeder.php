@@ -89,9 +89,9 @@ class ConfigSeeder extends Seeder
                     {"value":true,"label":"是 Yes"}
                 ],
                 "other":{
-                     "value":"OTH",
-                     "label":"Other"
-                }
+                  "value":"OTH",
+                  "label":"請提供候選人編號 Please provide your candidate number"
+               }
             }'
         ]);
         DB::table('configs')->insert([
