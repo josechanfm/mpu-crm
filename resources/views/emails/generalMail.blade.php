@@ -6,5 +6,6 @@
 <body>
     <p>Testing email</p>
     {{ $body}}
+    {{ $token }}
 </body>
 </html>

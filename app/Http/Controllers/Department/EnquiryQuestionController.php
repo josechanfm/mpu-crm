@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Department;
 
 use App\Http\Controllers\Controller;
+use App\Mail\EnquiryEmail;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Config;
@@ -10,7 +11,7 @@ use App\Models\Department;
 use App\Models\Enquiry;
 use App\Models\EnquiryResponse;
 use App\Models\EnquiryQuestion;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class EnquiryQuestionController extends Controller
 {
@@ -160,9 +161,11 @@ class EnquiryQuestionController extends Controller
                 'address'=>$response->email_address,
                 'title'=>$response->email_subject,
                 'body'=>$email_body,
-                'media'=>$response->media
+                'media'=>$response->media,
+                'token'=>$response->token
                 ];
-            $this->sendEmail($email);
+                $this->sendMail2($email);
+            // $this->sendEmail($email);
         }
         $enquiryQuestion=EnquiryQuestion::find($response->enquiry_question_id);
         $enquiryQuestion->is_closed=isset($request->is_closed)?$request->is_closed:0;
@@ -170,6 +173,9 @@ class EnquiryQuestionController extends Controller
         
         return redirect()->back();
         
+    }
+    public function sendMail2($email){
+        Mail::to('josechan@ipm.edu.mo')->send(new EnquiryEmail($email));
     }
     public function sendEmail($email){
         Mail::send('emails.generalMail',$email, function($message) use($email){

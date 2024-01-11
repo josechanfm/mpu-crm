@@ -67,7 +67,7 @@
             <template v-for="question in enquiry.questions" :key="question.id">
                 <a-collapse-panel :header="questionNubmer(question)">
                     <template #extra>
-                        {{ question.admin_user.name }}
+                        <span v-if="question.admin_user">{{ question.admin_user.name }}</span>
                         <a-button type="primary" @click="toResponse(question)">回應</a-button>
                         {{ dateFormat(question.created_at) }}
                     </template>
@@ -255,7 +255,6 @@ export default {
             // this.data= {...this.myResponse};
             // //this.$delete(data,'question');
             // console.log(data);
-
             this.$inertia.post(route('manage.enquiry.question.response'), this.myResponse, {
                 onSuccess: (page) => {
                     this.myResponse = {};
