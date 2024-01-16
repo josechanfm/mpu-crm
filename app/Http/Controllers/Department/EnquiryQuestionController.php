@@ -28,8 +28,10 @@ class EnquiryQuestionController extends Controller
     public function index()
     {
         $department=session('department');
-        $department->refresh();
+        
         $department->enquiryQuestionsOpen;
+        $department->refresh();
+        //dd($department);
         return Inertia::render('Department/Enquiry/Questions',[
             'department'=>$department,
             'fields'=>Config::enquiryFormFields(),
@@ -43,21 +45,6 @@ class EnquiryQuestionController extends Controller
      */
     public function create()
     {
-        $enquiryResponse=EnquiryResponse::find(9);
-        $enquiryResponse->media;
-
-        $email=[
-            'id'=>$enquiryResponse->id,
-            'address'=>$enquiryResponse->email_address,
-            'title'=>$enquiryResponse->email_subject,
-            'body'=>$enquiryResponse->email_content,
-            'media'=>$enquiryResponse->media,
-            'token'=>$enquiryResponse->token
-            ];
-            $this->sendEmail($email);
-
-        // dd($enquiryResponse);
-        //dd($enquiryResponse->media[0]->getPath());
     }
 
     /**

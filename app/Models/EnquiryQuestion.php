@@ -25,11 +25,11 @@ class EnquiryQuestion extends Model implements HasMedia
             $model->token=hash('crc32',time().'mpu-crm');
             $model->admin_id=null;
         });
-        static::retrieved(function ($model){
-            $d=date('Y-m-d', strtotime($model->created_at. ' + 2 day'));
-            $model->escalated=now()>$d;
-            $model->save();
-        });
+        // static::retrieved(function ($model){
+        //     $d=date('Y-m-d', strtotime($model->created_at. ' + 2 day'));
+        //     $model->escalated=now()>$d;
+        //     $model->save();
+        // });
     }
 
     public function getAdminuserAttribute(){
@@ -50,13 +50,15 @@ class EnquiryQuestion extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('enquiryQuestionAttachments')->useDisk('inquiry');
+        $this->addMediaCollection('enquiryQuestionAttachments')->useDisk('enquiry');
     }
 
     public function responses(){
         return $this->hasMany(EnquiryResponse::class)->with('media');
     }
-
+    public function lastResponse(){
+        return $this->hasOne(EnquiryResponse::class)->latest();
+    }
     public function parent() {
         return $this->belongsToOne(static::class, 'parent_id');
     }

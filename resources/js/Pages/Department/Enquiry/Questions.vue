@@ -10,7 +10,7 @@
             <template #bodyCell="{column, text, record, index}" >
                 <template v-if="column.dataIndex=='operation'">
                     <a-button @click="viewRecord(record)">View</a-button>
-                    <inertia-link :href="route('manage.enquiry.questions.show', { question:record.id})">Response</inertia-link>
+                    <inertia-link :href="route('manage.enquiry.questions.show', { question:record.id})" class="ant-btn">Response</inertia-link>
                 </template>
                 <template v-else-if="column.dataIndex=='givenname'">
                     {{ record['enquiry']['givenname'] }}
@@ -27,9 +27,12 @@
                 <template v-else-if="column.dataIndex=='created_at'">
                     {{ dateFormat(record['created_at']) }}
                 </template>
-                <template v-else-if="column.dataIndex=='escalated'">
-                    {{ text==1?'Escalated':'--' }}
+                <template v-else-if="column.dataIndex=='admin_user'">
+                    {{ record.last_response.admin_user?record.last_response.admin_user.name:'---' }}
                 </template>
+                <!-- <template v-else-if="column.dataIndex=='escalated'">
+                    {{ text==1?'Escalated':'--' }}
+                </template> -->
                 <template v-else>
                         {{record[column.dataIndex]}}
                 </template>
@@ -48,31 +51,31 @@
             autocomplete="off"
         >
             <a-form-item :label="fields.origin.short">
-                {{ optionFind(fields.origin.options,modal.data.origin) }}
+                {{ optionFind(fields.origin.options,modal.data.enquiry.origin) }}
             </a-form-item>
             <a-form-item :label="fields.degree.short">
-                {{ optionFind(fields.degree.options,modal.data.degree) }}
+                {{ optionFind(fields.degree.options,modal.data.enquiry.degree) }}
             </a-form-item>
             <a-form-item :label="fields.admission.short">
-                {{ optionFind(fields.admission.options,modal.data.admission) }}
+                {{ optionFind(fields.admission.options,modal.data.enquiry.admission) }}
             </a-form-item>
             <a-form-item :label="fields.profile.short">
-                {{ optionFind(fields.profile.options,modal.data.profile) }}
+                {{ optionFind(fields.profile.options,modal.data.enquiry.profile) }}
             </a-form-item>
             <a-form-item :label="fields.surname.short">
-                {{ modal.data.surname }}
+                {{ modal.data.enquiry.surname }}
             </a-form-item>
             <a-form-item :label="fields.givenname.short">
-                {{ modal.data.givenname }}
+                {{ modal.data.enquiry.givenname }}
             </a-form-item>
             <a-form-item :label="fields.email.short">
-                {{ modal.data.email }}
+                {{ modal.data.enquiry.email }}
             </a-form-item>
             <a-form-item :label="fields.phone.short">
-                {{ modal.data.areacode }} - {{ modal.data.phone }}
+                {{ modal.data.enquiry.areacode }} - {{ modal.data.enquiry.phone }}
             </a-form-item>
             <a-form-item :label="fields.subjects.short">
-                {{ modal.data.subjects }}
+                <span v-html="optionFind(fields.subjects.options,modal.data.enquiry.subjects)"/>
             </a-form-item>
             <a-form-item label="Question">
                 {{ modal.data.question }}
@@ -127,22 +130,22 @@ export default {
                     title: this.fields.phone.short,
                     dataIndex: 'phone',
                     sorter: (a, b) => a.enquiry.phone.localeCompare(b.enquiry.phone),
+                //},{
+                //    title: 'Escalated',
+                //    dataIndex: 'escalated'
                 },{
-                    title: 'Escalated',
-                    dataIndex: 'escalated'
-                },{
-                    title: 'Created at',
+                    title: '創建日期',
                     dataIndex: 'created_at',
                     sorter: (a, b) => {
                         return new Date(a.enquiry.created_at).getTime() > new Date(b.enquiry.created_at).getTime()
                         //a.enquiry.phone.localeCompare(b.enquiry.)
                     },
                 },{
-                    title: 'Question',
+                    title: '提問',
                     dataIndex: 'content',
                 },{
-                    title: 'User',
-                    dataIndex: 'user_id',
+                    title: '最後回應',
+                    dataIndex: 'admin_user',
                 },{
                     title: '操作',
                     dataIndex: 'operation',
@@ -155,8 +158,13 @@ export default {
     },
     methods: {
         optionFind(options,item){
-            var label=options.find(option=>option.value==item)['label'].split(" ");
-            return label[0];
+            if(Array.isArray(item)){
+                var labels=options.filter(option=>item.includes(option.value))
+                return labels.map(l=>l.label).join("<br>")
+            }else{
+                var label=options.find(option=>option.value==item)['label'].split(" ")
+                return label[0]
+            }
         },
         getOptionItem(options,item){
             var items=options.filter(option => {

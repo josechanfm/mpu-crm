@@ -90,7 +90,7 @@
                     <template v-for="response in question.responses">
                         <a-collapse>
                             <a-collapse-panel :header="responseNumber(response)" :style="responseStyle">
-                                <template #extra>{{response.admin_user.name??'Nothing'}}@{{ dateFormat(response.created_at) }}</template>
+                                <template #extra>{{response.admin_user?response.admin_user.name:'---'}}@{{ dateFormat(response.created_at) }}</template>
                                 <a-typography-title :level="4">{{ response.title }}</a-typography-title>
                                 <p>{{ response.remark }}</p>
                                 <span v-if="response.by_email">
