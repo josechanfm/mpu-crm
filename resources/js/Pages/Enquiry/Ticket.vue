@@ -19,7 +19,7 @@
                 @finish="onFinish"
             >
                 <a-form-item name="content" label="我的問題是 My question is..." :rules="{required:true,message:'請輸入您的後續問題 Please write your follow-up question'}">
-                    <a-textarea v-model:value="ticket.content" rows="10"></a-textarea>
+                    <a-textarea v-model:value="ticket.content" :rows="10"></a-textarea>
                 </a-form-item>
                 <a-form-item>
                     <a-button type="primary" html-type="submit">提交 Submit</a-button>

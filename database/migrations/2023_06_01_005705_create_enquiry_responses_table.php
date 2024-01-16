@@ -24,7 +24,7 @@ return new class extends Migration
             $table->text('email_content')->nullable();
             $table->foreignId('admin_id');
             $table->string('token')->nullable();
-            $table->boolean('has_question')->nullable();
+            $table->boolean('is_used')->nullable();
             $table->timestamps();
         });
     }

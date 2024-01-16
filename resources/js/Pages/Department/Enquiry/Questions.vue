@@ -24,6 +24,12 @@
                 <template v-else-if="column.dataIndex=='phone'">
                     {{ record['enquiry']['areacode'] }} - {{ record['enquiry']['phone'] }}
                 </template>
+                <template v-else-if="column.dataIndex=='created_at'">
+                    {{ dateFormat(record['created_at']) }}
+                </template>
+                <template v-else-if="column.dataIndex=='escalated'">
+                    {{ text==1?'Escalated':'--' }}
+                </template>
                 <template v-else>
                         {{record[column.dataIndex]}}
                 </template>
@@ -88,6 +94,7 @@
 <script>
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
 import { defineComponent, reactive } from 'vue';
+import dayjs from 'dayjs';
 
 export default {
     components: {
@@ -120,6 +127,9 @@ export default {
                     title: this.fields.phone.short,
                     dataIndex: 'phone',
                     sorter: (a, b) => a.enquiry.phone.localeCompare(b.enquiry.phone),
+                },{
+                    title: 'Escalated',
+                    dataIndex: 'escalated'
                 },{
                     title: 'Created at',
                     dataIndex: 'created_at',
@@ -176,7 +186,6 @@ export default {
             });
         },
         updateRecord(){
-            console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
                 this.$inertia.patch('/admin/teachers/' + this.modal.data.id, this.modal.data,{
                     onSuccess:(page)=>{
@@ -193,6 +202,10 @@ export default {
             });
            
         },
+        dateFormat(date, format = 'YY-MM-DD HH:mm') {
+            return dayjs(date).format(format);
+        },
+
     },
 }
 </script>

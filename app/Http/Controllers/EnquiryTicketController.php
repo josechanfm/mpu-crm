@@ -12,7 +12,7 @@ class EnquiryTicketController extends Controller
 {
     //
     public function ticket(EnquiryResponse $response, $token){
-        if($response->has_question!==null){
+        if($response->is_used){
             return Inertia::render('Error',[
                 'message'=>'The enquiry question already submit!'
             ]);
@@ -31,7 +31,8 @@ class EnquiryTicketController extends Controller
     }
     public function store(Request $request){
         $response=EnquiryResponse::find($request->enquiry_response_id);
-        if($response->has_question!==null){
+
+        if($response->is_used!==null || $response->token!=$request->token){
             return Inertia::render('Error',[
                 'message'=>'The enquiry question already submit!'
             ]);
@@ -39,13 +40,14 @@ class EnquiryTicketController extends Controller
 
         $enquiryQuestion=new EnquiryQuestion();
         $enquiryQuestion->enquiry_id=$response->question->enquiry_id;
-        $enquiryQuestion->parent_id=$response->enquiry_question_id;
-        $enquiryQuestion->enquiry_response_id=$response->id;
+        $enquiryQuestion->parent_id=$response->enquiry_question_id;        
+        // $enquiryQuestion->enquiry_response_id=$response->id;
         $enquiryQuestion->content=$request->content;
-        $enquiryQuestion->token=Enquiry::token();
-        $enquiryQuestion->is_closed=isset($request->is_closed)?$request->is_closed:0;
+        // $enquiryQuestion->token=Enquiry::token();
+        $enquiryQuestion->is_closed=false;
         $enquiryQuestion->save();
-        $response->has_question=true;
+
+        $response->is_used=true;
         $response->save();
 
         return Inertia::render('Enquiry/ThankQuestion',[

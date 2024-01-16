@@ -10,10 +10,9 @@ class Enquiry extends Model
 {
     use HasFactory;
 
+    protected $fillable=['department_id','lang','origin','degree','admission','profile','apply','surname','givenname','email','areacode','phone','subjects','has_question','token','is_closed'];
     protected $casts=['subjects'=>'array'];
-    protected $fillable=['email','name','token'];
 
-    
     public function department(){
         return $this->belongsTo(Department::class);
     }
@@ -24,8 +23,8 @@ class Enquiry extends Model
         return $this->hasMany(EnquiryQuestion::class)->with('responses')->with('media');
     }
 
-    public static function token(){
-        return hash('crc32',time().'mpu-crm');
-    }
+    // public static function token(){
+    //     return hash('crc32',time().'mpu-crm');
+    // }
 
 }

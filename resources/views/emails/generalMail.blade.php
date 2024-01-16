@@ -6,6 +6,8 @@
 <body>
     <p>Testing email</p>
     {{ $body}}
-    {{ $token }}
+    Should you have any other question please ....
+    <a href="{{url('/enquiry/ticket/'.$id.'/'.$token)}}">More Question</a>
+
 </body>
 </html>

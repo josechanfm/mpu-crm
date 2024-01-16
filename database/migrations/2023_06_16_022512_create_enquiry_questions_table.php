@@ -20,6 +20,8 @@ return new class extends Migration
             $table->text('content');
             $table->string('token');
             $table->boolean('is_closed')->default(0);
+            $table->foreignId('admin_id')->nullable();
+            $table->boolean('escalated')->nullable();
             $table->timestamps();
         });
     }

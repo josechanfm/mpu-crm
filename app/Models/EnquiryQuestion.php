@@ -15,9 +15,22 @@ class EnquiryQuestion extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
 
-
+    protected $fillable=['enquiry_id','parent_id','content','token','is_closed','admin_id','escalated'];
     protected $casts=['files'=>'json'];
     protected $appends=['admin_user'];
+
+    protected static function boot(){
+        parent::boot();
+        static::creating(function ($model){
+            $model->token=hash('crc32',time().'mpu-crm');
+            $model->admin_id=null;
+        });
+        static::retrieved(function ($model){
+            $d=date('Y-m-d', strtotime($model->created_at. ' + 2 day'));
+            $model->escalated=now()>$d;
+            $model->save();
+        });
+    }
 
     public function getAdminuserAttribute(){
         return AdminUser::find($this->admin_id);
