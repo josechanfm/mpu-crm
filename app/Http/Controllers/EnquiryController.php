@@ -133,7 +133,7 @@ class EnquiryController extends Controller
         };
         if($enquiry->has_question!==null){
             return Inertia::render('Error',[
-                'message'=>'The inquiry question already submit!'
+                'message'=>'The enquiry question already submit!'
             ]);
         };
         // $enquiry->has_question=true;
@@ -148,7 +148,7 @@ class EnquiryController extends Controller
     public function noQuestion(Enquiry $enquiry){
         if($enquiry->has_question!==null){
             return Inertia::render('Error',[
-                'message'=>'The inquiry question already submit!'
+                'message'=>'The enquiry question already submit!'
             ]);
         }
         $enquiry->has_question=false;
@@ -163,7 +163,7 @@ class EnquiryController extends Controller
         };
         if($enquiry->has_question!==null){
             return Inertia::render('Error',[
-                'message'=>'The inquiry question already submit!'
+                'message'=>'The enquiry question already submit!'
             ]);
         }
         //  dd($request->file());

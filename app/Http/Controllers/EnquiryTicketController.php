@@ -14,7 +14,7 @@ class EnquiryTicketController extends Controller
     public function ticket(EnquiryResponse $response, $token){
         if($response->has_question!==null){
             return Inertia::render('Error',[
-                'message'=>'The inquiry question already submit!'
+                'message'=>'The enquiry question already submit!'
             ]);
         }
         if($response->token!=$token){
@@ -33,7 +33,7 @@ class EnquiryTicketController extends Controller
         $response=EnquiryResponse::find($request->enquiry_response_id);
         if($response->has_question!==null){
             return Inertia::render('Error',[
-                'message'=>'The inquiry question already submit!'
+                'message'=>'The enquiry question already submit!'
             ]);
         }
 

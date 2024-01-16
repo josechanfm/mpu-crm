@@ -14,7 +14,16 @@ class EnquiryResponse extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
+    protected $fillable=['enquiry_question_id','title','remark','by_email','email_address','email_subject','email_content','admin_id','token','has_question'];
     protected $appends=['admin_user'];
+
+    protected static function boot(){
+        parent::boot();
+        static::creating(function ($model){
+            $model->token=hash('crc32',time().'mpu-crm');
+            $model->admin_id=auth()->user()->id;
+        });
+    }
 
     public function getAdminUserAttribute(){
         return AdminUser::find($this->admin_id);
@@ -30,7 +39,7 @@ class EnquiryResponse extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('enquiryResponseAttachments')->useDisk('inquiry');
+        $this->addMediaCollection('enquiryResponseAttachments')->useDisk('enquiry');
 
     }
     public function question(){

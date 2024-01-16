@@ -44,7 +44,9 @@ class EnquiryQuestionController extends Controller
      */
     public function create()
     {
-        //
+        $enquiryResponse=EnquiryResponse::find(17);
+        $enquiryResponse->media;
+        dd($enquiryResponse->media[0]->getPath());
     }
 
     /**
@@ -130,52 +132,31 @@ class EnquiryQuestionController extends Controller
         //
     }
     public function response(Department $department, Request $request){
-        $response = new EnquiryResponse();
-        $response->enquiry_question_id=$request->enquiry_question_id;
-        $response->title=$request->title;
-        $response->remark=$request->remark;
-        $response->by_email=$request->by_email;
-        $response->email_address=$request->email_address;
-        $response->email_subject=$request->email_subject;
-        $response->email_content=$request->email_content;
-        $response->admin_id=auth()->user()->id;
-        $response->token=Enquiry::token();
-        $response->save();
-        
+        $enquiryResponse = EnquiryResponse::create($request->all());
         if($request->file('fileList')){
             foreach($request->file('fileList') as $file){
-                $response->addMedia($file['originFileObj'])
+                $enquiryResponse->addMedia($file['originFileObj'])
                     ->toMediaCollection('enquiryResponseAttachments');
             }
         };
-        //$folloupQuestionLink='<p><a href="'.env('APP_URL').'/enquiry/ticket/'.$response->id.'/'.$response->token.'">跟進問題 Follow-up question</a><p>';
-        // $response->email_content.= $folloupQuestionLink;
-
-        $link='<a href="'.env('APP_URL').'/enquiry/ticket/'.$response->id.'/'.$response->token.'">';
-        $email_body=$response->email_content;
-        $email_body=str_replace('//*',$link,$email_body);
-        $email_body=str_replace('*//','</a>',$email_body);
 
         if($request->by_email){
             $email=[
-                'address'=>$response->email_address,
-                'title'=>$response->email_subject,
-                'body'=>$email_body,
-                'media'=>$response->media,
-                'token'=>$response->token
+                'address'=>$enquiryResponse->email_address,
+                'title'=>$enquiryResponse->email_subject,
+                'body'=>$enquiryResponse->email_content,
+                'media'=>$enquiryResponse->media,
+                'token'=>$enquiryResponse->token
                 ];
-                $this->sendMail2($email);
-            // $this->sendEmail($email);
+                $this->sendEmail($email);
         }
-        $enquiryQuestion=EnquiryQuestion::find($response->enquiry_question_id);
-        $enquiryQuestion->is_closed=isset($request->is_closed)?$request->is_closed:0;
-        $enquiryQuestion->save();
+        
+        // $enquiryQuestion=EnquiryQuestion::find($enquiryResponse->enquiry_question_id);
+        // $enquiryQuestion->is_closed=isset($request->is_closed)?$request->is_closed:0;
+        // $enquiryQuestion->save();
         
         return redirect()->back();
-        
-    }
-    public function sendMail2($email){
-        Mail::to('josechan@ipm.edu.mo')->send(new EnquiryEmail($email));
+
     }
     public function sendEmail($email){
         Mail::send('emails.generalMail',$email, function($message) use($email){
@@ -183,7 +164,7 @@ class EnquiryQuestionController extends Controller
                     ->subject($email["title"]);
             if(isset($email['media'])){
                 foreach($email['media'] as $file){
-                    $message->attach(public_path('media/'.$file->id.'/'.$file->file_name));
+                    $message->attach($file->getPath());
                 }
             }
         });
