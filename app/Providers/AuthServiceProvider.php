@@ -4,10 +4,12 @@ namespace App\Providers;
 
 use App\Models\Team;
 use App\Policies\TeamPolicy;
+use App\Policies\EnquiryQuestionPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Fortify\Fortify;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AdminUser;
+use App\Models\EnquiryQuestion;
 use Illuminate\Support\Facades\Hash;
 
 class AuthServiceProvider extends ServiceProvider
@@ -19,6 +21,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Team::class => TeamPolicy::class,
+        EnquiryQuestion::class=>EnquiryQuestionPolicy::class,
     ];
 
     /**

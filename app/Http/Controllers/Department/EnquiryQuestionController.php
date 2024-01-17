@@ -17,7 +17,7 @@ class EnquiryQuestionController extends Controller
 {
     public function __construct()
     {
-        //$this->authorizeResource(Department::class);
+        //$this->authorizeResource(EnquiryQuestion::class,'enquiryQuestion');
     }
 
     /**
@@ -31,7 +31,6 @@ class EnquiryQuestionController extends Controller
         
         $department->enquiryQuestionsOpen;
         $department->refresh();
-        //dd($department);
         return Inertia::render('Department/Enquiry/Questions',[
             'department'=>$department,
             'fields'=>Config::enquiryFormFields(),
@@ -56,23 +55,6 @@ class EnquiryQuestionController extends Controller
     public function store(Department $department, Request $request)
     {
         EnquiryQuestion::create($request->all());
-        /*
-        $enquiry=new Enquiry();
-        $enquiry->department_id=$request->department_id;
-        $enquiry->parent_id=$request->parent_id;
-        $enquiry->root_id=$request->root_id;
-        $enquiry->email=$request->email;
-        $enquiry->phone=$request->phone;
-        //$enquiry->language=$request->language;
-        //$enquiry->honorific=$request->honorific;
-        $enquiry->name=$request->name;
-        $enquiry->title=$request->title;
-        $enquiry->content=$request->content;
-        $enquiry->response=$request->response;
-        $enquiry->admin_id=auth()->user()->id;
-        $enquiry->token=hash('crc32',time().'1');
-        $enquiry->save();
-        */
         return redirect()->back();
     }
 
@@ -82,17 +64,20 @@ class EnquiryQuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(EnquiryQuestion $question)
+    //public function show(EnquiryQuestion $question)
+    public function show($id)
     {
-        // $this->authorize('view',$enquiry->department);
-        $this->authorize('view',$question->enquiry->department);
-        $enquiry=Enquiry::with('questions')->find($question->enquiry_id);
-        $question->enquiry->questions;
+        $enquiryQuestion=EnquiryQuestion::find($id);
+        $this->authorize('view',$enquiryQuestion);
+        dd($enquiryQuestion);
+
+        $enquiry=Enquiry::with('questions')->find($enquiryQuestion->enquiry_id);
+        $enquiryQuestion->enquiry->questions;
         return Inertia::render('Department/Enquiry/QuestionShow',[
-            'department'=>$question->enquiry->department,
+            'department'=>$enquiryQuestion->enquiry->department,
             'fields'=>Config::enquiryFormFields(),
             'enquiry'=>$enquiry,
-            'active_question'=>$question->id,
+            'active_question'=>$enquiryQuestion->id,
         ]);
     }
 
@@ -104,7 +89,8 @@ class EnquiryQuestionController extends Controller
      */
     public function edit($id)
     {
-        //
+        
+        dd($id);
     }
 
     /**
@@ -144,22 +130,18 @@ class EnquiryQuestionController extends Controller
 
         if($request->by_email){
             $email=[
+                'id'=>$enquiryResponse->id,
                 'address'=>$enquiryResponse->email_address,
                 'title'=>$enquiryResponse->email_subject,
                 'body'=>$enquiryResponse->email_content,
                 'media'=>$enquiryResponse->media,
                 'token'=>$enquiryResponse->token
-                ];
-                $this->sendEmail($email);
+            ];
+            $this->sendEmail($email);
         }
-        
-        // $enquiryQuestion=EnquiryQuestion::find($enquiryResponse->enquiry_question_id);
-        // $enquiryQuestion->is_closed=isset($request->is_closed)?$request->is_closed:0;
-        // $enquiryQuestion->save();
-        
         return redirect()->back();
-
     }
+
     public function sendEmail($email){
         Mail::send('emails.generalMail',$email, function($message) use($email){
             $message->to($email["address"])

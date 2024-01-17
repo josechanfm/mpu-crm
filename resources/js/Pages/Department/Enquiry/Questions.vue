@@ -30,6 +30,9 @@
                 <template v-else-if="column.dataIndex=='admin_user'">
                     {{ record.last_response.admin_user?record.last_response.admin_user.name:'---' }}
                 </template>
+                <template v-else-if="column.dataIndex=='content'">
+                    {{ record.content.substring(0,10) }}...........................
+                </template>
                 <!-- <template v-else-if="column.dataIndex=='escalated'">
                     {{ text==1?'Escalated':'--' }}
                 </template> -->

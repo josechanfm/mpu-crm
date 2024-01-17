@@ -13,6 +13,18 @@ class Enquiry extends Model
     protected $fillable=['department_id','lang','origin','degree','admission','profile','apply','surname','givenname','email','areacode','phone','subjects','has_question','token','is_closed'];
     protected $casts=['subjects'=>'array'];
 
+    protected static function boot(){
+        parent::boot();
+        static::creating(function ($model){
+            $model->token=hash('crc32',time().'mpu-crm');
+        });
+        // static::retrieved(function ($model){
+        //     $d=date('Y-m-d', strtotime($model->created_at. ' + 2 day'));
+        //     $model->escalated=now()>$d;
+        //     $model->save();
+        // });
+    }
+
     public function department(){
         return $this->belongsTo(Department::class);
     }
