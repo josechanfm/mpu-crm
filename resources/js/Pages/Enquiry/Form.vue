@@ -174,8 +174,7 @@
                                 :style="radioStyle">{{ option.label }}</a-checkbox>
                         </a-checkbox-group>
                     </a-form-item>
-                    <!-- v-if="enquiry.subjects && enquiry.subjects.length > 0" -->
-                    <a-form-item name="agree" >
+                    <a-form-item name="agree" v-if="enquiry.subjects && enquiry.subjects.length > 0">
                         <a-checkbox v-model:checked="enquiry.agree"><span
                                 v-html="fields.agree.question"></span></a-checkbox>
                     </a-form-item>
