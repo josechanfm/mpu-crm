@@ -174,7 +174,8 @@
                                 :style="radioStyle">{{ option.label }}</a-checkbox>
                         </a-checkbox-group>
                     </a-form-item>
-                    <a-form-item name="agree" v-if="enquiry.subjects && enquiry.subjects.length > 0">
+                    <!-- v-if="enquiry.subjects && enquiry.subjects.length > 0" -->
+                    <a-form-item name="agree" >
                         <a-checkbox v-model:checked="enquiry.agree"><span
                                 v-html="fields.agree.question"></span></a-checkbox>
                     </a-form-item>
@@ -200,20 +201,6 @@ export default {
         return {
             lang: this.$page.props.lang,
             enquiry: {
-                // lang:'zh',
-                // origin:null,
-                // degree:null,
-                // admission:null,
-                // profile:null,
-                // apply:null,
-                // applyNumber:null,
-                // surname:null,
-                // givenname:null,
-                // email:null,
-                // areacode:null,
-                // phone:null,
-                // subjects:null,
-                // agree:null,
                 lang: 'zh',
                 origin: 'MO',
                 degree: 'B',
@@ -290,6 +277,10 @@ export default {
                 }],
                 agree: [{
                     required: true,
+                    validator: ((_rule, value)=>{
+                        if(value) return Promise.resolve();
+                        return Promise.reject();
+                    }),
                     message: '您需要同意該條款You need to agree to the term.'
                 }]
             }
@@ -312,7 +303,7 @@ export default {
                     console.log(err);
                 }
             });
-        }
+        },
     },
 }
 </script>

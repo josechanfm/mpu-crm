@@ -177,7 +177,7 @@ class EnquiryController extends Controller
         $enquiry->save();
         $data=$request->all();
         $data['enquiry_id']=$enquiry->id;
-        EnquiryQuestion::create($data);
+        $enquiryQuestion=EnquiryQuestion::create($data);
         /*
         $enquiryQuestion= new EnquiryQuestion();
         $enquiryQuestion->enquiry_id=$enquiry->id;
