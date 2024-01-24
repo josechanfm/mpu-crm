@@ -16,28 +16,38 @@
           </inertia-link>
         </span>
       </a-menu-item>
-      <a-sub-menu key="enquiry">
+      <a-sub-menu key="enquiry" v-if="is('DAMIA | admin | master')">
         <template #icon>
           <MailOutlined />
         </template>
         <template #title>Enquriy</template>
         <a-menu-item key="enquriy_1">
-          <inertia-link :href="route('manage.enquiries.index')">
+          <inertia-link :href="route('registry.enquiries.index')">
             Enquiries
           </inertia-link>
         </a-menu-item>
         <a-menu-item key="enquiry_2">
-          <inertia-link :href="route('manage.enquiry.questions.index')">
+          <inertia-link :href="route('registry.enquiry.questions.index')">
             Questions
           </inertia-link>
         </a-menu-item>
         <a-menu-item key="enqriry_3" v-if="$page.props.currentUser.roles.includes('admin') || $page.props.currentUser.roles.includes('master')">
-          <inertia-link :href="route('manage.enquiry.faqs.index')">
+          <inertia-link :href="route('registry.enquiry.faqs.index')">
             Faqs
           </inertia-link>
         </a-menu-item>
       </a-sub-menu>
-      <a-menu-item key="5">
+      <a-menu-item key="personnel" v-if="is('PES | admin | master')">
+        <template #icon>
+          <InboxOutlined />
+        </template>
+        <span>
+          <inertia-link :href="route('personnel.gpdps.index')">
+            個資通知
+          </inertia-link>
+        </span>
+      </a-menu-item>
+      <a-menu-item key="forms">
         <template #icon>
           <InboxOutlined />
         </template>
@@ -77,7 +87,7 @@
   </div>
 </template>
 <script>
-import { defineComponent, reactive, toRefs, watch } from 'vue';
+import { defineComponent, onMounted, reactive, toRefs, watch } from 'vue';
 import { MenuFoldOutlined, MenuUnfoldOutlined, PieChartOutlined, MailOutlined, DesktopOutlined, InboxOutlined, AppstoreOutlined } from '@ant-design/icons-vue';
 
 export default defineComponent({
@@ -90,7 +100,7 @@ export default defineComponent({
     InboxOutlined,
     AppstoreOutlined,
   },
-  props: ['department'],
+  props: [],
   setup() {
     const state = reactive({
       collapsed: false,

@@ -1,11 +1,11 @@
 <template>
-    <DepartmentLayout title="Dashboard" :department="department">
+    <DepartmentLayout title="Dashboard" :department="enquiry.department">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 客戶服務管理
             </h2>
         </template>
-        
+        {{ enquiry.email }}
         <!-- Enquirer basic info-->
         <a-card title="Contact Info">
             <template #extra>
@@ -20,9 +20,9 @@
         </a-card>
         <!--// Enquirer basic info-->
         <!-- Question and Response list -->
-        <a-collapse v-model:activeKey="activeKey">
+        <a-collapse>
             <!-- Enquiry From-->
-            <a-collapse-panel header="Enquiry Form" style="background-color: #FADBD8;" key="question">
+            <a-collapse-panel :header="'查詢 #'+ enquiry.id" style="background-color: #FADBD8;">
                 <ol class="list-disc pl-10">
                     <li>
                         <p class="font-bold">{{ fields.origin.question }}</p>
@@ -45,8 +45,8 @@
                         <p>{{ optionFind(enquiry.apply, fields.apply.options) }}</p>
                     </li>
                     <li>
-                        <p class="font-bold">Name</p>
-                        <p>{{ enquiry.givenname }}, {{ enquiry.surname }}</p>
+                        <p class="font-bold">{{ fields.surname.question }},{{ fields.givenname.question }}</p>
+                        <p>{{ enquiry.surname }}, {{ enquiry.givenname }}</p>
                     </li>
                     <li>
                         <p class="font-bold">{{ fields.email.question }}</p>
@@ -64,15 +64,14 @@
             </a-collapse-panel>
             <!--// Enquiry From-->
             <!-- Enquiry question-->
-            <template v-for="question in enquiry.questions" :key="question.id">
-                <a-collapse-panel :header="questionNubmer(question)">
+            <template v-for="question in enquiry.questions">
+                <a-collapse-panel :header="questionNubmer(question)" >
                     <template #extra>
-                        <span v-if="question.admin_user">{{ question.admin_user.name }}</span>
                         <a-button type="primary" @click="toResponse(question)">回應</a-button>
                         {{ dateFormat(question.created_at) }}
                     </template>
                     {{ question.content }}
-                    <a-divider/>
+                    {{ question.media }}
                     <ol>
                         <li v-for="file in question.media">
                             <a :href="file.original_url" target="_blank">
@@ -83,36 +82,37 @@
                                     {{ file.file_name }}
                                 </template>
                             </a>
+
                         </li>
                     </ol>
-
                     <!-- Enquiry question response-->
                     <template v-for="response in question.responses">
                         <a-collapse>
                             <a-collapse-panel :header="responseNumber(response)" :style="responseStyle">
-                                <template #extra>{{response.admin_user?response.admin_user.name:'---'}}@{{ dateFormat(response.created_at) }}</template>
-                                <a-typography-title :level="4">{{ response.title }}</a-typography-title>
-                                <p>{{ response.remark }}</p>
-                                <span v-if="response.by_email">
-                                    <p>Email: {{ response.email_address }}</p>
-                                    <p>Subject: {{ response.email_subject }}</p>
-                                    <p>Content: {{ response.email_content }}</p>
-                                </span>
-                                <ol>
-                                    <li v-for="file in response.media">
-                                        <a :href="file.original_url" target="_blank">
-                                            <template v-if="file.mime_type.includes('image/')">
-                                                <img :src="file.original_url" width="100" />
-                                            </template>
-                                            <template v-else>
-                                                {{ file.file_name }}
-                                            </template>
-                                        </a>
-                                    </li>
-                                </ol>
+                                <template #extra>{{ dateFormat(response.created_at) }}</template>
+                                    <a-typography-title :level="4">{{ response.title }}</a-typography-title>
+                                    <p>{{ response.remark }}</p>
+                                    <span v-if="response.by_email">
+                                        <p>Email: {{ response.email_address }}</p>
+                                        <p>Subject: {{ response.email_subject }}</p>
+                                        <p>Content: {{ response.email_content }}</p>
+                                    </span>
+                                    <ol>
+                                        <li v-for="file in response.media">
+                                            <a :href="file.original_url" target="_blank">
+                                                <template v-if="file.mime_type.includes('image/')">
+                                                    <img :src="file.original_url" width="100" />
+                                                </template>
+                                                <template v-else>
+                                                    {{ file.file_name }}
+                                                </template>
+                                            </a>
+                                        </li>
+                                    </ol>
+
                             </a-collapse-panel>
                         </a-collapse>
-
+                        
                         <hr>
                     </template>
                     <!--// Enquiry question response-->
@@ -149,7 +149,7 @@
                         </a-form-item>
                         <a-form-item name="email_content" label="Content"
                             :rules="[{ required: true, message: 'Content Body of the Email' }]">
-                            <quill-editor v-model:value="myResponse.email_content" style="min-height:200px;" />
+                            <a-textarea v-model:value="myResponse.email_content" style="min-height:200px;" />
                         </a-form-item>
                         <p>A link will be added at the end of the email</p>
                     </span>
@@ -170,8 +170,6 @@
             </a-card>
         </template>
         <!--// Response box -->
-
-
     </DepartmentLayout>
 </template>
 
@@ -180,10 +178,9 @@ import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
 import CommentCard from '@/Components/Department/CommentCard.vue';
 import MailerBox from '@/Components/Department/MailerBox.vue';
 import EnquiryBox from '@/Components/Department/EnquiryBox.vue';
-import { quillEditor } from 'vue3-quill';
-import { ConsoleSqlOutlined, UploadOutlined } from '@ant-design/icons-vue';
+import { UploadOutlined } from '@ant-design/icons-vue';
 import dayjs from 'dayjs';
-
+import { quillEditor } from 'vue3-quill';
 export default {
     components: {
         DepartmentLayout,
@@ -191,9 +188,9 @@ export default {
         MailerBox,
         EnquiryBox,
         UploadOutlined,
-        quillEditor,
+        quillEditor
     },
-    props: ['fields', 'department', 'enquiry', 'active_question'],
+    props: ['fields', 'enquiry'],
     data() {
         return {
             myResponse: {
@@ -212,30 +209,28 @@ export default {
                 lineHeight: '30px',
                 marginLeft: '0'
             },
-            responseStyle: "background: #A3E4D7;border-radius: 4px;margin-bottom: 24px;border: 0;overflow: hidden",
-            activeKey: [],
+            responseStyle:"background: #A3E4D7;border-radius: 4px;margin-bottom: 24px;border: 0;overflow: hidden"
         }
     },
     created() {
-        this.activeKey.push(this.active_question)
     },
     methods: {
-        toResponse(question) {
-            if (question.is_closed) {
-                if (!confirm('This Question is already CLOSED, would you like to response the question again?')) {
+        toResponse(question){
+            if(question.is_closed){
+                if(!confirm('This Question is already CLOSED, would you like to response the question again?')){
                     return;
                 }
             }
+            this.myResponse.enquiry_question_id=question.id;
+            this.myResponse.question=question;
+            this.myResponse.title='Re: MPU admission enquiry - ”#ticket no.' +question.enquiry_id +'-'+ question.id + '"'
             this.myResponse.email_address=this.enquiry.email
-            this.myResponse.email_subject="Ticket No."+question.id+"/"+this.enquiry.id
-            this.myResponse.title="Ticket No."+question.id+"/"+this.enquiry.id
-            this.myResponse.enquiry_question_id = question.id
-            this.myResponse.question = question
+            this.myResponse.email_subject='Re: MPU admission enquiry - ”#ticket no.' +question.enquiry_id +'-'+ question.id + '"'
             window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
 
         },
-        closeResponse() {
-            this.myResponse = {};
+        closeResponse(){
+            this.myResponse={};
         },
         dateFormat(date, format = 'YYYY-MM-DD HH:mm') {
             return dayjs(date).format(format);
@@ -252,10 +247,7 @@ export default {
             return items;
         },
         onFinish() {
-            // this.data= {...this.myResponse};
-            // //this.$delete(data,'question');
-            // console.log(data);
-            this.$inertia.post(route('manage.enquiry.question.response'), this.myResponse, {
+            this.$inertia.post(route('registry.enquiry.question.response'), this.myResponse, {
                 onSuccess: (page) => {
                     this.myResponse = {};
                     console.log(page);
@@ -264,20 +256,22 @@ export default {
                     console.log(err);
                 }
             });
-            //console.log(this.myResponse);
+            console.log(this.myResponse);
         },
-        questionNubmer(question) {
-            var caption = '提問編號 #' + question.id;
-            if (question.enquiry_response_id) {
-                caption += ', 追問回應編號#' + question.enquiry_response_id
+        questionNubmer(question){
+            var caption='提問編號 #'+ question.id;
+            if(question.enquiry_response_id){
+                caption += ', 追問回應編號#'+ question.enquiry_response_id
             }
-            if (question.is_closed) {
+            if(question.is_closed){
                 caption += ' (Closed)'
             }
             return caption;
         },
-        responseNumber(response) {
-            return '回應編號 #' + response.id
+        responseNumber(response){
+            console.log(response);
+            return '回應編號 #'+ response.id +" of "+response.enquiry_question_id
+
         },
     },
 

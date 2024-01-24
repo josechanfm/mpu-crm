@@ -1,21 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Department;
+namespace App\Http\Controllers\Department\Registry;
 
 use App\Http\Controllers\Controller;
+use App\Mail\EnquiryEmail;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Config;
 use App\Models\Department;
 use App\Models\Enquiry;
 use App\Models\EnquiryResponse;
-use Mail;
+use App\Models\EnquiryQuestion;
+use Illuminate\Support\Facades\Mail;
 
-class EnquiryController extends Controller
+class EnquiryQuestionController extends Controller
 {
     public function __construct()
     {
-        //$this->authorizeResource(Department::class);
+        //$this->authorizeResource(EnquiryQuestion::class,'enquiryQuestion');
     }
 
     /**
@@ -25,14 +27,11 @@ class EnquiryController extends Controller
      */
     public function index()
     {
-        //$department=Department::find(session('currentDepartmentId'));
         $department=session('department');
+        $department->enquiryQuestionsOpen;
         $department->refresh();
-        $department->enquiries;
-        //$this->authorize('view',$department);
-        return Inertia::render('Department/Enquiry/Enquiries',[
+        return Inertia::render('Department/Registry/Questions',[
             'department'=>$department,
-            //'enquiries'=>$department->enquiries,
             'fields'=>Config::enquiryFormFields(),
         ]);
     }
@@ -44,7 +43,6 @@ class EnquiryController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -55,21 +53,7 @@ class EnquiryController extends Controller
      */
     public function store(Department $department, Request $request)
     {
-        $enquiry=new Enquiry();
-        $enquiry->department_id=$request->department_id;
-        $enquiry->parent_id=$request->parent_id;
-        $enquiry->root_id=$request->root_id;
-        $enquiry->email=$request->email;
-        $enquiry->phone=$request->phone;
-        //$enquiry->language=$request->language;
-        //$enquiry->honorific=$request->honorific;
-        $enquiry->name=$request->name;
-        $enquiry->title=$request->title;
-        $enquiry->content=$request->content;
-        $enquiry->response=$request->response;
-        $enquiry->admin_user_id=auth()->user()->id;
-        $enquiry->token=hash('crc32',time().'1');
-        $enquiry->save();
+        EnquiryQuestion::create($request->all());
         return redirect()->back();
     }
 
@@ -79,15 +63,19 @@ class EnquiryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Enquiry $enquiry)
+    //public function show(EnquiryQuestion $question)
+    public function show($id)
     {
-        $this->authorize('view',$enquiry->department);
-        //$enquiry=$enquiry->with('responses');
-        $enquiry->department;
-        $enquiry->questions;
-        return Inertia::render('Department/Enquiry/EnquiryShow',[
+        $enquiryQuestion=EnquiryQuestion::find($id);
+        $this->authorize('view',$enquiryQuestion);
+     
+        $enquiry=Enquiry::with('questions')->find($enquiryQuestion->enquiry_id);
+        $enquiryQuestion->enquiry->questions;
+        return Inertia::render('Department/Registry/QuestionShow',[
+            'department'=>$enquiryQuestion->enquiry->department,
             'fields'=>Config::enquiryFormFields(),
             'enquiry'=>$enquiry,
+            'active_question'=>$enquiryQuestion->id,
         ]);
     }
 
@@ -99,7 +87,8 @@ class EnquiryController extends Controller
      */
     public function edit($id)
     {
-        //
+        
+        dd($id);
     }
 
     /**
@@ -128,49 +117,36 @@ class EnquiryController extends Controller
         //
     }
     public function response(Department $department, Request $request){
-        dd($request->by_email());
-
-        $response = new EnquiryResponse();
-        $response->enquiry_question_id=$request->enquiry_question_id;
-        $response->title=$request->title;
-        $response->remark=$request->remark;
-        $response->by_email=$request->by_email;
-        $response->email_address=$request->email_address;
-        $response->email_subject=$request->email_subject;
-        $response->email_content=$request->email_content;
-        $response->admin_id=auth()->user()->id;
-        $response->token=Enquiry::token();
-
-        $response->save();
+        $enquiryResponse = EnquiryResponse::create($request->all());
 
         if($request->file('fileList')){
             foreach($request->file('fileList') as $file){
-                $response->addMedia($file['originFileObj'])
+                $enquiryResponse->addMedia($file['originFileObj'])
                     ->toMediaCollection('enquiryResponseAttachments');
             }
         };
-        $folloupQuestionLink='<p><a href="'.env('APP_URL').'/enquiry/ticket/'.$response->id.'/'.$response->token.'">跟進問題 Follow-up question</a><p>';
-        $response->email_content.= $folloupQuestionLink;
 
         if($request->by_email){
             $email=[
-                'address'=>$response->email_address,
-                'title'=>$response->email_subject,
-                'body'=>$response->email_content,
-                'media'=>$response->media
-                ];
+                'id'=>$enquiryResponse->id,
+                'address'=>$enquiryResponse->email_address,
+                'title'=>$enquiryResponse->email_subject,
+                'body'=>$enquiryResponse->email_content,
+                'media'=>$enquiryResponse->media,
+                'token'=>$enquiryResponse->token
+            ];
             $this->sendEmail($email);
         }
         return redirect()->back();
-        
     }
+
     public function sendEmail($email){
         Mail::send('emails.generalMail',$email, function($message) use($email){
             $message->to($email["address"])
                     ->subject($email["title"]);
             if(isset($email['media'])){
                 foreach($email['media'] as $file){
-                    $message->attach(public_path('media/'.$file->id.'/'.$file->file_name));
+                    $message->attach($file->getPath());
                 }
             }
         });

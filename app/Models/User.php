@@ -15,6 +15,7 @@ use App\Notifications\SetPasswordNotification;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 
 
+
 class User extends Authenticatable
 {
     use HasApiTokens;

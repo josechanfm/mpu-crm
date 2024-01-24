@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "829484e50b34801dee70a3a6e495ed13",
+    "content-hash": "fdf749b6631ad9983974c7965301295b",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -815,6 +815,45 @@
                 }
             ],
             "time": "2023-10-12T05:21:21+00:00"
+        },
+        {
+            "name": "geowrgetudor/laravel-spatie-permissions-vue",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/geowrgetudor/laravel-spatie-permissions-vue.git",
+                "reference": "2e57784b94df2bb4850dfe446a866c0fa9f67cf3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/geowrgetudor/laravel-spatie-permissions-vue/zipball/2e57784b94df2bb4850dfe446a866c0fa9f67cf3",
+                "reference": "2e57784b94df2bb4850dfe446a866c0fa9f67cf3",
+                "shasum": ""
+            },
+            "require": {
+                "spatie/laravel-permission": ">=5.4.0"
+            },
+            "type": "plugin",
+            "autoload": {
+                "psr-4": {
+                    "SpatiePermissionVue\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "George Tudor",
+                    "email": "georgebitq@gmail.com"
+                }
+            ],
+            "description": "Use Laravel Spatie Permission package in Vue",
+            "support": {
+                "source": "https://github.com/geowrgetudor/laravel-spatie-permissions-vue/tree/1.0.0"
+            },
+            "time": "2022-12-13T14:32:43+00:00"
         },
         {
             "name": "graham-campbell/result-type",

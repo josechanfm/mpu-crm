@@ -14,6 +14,7 @@ use Spatie\Permission\Traits\HasRoles;
 use LdapRecord\Laravel\Auth\HasLdapUser;
 use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
+use SpatiePermissionVue\Traits\RolesPermissionsToVue;
 
 class AdminUser extends Authenticatable implements LdapAuthenticatable
 {
@@ -26,6 +27,7 @@ class AdminUser extends Authenticatable implements LdapAuthenticatable
     use HasRoles;
     use Notifiable, AuthenticatesWithLdap;
     use HasLdapUser;
+    use RolesPermissionsToVue;
 
 
     /**

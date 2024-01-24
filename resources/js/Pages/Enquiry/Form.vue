@@ -23,7 +23,66 @@
                         </a-radio-group>
                     </a-form-item>
 
+                    <a-form-item name="admission" v-if="enquiry.degree">
+                        <div class="ant-col ant-form-item-label">
+                            <label for="enquiry_admission" class="ant-form-item-required" title="入學途徑 Admission route">
+                                {{fields.admission.question}}
+                            </label>
+                            <a-popover title="證件類別 ID Type">
+                            <template #content>
+                                <p><a href="https://www.mpu.edu.mo/admission_local/zh/index.php" target="_blank">澳門居民身份證
+                                        Macao ID</a></p>
+                                <p><a href="https://www.mpu.edu.mo/admission_mainland/zh/index.php"
+                                        target="_blank">中華人民共和國居民身份證 CHINA ID</a></p>
+                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">香港居民身份證
+                                        HONG KONG ID</a></p>
+                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">台灣居民身份證
+                                        TAIWAN ID</a></p>
+                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">外國護照
+                                        PASSPORT</a></p>
+                            </template>
+                            <a-button type="link">(更多資訊 Read More)</a-button>
+                        </a-popover>
+                        </div>
+                        {{ fields.admission.options.length }}
+                        <a-radio-group v-model:value="enquiry.admission">
+                            <template v-if="enquiry.origin == 'MO'">
+                                <a-radio :value="fields.admission.options[0].value" :style="radioStyle">
+                                    {{ fields.admission.options[0].label }} {{ fields.admission.options[0].remark }}
+                                </a-radio>
+                                <a-radio :value="fields.admission.options[1].value" :style="radioStyle">
+                                    {{ fields.admission.options[1].label }} {{ fields.admission.options[1].remark }}
+                                </a-radio>
+                                <a-radio :value="fields.admission.options[2].value" :style="radioStyle">
+                                    {{ fields.admission.options[2].label }} {{ fields.admission.options[2].remark }}
+                                </a-radio>
+                                <a-radio :value="fields.admission.options[3].value" :style="radioStyle">
+                                    {{ fields.admission.options[3].label }} {{ fields.admission.options[3].remark }}
+                                </a-radio>
+                                <a-radio :value="fields.admission.options[4].value">
+                                    {{ fields.admission.options[4].label }} {{ fields.admission.options[4].remark }}
+                                </a-radio>
+                            </template>
+                            <template v-else-if="enquiry.origin == 'CN'">
+                                <a-radio :value="fields.admission.options[5].value" :style="radioStyle">
+                                    {{ fields.admission.options[5].label }} {{ fields.admission.options[5].remark }}
+                                </a-radio>
+                                <a-radio :value="fields.admission.options[6].value">
+                                    {{ fields.admission.options[6].label }} {{ fields.admission.options[6].remark }}
+                                </a-radio>
+                            </template>
+                            <template v-else>
+                                <a-radio :value="fields.admission.options[7].value" :style="radioStyle">
+                                    {{ fields.admission.options[7].label }} {{ fields.admission.options[7].remark }}
+                                </a-radio>
+                                <!-- <a-radio :value="fields.admission.options[8].value" :style="radioStyle">
+                                    {{ fields.admission.options[8].label }} {{ fields.admission.options[8].remark }}
+                                </a-radio> -->
+                            </template>
+                        </a-radio-group>
+                    </a-form-item>
 
+                    <!-- 
                     <div class="ant-row ant-form-item ant-form-item-has-success" style="row-gap: 0px;"  v-if="enquiry.degree == 'B'">
                         <div class="ant-col ant-form-item-label">
                             <label for="enquiry_admission" class="ant-form-item-required" title="入學途徑 Admission route">
@@ -40,43 +99,51 @@
                                 <a-button type="link">(更多資訊 Read More)</a-button>
                             </a-popover>
                         </div>
-                        <a-radio-group v-model:value="enquiry.admission">
-                            <template v-if="enquiry.origin == 'MO'">
-                                <a-radio :value="fields.admission.options[0].value" :style="radioStyle">
-                                    {{ fields.admission.options[0].label }} {{  fields.admission.options[0].remark}}
-                                </a-radio>
-                                <a-radio :value="fields.admission.options[1].value" :style="radioStyle">
-                                    {{ fields.admission.options[1].label }} {{  fields.admission.options[1].remark}}
-                                </a-radio>
-                                <a-radio :value="fields.admission.options[2].value" :style="radioStyle">
-                                    {{ fields.admission.options[2].label }} {{  fields.admission.options[2].remark}}
-                                </a-radio>
-                                <a-radio :value="fields.admission.options[3].value" :style="radioStyle">
-                                    {{ fields.admission.options[3].label }} {{  fields.admission.options[3].remark}}
-                                </a-radio>
-                                <a-radio :value="fields.admission.options[4].value">
-                                    {{ fields.admission.options[4].label }} {{  fields.admission.options[4].remark}}
-                                </a-radio>
-                            </template>
-                            <template v-else-if="enquiry.origin == 'CN'">
-                                <a-radio :value="fields.admission.options[5].value" :style="radioStyle">
-                                    {{ fields.admission.options[5].label }} {{  fields.admission.options[5].remark}}
-                                </a-radio>
-                                <a-radio :value="fields.admission.options[6].value">
-                                    {{ fields.admission.options[6].label }} {{  fields.admission.options[6].remark}}
-                                </a-radio>
-                            </template>
-                            <template v-else>
-                                <a-radio :value="fields.admission.options[7].value" :style="radioStyle">
-                                    {{ fields.admission.options[7].label }} {{  fields.admission.options[7].remark}}
-                                </a-radio>
-                                <a-radio :value="fields.admission.options[8].value" :style="radioStyle">
-                                    {{ fields.admission.options[8].label }} {{  fields.admission.options[8].remark}}
-                                </a-radio>
-                            </template>
-                        </a-radio-group>
 
-                    </div>
+
+                        <div class="ant-col ant-form-item-control">
+                            <div class="ant-form-item-control-input">
+                                <div class="ant-form-item-control-input-content">
+                                    <a-radio-group v-model:value="enquiry.admission">
+                                        <template v-if="enquiry.origin == 'MO'">
+                                            <a-radio :value="fields.admission.options[0].value" :style="radioStyle">
+                                                {{ fields.admission.options[0].label }} {{  fields.admission.options[0].remark}}
+                                            </a-radio>
+                                            <a-radio :value="fields.admission.options[1].value" :style="radioStyle">
+                                                {{ fields.admission.options[1].label }} {{  fields.admission.options[1].remark}}
+                                            </a-radio>
+                                            <a-radio :value="fields.admission.options[2].value" :style="radioStyle">
+                                                {{ fields.admission.options[2].label }} {{  fields.admission.options[2].remark}}
+                                            </a-radio>
+                                            <a-radio :value="fields.admission.options[3].value" :style="radioStyle">
+                                                {{ fields.admission.options[3].label }} {{  fields.admission.options[3].remark}}
+                                            </a-radio>
+                                            <a-radio :value="fields.admission.options[4].value">
+                                                {{ fields.admission.options[4].label }} {{  fields.admission.options[4].remark}}
+                                            </a-radio>
+                                        </template>
+                                        <template v-else-if="enquiry.origin == 'CN'">
+                                            <a-radio :value="fields.admission.options[5].value" :style="radioStyle">
+                                                {{ fields.admission.options[5].label }} {{  fields.admission.options[5].remark}}
+                                            </a-radio>
+                                            <a-radio :value="fields.admission.options[6].value">
+                                                {{ fields.admission.options[6].label }} {{  fields.admission.options[6].remark}}
+                                            </a-radio>
+                                        </template>
+                                        <template v-else>
+                                            <a-radio :value="fields.admission.options[7].value" :style="radioStyle">
+                                                {{ fields.admission.options[7].label }} {{  fields.admission.options[7].remark}}
+                                            </a-radio>
+                                            <a-radio :value="fields.admission.options[8].value" :style="radioStyle">
+                                                {{ fields.admission.options[8].label }} {{  fields.admission.options[8].remark}}
+                                            </a-radio>
+                                        </template>
+                                    </a-radio-group>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> -->
 
                     <!--
                     <a-form-item name="admission" :label="fields.admission.question" v-if="enquiry.degree == 'B'">
@@ -109,7 +176,7 @@
                         <br>
                     </a-form-item>
                     -->
-                    
+
                     <a-form-item name="profile" :label="fields.profile.question"
                         v-if="enquiry.admission || (enquiry.degree && enquiry.degree != 'B')">
                         <a-radio-group v-model:value="enquiry.profile">
@@ -153,12 +220,9 @@
                         <a-row :gutter="24">
                             <a-col :span="12">
                                 <a-form-item name="areacode" :label="fields.areacode.question">
-                                    <a-select 
-                                        v-model:value="enquiry.areacode" 
-                                        :options="phone_country_codes.value" 
-                                        :fieldNames="{label:'label',value:'countryCode'}"
-                                    />
-                                    
+                                    <a-select v-model:value="enquiry.areacode" :options="phone_country_codes.value"
+                                        :fieldNames="{ label: 'label', value: 'countryCode' }" />
+
                                 </a-form-item>
                             </a-col>
                             <a-col :span="12">
@@ -174,9 +238,11 @@
                                 :style="radioStyle">{{ option.label }}</a-checkbox>
                         </a-checkbox-group>
                     </a-form-item>
-                    <a-form-item name="agree" v-if="enquiry.subjects && enquiry.subjects.length > 0">
-                        <a-checkbox v-model:checked="enquiry.agree"><span
-                                v-html="fields.agree.question"></span></a-checkbox>
+                    v-if="enquiry.subjects && enquiry.subjects.length > 0"
+                    <a-form-item name="agree"  >
+                        <a-checkbox v-model:checked="enquiry.agree">
+                            <span v-html="fields.agree.question"></span>
+                        </a-checkbox>
                     </a-form-item>
                     <a-form-item>
                         <a-button type="primary" html-type="submit">提交 Submit</a-button>
@@ -195,7 +261,7 @@ import axios from 'axios';
 export default {
     components: {
     },
-    props: ['fields', 'faqs','phone_country_codes'],
+    props: ['fields', 'faqs', 'phone_country_codes'],
     data() {
         return {
             lang: this.$page.props.lang,
@@ -295,8 +361,8 @@ export default {
             }
         }
     },
-    created(){
-        this.phone_country_codes.value.forEach(v=>v.label=v.labelZh + '/'+ v.labelEn)
+    created() {
+        this.phone_country_codes.value.forEach(v => v.label = v.labelZh + '/' + v.labelEn)
     },
     mounted() {
         this.enquiry = {};
@@ -312,7 +378,7 @@ export default {
                     console.log(err);
                 }
             });
-        }
+        },
     },
 }
 </script>

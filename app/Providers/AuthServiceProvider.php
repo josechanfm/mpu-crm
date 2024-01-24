@@ -62,7 +62,6 @@ class AuthServiceProvider extends ServiceProvider
                     'password' => $request->password
                 ]);
             }
-            
             return $validated ? Auth::getLastAttempted() : null;
         });
     }

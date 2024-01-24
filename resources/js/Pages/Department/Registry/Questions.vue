@@ -10,7 +10,7 @@
             <template #bodyCell="{column, text, record, index}" >
                 <template v-if="column.dataIndex=='operation'">
                     <a-button @click="viewRecord(record)">View</a-button>
-                    <inertia-link :href="route('manage.enquiry.questions.show', { question:record.id})" class="ant-btn">Response</inertia-link>
+                    <inertia-link :href="route('registry.enquiry.questions.show', { question:record.id})" class="ant-btn">Response</inertia-link>
                 </template>
                 <template v-else-if="column.dataIndex=='givenname'">
                     {{ record['enquiry']['givenname'] }}

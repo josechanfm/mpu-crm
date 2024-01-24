@@ -3,15 +3,13 @@
 
         <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible theme="light" width="250px" class="shadow-md " >
             <div class="m-4 text-center text-lg" v-if="collapsed">
-                <inertia-link href='/department'>Org </inertia-link>
+                <inertia-link href='/department'>MPU </inertia-link>
             </div>
             <div class="m-4 text-center text-lg" v-else>
-                
-                <inertia-link :href="route('manage.departments.show',department.id)">{{ department.abbr_zh }}</inertia-link>
-                
+                <inertia-link href='/department'>MPU </inertia-link>
             </div>
 
-            <DepartmentMenu :menuKeys='menuKeys' :department="department"/>
+            <DepartmentMenu :menuKeys='menuKeys'/>
         </a-layout-sider>
         
         <a-layout>

@@ -177,15 +177,7 @@ class EnquiryController extends Controller
         $enquiry->save();
         $data=$request->all();
         $data['enquiry_id']=$enquiry->id;
-        EnquiryQuestion::create($data);
-        /*
-        $enquiryQuestion= new EnquiryQuestion();
-        $enquiryQuestion->enquiry_id=$enquiry->id;
-        $enquiryQuestion->content=$request->content;
-        $enquiryQuestion->token=Enquiry::token();
-        $enquiryQuestion->is_closed=isset($request->is_closed)?$request->is_closed:0;
-        $enquiryQuestion->save();
-        */
+        $enquiryQuestion=EnquiryQuestion::create($data);
 
         if($request->file('fileList')){
             foreach($request->file('fileList') as $file){

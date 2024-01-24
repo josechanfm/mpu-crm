@@ -24,15 +24,22 @@ class DashboardController extends Controller
         }else{
             $departments=auth()->user()->departments;
         }
-
+        // dd(auth()->user()->roles->first()->name);
+        //config(['fortify.home' => auth()->user()->roles->first()->path]);
+        session(['department'=>Department::whereIn('abbr',auth()->user()->roles->pluck('name'))->first()]);
+        $defaultRoute=auth()->user()->roles->first()->default_route;
+        if($defaultRoute){
+            return redirect()->route($defaultRoute);
+        }
+        
+        //dd('Department/'.$path.'/Dashboard');
         $count=$departments->count();
         if($count==0){
             return redirect('/staff');
         }else if($count==1){
             //session(['currentDepartmentId'=>$departments[0]->id]);
-            session(['department'=>$departments[0]]);
             return Inertia::render('Department/Dashboard',[
-                'department' => auth()->user()->departments[0],
+                'departments' => Department::all(),
             ]);
         }else{
             //session(['currentDepartmentId'=>$departments[0]->id]);

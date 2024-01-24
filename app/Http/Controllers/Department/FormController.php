@@ -17,7 +17,7 @@ class FormController extends Controller
     public function __construct()
     {
         //$this->authorizeResource(Department::class);
-        $this->authorizeResource(Form::class);
+        //$this->authorizeResource(Form::class);
     }
 
     /**
@@ -33,8 +33,10 @@ class FormController extends Controller
         //dd(Department::find(session('department')->id)->forms);
         //$this->authorize('view',$department);
         //dd(session('department'));
+        session(['department'=>auth()->user()->departments->first()]);
         $department=session('department');
         $department->forms;
+
         return Inertia::render('Department/Forms',[
             'department' => $department
             //'forms'=>Department::find(session('department')->id)->forms
@@ -48,6 +50,7 @@ class FormController extends Controller
      */
     public function create()
     {
+
         $form=Form::make([
             'department_id'=>session('department')->id,
             'require_login'=>false,
