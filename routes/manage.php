@@ -31,12 +31,26 @@ Route::middleware([
     });
 });
 
+
+Route::middleware([
+    'auth:admin_web',
+    config('jetstream.auth_session'),
+    'role:master'
+])->group(function () {
+    Route::prefix('/master')->group(function(){
+        Route::get('/',[App\Http\Controllers\Master\DashboardController::class,'index'])->name('master');
+        Route::resource('/admin_users',App\Http\Controllers\Master\AdminUserController::class)->names('master.adminUsers');
+        Route::resource('/departments',App\Http\Controllers\Master\DepartmentController::class)->names('master.departments');
+    });
+});
+
 Route::middleware([
     'auth:admin_web',
     config('jetstream.auth_session'),
 ])->group(function () {
     Route::prefix('/manage')->group(function(){
-        Route::get('/',[App\Http\Controllers\Department\DashboardController::class,'index']);
+        Route::get('/masqueradeAdminUser/{department}',[App\Http\Controllers\Department\DashboardController::class,'masqueradeAdminUser'])->name('manage.masqueradeAdminUser');
+        Route::get('/',[App\Http\Controllers\Department\DashboardController::class,'index'])->name('manage');
         Route::get('dashboard',[App\Http\Controllers\Department\DashboardController::class,'index'])->name('manage.dashboard');
         Route::resource('departments',App\Http\Controllers\Department\DepartmentController::class)->names('manage.departments');
         //Route::resource('department/{department}/forms',App\Http\Controllers\Department\FormController::class)->names('manage.department.forms');
@@ -55,26 +69,14 @@ Route::middleware([
 
 
 
-Route::middleware([
-    'auth:admin_web',
-    config('jetstream.auth_session'),
-    'role:master'
-])->group(function () {
-    Route::prefix('/master')->group(function(){
-        Route::get('/',[App\Http\Controllers\Master\DashboardController::class,'index'])->name('master');
-        Route::resource('/admin_users',App\Http\Controllers\Master\AdminUserController::class)->names('master.adminUsers');
-        Route::resource('/departments',App\Http\Controllers\Master\DepartmentController::class)->names('master.departments');
-    });
-});
-
 
 Route::middleware([
     'auth:admin_web',
     config('jetstream.auth_session'),
-    'role:DAMIA'
+    'role:DAMIA|admin|master'
 ])->group(function () {
     Route::prefix('/registry')->group(function(){
-        Route::get('/',[App\Http\Controllers\Department\Registry\DashboardController::class,'index'])->name('registry');
+        Route::get('/',[App\Http\Controllers\Department\Registry\DashboardController::class,'index'])->name('registry.dashboard');
         Route::resource('enquiry/questions',App\Http\Controllers\Department\Registry\EnquiryQuestionController::class)->names('registry.enquiry.questions');
         Route::post('enquiry/question/response',[App\Http\Controllers\Department\Registry\EnquiryQuestionController::class,'response'])->name('registry.enquiry.question.response');
         Route::resource('enquiries',App\Http\Controllers\Department\Registry\EnquiryController::class)->names('registry.enquiries');
@@ -85,7 +87,7 @@ Route::middleware([
 Route::middleware([
     'auth:admin_web',
     config('jetstream.auth_session'),
-    'role:PES'
+    'role:PES|admin|master'
 ])->group(function () {
     Route::prefix('/personnel')->group(function(){
         Route::get('/',[App\Http\Controllers\Department\Personnel\DashboardController::class,'index'])->name('personnel.dashboard');

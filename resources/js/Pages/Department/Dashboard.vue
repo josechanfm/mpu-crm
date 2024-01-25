@@ -7,7 +7,12 @@
         </template>
         <ul>
             <li v-for="department in departments">
-                {{ department.name_zh }}
+                <template v-if="department.default_route">
+                    <a :href="route('manage.masqueradeAdminUser',department.id)">{{ department.name_zh }}</a>
+                </template>
+                <template v-else>
+                    {{ department.name_zh }}                   
+                </template>
             </li>
         </ul>
         

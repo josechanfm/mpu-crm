@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('gpdps', function (Blueprint $table) {
             $table->id();
-            $table->string('staff_num',6)->nullable();
-            $table->string('name_zh');
+            $table->char('staff_num',6)->nullable();
+            $table->string('name_zh')->nullable();
             $table->string('name_fr')->nullable();
             $table->date('date_start');
             $table->date('date_remind');

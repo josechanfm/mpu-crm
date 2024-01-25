@@ -18,18 +18,10 @@
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button @click="editRecord(record)">Edit</a-button>
-
                             <a-popconfirm title="Confirm Delete" ok-text="Yes" cancel-text="No"
                                 @confirm="deleteConfirmed(record)" :disabled="record.entries_count > 0">
                                 <a-button :disabled="record.entries_count > 0">Delete</a-button>
                             </a-popconfirm>
-                        </template>
-                        <template v-else-if="column.type == 'yesno'">
-                            <span v-if="record[column.dataIndex] == 1">Yes</span>
-                            <span v-else>No</span>
-                        </template>
-                        <template v-else-if="column.dataIndex == 'entries'">
-                            {{ record.entries_count }}
                         </template>
                         <template v-else>
                             {{ record[column.dataIndex] }}
@@ -37,7 +29,6 @@
                     </template>
                 </a-table>
             </div>
-            <p>From CAN NOT be delete, if Response is not empty.</p>
         </div>
 
         <!-- Modal Start-->
@@ -66,7 +57,7 @@
                     <a-date-picker v-model:value="modal.data.date_due" :format="dateFormat" :valueFormat="dateFormat" />
                 </a-form-item>
                 <a-form-item label="Is Valid" name="in_valid">
-                    <a-switch v-model:checked="modal.data.valid" :unCheckedValue="0" :checkedValue="1" />
+                    <a-switch v-model:checked="modal.data.is_valid" :unCheckedValue="0" :checkedValue="1" />
                 </a-form-item>
                 <a-form-item label="Remark" name="remark">
                     <a-textarea v-model:value="modal.data.remark" />
@@ -131,8 +122,8 @@ export default {
                     dataIndex: "name_zh",
                 }, {
                     title: "Name (Foreign)",
-                    i18n: "name_en",
-                    dataIndex: "name_en",
+                    i18n: "name_fr",
+                    dataIndex: "name_fr",
                 }, {
                     title: "Email",
                     i18n: "email",

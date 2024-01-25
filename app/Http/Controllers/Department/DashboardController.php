@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\AdminUser;
 use App\Models\Department;
+use Spatie\Permission\Models\Role;
 
 class DashboardController extends Controller
 {
@@ -17,38 +18,30 @@ class DashboardController extends Controller
 
     public function index()
     {
-        //session()->forget('currentDepartmentId');
         session()->forget('department');
-        if(auth()->user()->hasRole('master')){
-            $departments=Department::all();
-        }else{
-            $departments=auth()->user()->departments;
-        }
-        // dd(auth()->user()->roles->first()->name);
-        //config(['fortify.home' => auth()->user()->roles->first()->path]);
+        //dd(Department::whereIn('abbr',auth()->user()->roles->pluck('name'))->first());
         session(['department'=>Department::whereIn('abbr',auth()->user()->roles->pluck('name'))->first()]);
-        $defaultRoute=auth()->user()->roles->first()->default_route;
-        if($defaultRoute){
-            return redirect()->route($defaultRoute);
-        }
-        
-        //dd('Department/'.$path.'/Dashboard');
-        $count=$departments->count();
-        if($count==0){
-            return redirect('/staff');
-        }else if($count==1){
-            //session(['currentDepartmentId'=>$departments[0]->id]);
-            return Inertia::render('Department/Dashboard',[
-                'departments' => Department::all(),
-            ]);
-        }else{
-            //session(['currentDepartmentId'=>$departments[0]->id]);
-            session(['department'=>$departments[0]]);
-            return Inertia::render('Department/Selection',[
-                'departments' => $departments
-            ]);
+        //$defaultRoute=auth()->user()->roles->first()->default_route;
+        if(session('department')->default_route){
+            return redirect()->route(session('department')->default_route);
         }
 
+        return Inertia::render('Department/Dashboard',[
+            'departments' => Department::all(),
+        ]);
+
+    }
+
+    public function masqueradeAdminUser(Department $department){
+        session()->forget('department');
+        session(['department'=>$department]);
+        if(session('department')->default_route){
+            return redirect()->route(session('department')->default_route);
+        }
+
+        return Inertia::render('Department/Dashboard',[
+            'departments' => Department::all(),
+        ]);
     }
     
 }

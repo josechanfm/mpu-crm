@@ -6,7 +6,6 @@
             </h2>
         </template>
         <a-typography-title :level="3">{{ department.name_zh }}</a-typography-title>
-        <div v-html="department.landing_zh"></div>
     </DepartmentLayout>
 </template>
 
