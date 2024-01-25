@@ -3,24 +3,30 @@
        
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Personal Data Privacy
+                個資申報義務
             </h2>
         </template>
         <div class="flex-auto pb-3 text-right">
-            <a-button type="primary" @click="createRecord(record)">Create</a-button>
+            <a :href="route('personnel.gpdps.export')" class="ant ant-btn mr-10">Export</a>
+            <inertia-link :href="route('personnel.gpdps.emails')" class="ant ant-btn mr-10">Sent Emails</inertia-link>
+            <a-button type="primary" @click="createRecord(record)">新增</a-button>
         </div>
         <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                <a-table :dataSource="gpdps" :columns="columns">
+                <a-table :dataSource="gpdps.data" :columns="columns" :pagination="pagination" @change="onPaginationChange">
                     <template #headerCell="{ column }">
                         {{ column.title }}
                     </template>
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <a-button @click="editRecord(record)">Edit</a-button>
-                            <a-popconfirm title="Confirm Delete" ok-text="Yes" cancel-text="No"
+                            <a-button @click="editRecord(record)">修改</a-button>
+                            <a-popconfirm title="是否確定刪除?" ok-text="Yes" cancel-text="No"
                                 @confirm="deleteConfirmed(record)" :disabled="record.entries_count > 0">
-                                <a-button :disabled="record.entries_count > 0">Delete</a-button>
+                                <a-button :disabled="record.entries_count > 0">刪除</a-button>
+                            </a-popconfirm>
+                            <a-popconfirm title="是否確定個別發電郵提醒?" ok-text="Yes" cancel-text="No"
+                                @confirm="sendEmailConfirmed(record)" :disabled="record.entries_count > 0">
+                                <a-button :disabled="record.entries_count > 0">發電郵</a-button>
                             </a-popconfirm>
                         </template>
                         <template v-else>
@@ -33,35 +39,91 @@
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
-            <a-form ref="modalRef" :model="modal.data" name="formField" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }"
+            <a-form ref="modalRef" :model="modal.data" name="formField" :label-col="{ style:{width:'150px'}  }" :wrapper-col="{ span: 20 }"
                 autocomplete="off" :rules="rules" :validate-messages="validateMessages">
-                <a-form-item label="Staff Number" name="staff_num">
-                    <a-input v-model:value="modal.data.staff_num"/>
-                </a-form-item>
-                <a-form-item label="Name (Chinese)" name="name_zh">
-                    <a-input v-model:value="modal.data.name_zh"/>
-                </a-form-item>
-                <a-form-item label="Name (Foreign)" name="name_fr">
-                    <a-input v-model:value="modal.data.name_fr"/>
-                </a-form-item>
-                <a-form-item label="Email" name="email">
-                    <a-input v-model:value="modal.data.email"/>
-                </a-form-item>
-                <a-form-item label="Start Date" name="date_start">
-                    <a-date-picker v-model:value="modal.data.date_start" :format="dateFormat" :valueFormat="dateFormat" @change="dateStartChange()"/>
-                </a-form-item>
-                <a-form-item label="Remind Date" name="date_remind">
-                    <a-date-picker v-model:value="modal.data.date_remind" :format="dateFormat" :valueFormat="dateFormat" />
-                </a-form-item>
-                <a-form-item label="Due Date" name="date_due">
-                    <a-date-picker v-model:value="modal.data.date_due" :format="dateFormat" :valueFormat="dateFormat" />
-                </a-form-item>
-                <a-form-item label="Is Valid" name="in_valid">
-                    <a-switch v-model:checked="modal.data.is_valid" :unCheckedValue="0" :checkedValue="1" />
-                </a-form-item>
-                <a-form-item label="Remark" name="remark">
-                    <a-textarea v-model:value="modal.data.remark" />
-                </a-form-item>
+                <a-row>
+                    <a-col :span="14">
+                        <a-form-item label="姓名(中文)" name="name_zh">
+                            <a-input v-model:value="modal.data.name_zh"/>
+                        </a-form-item>
+                    </a-col>
+                    <a-col :span="10">
+                        <a-form-item label="員工編號" name="staff_num">
+                            <a-input v-model:value="modal.data.staff_num"/>
+                        </a-form-item>
+                    </a-col>
+                </a-row>
+                <a-row>
+                    <a-col :span="24">
+                        <a-form-item label="姓名(外文)" name="name_fr">
+                            <a-input v-model:value="modal.data.name_fr"/>
+                        </a-form-item>
+                    </a-col>
+                </a-row>
+                <a-row>
+                    <a-col :span="12">
+                        <a-form-item label="電郵地址" name="email">
+                            <a-input v-model:value="modal.data.email"/>
+                        </a-form-item>
+                    </a-col>
+                    <a-col :span="12">
+                        <a-form-item label="身份證明文件編號" name="id_num">
+                            <a-input v-model:value="modal.data.id_num"/>
+                        </a-form-item>
+                    </a-col>
+                </a-row>
+                <a-row>
+                    <a-col :span="12">
+                        <a-form-item label="現任職的實體/部門" name="current_department">
+                            <a-input v-model:value="modal.data.current_department"/>
+                        </a-form-item>
+                    </a-col>
+                    <a-col :span="12">
+                        <a-form-item label="現職位/職級/職務" name="current_position">
+                            <a-input v-model:value="modal.data.current_position"/>
+                        </a-form-item>
+                    </a-col>
+                </a-row>
+                <a-row>
+                    <a-col :span="12">
+                        <a-form-item label="原任職部門" name="original_department">
+                            <a-input v-model:value="modal.data.original_department"/>
+                        </a-form-item>
+                    </a-col>
+                    <a-col :span="12">
+                        <a-form-item label="原職位" name="original_postion">
+                            <a-input v-model:value="modal.data.original_position"/>
+                        </a-form-item>
+                    </a-col>
+                </a-row>
+                <a-row>
+                    <a-col :span="12">
+                        <a-form-item label="產生申報義務日期" name="date_start">
+                            <a-date-picker v-model:value="modal.data.date_start" :format="dateFormat" :valueFormat="dateFormat" @change="dateStartChange()"/>
+                        </a-form-item>
+                        <a-form-item label="提醒日期(60日)" name="date_remind">
+                            <a-date-picker v-model:value="modal.data.date_remind" :format="dateFormat" :valueFormat="dateFormat" />
+                        </a-form-item>
+                        <a-form-item label="到期日期(90日)" name="date_due">
+                            <a-date-picker v-model:value="modal.data.date_due" :format="dateFormat" :valueFormat="dateFormat" />
+                        </a-form-item>
+                    </a-col>
+                    <a-col :span="12">
+                        <a-form-item label="任用或職用方式" name="employment_type">
+                            <a-select v-model:value="modal.data.employment_type" :options="employmentOptions" />
+                        </a-form-item>
+                        <a-form-item label="有效" name="in_valid">
+                            <a-switch v-model:checked="modal.data.is_valid" :unCheckedValue="0" :checkedValue="1" />
+                        </a-form-item>
+                    </a-col>
+                </a-row>
+                <a-row>
+                    <a-col :span="24">
+                        <a-form-item label="備註" name="remark">
+                            <a-textarea v-model:value="modal.data.remark" />
+                        </a-form-item>
+                    </a-col>
+                </a-row>
             </a-form>
             <template #footer>
                 <a-button v-if="modal.mode == 'EDIT'" key="Update" type="primary" @click="updateRecord()">Update</a-button>
@@ -111,48 +173,57 @@ export default {
                 mode: "",
             },
             dateFormat: "YYYY-MM-DD",
+            pagination: {
+                total: this.gpdps.total,
+                current: this.gpdps.current_page,
+                pageSize: this.gpdps.per_page,
+            },
+            employmentOptions:[
+                {value:'CONTRACT',label:'工作合同'},
+                {value:'REQUISITION',label:'徵用'},
+                {value:'APPOINT',label:'定期委任'}
+            ],
             columns: [
                 {
-                    title: "Staff Number",
+                    title: "員工編號",
                     i18n: "staff_num",
                     dataIndex: "staff_num",
                 }, {
-                    title: "Name (Chinese)",
+                    title: "姓名(中文)",
                     i18n: "name_zh",
                     dataIndex: "name_zh",
                 }, {
-                    title: "Name (Foreign)",
+                    title: "姓名(外文)",
                     i18n: "name_fr",
                     dataIndex: "name_fr",
                 }, {
-                    title: "Email",
+                    title: "電郵地址",
                     i18n: "email",
                     dataIndex: "email",
                 }, {
-                    title: "Start Date",
+                    title: "產生申報義務日",
                     i18n: "date_start",
                     dataIndex: "date_start",
                 }, {
-                    title: "Remind Date",
+                    title: "期提醒日期(60日)",
                     i18n: "date_remind",
                     dataIndex: "date_remind",
                 }, {
-                    title: "Due Date",
+                    title: "到期日期(90日)",
                     i18n: "date_due",
                     dataIndex: "date_due",
                 }, {
-                    title: "Is Valid",
+                    title: "有效",
                     i18n: "is_valid",
                     dataIndex: "is_valid",
                 }, {
-                    title: "Operation",
+                    title: "操作",
                     i18n: "operation",
                     dataIndex: "operation",
                     key: "operation",
                 },
             ],
             rules:{
-                name_zh: { required: true },
                 email: { required: true, type:'email' },
                 date_start: { required: true },
                 date_remind: { required: true },
@@ -175,14 +246,17 @@ export default {
     methods: {
         createRecord() {
             this.modal.data = {};
+            this.modal.data.current_department='澳門理工大學';
+            this.modal.data.employment_type='CONTRACT';
+            this.modal.data.is_valid=1;
             this.modal.mode = "CREATE";
-            this.modal.title="Create Record";
+            this.modal.title="新增記錄";
             this.modal.isOpen = true;
         },
         editRecord(record) {
             this.modal.data = { ...record };
             this.modal.mode = "EDIT";
-            this.modal.title="Edit Record";
+            this.modal.title="修改記錄";
             this.modal.isOpen = true;
         },
         dateStartChange(){
@@ -233,6 +307,34 @@ export default {
                 },
             });
         },
+        onPaginationChange(page, filters, sorter) {
+            this.$inertia.get(
+                route("personnel.gpdps.index"),
+                {
+                    page: page.current,
+                    per_page: page.pageSize,
+                },
+                {
+                onSuccess: (page) => {
+                    console.log(page);
+                },
+                onError: (error) => {
+                    console.log(error);
+                },
+                }
+            );
+        },
+        sendEmailConfirmed(record){
+            console.log(record);
+            this.$inertia.post(route('personnel.gpdp.sendEmailReminder',record.id),{
+                onSuccess: (page) => {
+                    console.log(page)
+                },
+                onError: (err) => {
+                    console.log(err);
+                }
+            });
+        }
     },
 };
 </script>

@@ -18,6 +18,12 @@ return new class extends Migration
             $table->char('staff_num',6)->nullable();
             $table->string('name_zh')->nullable();
             $table->string('name_fr')->nullable();
+            $table->string('id_num')->nullable();
+            $table->string('current_position')->nullable();
+            $table->string('current_department')->nullable();
+            $table->string('original_position')->nullable();
+            $table->string('original_department')->nullable();
+            $table->string('employment_type')->nullable();
             $table->date('date_start');
             $table->date('date_remind');
             $table->date('date_due');
