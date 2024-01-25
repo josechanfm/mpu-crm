@@ -6,7 +6,6 @@
                 Personal Data Privacy
             </h2>
         </template>
-
         <div class="flex-auto pb-3 text-right">
             <a-button type="primary" @click="createRecord(record)">Create</a-button>
         </div>

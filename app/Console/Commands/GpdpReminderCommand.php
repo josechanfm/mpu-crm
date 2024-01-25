@@ -33,7 +33,8 @@ class GpdpReminderCommand extends Command
         foreach($gpdps as $gpdp){
             Mail::send('emails.gpdpReminder',$gpdp, function($message) use($gpdp){
                 $message->to($gpdp['email'])
-                        ->from('josec@mpu.edu.mo','Personnel Department')
+                        ->cc('personnel@mpu.edu.mo')
+                        ->from('personnel@mpu.edu.mo','Personnel Office')
                         ->subject('GPDP remider');
             });
         }

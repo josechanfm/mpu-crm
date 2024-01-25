@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('gpdp:reminder')->everyMinute();
+        //$schedule->command('gpdp:reminder')->daily();
         // $schedule->call(function(){
         //     info('called evey minute');
         // })->everyMinute();

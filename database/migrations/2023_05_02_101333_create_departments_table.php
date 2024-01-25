@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('name_pt')->nullable();
             $table->string('phone')->nullable();
             $table->string('href')->nullable();
+            $table->string('default_route')->nullable();
             $table->timestamps();
         });
     }
