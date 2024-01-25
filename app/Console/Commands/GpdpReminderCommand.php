@@ -20,7 +20,7 @@ class GpdpReminderCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Daily auto send GPDP reminder';
 
     /**
      * Execute the console command.
@@ -33,7 +33,7 @@ class GpdpReminderCommand extends Command
         foreach($gpdps as $gpdp){
             Mail::send('emails.gpdpReminder',$gpdp, function($message) use($gpdp){
                 $message->to($gpdp['email'])
-                        ->from('josec@mpu.edu.mo','Personnel Department')
+                        ->from('pes@mpu.edu.mo','Personnel Department')
                         ->subject('GPDP remider');
             });
         }

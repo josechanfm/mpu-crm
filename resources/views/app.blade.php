@@ -20,4 +20,4 @@
 </html>
 <script type="text/javascript">
     window.vueSpatiePermissions = {!! auth()->check() ? auth()->user()->getRolesPermissionsAsJson() : 0 !!}
-  </script>
+</script>
