@@ -7,8 +7,23 @@
             </h2>
         </template>
         <div class="flex-auto pb-3 text-right">
-            <a :href="route('personnel.gpdps.export')" class="ant ant-btn mr-10">Export</a>
-            <inertia-link :href="route('personnel.gpdps.emails')" class="ant ant-btn mr-10">Sent Emails</inertia-link>
+            <div class="mb-5">
+                <a-form ref="importlRef" action="personnel/gpdps/export">
+                    <span v-if="is('admin')">
+                        <input type="file" id="import-file" hidden @change="onImport"/>
+                        <label for="import-file" class="ant-btn ant-btn-primary mr-5">
+                                匯入('admin only')
+                        </label>
+                    </span>
+
+                    <a-range-picker v-model:value="exportCriteria.period" :format="dateFormat" :valueFormat="dateFormat"/>
+                    <a-button type="primary" html-type="submit" @click="onExport" class="ml-5">
+                        滙出
+                    </a-button>
+                </a-form>
+            </div>
+            <a :href="route('personnel.gpdps.export')" class="ant ant-btn mr-5">Export</a>
+            <inertia-link :href="route('personnel.gpdps.emails')" class="ant ant-btn mr-5">Sent Emails</inertia-link>
             <a-button type="primary" @click="createRecord(record)">新增</a-button>
         </div>
         <div class="container mx-auto pt-5">
@@ -149,6 +164,7 @@ import Icon, { RestFilled } from "@ant-design/icons-vue";
 import { quillEditor, Quill } from "vue3-quill";
 import { message } from "ant-design-vue";
 import dayjs from 'dayjs';
+import axios from "axios";
 
 export default {
     components: {
@@ -166,6 +182,11 @@ export default {
         return {
             loading: false,
             imageUrl: null,
+            importFile:null,
+            exportCriteria:{
+                period:[dayjs().subtract(1,'month').format(this.dateFormat),dayjs().format(this.dateFormat)],
+                is_valid:true
+            },
             modal: {
                 isOpen: false,
                 data: {},
@@ -242,7 +263,12 @@ export default {
 
         };
     },
-    created() { },
+    created() {
+
+    },
+    mounted() {
+        console.log(dayjs().format('YYYY-MM-DD'));
+    }, 
     methods: {
         createRecord() {
             this.modal.data = {};
@@ -334,6 +360,22 @@ export default {
                     console.log(err);
                 }
             });
+        },
+        onExport(){
+            if(this.exportCriteria.period && this.exportCriteria.period.length==2){
+                const params='period[]='+this.exportCriteria.period[0]+'&period[]='+this.exportCriteria.period[1];
+                window.open('./gpdps/export?'+params);
+            }
+        },
+        onImport(e){
+            this.$inertia.post(route('personnel.gpdps.import'),e.target.files,{
+                onSuccess:(page)=>{
+                    console.log(page);
+                },
+                onError:(err)=>{
+                    console.log(err);
+                }
+            })
         }
     },
 };

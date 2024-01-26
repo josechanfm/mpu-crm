@@ -11,8 +11,9 @@ use App\Models\Department;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Email;
 use App\Exports\GpdpExport;
+use App\Imports\GpdpImport;
 use Maatwebsite\Excel\Facades\Excel;
-
+use PhpOffice\PhpSpreadsheet\Reader\Xls\RC4;
 
 class GpdpController extends Controller
 {
@@ -127,11 +128,16 @@ class GpdpController extends Controller
             'emails'=>Email::where('emailable_type','App\Models\Gpdp')->paginate(2)
         ]);
     }
-    public function export(){
-
+    public function export(Request $request){
         $columnHeaders = ["姓名(zh)","姓名(fr)","身份證明文件編號","現任職的實體/部門","現職位/職級/職務","原任職部門","原職位","任用或聘用方式","產生申報義務日期"];
-        $gpdps=Gpdp::select(['name_zh','name_fr','id_num','current_department','current_position','original_department','original_position','employment_type','date_start'])->get();
-        return Excel::download(new GpdpExport($gpdps,$columnHeaders), 'member.xlsx');
+        $gpdps=Gpdp::select(['name_zh','name_fr','id_num','current_department','current_position','original_department','original_position','employment_type','date_start'])
+            ->whereBetween('date_start',$request->period)
+            ->get();
+        return Excel::download(new GpdpExport($gpdps,$columnHeaders), 'gpdps.xlsx');
+    }
+    public function import(Request $request){
+        $gpdps=Excel::import(new GpdpImport, $request->file()[0]);
+        return redirect()->back();
     }
 
 }

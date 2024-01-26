@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Gpdp;
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
@@ -11,6 +12,7 @@ class GpdpExport implements FromCollection, WithHeadings
     /**
     * @return \Illuminate\Support\Collection
     */
+    use Exportable;
     protected $gpdps;
     protected $headers;
 
