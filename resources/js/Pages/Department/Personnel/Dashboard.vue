@@ -6,6 +6,14 @@
             </h2>
         </template>
         <a-typography-title :level="3">{{ department.name_zh }}</a-typography-title>
+        {{ $page }}
+        <p></p>
+        <span v-if="is('DAMIA | admin | master')">
+            DAMIA
+        </span>
+        <span v-if="is('PES | admin | master')">
+            PES
+        </span>
     </DepartmentLayout>
 </template>
 
@@ -22,6 +30,8 @@ export default {
         return {
 
         }
+    },
+    created: {
     },
     methods: {
 

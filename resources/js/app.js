@@ -9,7 +9,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
-import RolesPermissionsToVue from "../../vendor/geowrgetudor/laravel-spatie-permissions-vue/src/js";
+import LaravelPermissionToVueJS from '../../vendor/ahmedsaoud31/laravel-permission-to-vuejs/src/js'
 
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
@@ -19,10 +19,10 @@ createInertiaApp({
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, app, props, plugin }) {
         return createApp({ render: () => h(app, props) })
+            .use(LaravelPermissionToVueJS)
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .use(Antd)
-            .use(RolesPermissionsToVue)
             .component('inertia-head',Head)
             .component('inertia-link',Link)
             .mount(el);

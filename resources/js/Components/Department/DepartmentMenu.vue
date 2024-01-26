@@ -31,7 +31,7 @@
             Questions
           </inertia-link>
         </a-menu-item>
-        <a-menu-item key="enqriry_3" v-if="$page.props.currentUser.roles.includes('admin') || $page.props.currentUser.roles.includes('master')">
+        <a-menu-item key="enqriry_3" >
           <inertia-link :href="route('registry.enquiry.faqs.index')">
             Faqs
           </inertia-link>

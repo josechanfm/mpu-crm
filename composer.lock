@@ -4,8 +4,49 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9571b4dc442eaede1ba05878429efde1",
+    "content-hash": "15b4761ab8b895f86831fa53cc136260",
     "packages": [
+        {
+            "name": "ahmedsaoud31/laravel-permission-to-vuejs",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ahmedsaoud31/laravel-permission-to-vuejs.git",
+                "reference": "26049ee1a9207442ae58eecdea94b5f96f8b6d7e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ahmedsaoud31/laravel-permission-to-vuejs/zipball/26049ee1a9207442ae58eecdea94b5f96f8b6d7e",
+                "reference": "26049ee1a9207442ae58eecdea94b5f96f8b6d7e",
+                "shasum": ""
+            },
+            "require": {
+                "spatie/laravel-permission": ">=2.0"
+            },
+            "default-branch": true,
+            "type": "plugin",
+            "autoload": {
+                "psr-4": {
+                    "LaravelAndVueJS\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ahmed Abeoelsaoud",
+                    "email": "ahmedsaoud31@gmail.com"
+                }
+            ],
+            "description": "Laravel Permission Package To Use it in VueJs",
+            "support": {
+                "issues": "https://github.com/ahmedsaoud31/laravel-permission-to-vuejs/issues",
+                "source": "https://github.com/ahmedsaoud31/laravel-permission-to-vuejs/tree/master"
+            },
+            "time": "2023-11-29T10:28:14+00:00"
+        },
         {
             "name": "bacon/bacon-qr-code",
             "version": "2.0.8",
@@ -957,45 +998,6 @@
                 }
             ],
             "time": "2023-10-12T05:21:21+00:00"
-        },
-        {
-            "name": "geowrgetudor/laravel-spatie-permissions-vue",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/geowrgetudor/laravel-spatie-permissions-vue.git",
-                "reference": "2e57784b94df2bb4850dfe446a866c0fa9f67cf3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/geowrgetudor/laravel-spatie-permissions-vue/zipball/2e57784b94df2bb4850dfe446a866c0fa9f67cf3",
-                "reference": "2e57784b94df2bb4850dfe446a866c0fa9f67cf3",
-                "shasum": ""
-            },
-            "require": {
-                "spatie/laravel-permission": ">=5.4.0"
-            },
-            "type": "plugin",
-            "autoload": {
-                "psr-4": {
-                    "SpatiePermissionVue\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "George Tudor",
-                    "email": "georgebitq@gmail.com"
-                }
-            ],
-            "description": "Use Laravel Spatie Permission package in Vue",
-            "support": {
-                "source": "https://github.com/geowrgetudor/laravel-spatie-permissions-vue/tree/1.0.0"
-            },
-            "time": "2022-12-13T14:32:43+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -10218,7 +10220,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "ahmedsaoud31/laravel-permission-to-vuejs": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
