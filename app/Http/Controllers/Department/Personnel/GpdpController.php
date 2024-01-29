@@ -36,9 +36,15 @@ class GpdpController extends Controller
         // // echo $html;
         // $gpdp->emails()->create($email);
         // dd($gpdp);
+        $yesterday=date('Y-m-d',strtotime('-1 day'));
+        $g=Gpdp::where('date_remind',$yesterday)->count();
+        $m=Email::whereRaw('left(created_at,10) = "'.$yesterday.'"')->count();
+
         return Inertia::render('Department/Personnel/Gpdps',[
-            'department'=>session('department'),
-            'gpdps'=>Gpdp::paginate($request->per_page??10)
+            'gpdps'=>Gpdp::paginate($request->per_page??10),
+            'yesterdaySent'=>'Sent '.$m.' of '.$g.' message(s)'
+
+            //'gpdps'=>Gpdp::orderBy('date_remind','desc')->paginate($request->per_page??10)
         ]);
     }
 
@@ -118,14 +124,18 @@ class GpdpController extends Controller
     }
 
     public function listEmails(Request $request){
-        if (empty($request->per_page)) {
-            $per_page = 10;
-        } else {
-            $per_page = $request->per_page;
-        }
-
+        if($request->date_range){
+            //dd($request->period);
+            $emails=Email::where('emailable_type','App\Models\Gpdp')->whereBetween('created_at',$request->date_range)->orderBy('created_at','desc')->paginate(2);
+            //dd($emails);
+        }else{
+            $emails=Email::where('emailable_type','App\Models\Gpdp')->orderBy('created_at','desc')->paginate(2);
+        };
+        
         return Inertia::render('Department/Personnel/GpdpsEmails',[
-            'emails'=>Email::where('emailable_type','App\Models\Gpdp')->paginate(2)
+            'emails'=>$emails
+            //'emails'=>Email::where('emailable_type','App\Models\Gpdp')->whereBetween('date_remind',$request->period)->orderBy('created_at','desc')->paginate(2)
+            //'emails'=>Email::where('emailable_type','App\Models\Gpdp')->orderBy('created_at','desc')->paginate($request->per_page??10)
         ]);
     }
     public function export(Request $request){
@@ -133,7 +143,7 @@ class GpdpController extends Controller
         $gpdps=Gpdp::select(['name_zh','name_fr','id_num','current_department','current_position','original_department','original_position','employment_type','date_start'])
             ->whereBetween('date_start',$request->period)
             ->get();
-        return Excel::download(new GpdpExport($gpdps,$columnHeaders), 'gpdps.xlsx');
+        return Excel::download(new GpdpExport($gpdps,$columnHeaders), date('Y-m-d').'_gpdps.xlsx');
     }
     public function import(Request $request){
         $gpdps=Excel::import(new GpdpImport, $request->file()[0]);

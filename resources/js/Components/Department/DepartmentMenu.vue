@@ -115,7 +115,6 @@ export default defineComponent({
       state.collapsed = !state.collapsed;
       state.openKeys = state.collapsed ? [] : state.preOpenKeys;
     };
-
     onMounted(()=> {
       axios.get('/get-permissions').then(
             response => {

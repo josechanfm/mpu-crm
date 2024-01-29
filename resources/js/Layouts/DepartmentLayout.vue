@@ -45,14 +45,37 @@
             </a-layout-header>
 
             <a-layout-content>
-
-                <PageHeader v-if="$slots.header" :menuKeys='menuKeys'>
-                    <template #header>
-                        <div>
-                            <slot name="header" />
-                        </div>
-                    </template>
-                </PageHeader>
+                <header class="flex justify-between items-center bg-gray-200 m-4 py-4 px-6 mb-5 bg-white shadow sm:rounded-lg">
+                <div class="text-lg font-bold">
+                  {{ title }}
+                </div>
+                <nav class="text-sm" v-if="breadcrumb">
+                  <ol class="list-none flex">
+                    <li class="breadcrumb-item hidden md:inline" v-for="(item, idx) in breadcrumb">
+                      <inertia-link v-if="item.url" :href="item.url">{{ item.label }}</inertia-link>
+                      <span v-else>{{ item.label }}</span>
+                    <span class="pl-2 pr-2" v-if="idx < breadcrumb.length-1">&gt;</span>
+                    </li>
+                    <li class="breadcrumb-item block md:hidden">
+                      <span v-if="breadcrumb.length>1">
+                        <inertia-link :href="breadcrumb[breadcrumb.length-2].url">
+                          {{ breadcrumb[breadcrumb.length-2].label }}
+                        </inertia-link>
+                      </span>
+                      <span v-else>
+                        <inertia-link :href="route('manage')">
+                          Home
+                        </inertia-link>
+                      </span>
+                    </li>
+                    <li>
+                      <span class="pl-2 pr-2">|</span>
+                      <a href="javascript:history.back();" class="inline">Back</a>
+                    </li>
+                  </ol>
+                  
+                </nav>
+              </header>
 
                 <div class="mx-6">
                     <main>
@@ -80,7 +103,7 @@ import {
 defineProps({
     title: String,
     department:Object,
-
+    breadcrumb: Object,
 });
 
 const menuKeys = reactive({

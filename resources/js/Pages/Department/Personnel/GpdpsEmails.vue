@@ -6,6 +6,15 @@
                 個資申報義務 - 通知電郵
             </h2>
         </template>
+        <div class="flex-auto pb-3 text-right">
+            <div class="mb-5">
+                <a-range-picker v-model:value="dateRange" :format="dateFormat" :valueFormat="dateFormat"/>
+                <a-button type="primary" :danger="withRange()" html-type="submit" @click="onRefresh" class="ml-5">
+                    {{ withRange()?'With Range':'By Range' }}
+                </a-button>
+            </div>
+        </div>
+
         <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <a-table :dataSource="emails.data" :columns="columns"  :pagination="pagination" @change="onPaginationChange">
@@ -15,6 +24,12 @@
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button @click="showRecord(record)">Show</a-button>
+                        </template>
+                        <template v-else-if="column.dataIndex == 'sender'">
+                            {{ record[column.dataIndex][0] }}
+                        </template>
+                        <template v-else-if="column.dataIndex == 'created_at'">
+                            {{ formatDate(record[column.dataIndex])}}
                         </template>
                         <template v-else>
                             {{ record[column.dataIndex] }}
@@ -28,25 +43,24 @@
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" :okButtonProps="{hidden:true}">
             <a-form ref="modalRef" :model="modal.data" name="formField" :label-col="{ style:{width:'150px'}  }" :wrapper-col="{ span: 20 }"
                 autocomplete="off" :rules="rules" :validate-messages="validateMessages">
-                <a-form-item label="Admin user" name="admin_user_id">
+                <a-form-item label="人動發件人" name="admin_user_id">
                     {{ modal.data.admin_user_id}}
                 </a-form-item>
-                <a-form-item label="Sender" name="sender">
+                <a-form-item label="寄件人" name="sender">
                     {{ modal.data.sender }}
                 </a-form-item>
-                <a-form-item label="Receiver)" name="receiver">
+                <a-form-item label="收件人" name="receiver">
                     {{ modal.data.receiver}}
                 </a-form-item>
-                <a-form-item label="Created At" name="create_at">
-                    {{ modal.data.created_at}}
+                <a-form-item label="發出日期" name="created_at">
+                    {{ formatDate(modal.data.created_at)}}
                 </a-form-item>
-                <a-form-item label="Subjectd" name="subject">
-                    {{ modal.data.created_at}}
+                <a-form-item label="主指" name="subject">
+                    {{ modal.data.subject}}
                 </a-form-item>
-                <a-form-item label="Content" name="content">
+                <a-form-item label="郵件內文" name="content">
                     <div v-html="modal.data.content"/>
                 </a-form-item>
-
             </a-form>
         </a-modal>
         <!-- Modal End-->
@@ -85,13 +99,14 @@ export default {
         return {
             loading: false,
             imageUrl: null,
+            dateFormat: "YYYY-MM-DD",
+            dateRange:null,
             modal: {
                 isOpen: false,
                 data: {},
                 title: "Modal",
                 mode: "",
             },
-            dateFormat: "YYYY-MM-DD",
             pagination: {
                 total: this.emails.total,
                 current: this.emails.current_page,
@@ -104,16 +119,16 @@ export default {
             ],
             columns: [
                 {
-                    title: "Sender",
+                    title: "寄件人",
                     dataIndex: "sender",
                 }, {
-                    title: "Receiver",
+                    title: "收件人",
                     dataIndex: "receiver",
                 }, {
-                    title: "Admin User",
+                    title: "人動發件人",
                     dataIndex: "admin_user_id",
                 }, {
-                    title: "Created At",
+                    title: "發出日期",
                     dataIndex: "created_at",
                 }, {
                     title: "操作",
@@ -140,7 +155,11 @@ export default {
 
         };
     },
-    created() { },
+    created() {
+        const url = new URL(window.location)
+        const bar = url.searchParams.get('period[]')
+        this.dateRange=[dayjs().subtract(1,'day').format(this.dateFormat),dayjs().format(this.dateFormat)];
+    },
     methods: {
         showRecord(record) {
             this.modal.data = record;
@@ -149,22 +168,52 @@ export default {
             this.modal.isOpen = true;
         },
         onPaginationChange(page, filters, sorter) {
-            this.$inertia.get(
-                route("personnel.gpdps.emails"),
+            const url = new URL(window.location)
+            const hasPeriod = url.searchParams.get('date_range[]')
+
+            this.$inertia.get(route("personnel.gpdps.emails"),
                 {
                     page: page.current,
                     per_page: page.pageSize,
-                },
-                {
-                onSuccess: (page) => {
-                    console.log(page);
-                },
-                onError: (error) => {
-                    console.log(error);
-                },
+                    date_range:hasPeriod?this.formatDateRange(this.dateRange):null
+                },{
+                    onSuccess: (page) => {
+                        //console.log(page);
+                    },
+                    onError: (error) => {
+                        console.log(error);
+                    },
                 }
             );
         },
+        onRefresh(){
+            
+            this.$inertia.get(route('personnel.gpdps.emails'),
+                {
+                    date_range:this.dateRange?this.formatDateRange(this.dateRange):null
+                },{
+                    onSuccess: (page) => {
+                        //console.log(page);
+                    },
+                    onError: (error) => {
+                        console.log(error);
+                    },
+                }
+            );
+        },
+        formatDate(date, format = 'YYYY-MM-DD HH:mm') {
+            return dayjs(date).format(format);
+        },
+        formatDateRange(date, format='YYYY-MM-DD'){
+            date[0]=dayjs(date[0]).format(format)+' 00:00:00'
+            date[1]=dayjs(date[1]).format(format)+' 23:59:00'
+            return date
+        },
+        withRange(){
+            const url = new URL(window.location)
+            const hasDateRange = url.searchParams.get('date_range[]')
+            return hasDateRange!=null
+        }
 
     },
 };

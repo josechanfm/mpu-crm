@@ -1,11 +1,12 @@
 <template>
-    <DepartmentLayout title="Personnel">
+    <DepartmentLayout title="Personnel" :breadcrumb="breadcrumb">
        
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 個資申報義務
             </h2>
         </template>
+        
         <div class="flex-auto pb-3 text-right">
             <div class="mb-5">
                 <a-form ref="importlRef" action="personnel/gpdps/export">
@@ -22,7 +23,7 @@
                     </a-button>
                 </a-form>
             </div>
-            <a :href="route('personnel.gpdps.export')" class="ant ant-btn mr-5">Export</a>
+            {{ yesterdaySent }}
             <inertia-link :href="route('personnel.gpdps.emails')" class="ant ant-btn mr-5">Sent Emails</inertia-link>
             <a-button type="primary" @click="createRecord(record)">新增</a-button>
         </div>
@@ -177,12 +178,17 @@ export default {
         message,
         dayjs
     },
-    props: ["gpdps"],
+    props: ["gpdps","yesterdaySent"],
     data() {
         return {
+            breadcrumb:[
+                {label:"人事處首頁" ,url:route('personnel.dashboard')},
+                {label:"個資申報" ,url:null},
+            ],
             loading: false,
             imageUrl: null,
             importFile:null,
+            dateFormat: "YYYY-MM-DD",
             exportCriteria:{
                 period:[dayjs().subtract(1,'month').format(this.dateFormat),dayjs().format(this.dateFormat)],
                 is_valid:true
@@ -193,7 +199,6 @@ export default {
                 title: "Modal",
                 mode: "",
             },
-            dateFormat: "YYYY-MM-DD",
             pagination: {
                 total: this.gpdps.total,
                 current: this.gpdps.current_page,

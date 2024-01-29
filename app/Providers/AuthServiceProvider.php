@@ -46,14 +46,20 @@ class AuthServiceProvider extends ServiceProvider
                         'password' => $request->password
                     ]);
                 }else{
-                    Auth::shouldUse(config('fortify.guard'));
-                    config(['fortify.username' => 'username']);
-
-                    $validated = Auth::validate([
-                        //'mail' => $request->email,
-                        'samaccountname' => $request->username,
-                        'password' => $request->password
-                    ]);
+                    $adminUser=AdminUser::where('username', $request->username)->first();
+                    if($adminUser){
+                        // return redirect()->back()->with('error','Not account');
+                        Auth::shouldUse(config('fortify.guard'));
+                        config(['fortify.username' => 'username']);
+                        //dd($request->all());
+                        $validated = Auth::validate([
+                            //'mail' => $request->email,
+                            'samaccountname' => $request->username,
+                            'password' => $request->password
+                        ]);
+                    }else{
+                        $validated=false;
+                    }
                 }
             }else{
                 Auth::shouldUse(config('fortify.guard'));
