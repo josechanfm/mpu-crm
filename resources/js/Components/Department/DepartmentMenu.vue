@@ -115,6 +115,17 @@ export default defineComponent({
       state.collapsed = !state.collapsed;
       state.openKeys = state.collapsed ? [] : state.preOpenKeys;
     };
+
+    onMounted(()=> {
+      axios.get('/get-permissions').then(
+            response => {
+                if(JSON.stringify(window.Laravel.jsPermissions) !== JSON.stringify(response.data)){
+                    window.Laravel.jsPermissions=response.data;
+                    window.location.reload();
+                }
+            }
+        )
+    });
     return {
       ...toRefs(state),
       toggleCollapsed,

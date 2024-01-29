@@ -11,7 +11,6 @@ import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 import LaravelPermissionToVueJS from '../../vendor/ahmedsaoud31/laravel-permission-to-vuejs/src/js'
 
-
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 createInertiaApp({
@@ -28,5 +27,4 @@ createInertiaApp({
             .mount(el);
     },
 });
-
 InertiaProgress.init({ color: '#4B5563' });

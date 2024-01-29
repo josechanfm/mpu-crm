@@ -43,5 +43,6 @@ class DashboardController extends Controller
             'departments' => Department::all(),
         ]);
     }
-    
+
+   
 }

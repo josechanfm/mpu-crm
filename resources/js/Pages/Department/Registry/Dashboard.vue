@@ -13,7 +13,6 @@
 <script>
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
 
-
 export default {
     components: {
         DepartmentLayout,

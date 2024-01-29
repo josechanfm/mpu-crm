@@ -6,7 +6,6 @@
             </h2>
         </template>
         <a-typography-title :level="3">{{ department.name_zh }}</a-typography-title>
-        {{ $page }}
         <p></p>
         <span v-if="is('DAMIA | admin | master')">
             DAMIA
@@ -28,10 +27,12 @@ export default {
     props: ['department'],
     data() {
         return {
-
         }
     },
-    created: {
+    created(){
+
+    },
+    mounted(){
     },
     methods: {
 

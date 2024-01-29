@@ -24,6 +24,7 @@
         "@inertiajs/progress": "^0.2.7",
         "@tinymce/tinymce-vue": "^4.0.7",
         "ant-design-vue": "^3.2.15",
+        "laravel-permission-to-vuejs": "^3.0.2",
         "quill": "^1.3.7",
         "vue-draggable-next": "^2.2.1",
         "vue3-quill": "^0.3.0",

@@ -66,7 +66,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import PageHeader from '@/Components/Department/PageHeader.vue';
 import DepartmentMenu from '@/Components/Department/DepartmentMenu.vue';
@@ -99,10 +99,14 @@ const switchToTeam = (team) => {
         preserveState: false,
     });
 };
+onMounted (() => {
+
+});
 
 const logout = () => {
     Inertia.post(route('manage.logout'));
 };
+
 </script>
   
 <style>

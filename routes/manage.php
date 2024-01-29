@@ -6,6 +6,12 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Inertia\Inertia;
 
+// Route::get('/get-permissions', function () {
+//     return 'abc';
+//     return auth()->check()?auth()->user()->jsPermissions():0;
+// });
+
+
 
 Route::group(['middleware' => config('fortify.middleware', ['admin_web'])], function () {
     $limiter = config('fortify.limiters.login');
@@ -28,6 +34,9 @@ Route::middleware([
     Route::get('staff', function () {
         return Inertia::render('GeneralStaff',[
         ]);
+    });
+    Route::get('/get-permissions', function () {
+        return auth()->check()?auth()->user()->jsPermissions():0;
     });
 });
 
