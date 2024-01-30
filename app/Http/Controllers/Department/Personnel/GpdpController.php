@@ -24,24 +24,12 @@ class GpdpController extends Controller
      */
     public function index(Request $request)
     {
-        // $gpdp=Gpdp::find(1);
-        // $email=[
-        //     'sender'=>'personnel@mpu.edu.mo',
-        //     'receiver'=>$gpdp->email,
-        //     'subject'=>'abc',
-        //     'content'=>view('emails.gpdpReminder',$gpdp)->render()
-        // ];
-        // // //return view('emails.gpdpReminder',$gpdp); 
-        // // $html=view('emails.gpdpReminder',$gpdp)->render();
-        // // echo $html;
-        // $gpdp->emails()->create($email);
-        // dd($gpdp);
         $yesterday=date('Y-m-d',strtotime('-1 day'));
         $g=Gpdp::where('date_remind',$yesterday)->count();
         $m=Email::whereRaw('left(created_at,10) = "'.$yesterday.'"')->count();
 
         return Inertia::render('Department/Personnel/Gpdps',[
-            'gpdps'=>Gpdp::paginate($request->per_page??10),
+            'gpdps'=>Gpdp::orderBy('date_start','desc')->paginate($request->per_page??10),
             'yesterdaySent'=>'Sent '.$m.' of '.$g.' message(s)'
 
             //'gpdps'=>Gpdp::orderBy('date_remind','desc')->paginate($request->per_page??10)
@@ -147,6 +135,8 @@ class GpdpController extends Controller
     }
     public function import(Request $request){
         $gpdps=Excel::import(new GpdpImport, $request->file()[0]);
+        // $gpdps=Excel::toArray(new GpdpImport, $request->file()[0]);
+        // dd($gpdps[0]);
         return redirect()->back();
     }
 

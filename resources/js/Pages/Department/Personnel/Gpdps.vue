@@ -47,6 +47,7 @@
                     </template>
                 </a-table>
             </div>
+            <p>*該頁面按產生申報義務日降序排列</p>
         </div>
 
         <!-- Modal Start-->

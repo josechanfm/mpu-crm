@@ -4,7 +4,7 @@
             <div class="mb-5">
                 <a-range-picker v-model:value="dateRange" :format="dateFormat" :valueFormat="dateFormat"/>
                 <a-button type="primary" :danger="withRange()" html-type="submit" @click="onRefresh" class="ml-5">
-                    {{ withRange()?'With Range':'By Range' }}
+                    按時期列出
                 </a-button>
             </div>
         </div>
