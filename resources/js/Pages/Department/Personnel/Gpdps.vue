@@ -1,12 +1,5 @@
 <template>
-    <DepartmentLayout title="Personnel" :breadcrumb="breadcrumb">
-       
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                個資申報義務
-            </h2>
-        </template>
-        
+    <DepartmentLayout title="個資申報義務" :breadcrumb="breadcrumb">
         <div class="flex-auto pb-3 text-right">
             <div class="mb-5">
                 <a-form ref="importlRef" action="personnel/gpdps/export">
@@ -44,6 +37,9 @@
                                 @confirm="sendEmailConfirmed(record)" :disabled="record.entries_count > 0">
                                 <a-button :disabled="record.entries_count > 0">發電郵</a-button>
                             </a-popconfirm>
+                        </template>
+                        <template v-else-if="column.dataIndex=='is_valid'">
+                            <span :class="text?'':'text-orange-600'">{{ text==1?'有效':'無效' }}</span>
                         </template>
                         <template v-else>
                             {{ record[column.dataIndex] }}

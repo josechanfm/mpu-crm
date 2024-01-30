@@ -1,11 +1,5 @@
 <template>
-    <DepartmentLayout title="Personnel">
-       
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                個資申報義務 - 通知電郵
-            </h2>
-        </template>
+    <DepartmentLayout title="個資申報義務 - 通知電郵" :breadcrumb="breadcrumb">
         <div class="flex-auto pb-3 text-right">
             <div class="mb-5">
                 <a-range-picker v-model:value="dateRange" :format="dateFormat" :valueFormat="dateFormat"/>
@@ -97,6 +91,10 @@ export default {
     props: ["emails"],
     data() {
         return {
+            breadcrumb:[
+                {label:"人事處首頁" ,url:route('personnel.dashboard')},
+                {label:"電郵記錄" ,url:null},
+            ],
             loading: false,
             imageUrl: null,
             dateFormat: "YYYY-MM-DD",
