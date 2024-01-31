@@ -5,57 +5,11 @@
                 Department
             </h2>
         </template>
-        <a-table :dataSource="adminUsers" :columns="columns" :row-key="record => record.root_id">
-            <template #bodyCell="{column, text, record, index}" >
-                <template v-if="column.dataIndex=='operation'">
-                    <a-button @click="editRecord(record)">Edit</a-button>
-                    <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
-                </template>
-                <template v-else-if="column.dataIndex=='departments'">
-                    <ol>
-                        <li v-for="department in record.departments">{{ department.name_zh }}</li>    
-                    </ol>
-                </template>
-                <template v-else>
-                    {{record[column.dataIndex]}}
-                </template>
-            </template>
-        </a-table>
-
-
-        <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
-            {{ modal.data }}
-        <a-form
-            ref="modalRef"
-            :model="modal.data"
-            name="Teacher"
-            layout="vertical"
-            autocomplete="off"
-            :rules="rules"
-            :validate-messages="validateMessages"
-        >
-            <a-form-item label="Name" name="name" :rules="{required:true}">
-                <a-input v-model:value="modal.data.name"                 />
-            </a-form-item>
-            <a-form-item label="Email" name="email" :rules="{required:true}">
-                <a-input v-model:value="modal.data.email"/>
-            </a-form-item>
-            <a-form-item label="Departments" name="departments" :rules="{required:true}">
-                <a-select 
-                    mode="multiple"
-                    v-model:value="modal.data.departments" 
-                    :options="departments" 
-                    :fieldNames="{value:'id',label:'abbr_zh'}"
-                />
-            </a-form-item>
-        </a-form>
-        <template #footer>
-            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
-            <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">Add</a-button>
-        </template>
-    </a-modal>    
-    <!-- Modal End-->
+        <div class="container mx-auto pt-5">
+            <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+                Master dashboard
+            </div>
+        </div>
 
     </MasterLayout>
 </template>

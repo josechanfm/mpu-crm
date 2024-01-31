@@ -1,13 +1,11 @@
 <template>
     <DepartmentLayout title="人事處首頁" :department="department">
         <a-typography-title :level="3">{{ department.name_zh }}</a-typography-title>
-        <p></p>
-        <span v-if="is('DAMIA | admin | master')">
-            DAMIA
-        </span>
-        <span v-if="is('PES | admin | master')">
-            PES
-        </span>
+        <div class="container mx-auto pt-5">
+            <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+                Personnel department Dashboard
+            </div>
+        </div>
     </DepartmentLayout>
 </template>
 

@@ -6,34 +6,38 @@
             </h2>
         </template>
         <a-button @click="createRecord">Add Faq</a-button>
-        <a-table 
-            :dataSource="department.faqs" 
-            :columns="columns" 
-            :rowKey=" record  => record.id"
-            @change="handleTableChange"
-        >
-            <template #bodyCell="{column, text, record, index}" >
-                <template v-if="column.dataIndex=='operation'">
-                    <a-button @click="editRecord(record)">Edit</a-button>
-                    <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
-                </template>
-                <template v-else-if="column.dataIndex=='degree'">
-                    {{ fields.degree.options.find(d=>d.value==record[column.dataIndex]).label }}
-                </template>
-                <template v-else-if="column.dataIndex=='subjects'">
-                    <div v-html="gatherSubjectLables(text)"/>
-                </template>
-                <template v-else-if="column.dataIndex=='created_at'">
-                    {{ formatDate(record[column.dataIndex]) }}
-                </template>
-                <template v-else-if="column.dataIndex=='updated_at'">
-                    {{ formatDate(record[column.dataIndex]) }}
-                </template>
-                <template v-else>
-                    {{record[column.dataIndex]}}
-                </template>
-            </template>
-        </a-table>
+        <div class="container mx-auto pt-5">
+            <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+                <a-table 
+                    :dataSource="department.faqs" 
+                    :columns="columns" 
+                    :rowKey=" record  => record.id"
+                    @change="handleTableChange"
+                >
+                    <template #bodyCell="{column, text, record, index}" >
+                        <template v-if="column.dataIndex=='operation'">
+                            <a-button @click="editRecord(record)">Edit</a-button>
+                            <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
+                        </template>
+                        <template v-else-if="column.dataIndex=='degree'">
+                            {{ fields.degree.options.find(d=>d.value==record[column.dataIndex]).label }}
+                        </template>
+                        <template v-else-if="column.dataIndex=='subjects'">
+                            <div v-html="gatherSubjectLables(text)"/>
+                        </template>
+                        <template v-else-if="column.dataIndex=='created_at'">
+                            {{ formatDate(record[column.dataIndex]) }}
+                        </template>
+                        <template v-else-if="column.dataIndex=='updated_at'">
+                            {{ formatDate(record[column.dataIndex]) }}
+                        </template>
+                        <template v-else>
+                            {{record[column.dataIndex]}}
+                        </template>
+                    </template>
+                </a-table>
+            </div>
+        </div>
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >

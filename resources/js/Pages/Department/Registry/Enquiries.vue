@@ -6,41 +6,46 @@
             </h2>
         </template>
         <a-typography-title :level="4">List of Enquiry</a-typography-title>
-        <a-table :dataSource="enquiriesStat" :columns="columns" :rowKey="record => record.id"
-            @change="handleTableChange">
-            <template #bodyCell="{ column, text, record, index }">
-                <template v-if="column.dataIndex == 'operation'">
-                    <a-button @click="viewRecord(record)">Edit</a-button>
-                </template>
-                <template v-else-if="column.dataIndex == 'created_at'">
-                    {{ dateFormat(record.created_at) }}
-                    <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
-                </template>
-                <template v-else-if="column.dataIndex == 'origin'">
-                    {{ optionFind(fields.origin.options, record.origin) }}
-                </template>
-                <template v-else-if="column.dataIndex == 'degree'">
-                    {{ optionFind(fields.degree.options, record.degree) }}
-                </template>
-                <template v-else-if="column.dataIndex == 'full_name'">
-                    {{ record.surname }}, {{ record.givenname }}
-                </template>
-                <template v-else-if="column.dataIndex == 'admin_user'">
-                    <span v-if="record.last_response">
-                        {{record.last_response.admin_user.username}}
-                    </span>
-                </template>
-                <template v-else-if="column.dataIndex == 'response_status'">
-                    <span v-if="record.question_count">
-                        提問:{{ record.question_count }} / 回應:{{ record.response_count }}
-                    </span>
-                </template>
-                <template v-else>
-                    {{ record[column.dataIndex] }}
-                </template>
-            </template>
-        </a-table>
 
+
+        <div class="container mx-auto pt-5">
+            <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+                <a-table :dataSource="enquiriesStat" :columns="columns" :rowKey="record => record.id"
+                    @change="handleTableChange">
+                    <template #bodyCell="{ column, text, record, index }">
+                        <template v-if="column.dataIndex == 'operation'">
+                            <a-button @click="viewRecord(record)">Edit</a-button>
+                        </template>
+                        <template v-else-if="column.dataIndex == 'created_at'">
+                            {{ dateFormat(record.created_at) }}
+                            <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
+                        </template>
+                        <template v-else-if="column.dataIndex == 'origin'">
+                            {{ optionFind(fields.origin.options, record.origin) }}
+                        </template>
+                        <template v-else-if="column.dataIndex == 'degree'">
+                            {{ optionFind(fields.degree.options, record.degree) }}
+                        </template>
+                        <template v-else-if="column.dataIndex == 'full_name'">
+                            {{ record.surname }}, {{ record.givenname }}
+                        </template>
+                        <template v-else-if="column.dataIndex == 'admin_user'">
+                            <span v-if="record.last_response">
+                                {{record.last_response.admin_user.username}}
+                            </span>
+                        </template>
+                        <template v-else-if="column.dataIndex == 'response_status'">
+                            <span v-if="record.question_count">
+                                提問:{{ record.question_count }} / 回應:{{ record.response_count }}
+                            </span>
+                        </template>
+                        <template v-else>
+                            {{ record[column.dataIndex] }}
+                        </template>
+                    </template>
+                </a-table>
+            </div>
+        </div>
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">

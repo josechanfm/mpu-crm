@@ -24,8 +24,8 @@ class AdminUserController extends Controller
         $data=$request->all();
         $data['password']=Hash::make($data['password']);
         $adminUser=AdminUser::create($data);
-        $adminUser->departments()->attach($request->departments);
-        $adminUser->roles()->attach(Role::where('name','department')->first());
+        $adminUser->departments()->sync(Department::whereIn('abbr',$request->belong_departments)->get());
+        $adminUser->roles()->sync(Role::whereIn('name',$request->manage_departments)->get());
         return redirect()->back();
     }
 

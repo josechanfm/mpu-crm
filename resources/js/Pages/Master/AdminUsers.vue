@@ -6,27 +6,31 @@
             </h2>
         </template>
         <a-button @click="createRecord">Add Admin User</a-button>
-        <a-table :dataSource="adminUsers" :columns="columns" :row-key="record => record.root_id">
-            <template #bodyCell="{column, text, record, index}" >
-                <template v-if="column.dataIndex=='operation'">
-                    <a-button @click="editRecord(record)">Edit</a-button>
-                    <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
-                </template>
-                <template v-else-if="column.dataIndex=='manage_departments'">
-                    <ol>
-                        <li v-for="role in record.roles">{{ role.name }}</li>    
-                    </ol>
-                </template>
-                <template v-else-if="column.dataIndex=='belong_departments'">
-                    <ol>
-                        <li v-for="department in record.departments">{{ department.name_zh }}</li>    
-                    </ol>
-                </template>
-                <template v-else>
-                    {{record[column.dataIndex]}}
-                </template>
-            </template>
-        </a-table>
+        <div class="container mx-auto pt-5">
+            <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+                <a-table :dataSource="adminUsers" :columns="columns" :row-key="record => record.root_id">
+                    <template #bodyCell="{column, text, record, index}" >
+                        <template v-if="column.dataIndex=='operation'">
+                            <a-button @click="editRecord(record)">Edit</a-button>
+                            <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
+                        </template>
+                        <template v-else-if="column.dataIndex=='manage_departments'">
+                            <ol>
+                                <li v-for="role in record.roles">{{ role.name }}</li>    
+                            </ol>
+                        </template>
+                        <template v-else-if="column.dataIndex=='belong_departments'">
+                            <ol>
+                                <li v-for="department in record.departments">{{ department.name_zh }}</li>    
+                            </ol>
+                        </template>
+                        <template v-else>
+                            {{record[column.dataIndex]}}
+                        </template>
+                    </template>
+                </a-table>
+            </div>
+        </div>
 
 
         <!-- Modal Start-->

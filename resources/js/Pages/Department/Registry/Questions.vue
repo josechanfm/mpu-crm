@@ -5,52 +5,55 @@
                 客戶服務管理
             </h2>
         </template>
-
         <a-typography-title :level="4">List of Enquiry Questions</a-typography-title>
-        <a-table :dataSource="department.enquiry_questions_open" :columns="columns" :row-key="record => record.root_id">
-            <template #bodyCell="{column, text, record, index}" >
-                <template v-if="column.dataIndex=='operation'">
-                    <a-button @click="viewRecord(record)">View</a-button>
-                    <inertia-link :href="route('registry.enquiry.questions.show', { question:record.id})" class="ant-btn">Response</inertia-link>
-                </template>
-                <template v-else-if="column.dataIndex=='enquiry_id'">
-                    {{ text }}
-                </template>
-                <template v-else-if="column.dataIndex=='givenname'">
-                    {{ record['enquiry']['givenname'] }}
-                </template>
-                <template v-else-if="column.dataIndex=='surname'">
-                    {{ record['enquiry']['surname'] }}
-                </template>
-                <template v-else-if="column.dataIndex=='email'">
-                    {{ record['enquiry']['email'] }} 
-                </template>
-                <template v-else-if="column.dataIndex=='phone'">
-                    {{ record['enquiry']['areacode'] }} - {{ record['enquiry']['phone'] }}
-                </template>
-                <template v-else-if="column.dataIndex=='created_at'">
-                    {{ dateFormat(record['created_at']) }}
-                </template>
-                <template v-else-if="column.dataIndex=='admin_user'">
-                    <span v-if="record.last_response">
-                        {{ record.last_response.admin_user?record.last_response.admin_user.name:'--' }}
-                    </span>
-                    <span>
-                        ---
-                    </span>
-                </template>
-                <template v-else-if="column.dataIndex=='content'">
-                    {{ record.content.substring(0,10) }}...........................
-                </template>
-                <!-- <template v-else-if="column.dataIndex=='escalated'">
-                    {{ text==1?'Escalated':'--' }}
-                </template> -->
-                <template v-else>
-                        {{record[column.dataIndex]}}
-                </template>
-            </template>
-        </a-table>
-        <p>Shows only enquiries with question and not yet closed.</p>
+        <div class="container mx-auto pt-5">
+            <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+                <a-table :dataSource="department.enquiry_questions_open" :columns="columns" :row-key="record => record.root_id">
+                    <template #bodyCell="{column, text, record, index}" >
+                        <template v-if="column.dataIndex=='operation'">
+                            <a-button @click="viewRecord(record)">View</a-button>
+                            <inertia-link :href="route('registry.enquiry.questions.show', { question:record.id})" class="ant-btn">Response</inertia-link>
+                        </template>
+                        <template v-else-if="column.dataIndex=='enquiry_id'">
+                            {{ text }}
+                        </template>
+                        <template v-else-if="column.dataIndex=='givenname'">
+                            {{ record['enquiry']['givenname'] }}
+                        </template>
+                        <template v-else-if="column.dataIndex=='surname'">
+                            {{ record['enquiry']['surname'] }}
+                        </template>
+                        <template v-else-if="column.dataIndex=='email'">
+                            {{ record['enquiry']['email'] }} 
+                        </template>
+                        <template v-else-if="column.dataIndex=='phone'">
+                            {{ record['enquiry']['areacode'] }} - {{ record['enquiry']['phone'] }}
+                        </template>
+                        <template v-else-if="column.dataIndex=='created_at'">
+                            {{ dateFormat(record['created_at']) }}
+                        </template>
+                        <template v-else-if="column.dataIndex=='admin_user'">
+                            <span v-if="record.last_response">
+                                {{ record.last_response.admin_user?record.last_response.admin_user.name:'--' }}
+                            </span>
+                            <span>
+                                ---
+                            </span>
+                        </template>
+                        <template v-else-if="column.dataIndex=='content'">
+                            {{ record.content.substring(0,10) }}...........................
+                        </template>
+                        <!-- <template v-else-if="column.dataIndex=='escalated'">
+                            {{ text==1?'Escalated':'--' }}
+                        </template> -->
+                        <template v-else>
+                                {{record[column.dataIndex]}}
+                        </template>
+                    </template>
+                </a-table>
+                <p>Shows only enquiries with question and not yet closed.</p>
+            </div>
+        </div>
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
