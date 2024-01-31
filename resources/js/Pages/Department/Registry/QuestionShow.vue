@@ -1,11 +1,5 @@
 <template>
-    <DepartmentLayout title="Dashboard" :department="department">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                客戶服務管理
-            </h2>
-        </template>
-        
+    <DepartmentLayout title="回應問題" :breadcrumb="breadcrumb">
         <!-- Enquirer basic info-->
         <a-card title="Contact Info">
             <template #extra>
@@ -196,6 +190,10 @@ export default {
     props: ['fields', 'department', 'enquiry', 'active_question'],
     data() {
         return {
+            breadcrumb:[
+                {label:"招生注冊處" ,url:route('personnel.dashboard')},
+                {label:"回應問題" ,url:null},
+            ],
             myResponse: {
                 enquiry_question_id: null,
                 title: null,

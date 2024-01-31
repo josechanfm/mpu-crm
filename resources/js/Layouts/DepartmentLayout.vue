@@ -1,16 +1,14 @@
 <template>
     <a-layout style="min-height: 100vh">
-
         <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible theme="light" width="250px" class="shadow-md " >
             <div class="m-4 text-center text-lg" v-if="collapsed">
-                <inertia-link :href="route('staff')"">MPU </inertia-link>
+                <inertia-link :href="route('staff')">MPU </inertia-link>
             </div>
             <div class="m-4 text-center text-lg" v-else>
                 <inertia-link :href="route('staff')">MPU </inertia-link>
             </div>
             <DepartmentMenu :menuKeys='menuKeys'/>
         </a-layout-sider>
-        
         <a-layout>
             <a-layout-header class="shadow-md border-b-2 border-red-600 flex" style="background: #fff; padding: 0">
                 <menu-unfold-outlined v-if="collapsed" class="trigger" @click="() => (collapsed = !collapsed)" />

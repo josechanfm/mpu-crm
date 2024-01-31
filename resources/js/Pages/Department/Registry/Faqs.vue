@@ -1,10 +1,5 @@
 <template>
-    <DepartmentLayout title="Dashboard" :department="department">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                客戶服務管理
-            </h2>
-        </template>
+    <DepartmentLayout title="常見問題" :breadcrumb="breadcrumb">
         <a-button @click="createRecord">Add Faq</a-button>
         <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
@@ -94,6 +89,10 @@ export default {
     props: ['department','fields'],
     data() {
         return {
+            breadcrumb:[
+                {label:"招生注冊處" ,url:route('personnel.dashboard')},
+                {label:"常見問題" ,url:null},
+            ],
             dateFormat:'YY-MM-DD HH:mm',
             modal:{
                 isOpen:false,

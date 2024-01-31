@@ -1,13 +1,5 @@
 <template>
-    <DepartmentLayout title="Dashboard" :department="department">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                客戶服務管理
-            </h2>
-        </template>
-        <a-typography-title :level="4">List of Enquiry</a-typography-title>
-
-
+    <DepartmentLayout title="查訽總表" :breadcrumb="breadcrumb">
         <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <a-table :dataSource="enquiriesStat" :columns="columns" :rowKey="record => record.id"
@@ -107,6 +99,10 @@ export default {
     props: ['department', 'enquiriesStat', 'fields'],
     data() {
         return {
+            breadcrumb:[
+                {label:"招生注冊處" ,url:route('personnel.dashboard')},
+                {label:"查訽總表" ,url:null},
+            ],
             modal: {
                 isOpen: false,
                 data: {},
