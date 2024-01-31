@@ -23,15 +23,9 @@ class FaqController extends Controller
      */
     public function index()
     {
-        //$department=Department::find(session('currentDepartmentId'));
-        $department=session('department');
-        $department->refresh();
-        //dd(Faq::find(6));
-        //dd($department->faqs->fresh());
-        //$this->authorize('view',$department);
-        return Inertia::render('Department/Enquiry/Faqs',[
+        $department=Department::where('abbr','DAMIA')->with('faqs')->first();
+        return Inertia::render('Department/Registry/Faqs',[
             'department'=>$department,
-            'faqs'=>$department->faqs,
             'fields'=>Config::enquiryFormFields()
         ]);
     }

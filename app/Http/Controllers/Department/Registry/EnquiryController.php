@@ -25,15 +25,13 @@ class EnquiryController extends Controller
      */
     public function index()
     {
-        //$department=Department::find(session('currentDepartmentId'));
-        $department=session('department');
-        //dd($department);
-        $department->refresh();
-        $department->enquiries;
-        //$this->authorize('view',$department);
+        //$department=Department::where('abbr','DAMIA')->with('enquiries')->first();
+        //$department=Department::where('abbr','DAMIA')->with('enquiriesStat')->first();
+        $department=Department::where('abbr','DAMIA')->first();
+        //dd($department->enquiriesStat());
         return Inertia::render('Department/Registry/Enquiries',[
             'department'=>$department,
-            //'enquiries'=>$department->enquiries,
+            'enquiriesStat'=>$department->enquiriesStat(),
             'fields'=>Config::enquiryFormFields(),
         ]);
     }
@@ -129,8 +127,6 @@ class EnquiryController extends Controller
         //
     }
     public function response(Department $department, Request $request){
-        dd($request->by_email());
-
         $response = new EnquiryResponse();
         $response->enquiry_question_id=$request->enquiry_question_id;
         $response->title=$request->title;

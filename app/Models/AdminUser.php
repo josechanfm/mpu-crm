@@ -36,9 +36,7 @@ class AdminUser extends Authenticatable implements LdapAuthenticatable
      *
      * @var string[]
      */
-    protected $fillable = [
-        'name', 'username','email', 'password',
-    ];
+    protected $fillable = ['name', 'username','email', 'password',];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -51,7 +49,6 @@ class AdminUser extends Authenticatable implements LdapAuthenticatable
         'two_factor_recovery_codes',
         'two_factor_secret',
     ];
-
     /**
      * The attributes that should be cast.
      *
@@ -70,15 +67,9 @@ class AdminUser extends Authenticatable implements LdapAuthenticatable
         'profile_photo_url',
     ];
 
+
     public function departments(){
         return $this->belongsToMany(Department::class);
     }
-    public function isDepartmentAdmin($department ){
-        dd($this->departments);
 
-    }
-
-    public function hasRight(){
-        
-    }
 }

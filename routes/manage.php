@@ -34,7 +34,7 @@ Route::middleware([
     Route::get('staff', function () {
         return Inertia::render('GeneralStaff',[
         ]);
-    });
+    })->name('staff');
     Route::get('/get-permissions', function () {
         return auth()->check()?auth()->user()->jsPermissions():0;
     });
@@ -89,7 +89,7 @@ Route::middleware([
         Route::resource('enquiry/questions',App\Http\Controllers\Department\Registry\EnquiryQuestionController::class)->names('registry.enquiry.questions');
         Route::post('enquiry/question/response',[App\Http\Controllers\Department\Registry\EnquiryQuestionController::class,'response'])->name('registry.enquiry.question.response');
         Route::resource('enquiries',App\Http\Controllers\Department\Registry\EnquiryController::class)->names('registry.enquiries');
-        Route::resource('enquiry/faqs',App\Http\Controllers\Department\Registry\FaqController::class)->names('registry.enquiry.faqs');
+        Route::resource('faqs',App\Http\Controllers\Department\Registry\FaqController::class)->names('registry.faqs');
     });
 });
 

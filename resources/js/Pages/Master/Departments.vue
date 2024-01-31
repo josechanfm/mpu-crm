@@ -35,8 +35,8 @@
             :ruels="rules"
             :validate-messages="validateMessages"
         >
-            <a-form-item label="Abbr" name="abbr_zh">
-                <a-input v-model:value="modal.data.abbr_zh"/>
+            <a-form-item label="Abbr" name="abbr">
+                <a-input v-model:value="modal.data.abbr"/>
             </a-form-item>
             <a-form-item label="Name" name="name_zh">
                 <a-input v-model:value="modal.data.name_zh"/>
@@ -71,7 +71,7 @@ export default {
             columns:[
                 {
                     title: 'Abbr',
-                    dataIndex: 'abbr_zh',
+                    dataIndex: 'abbr',
                 },{
                     title: 'Department',
                     dataIndex: 'name_zh',

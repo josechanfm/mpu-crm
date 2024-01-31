@@ -16,7 +16,7 @@ class EnquiryQuestion extends Model implements HasMedia
     use InteractsWithMedia;
 
     protected $fillable=['enquiry_id','parent_id','content','token','is_closed','admin_id','escalated'];
-    protected $casts=['files'=>'json'];
+    protected $casts=['files'=>'json','is_closed'=>'boolean'];
     protected $appends=['admin_user'];
 
     protected static function boot(){
@@ -32,7 +32,7 @@ class EnquiryQuestion extends Model implements HasMedia
         // });
     }
 
-    public function getAdminuserAttribute(){
+    public function getAdminUserAttribute(){
         return AdminUser::find($this->admin_id);
     }
     public function enquiry(){
@@ -54,7 +54,7 @@ class EnquiryQuestion extends Model implements HasMedia
     }
 
     public function responses(){
-        return $this->hasMany(EnquiryResponse::class)->with('media');
+        return $this->hasMany(EnquiryResponse::class)->with('media')->orderBy('created_at','desc');
     }
     public function lastResponse(){
         return $this->hasOne(EnquiryResponse::class)->latest();

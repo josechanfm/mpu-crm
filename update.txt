@@ -44,9 +44,15 @@ Email address auto show.
 
 
 
+2024-01-30
+- either one question not yet closed. 處理中/完成/--(not question.)
 
+- image uploading file-list on over popup messsage.
+- is_closed default value set to 0
+- create date on question question, set date format to YYYY-MM-DD
+- email sender named: no-reply@mpu.edu.mo
+- add upload feature to following question from email
+- admin faq table. now showing
+- desending order for all enquiries, questions and responses.
 
-
-
-
-
+mpmpa

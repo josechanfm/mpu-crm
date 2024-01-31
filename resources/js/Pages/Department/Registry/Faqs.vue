@@ -7,7 +7,7 @@
         </template>
         <a-button @click="createRecord">Add Faq</a-button>
         <a-table 
-            :dataSource="faqs" 
+            :dataSource="department.faqs" 
             :columns="columns" 
             :rowKey=" record  => record.id"
             @change="handleTableChange"
@@ -87,7 +87,7 @@ export default {
         DepartmentLayout,
         quillEditor
     },
-    props: ['department','faqs','fields'],
+    props: ['department','fields'],
     data() {
         return {
             dateFormat:'YY-MM-DD HH:mm',
@@ -171,7 +171,7 @@ export default {
         storeRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post(route('manage.enquiry.faqs.store',{department:this.department.id}),this.modal.data, {
+                this.$inertia.post(route('registry.faqs.store'),this.modal.data, {
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -187,7 +187,7 @@ export default {
         updateRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch(route('manage.enquiry.faqs.update',{faq:this.modal.data.id}),this.modal.data, {
+                this.$inertia.patch(route('registry.faqs.update',{faq:this.modal.data.id}),this.modal.data, {
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;

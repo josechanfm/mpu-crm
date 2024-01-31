@@ -32,7 +32,7 @@
           </inertia-link>
         </a-menu-item>
         <a-menu-item key="enqriry_3" >
-          <inertia-link :href="route('registry.enquiry.faqs.index')">
+          <inertia-link :href="route('registry.faqs.index')">
             Faqs
           </inertia-link>
         </a-menu-item>

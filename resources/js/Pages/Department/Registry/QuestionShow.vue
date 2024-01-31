@@ -227,7 +227,7 @@ export default {
                 }
             }
             this.myResponse.email_address=this.enquiry.email
-            this.myResponse.email_subject="Ticket No."+question.id+"/"+this.enquiry.id
+            this.myResponse.email_subject="Re: MPU Admission enquiry - Ticket No."+question.id+"/"+this.enquiry.id
             this.myResponse.title="Ticket No."+question.id+"/"+this.enquiry.id
             this.myResponse.enquiry_question_id = question.id
             this.myResponse.question = question

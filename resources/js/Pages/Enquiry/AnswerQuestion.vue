@@ -61,6 +61,7 @@
                         <a-button type="primary" class="self-end" @click="onSubmits">提交 Submit</a-button>
                     </a-form-item>
                 </a-form>
+                <p>您的查詢編號Your ticket {{ formatEnquiryNumber(enquiry.id) }}</p>
             </div>
         </div>
     </div>
@@ -134,6 +135,11 @@ export default {
                     }
                 });
             }
+        },
+        formatEnquiryNumber(num){
+            num='00000'+num
+            num=num.substring(num.length-4)
+            return '#'+num
         }
     },
 }

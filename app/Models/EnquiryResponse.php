@@ -14,14 +14,15 @@ class EnquiryResponse extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
-    protected $fillable=['enquiry_question_id','title','remark','by_email','email_address','email_subject','email_content','admin_id','token','has_question'];
+    protected $fillable=['enquiry_question_id','title','remark','by_email','email_address','email_subject','email_content','has_question','token','is_used','admin_id'];
     protected $appends=['admin_user'];
+    protected $casts=['is_used'=>'boolean'];
 
     protected static function boot(){
         parent::boot();
         static::creating(function ($model){
             $model->token=hash('crc32',time().'mpu-crm');
-            $model->admin_id=auth()->user()->id;
+            $model->admin_id=auth()->user()->id??null;
         });
     }
 

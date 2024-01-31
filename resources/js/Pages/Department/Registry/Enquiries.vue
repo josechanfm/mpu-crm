@@ -6,7 +6,7 @@
             </h2>
         </template>
         <a-typography-title :level="4">List of Enquiry</a-typography-title>
-        <a-table :dataSource="department.enquiries" :columns="columns" :rowKey="record => record.id"
+        <a-table :dataSource="enquiriesStat" :columns="columns" :rowKey="record => record.id"
             @change="handleTableChange">
             <template #bodyCell="{ column, text, record, index }">
                 <template v-if="column.dataIndex == 'operation'">
@@ -24,6 +24,16 @@
                 </template>
                 <template v-else-if="column.dataIndex == 'full_name'">
                     {{ record.surname }}, {{ record.givenname }}
+                </template>
+                <template v-else-if="column.dataIndex == 'admin_user'">
+                    <span v-if="record.last_response">
+                        {{record.last_response.admin_user.username}}
+                    </span>
+                </template>
+                <template v-else-if="column.dataIndex == 'response_status'">
+                    <span v-if="record.question_count">
+                        提問:{{ record.question_count }} / 回應:{{ record.response_count }}
+                    </span>
                 </template>
                 <template v-else>
                     {{ record[column.dataIndex] }}
@@ -89,7 +99,7 @@ export default {
         DepartmentLayout,
         dayjs
     },
-    props: ['department', 'enquiries', 'fields'],
+    props: ['department', 'enquiriesStat', 'fields'],
     data() {
         return {
             modal: {
@@ -144,11 +154,11 @@ export default {
                     dataIndex: 'phone',
                     sorter: (a, b) => a.phone.localeCompare(b.phone)
                 }, {
-                    title: '跟進人員',
-                    dataIndex: 'id',
+                    title: '最後回應',
+                    dataIndex: 'admin_user',
                 }, {
                     title: '跟進情況',
-                    dataIndex: 'id',
+                    dataIndex: 'response_status',
                 }, {
                     title: '操作',
                     dataIndex: 'operation',

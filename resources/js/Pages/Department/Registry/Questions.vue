@@ -5,12 +5,16 @@
                 客戶服務管理
             </h2>
         </template>
+
         <a-typography-title :level="4">List of Enquiry Questions</a-typography-title>
         <a-table :dataSource="department.enquiry_questions_open" :columns="columns" :row-key="record => record.root_id">
             <template #bodyCell="{column, text, record, index}" >
                 <template v-if="column.dataIndex=='operation'">
                     <a-button @click="viewRecord(record)">View</a-button>
                     <inertia-link :href="route('registry.enquiry.questions.show', { question:record.id})" class="ant-btn">Response</inertia-link>
+                </template>
+                <template v-else-if="column.dataIndex=='enquiry_id'">
+                    {{ text }}
                 </template>
                 <template v-else-if="column.dataIndex=='givenname'">
                     {{ record['enquiry']['givenname'] }}
@@ -28,7 +32,12 @@
                     {{ dateFormat(record['created_at']) }}
                 </template>
                 <template v-else-if="column.dataIndex=='admin_user'">
-                    {{ record.last_response.admin_user?record.last_response.admin_user.name:'---' }}
+                    <span v-if="record.last_response">
+                        {{ record.last_response.admin_user?record.last_response.admin_user.name:'--' }}
+                    </span>
+                    <span>
+                        ---
+                    </span>
                 </template>
                 <template v-else-if="column.dataIndex=='content'">
                     {{ record.content.substring(0,10) }}...........................
@@ -118,6 +127,9 @@ export default {
             teacherStateLabels:{},
             columns:[
                 {
+                    title: '查詢編號',
+                    dataIndex: 'enquiry_id',
+                },{
                     title: this.fields.givenname.short,
                     dataIndex: 'givenname',
                     sorter: (a, b) => a.enquiry.givenname.localeCompare(b.enquiry.givenname)
@@ -213,7 +225,7 @@ export default {
             });
            
         },
-        dateFormat(date, format = 'YY-MM-DD HH:mm') {
+        dateFormat(date, format = 'YYYY-MM-DD HH:mm') {
             return dayjs(date).format(format);
         },
 

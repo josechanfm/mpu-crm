@@ -21,8 +21,7 @@
 
                 <a-dropdown placement="bottomRight">
                     <a class="trigger" @click.prevent>
-                        <!-- {{ $page.props.currentUser.roles }} -->
-                        {{ $page.props.currentUser.name }}
+                        {{ $page.props.currentUser.username }}
                     </a>
                     <template #overlay>
                         <a-menu>

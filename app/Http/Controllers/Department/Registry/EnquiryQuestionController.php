@@ -27,9 +27,10 @@ class EnquiryQuestionController extends Controller
      */
     public function index()
     {
-        $department=session('department');
+        //$department=session('department');
+        $department=Department::where('abbr','DAMIA')->first();
         $department->enquiryQuestionsOpen;
-        $department->refresh();
+        
         return Inertia::render('Department/Registry/Questions',[
             'department'=>$department,
             'fields'=>Config::enquiryFormFields(),
@@ -141,8 +142,9 @@ class EnquiryQuestionController extends Controller
     }
 
     public function sendEmail($email){
-        Mail::send('emails.generalMail',$email, function($message) use($email){
-            $message->to($email["address"])
+        Mail::send('emails.enquiryResponseMail',$email, function($message) use($email){
+            $message->from('no-replay@mpu.edu.mo','No Reply')
+                    ->to($email["address"])
                     ->subject($email["title"]);
             if(isset($email['media'])){
                 foreach($email['media'] as $file){
