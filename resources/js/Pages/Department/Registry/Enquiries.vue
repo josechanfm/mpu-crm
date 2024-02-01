@@ -120,7 +120,6 @@ export default {
                             return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
                         }
                     }
-
                 }, {
                     title: '查詢編號',
                     dataIndex: 'id',

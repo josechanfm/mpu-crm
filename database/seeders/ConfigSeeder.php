@@ -270,6 +270,17 @@ class ConfigSeeder extends Seeder
                 }
               ]'
         ]);
+        DB::table('configs')->insert([
+          'division'=>'phone_country_codes',
+          'label'=>'phone_country_code',
+          'value'=>'
+          [
+            {"value":"GENERAL","label":"General Page"},
+            {"value":"STAFF","label":"Staff Page"},
+            {"value":"DEPARTMENT","label":"Department Page"}
+          ]'
+        ]);
+          
 
     }
 }

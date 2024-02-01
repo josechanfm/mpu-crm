@@ -50,19 +50,11 @@ const showingNavigationDropdown = ref(false);
                         </button>
                     </div>
                     <div class="flex items-center">
-                        <ul class="sm:flex space-x-4 hidden items-center">
-                            <li><a href="https://www.mpu.edu.mo"
-                                    class="text-gray-700 hover:text-indigo-600 text-md ">MPU</a></li>
-                            <li><a href="https://www.mpu.edu.mo/en/services.php" target="_blank"
-                                    class="text-gray-700 hover:text-indigo-600 text-md ">Services</a></li>
-                        </ul>
-                        <div class="md:flex items-center hidden space-x-4 ml-8 lg:ml-12">
-                            <h1 class="text-text-gray-600  py-2 hover:cursor-pointer hover:text-indigo-600"><inertia-link
-                                    :href="route('login')">登入</inertia-link></h1>
-                            <h1
-                                class="text-text-gray-600  py-2 hover:cursor-pointer px-4 rounded text-white bg-gradient-to-tr from-indigo-600 to-green-600 hover:shadow-lg">
-                                <inertia-link :href="route('manage.login')">後台</inertia-link>
-                            </h1>
+                        <div class="sm:flex items-center hidden space-x-4 ml-8 lg:ml-12">
+                            <a href="https://www.mpu.edu.mo" class="text-gray-700 hover:text-indigo-600 text-md ">MPU</a>
+                            <a href="https://www.mpu.edu.mo/en/services.php" target="_blank" class="text-gray-700 hover:text-indigo-600 text-md ">Services</a>
+                            <inertia-link :href="route('login')">登入</inertia-link>
+                            <inertia-link :href="route('manage.login')">後台</inertia-link>
                         </div>
                     </div>
                 </div>

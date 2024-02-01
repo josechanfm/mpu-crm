@@ -49,4 +49,7 @@ class Department extends Model
     public function hasRight(){
         return in_array(auth()->user()->id,$this->adminUsers()->get()->pluck('id')->toArray());
     }
+    public function articles(){
+        return $this->hasMany(Article::class);
+    }
 }
