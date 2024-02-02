@@ -1,5 +1,5 @@
 <template>
-  <DepartmentLayout title="Dashboard" :department="department">
+  <DepartmentLayout title="Dashboard">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
         From generator
@@ -18,6 +18,9 @@
             :validate-messages="validateMessages"
             @finish="onFinish"
         >
+            <a-form-item label="Department" name="department_id" v-if="is('admin|master')">
+                <a-select v-model:value="form.department_id" :options="departments" :fieldNames="{value:'id',label:'abbr'}" />
+            </a-form-item>
             <a-form-item label="Form Name" name="name">
                 <a-input v-model:value="form.name" />
             </a-form-item>
@@ -74,7 +77,6 @@
                     v-model:checked="form.published"
                     :unCheckedValue="0"
                     :checkedValue="1"
-                    @change="form.with_attendance = false"
                     :disabled="form.entries_count > 0"
                 />
                 <span class="pl-3">The form is published</span
@@ -161,7 +163,7 @@ export default {
     quillEditor,
     message,
   },
-  props: ["department", "form"],
+  props: ["departments", "form"],
   data() {
     return {
       loading: false,
@@ -190,7 +192,7 @@ export default {
   created() {
   },
   mounted() {
-    console.log(this.form)
+
   },
   methods: {
     onFinish(){

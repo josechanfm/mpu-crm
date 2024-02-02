@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Form;
-use App\Models\Filled;
-use App\Models\FilledField;
+use App\Models\Entry;
+use App\Models\EntryRecord;
 
 class FormController extends Controller
 {
@@ -24,7 +24,7 @@ class FormController extends Controller
         //     $forms=Form::where('published',1)->where('for_staff',0)->get();
         // }
         $forms=Form::where('published',1)->where('for_staff',0)->get();
-        return Inertia::render('Form/Form',[
+        return Inertia::render('Form/Forms',[
             'forms'=>$forms
         ]);
     }
@@ -51,24 +51,24 @@ class FormController extends Controller
             // $this->validate($request,[
             //     'form_id'=>'required',
             // ]);
-                $filled=new Filled();
-                $filled->form_id=$request->form['id'];
-                //$filled->member_id=auth()->user()->id;
-                $filled->save();
+                $entry=new Entry();
+                $entry->form_id=$request->form['id'];
+                //$entry->member_id=auth()->user()->id;
+                $entry->save();
                 foreach($request->fields as $key=>$value){
-                    $field=new FilledField();
-                    $field->filled_id=$filled->id;
+                    $field=new EntryRecord();
+                    $field->entry_id=$entry->id;
                     $field->form_field_id=$key;
                     $field->field_value=$value;
                     $field->save();
                 }
-                $form=Form::find($filled->form_id);
+                $form=Form::find($entry->form_id);
                 return Inertia::render('Form/Thanks',[
                     'form'=>$form,
-                    'filled'=>$filled,
+                    'filled'=>$entry,
                 ]);
         
-                //return redirect()->route('form.thanks',$filled);
+                //return redirect()->route('form.thanks',$entry);
                 //return to_route('form.thanks', ['form'=>$request->form['id']]);
                 //return to_route('form.thanks',$request->form['id']);
     }

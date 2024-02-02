@@ -43,7 +43,7 @@
         </template>
         <span>
           <inertia-link :href="route('personnel.gpdps.index')">
-            個資通知
+            財產申報
           </inertia-link>
         </span>
       </a-menu-item>

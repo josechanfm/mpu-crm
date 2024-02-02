@@ -41,18 +41,21 @@ const showingNavigationDropdown = ref(false);
                                 <path :class="{
                                     hidden: showingNavigationDropdown,
                                     'inline-flex': !showingNavigationDropdown,
-                                }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                                }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16" />
                                 <path :class="{
                                     hidden: !showingNavigationDropdown,
                                     'inline-flex': showingNavigationDropdown,
-                                }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
                     </div>
                     <div class="flex items-center">
                         <div class="sm:flex items-center hidden space-x-4 ml-8 lg:ml-12">
                             <a href="https://www.mpu.edu.mo" class="text-gray-700 hover:text-indigo-600 text-md ">MPU</a>
-                            <a href="https://www.mpu.edu.mo/en/services.php" target="_blank" class="text-gray-700 hover:text-indigo-600 text-md ">Services</a>
+                            <a href="https://www.mpu.edu.mo/en/services.php" target="_blank"
+                                class="text-gray-700 hover:text-indigo-600 text-md ">Services</a>
                             <inertia-link :href="route('login')">登入</inertia-link>
                             <inertia-link :href="route('manage.login')">後台</inertia-link>
                         </div>
@@ -84,12 +87,14 @@ const showingNavigationDropdown = ref(false);
                                     class="text-gray-700 hover:text-indigo-600 text-md ">
                                     Services
                                 </a>
-
+                            </li>
+                            <li>
+                                <inertia-link :href="route('login')">登入</inertia-link>
+                            </li>
+                            <li>
+                                <inertia-link :href="route('manage.login')">後台</inertia-link>
                             </li>
                         </ul>
-                        <ResponsiveNavLink :href="route('login')" :active="route().current('login')">登入</ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('manage.login')" :active="route().current('login')">後台</ResponsiveNavLink>
-
                     </div>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 <template>
-    <DepartmentLayout title="個資申報義務" :breadcrumb="breadcrumb">
+    <DepartmentLayout title="財產申報提示" :breadcrumb="breadcrumb">
         <div class="flex-auto pb-3 text-right">
             <div class="mb-5">
                 <a-form ref="importlRef" action="personnel/gpdps/export">
@@ -17,7 +17,7 @@
                 </a-form>
             </div>
             {{ yesterdaySent }}
-            <inertia-link :href="route('personnel.gpdps.emails')" class="ant ant-btn mr-5">Sent Emails</inertia-link>
+            <inertia-link :href="route('personnel.gpdps.emails')" class="ant ant-btn mr-5">已發送電郵</inertia-link>
             <a-button type="primary" @click="createRecord(record)">新增</a-button>
         </div>
         <div class="container mx-auto pt-5">
@@ -37,6 +37,15 @@
                                 @confirm="sendEmailConfirmed(record)" :disabled="record.entries_count > 0">
                                 <a-button :disabled="record.entries_count > 0">發電郵</a-button>
                             </a-popconfirm>
+                        </template>
+                        <template v-else-if="column.dataIndex=='sent_email_count'">
+                            <span v-if="record.sent_email_count">
+                                <inertia-link :href="route('personnel.gpdps.emails',{gpdp_id:record.id})">{{ record.sent_email_count }}</inertia-link>
+                            </span>
+                            <span v-else>
+                                --
+                            </span>
+                            
                         </template>
                         <template v-else-if="column.dataIndex=='is_valid'">
                             <span :class="text?'':'text-orange-600'">{{ text==1?'有效':'無效' }}</span>
@@ -180,7 +189,7 @@ export default {
         return {
             breadcrumb:[
                 {label:"人事處首頁" ,url:route('personnel.dashboard')},
-                {label:"個資申報" ,url:null},
+                {label:"財產申報" ,url:null},
             ],
             loading: false,
             imageUrl: null,
@@ -200,6 +209,9 @@ export default {
                 total: this.gpdps.total,
                 current: this.gpdps.current_page,
                 pageSize: this.gpdps.per_page,
+                defaultPageSize:40,
+                showSizeChanger:true,
+                pageSizeOptions:['10','20','30','40','50']
             },
             employmentOptions:[
                 {value:'CONTRACT',label:'工作合同'},
@@ -224,7 +236,7 @@ export default {
                     i18n: "email",
                     dataIndex: "email",
                 }, {
-                    title: "產生申報義務日",
+                    title: "產生申報義務日期",
                     i18n: "date_start",
                     dataIndex: "date_start",
                 }, {
@@ -235,6 +247,10 @@ export default {
                     title: "到期日期(90日)",
                     i18n: "date_due",
                     dataIndex: "date_due",
+                }, {
+                    title: "已發送電郵",
+                    i18n: "sent_email_count",
+                    dataIndex: "sent_email_count",
                 }, {
                     title: "有效",
                     i18n: "is_valid",

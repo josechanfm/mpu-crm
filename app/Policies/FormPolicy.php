@@ -31,7 +31,7 @@ class FormPolicy
      */
     public function view(AdminUser $user, Form $form)
     {
-        if($user->hasRole('admin')){
+        if($user->hasRole('admin|master')){
             return true;
         }
         return $form->department->hasUser($user);
@@ -45,7 +45,7 @@ class FormPolicy
      */
     public function create(AdminUser $user)
     {
-        if($user->hasRole(['admin','department'])){
+        if($user->hasRole(['admin','master'])){
             return true;
         }
 
@@ -60,7 +60,7 @@ class FormPolicy
      */
     public function update(AdminUser $user, Form $form)
     {
-        if($user->hasRole('admin')){
+        if($user->hasRole('admin|master')){
             return true;
         }
         return $form->department->hasUser($user);

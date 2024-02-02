@@ -36,7 +36,15 @@
             <InboxOutlined />
           </template>
           <span>
-              Forms
+            <inertia-link :href="route('master.departments.index')">forms</inertia-link>
+          </span>
+        </a-menu-item>
+        <a-menu-item key="4">
+          <template #icon>
+            <InboxOutlined />
+          </template>
+          <span>
+            <inertia-link :href="route('master.article.index')">Articles</inertia-link>
           </span>
         </a-menu-item>
 

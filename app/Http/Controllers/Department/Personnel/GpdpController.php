@@ -27,9 +27,8 @@ class GpdpController extends Controller
         $yesterday=date('Y-m-d',strtotime('-1 day'));
         $g=Gpdp::where('date_remind',$yesterday)->count();
         $m=Email::whereRaw('left(created_at,10) = "'.$yesterday.'"')->count();
-
         return Inertia::render('Department/Personnel/Gpdps',[
-            'gpdps'=>Gpdp::orderBy('date_start','desc')->paginate($request->per_page??10),
+            'gpdps'=>Gpdp::orderBy('date_start','desc')->paginate($request->per_page??50),
             'yesterdaySent'=>'Sent '.$m.' of '.$g.' message(s)'
 
             //'gpdps'=>Gpdp::orderBy('date_remind','desc')->paginate($request->per_page??10)
@@ -113,17 +112,18 @@ class GpdpController extends Controller
 
     public function listEmails(Request $request){
         if($request->date_range){
-            //dd($request->period);
-            $emails=Email::where('emailable_type','App\Models\Gpdp')->whereBetween('created_at',$request->date_range)->orderBy('created_at','desc')->paginate(2);
-            //dd($emails);
+            $emails=Email::where('emailable_type','App\Models\Gpdp')->whereBetween('created_at',$request->date_range)->orderBy('created_at','desc')->paginate(50);
         }else{
-            $emails=Email::where('emailable_type','App\Models\Gpdp')->orderBy('created_at','desc')->paginate(2);
+            if($request->gpdp_id){
+                $emails=Email::where('emailable_type','App\Models\Gpdp')->where('emailable_id',$request->gpdp_id)->orderBy('created_at','desc')->paginate(50);
+            }else{
+                $emails=Email::where('emailable_type','App\Models\Gpdp')->orderBy('created_at','desc')->paginate(50);
+            }
+            
         };
         
         return Inertia::render('Department/Personnel/GpdpsEmails',[
             'emails'=>$emails
-            //'emails'=>Email::where('emailable_type','App\Models\Gpdp')->whereBetween('date_remind',$request->period)->orderBy('created_at','desc')->paginate(2)
-            //'emails'=>Email::where('emailable_type','App\Models\Gpdp')->orderBy('created_at','desc')->paginate($request->per_page??10)
         ]);
     }
     public function export(Request $request){

@@ -23,7 +23,7 @@
                         </a-radio-group>
                     </a-form-item>
 
-                    <a-form-item name="admission" v-if="enquiry.degree">
+                    <a-form-item name="admission" v-if="enquiry.degree=='B'">
                         <div class="ant-col ant-form-item-label">
                             <label for="enquiry_admission" class="ant-form-item-required" title="入學途徑 Admission route">
                                 {{fields.admission.question}}

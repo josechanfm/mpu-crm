@@ -1,5 +1,5 @@
 <template>
-    <DepartmentLayout title="個資申報義務 - 通知電郵" :breadcrumb="breadcrumb">
+    <DepartmentLayout title="財產申報提示 - 已發送電郵" :breadcrumb="breadcrumb">
         <div class="flex-auto pb-3 text-right">
             <div class="mb-5">
                 <a-range-picker v-model:value="dateRange" :format="dateFormat" :valueFormat="dateFormat"/>
@@ -17,7 +17,7 @@
                     </template>
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <a-button @click="showRecord(record)">Show</a-button>
+                            <a-button @click="showRecord(record)">查看電郵</a-button>
                         </template>
                         <template v-else-if="column.dataIndex == 'sender'">
                             {{ record[column.dataIndex][0] }}
@@ -93,7 +93,7 @@ export default {
         return {
             breadcrumb:[
                 {label:"人事處首頁" ,url:route('personnel.dashboard')},
-                {label:"電郵記錄" ,url:null},
+                {label:"已發送電郵" ,url:null},
             ],
             loading: false,
             imageUrl: null,

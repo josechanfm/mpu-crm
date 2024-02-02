@@ -33,12 +33,19 @@ class FormController extends Controller
         //dd(Department::find(session('department')->id)->forms);
         //$this->authorize('view',$department);
         //dd(session('department'));
-        session(['department'=>auth()->user()->departments->first()]);
+        if(auth()->user()->hasRole('admin|master')){
+            $forms=Form::all();
+        }else{
+            if(!empty(session('department'))){
+                session(['department'=>auth()->user()->departments->first()]);
+            }
+            $forms=Form::whereBelongsTo(session('department'))->get();
+        }
         $department=session('department');
-        $department->forms;
 
         return Inertia::render('Department/Forms',[
-            'department' => $department
+            'departments'=>Department::all(),
+            'forms'=>$forms
             //'forms'=>Department::find(session('department')->id)->forms
         ]);
     }
@@ -52,7 +59,7 @@ class FormController extends Controller
     {
 
         $form=Form::make([
-            'department_id'=>session('department')->id,
+            'department_id'=>session('department')->id??null,
             'require_login'=>false,
             'for_staff'=>false,
             'published'=>false
@@ -61,7 +68,7 @@ class FormController extends Controller
         return Inertia::render('Department/Form',[
             //'department' => Department::find(session('department')->id),
             //'forms'=>Department::find(session('department')->id)->forms
-            'department' => Department::find($form->department_id),
+            'departments'=>Department::all(),
             'form'=>$form
         ]);
     }
@@ -79,19 +86,9 @@ class FormController extends Controller
             'name'=>'required',
             'title'=>'required',
         ]);
-        $department = Department::find($request->department_id);
         Form::create($request->all());
-        // $form=new Form();
-        // $form->department_id=$request->department_id;
-        // $form->name=$request->name;
-        // $form->title=$request->title;
-        // $form->description=$request->description;
-        // $form->require_login=$request->require_login;
-        // $form->for_staff=$request->for_staff;
-        // $form->published=$request->published;
-        // $form->save();
         return to_route('manage.forms.index');
-        return redirect()->back();
+        return redirect()->route('manage.forms.index');
     }
 
     /**
@@ -119,9 +116,7 @@ class FormController extends Controller
         //dd(Department::find($form->department_id));
         $form->media;
         return Inertia::render('Department/Form',[
-            //'department' => Department::find(session('department')->id),
-            //'forms'=>Department::find(session('department')->id)->forms
-            'department' => Department::find($form->department_id),
+            'departments'=>Department::all(),
             'form'=>$form
         ]);
         
@@ -141,27 +136,12 @@ class FormController extends Controller
             'name'=>'required',
             'title'=>'required',
         ]);
-        $department = Department::find($request->department_id);
-        if($department->id!=session('department')->id){
-            return redirect()->back();
-        };
         $form->update($request->all());
-        // $form->name=$request->name;
-        // $form->title=$request->title;
-        // $form->description=$request->description;
-        // $form->require_login=$request->require_login;
-        // $form->for_member=$request->for_member;
-        // $form->published=$request->published;
-        // $form->with_attendance=$request->with_attendance;
-        // $form->save();
-        //dd($request->file('image'));
         if($request->file('image')){
-            //dd($request->file('image')[0]['originFileObj']->originalName);
-            
                 $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('form_banner');
             
         }
-        return redirect()->back();
+        return redirect()->route('manage.forms.index');
     }
 
     /**
@@ -204,21 +184,5 @@ class FormController extends Controller
         $media->delete();
     }
 
-    public function createEventAttendees(Request $request, Form $form){
-        $event=Event::where('form_id',$form->id)->first();
-        if(empty($event)){
-            $event=new Event();
-        }
-        $event->department_id=$form->department_id;
-        $event->category_code='FORM';
-        $event->title_en=$form->title;
-        $event->credit=0;
-        $event->start_date=null;
-        $event->end_date=null;
-        $event->form_id=$form->id;
-        $event->with_attendance=true;
-        $event->save();
-        $event->entries()->syncWithoutDetaching($request->all());      
-        return redirect()->back();
-    }
+
 }

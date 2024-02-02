@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('filleds', function (Blueprint $table) {
+        Schema::create('entry_records', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('form_id');
-            $table->boolean('staff')->default(false);
-            $table->bigInteger('user_id')->nullable();
+            $table->foreignId('entry_id');
+            $table->string('form_field_id');
+            $table->text('field_value');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('filleds');
+        Schema::dropIfExists('entry_records');
     }
 };

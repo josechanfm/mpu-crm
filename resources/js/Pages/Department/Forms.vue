@@ -1,5 +1,5 @@
 <template>
-  <DepartmentLayout title="Dashboard" :department="department">
+  <DepartmentLayout title="Dashboard" :breadcrumb="breadcrum">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
         Form Generator
@@ -10,14 +10,14 @@
     </div>
     <div class="container mx-auto pt-5">
       <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-        <a-table :dataSource="department.forms" :columns="columns">
+        <a-table :dataSource="forms" :columns="columns">
           <template #headerCell="{ column }">
             {{ column.title }}
           </template>
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
               <inertia-link
-                :href="route('manage.form.entries.index', { form: record.id })"
+                :href="route('manage.form.entries.index',record.id)"
                 class="ant-btn">Response</inertia-link
               >
               <a
@@ -84,9 +84,13 @@ export default {
     quillEditor,
     message,
   },
-  props: ["department"],
+  props: ["departments","forms"],
   data() {
     return {
+      breadcrumb:[
+          {label:"人事處首頁" ,url:route('personnel.dashboard')},
+          {label:"個資申報" ,url:null},
+      ],
       loading: false,
       imageUrl: null,
       modal: {
