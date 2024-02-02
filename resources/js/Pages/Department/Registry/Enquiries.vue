@@ -1,6 +1,6 @@
 <template>
     <DepartmentLayout title="查訽總表" :breadcrumb="breadcrumb">
-        <div class="container mx-auto pt-5">
+        <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <a-table :dataSource="enquiriesStat" :columns="columns" :rowKey="record => record.id"
                     @change="handleTableChange">

@@ -1,7 +1,7 @@
 <template>
     <DepartmentLayout title="提問列表" :breadcrumb="breadcrumb">
         <a-typography-title :level="4">List of Enquiry Questions</a-typography-title>
-        <div class="container mx-auto pt-5">
+        <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <a-table :dataSource="department.enquiry_questions_open" :columns="columns" :row-key="record => record.root_id">
                     <template #bodyCell="{column, text, record, index}" >

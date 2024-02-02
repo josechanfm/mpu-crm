@@ -9,7 +9,7 @@
             </div>
         </div>
 
-        <div class="container mx-auto pt-5">
+        <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <a-table :dataSource="emails.data" :columns="columns"  :pagination="pagination" @change="onPaginationChange">
                     <template #headerCell="{ column }">

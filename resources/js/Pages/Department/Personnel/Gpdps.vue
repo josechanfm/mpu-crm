@@ -20,9 +20,9 @@
             <inertia-link :href="route('personnel.gpdps.emails')" class="ant ant-btn mr-5">已發送電郵</inertia-link>
             <a-button type="primary" @click="createRecord(record)">新增</a-button>
         </div>
-        <div class="container mx-auto pt-5">
+        <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                <a-table :dataSource="gpdps.data" :columns="columns" :pagination="pagination" @change="onPaginationChange">
+                <a-table :dataSource="gpdps.data" :columns="columns" :pagination="pagination" @change="onPaginationChange" :expand-column-width="200">
                     <template #headerCell="{ column }">
                         {{ column.title }}
                     </template>
@@ -223,10 +223,12 @@ export default {
                     title: "員工編號",
                     i18n: "staff_num",
                     dataIndex: "staff_num",
+                    width: 90,
                 }, {
                     title: "姓名(中文)",
                     i18n: "name_zh",
                     dataIndex: "name_zh",
+                    width: 100,
                 }, {
                     title: "姓名(外文)",
                     i18n: "name_fr",
@@ -239,14 +241,17 @@ export default {
                     title: "產生申報義務日期",
                     i18n: "date_start",
                     dataIndex: "date_start",
+                    width: 150,
                 }, {
                     title: "期提醒日期(60日)",
                     i18n: "date_remind",
                     dataIndex: "date_remind",
+                    width: 150,
                 }, {
                     title: "到期日期(90日)",
                     i18n: "date_due",
                     dataIndex: "date_due",
+                    width: 140,
                 }, {
                     title: "已發送電郵",
                     i18n: "sent_email_count",
@@ -255,11 +260,13 @@ export default {
                     title: "有效",
                     i18n: "is_valid",
                     dataIndex: "is_valid",
+                    width:60,
                 }, {
                     title: "操作",
                     i18n: "operation",
                     dataIndex: "operation",
                     key: "operation",
+                    width: 240,
                 },
             ],
             rules:{
