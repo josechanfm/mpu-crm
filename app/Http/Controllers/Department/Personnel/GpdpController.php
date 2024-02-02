@@ -127,8 +127,8 @@ class GpdpController extends Controller
         ]);
     }
     public function export(Request $request){
-        $columnHeaders = ["姓名(zh)","姓名(fr)","身份證明文件編號","現職位/職級/職務","現任職的實體/部門","原職位","原任職部門","任用或聘用方式","產生申報義務日期"];
-        $gpdps=Gpdp::select(['name_zh','name_fr','id_num','current_position','current_department','original_position','original_department','employment_type','date_start'])
+        $columnHeaders = ["姓名(zh)","姓名(fr)","身份證明文件編號","現職位/職級/職務","現任職的實體/部門","原職位","原任職部門","產生申報義務日期","任用或聘用方式"];
+        $gpdps=Gpdp::select(['name_zh','name_fr','id_num','current_position','current_department','original_position','original_department','date_start','employment_type'])
             ->whereBetween('date_start',$request->period)
             ->get();
         foreach($gpdps as $i=>$gpdp){
