@@ -131,7 +131,7 @@
                         </a-form-item>
                     </a-col>
                     <a-col :span="12">
-                        <a-form-item label="任用或職用方式" name="employment_type">
+                        <a-form-item label="任用或聘用方式" name="employment_type">
                             <a-select v-model:value="modal.data.employment_type" :options="employmentOptions" />
                         </a-form-item>
                         <a-form-item label="有效" name="in_valid">
