@@ -49,7 +49,7 @@ class FaqController extends Controller
     public function store(Request $request)
     {
         $department=Department::find($request->department_id);
-        $this->authorize('create',$department);
+        //$this->authorize('create',$department);
         Faq::create($request->all());
         // $faq=new Faq;
         // $faq->department_id=$request->department_id;
@@ -93,16 +93,8 @@ class FaqController extends Controller
      */
     public function update(Faq $faq, Request $request)
     {
-        $this->authorize('create',$faq->department);
+        //$this->authorize('create',$faq->department);
         $faq->update($request->all());
-    //dd($request->all());
-        // $faq->department_id=$request->department_id;
-        // $faq->category_id=$request->category_id;
-        // $faq->degree=$request->degree;
-        // $faq->subjects=$request->subjects;
-        // $faq->question_zh=$request->question_zh;    
-        // $faq->answer_zh=$request->answer_zh;
-        // $faq->save();
         return redirect()->back();
     }
 
