@@ -1,6 +1,6 @@
 <template>
     <DepartmentLayout title="常見問題" :breadcrumb="breadcrumb">
-        <a-button @click="createRecord">Add Faq</a-button>
+        <a-button @click="createRecord">新增常見問題</a-button>
         <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <a-table 
@@ -11,8 +11,7 @@
                 >
                     <template #bodyCell="{column, text, record, index}" >
                         <template v-if="column.dataIndex=='operation'">
-                            <a-button @click="editRecord(record)">Edit</a-button>
-                            <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
+                            <a-button @click="editRecord(record)">修改</a-button>
                         </template>
                         <template v-else-if="column.dataIndex=='origins'">
                             <div v-html="gatherLables(fields.origin.options,text)"></div>
@@ -28,6 +27,9 @@
                         </template>
                         <template v-else-if="column.dataIndex=='updated_at'">
                             {{ formatDate(record[column.dataIndex]) }}
+                        </template>
+                        <template v-else-if="column.dataIndex=='valid'">
+                            {{ text?'有效':'無效' }}
                         </template>
                         <template v-else>
                             {{record[column.dataIndex]}}
@@ -48,14 +50,14 @@
             :rules="rules"
             :validate-messages="validateMessages"
         >
-            <a-form-item label="Origins" name="origins" :rules="{required:true}">
+            <a-form-item label="所持證件" name="origins" :rules="{required:true}">
                 <a-select 
                     mode="multiple"
                     v-model:value="modal.data.origins" 
                     :options="fields.origin.options" 
                 />
             </a-form-item>
-            <a-form-item label="Degrees" name="degrees" :rules="{required:true}">
+            <a-form-item label="課程類別" name="degrees" :rules="{required:true}">
                 <a-select 
                     mode="multiple"
                     v-model:value="modal.data.degrees" 
@@ -63,23 +65,26 @@
                 />
             </a-form-item>
 
-            <a-form-item label="Subjects" name="subjects" :rules="{required:true}">
+            <a-form-item label="問題主旨" name="subjects" :rules="{required:true}">
                 <a-select 
                     mode="multiple"
                     v-model:value="modal.data.subjects" 
                     :options="fields.subjects.options" 
                 />
             </a-form-item>
-            <a-form-item label="Question" name="question_zh" :rules="{required:true}">
+            <a-form-item label="回應標題" name="question_zh" :rules="{required:true}">
                 <a-input v-model:value="modal.data.question_zh" />
             </a-form-item>
-            <a-form-item label="Answer" name="answer_zh" :rules="{required:true}">
+            <a-form-item label="回應內容" name="answer_zh" :rules="{required:true}">
                 <quill-editor v-model:value="modal.data.answer_zh" style="min-height:200px;" />
+            </a-form-item>
+            <a-form-item label="有效/無效" name="valid" :rules="{required:true}">
+                <a-switch v-model:checked="modal.data.valid" checked-children="有效" un-checked-children="無效" />
             </a-form-item>
         </a-form>
         <template #footer>
-            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
-            <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">Add</a-button>
+            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">更新</a-button>
+            <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">保存</a-button>
         </template>
     </a-modal>    
     <!-- Modal End-->
@@ -114,35 +119,32 @@ export default {
             teacherStateLabels:{},
             columns:[
                 {
-                    title: 'Origin',
+                    title: '所持證件',
                     dataIndex: 'origins',
                     filters:this.fields.origin.options,
                     filterMultiple:false,
                     onFilter:(value,record)=>record.origins.includes('CN')
                 },{
-                    title: 'Degrees',
+                    title: '課程類別',
                     dataIndex: 'degrees',
                     filters:this.fields.degree.options,
                     filterMultiple:false,
                     onFilter:(value,record)=>record.degrees.includes(value)
                 },{
-                    title: 'Subjects',
+                    title: '問題主旨',
                     dataIndex: 'subjects',
                     filters:this.fields.subjects.options,
                     filterMultiple:false,
                     onFilter:(value,record)=>record.subjects.includes(value)
                 },{
-                    title: 'Question',
+                    title: '回應標題',
                     dataIndex: 'question_zh',
                     sorter:{
                         compare:(a,b)=>a.question_zh.localeCompare(b.question_zh)
                     }
                 },{
-                    title: 'Created At',
-                    dataIndex: 'created_at',
-                },{
-                    title: 'Updated At',
-                    dataIndex: 'updated_at',
+                    title: '有效/無效',
+                    dataIndex: 'valid',
                 },{
                     title: '操作',
                     dataIndex: 'operation',

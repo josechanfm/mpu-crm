@@ -1,6 +1,5 @@
 <template>
-    <DepartmentLayout title="提問列表" :breadcrumb="breadcrumb">
-        <a-typography-title :level="4">List of Enquiry Questions</a-typography-title>
+    <DepartmentLayout title="須回應提問" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <a-table :dataSource="department.enquiry_questions_open" :columns="columns" :row-key="record => record.root_id">
@@ -118,7 +117,7 @@ export default {
         return {
             breadcrumb:[
                 {label:"招生注冊處" ,url:route('personnel.dashboard')},
-                {label:"提問列表" ,url:null},
+                {label:"須回應提問" ,url:null},
             ],
             modal:{
                 isOpen:false,

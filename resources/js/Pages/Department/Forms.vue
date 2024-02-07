@@ -1,10 +1,5 @@
 <template>
-  <DepartmentLayout title="Dashboard" :breadcrumb="breadcrum">
-    <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Form Generator
-      </h2>
-    </template>
+  <DepartmentLayout title="表格" :breadcrumb="breadcrumb">
     <div class="flex-auto pb-3 text-right">
       <inertia-link :href="route('manage.forms.create')" class="ant-btn ant-btn-primary !rounded">Create Form</inertia-link>
     </div>

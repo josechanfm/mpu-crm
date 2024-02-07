@@ -1,5 +1,5 @@
 <template>
-    <DepartmentLayout title="查訽總表" :breadcrumb="breadcrumb">
+    <DepartmentLayout title="所有查詢" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <a-table :dataSource="enquiriesStat" :columns="columns" :rowKey="record => record.id"
@@ -101,7 +101,7 @@ export default {
         return {
             breadcrumb:[
                 {label:"招生注冊處" ,url:route('personnel.dashboard')},
-                {label:"查訽總表" ,url:null},
+                {label:"所有查詢" ,url:null},
             ],
             modal: {
                 isOpen: false,

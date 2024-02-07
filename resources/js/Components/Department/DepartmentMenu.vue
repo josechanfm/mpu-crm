@@ -12,7 +12,7 @@
         </template>
         <span>
           <inertia-link :href="route('manage.dashboard')">
-            Department(s)
+            所屬部門
           </inertia-link>
         </span>
       </a-menu-item>
@@ -20,20 +20,20 @@
         <template #icon>
           <MailOutlined />
         </template>
-        <template #title>Enquriy</template>
+        <template #title>問題查詢</template>
         <a-menu-item key="enquriy_1">
           <inertia-link :href="route('registry.enquiries.index')">
-            Enquiries
+            所有查詢
           </inertia-link>
         </a-menu-item>
         <a-menu-item key="enquiry_2">
           <inertia-link :href="route('registry.enquiry.questions.index')">
-            Questions
+            須回應提問
           </inertia-link>
         </a-menu-item>
         <a-menu-item key="enqriry_3" >
           <inertia-link :href="route('registry.faqs.index')">
-            Faqs
+            常見問題
           </inertia-link>
         </a-menu-item>
       </a-sub-menu>
@@ -53,7 +53,7 @@
         </template>
         <span>
           <inertia-link :href="route('manage.forms.index')">
-            Forms
+            表格
           </inertia-link>
         </span>
       </a-menu-item>
