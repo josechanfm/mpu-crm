@@ -14,11 +14,14 @@
                             <a-button @click="editRecord(record)">Edit</a-button>
                             <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
                         </template>
-                        <template v-else-if="column.dataIndex=='degree'">
-                            {{ fields.degree.options.find(d=>d.value==record[column.dataIndex]).label }}
+                        <template v-else-if="column.dataIndex=='origins'">
+                            <div v-html="gatherLables(fields.origin.options,text)"></div>
+                        </template>
+                        <template v-else-if="column.dataIndex=='degrees'">
+                            <div v-html="gatherLables(fields.degree.options,text)"></div>
                         </template>
                         <template v-else-if="column.dataIndex=='subjects'">
-                            <div v-html="gatherSubjectLables(text)"/>
+                            <div v-html="gatherLables(fields.subjects.options,text)"/>
                         </template>
                         <template v-else-if="column.dataIndex=='created_at'">
                             {{ formatDate(record[column.dataIndex]) }}
@@ -45,9 +48,17 @@
             :rules="rules"
             :validate-messages="validateMessages"
         >
-            <a-form-item label="Degree" name="degree" :rules="{required:true}">
+            <a-form-item label="Origins" name="origins" :rules="{required:true}">
                 <a-select 
-                    v-model:value="modal.data.degree" 
+                    mode="multiple"
+                    v-model:value="modal.data.origins" 
+                    :options="fields.origin.options" 
+                />
+            </a-form-item>
+            <a-form-item label="Degrees" name="degrees" :rules="{required:true}">
+                <a-select 
+                    mode="multiple"
+                    v-model:value="modal.data.degrees" 
                     :options="fields.degree.options" 
                 />
             </a-form-item>
@@ -103,11 +114,17 @@ export default {
             teacherStateLabels:{},
             columns:[
                 {
-                    title: 'Degree',
-                    dataIndex: 'degree',
+                    title: 'Origin',
+                    dataIndex: 'origins',
+                    filters:this.fields.origin.options,
+                    filterMultiple:false,
+                    onFilter:(value,record)=>record.origins.includes('CN')
+                },{
+                    title: 'Degrees',
+                    dataIndex: 'degrees',
                     filters:this.fields.degree.options,
                     filterMultiple:false,
-                    onFilter:(value,record)=>record.degree.includes(value)
+                    onFilter:(value,record)=>record.degrees.includes(value)
                 },{
                     title: 'Subjects',
                     dataIndex: 'subjects',
@@ -150,6 +167,7 @@ export default {
         }
     },
     created(){
+        this.fields.origin.options.forEach(o=>o.text=o.label)
         this.fields.degree.options.forEach(o=>o.text=o.label)
         this.fields.subjects.options.forEach(o=>o.text=o.label)
     },
@@ -163,16 +181,12 @@ export default {
             this.modal.isOpen=true;
         },
         editRecord(record){
-            console.log(record);
             this.modal.data={...record};
-            console.log(this.modal.data.subjects);
-            this.modal.data.subjects=this.modal.data.subjects;
             this.modal.mode="EDIT";
             this.modal.title="修改";
             this.modal.isOpen=true;
         },
         storeRecord(){
-            console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
                 this.$inertia.post(route('registry.faqs.store'),this.modal.data, {
                     onSuccess:(page)=>{
@@ -188,7 +202,6 @@ export default {
             });
         },
         updateRecord(){
-            console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
                 this.$inertia.patch(route('registry.faqs.update',{faq:this.modal.data.id}),this.modal.data, {
                     onSuccess:(page)=>{
@@ -204,14 +217,16 @@ export default {
                 console.log("error", err);
             });
         },
-        gatherSubjectLables(items){
-            return this.fields.subjects.options.reduce((a,c)=>{
-                        if(items.includes(c.value)){
-                            a+=c.label+"<br>"
-                        }
-                        return a
-                    }, '') 
-
+        gatherLables(options, items){
+            if(items==null){
+                return null;
+            }
+            return options.reduce((a,c)=>{
+                if(items.includes(c.value)){
+                    a+=c.label+"<br>"
+                }
+                return a
+            }, '') 
         },
         formatDate(date, format = 'YYYY-MM-DD HH:mm') {
             return dayjs(date).format(format);

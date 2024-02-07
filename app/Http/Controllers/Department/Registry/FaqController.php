@@ -50,15 +50,15 @@ class FaqController extends Controller
     {
         $department=Department::find($request->department_id);
         $this->authorize('create',$department);
-
-        $faq=new Faq;
-        $faq->department_id=$request->department_id;
-        $faq->category_id=$request->category_id;
-        $faq->degree=$request->degree;
-        $faq->subjects=$request->subjects;
-        $faq->question_zh=$request->question_zh;    
-        $faq->answer_zh=$request->answer_zh;
-        $faq->save();
+        Faq::create($request->all());
+        // $faq=new Faq;
+        // $faq->department_id=$request->department_id;
+        // $faq->category_id=$request->category_id;
+        // $faq->degree=$request->degree;
+        // $faq->subjects=$request->subjects;
+        // $faq->question_zh=$request->question_zh;    
+        // $faq->answer_zh=$request->answer_zh;
+        // $faq->save();
         return redirect()->back();
     }
 

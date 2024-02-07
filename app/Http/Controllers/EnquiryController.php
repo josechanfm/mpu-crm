@@ -130,7 +130,6 @@ class EnquiryController extends Controller
         //
     }
     public function answerQuestion(Enquiry $enquiry,$token){
-            
         if($enquiry->has_question){
             return to_route('enquiry.index');
         };
@@ -142,10 +141,7 @@ class EnquiryController extends Controller
                 'message'=>'The enquiry question already submit!'
             ]);
         };
-        // $enquiry->has_question=true;
-        // $enquiry->save();
-        $subjects=$enquiry->subjects;
-        $faqs=Faq::getBySubjects($subjects);
+        $faqs=Faq::getByEnquiry($enquiry);
         return Inertia::render('Enquiry/AnswerQuestion',[
             'enquiry'=>$enquiry,
             'faqs'=>$faqs,

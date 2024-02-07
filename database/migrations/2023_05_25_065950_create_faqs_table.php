@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('department_id');
             $table->integer('category_id');
-            $table->string('degree')->nullable();
+            $table->string('origins')->nullable();
+            $table->string('degrees')->nullable();
             $table->string('subjects')->nullable();
             $table->string('question_zh');
             $table->longText('answer_zh');
