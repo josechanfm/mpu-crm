@@ -144,3 +144,8 @@ export default {
     },
 }
 </script>
+<style>
+.ant-tooltip-placement-top{
+    visibility: hidden;
+}
+</style>

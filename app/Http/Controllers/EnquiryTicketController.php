@@ -14,7 +14,10 @@ class EnquiryTicketController extends Controller
     public function ticket(EnquiryResponse $response, $token){
         if($response->is_used){
             return Inertia::render('Error',[
-                'message'=>'The enquiry question already submit!'
+                'message'=>"<div class='flex justify-center items-center mt-10'><div><p>感謝您與澳理大聯繫，我們將儘快回覆。</p>
+                <p>Thank you for contacting MPU, we'll respond to you shortly.</p>
+                  <p><a href='www.mpu.edu.mo/admission'>www.mpu.edu.mo/admission</a></p></div></div>
+                "
             ]);
         }
         if($response->token!=$token){

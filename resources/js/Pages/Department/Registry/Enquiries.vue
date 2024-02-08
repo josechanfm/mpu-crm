@@ -2,8 +2,7 @@
     <DepartmentLayout title="所有查詢" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                <a-table :dataSource="enquiriesStat" :columns="columns" :rowKey="record => record.id"
-                    @change="handleTableChange">
+                <a-table :dataSource="enquiriesStat" :columns="columns" :rowKey="record => record.id" @change="handleTableChange">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button @click="viewRecord(record)">View</a-button>

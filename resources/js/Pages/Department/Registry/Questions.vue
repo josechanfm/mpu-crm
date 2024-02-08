@@ -12,13 +12,13 @@
                             {{ text }}
                         </template>
                         <template v-else-if="column.dataIndex=='origin'">
-                            {{ record['enquiry']['origin'] }}
+                            {{ mapOptionsItem(fields.origin.options,record['enquiry']['origin']) }}
                         </template>
                         <template v-else-if="column.dataIndex=='admission'">
-                            {{ record['enquiry']['admission'] }}
+                            {{ mapOptionsItem(fields.admission.options,record['enquiry']['admission']) }}
                         </template>
-                        <template v-else-if="column.dataIndex=='givenname'">
-                            {{ record['enquiry']['givenname'] }}
+                        <template v-else-if="column.dataIndex=='fullname'">
+                            {{ record['enquiry']['surname']}} {{record['enquiry']['givenname'] }}
                         </template>
                         <template v-else-if="column.dataIndex=='surname'">
                             {{ record['enquiry']['surname'] }}
@@ -36,15 +36,16 @@
                             <span v-if="record.last_response">
                                 {{ record.last_response.admin_user?record.last_response.admin_user.name:'--' }}
                             </span>
-                            <span>
+                            <span v-else>
                                 ---
                             </span>
                         </template>
                         <template v-else-if="column.dataIndex=='content'">
-                            {{ record.content.substring(0,10) }}...........................
+                            {{ record.content.substring(0,10) }}...
                         </template>
                         <template v-else-if="column.dataIndex=='status'">
-                            status
+                            
+                            {{ record.is_closed?'完成':'跟進中' }}
                         </template>
                         <template v-else>
                                 {{record[column.dataIndex]}}
@@ -146,34 +147,41 @@ export default {
                 },{
                     title: '證件類別('+this.fields.origin.short+')',
                     dataIndex: 'origin',
+                    sorter: (a, b) => a.enquiry.origin.localeCompare(b.enquiry.origin),
+                    filters: this.fields.origin.options,
+                    filterMultiple: false,
+                    onFilter: (value, record) => record.enquiry.origin == value
+
                 },{
                     title: this.fields.admission.short,
                     dataIndex: 'admission',
+                    sorter: (a, b) => a.enquiry.admission.localeCompare(b.enquiry.admission)
                 },{
-                    title: this.fields.givenname.short,
-                    dataIndex: 'givenname',
-                    sorter: (a, b) => a.enquiry.givenname.localeCompare(b.enquiry.givenname)
-                },{
-                    title: this.fields.surname.short,
-                    dataIndex: 'surname',
-                    sorter: (a, b) => a.enquiry.surname.localeCompare(b.enquiry.surname),
-                },{
-                    title: this.fields.email.short,
-                    dataIndex: 'email',
-                    sorter: (a, b) => a.enquiry.email.localeCompare(b.enquiry.email),
-                },{
-                    title: this.fields.phone.short,
-                    dataIndex: 'phone',
-                    sorter: (a, b) => a.enquiry.phone.localeCompare(b.enquiry.phone),
-                },{
-                    title: '提問',
-                    dataIndex: 'content',
+                    title: '姓, 名',
+                    dataIndex: 'fullname',
+                    sorter: (a, b) => a.enquiry.surname.localeCompare(b.enquiry.surename)
+                // },{
+                //     title: this.fields.email.short,
+                //     dataIndex: 'email',
+                //     sorter: (a, b) => a.enquiry.email.localeCompare(b.enquiry.email),
+                // },{
+                //     title: this.fields.phone.short,
+                //     dataIndex: 'phone',
+                //     sorter: (a, b) => a.enquiry.phone.localeCompare(b.enquiry.phone),
+                // },{
+                //     title: '提問',
+                //     dataIndex: 'content',
                 },{
                     title: '跟進人員',
                     dataIndex: 'admin_user',
                 },{
                     title: '跟進情況',
                     dataIndex: 'status',
+                    sorter: (a, b) => a.is_closed > b.is_closed,
+                    filters: [{value:true,text:'完成'},{value:false,text:'跟進中'}],
+                    filterMultiple: false,
+                    onFilter: (value, record) => record.is_closed == value
+
                 },{
                     title: '操作',
                     dataIndex: 'operation',
@@ -183,6 +191,9 @@ export default {
         }
     },
     created(){
+        this.fields.origin.options.forEach(o => o.text = o.label)
+        this.fields.degree.options.forEach(o => o.text = o.label)
+        this.fields.admission.options.forEach(o => o.text = o.label)
     },
     methods: {
         optionFind(options,item){
@@ -241,6 +252,9 @@ export default {
         dateFormat(date, format = 'YYYY-MM-DD HH:mm') {
             return dayjs(date).format(format);
         },
+        mapOptionsItem(options,item){
+            return options.find(f=>f.value==item).label.split(" ")[0];
+        }
 
     },
 }

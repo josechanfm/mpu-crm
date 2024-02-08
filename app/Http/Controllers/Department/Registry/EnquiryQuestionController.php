@@ -30,7 +30,7 @@ class EnquiryQuestionController extends Controller
         //$department=session('department');
         $department=Department::where('abbr','DAMIA')->first();
         $department->enquiryQuestionsOpen;
-        
+        //dd($department);
         return Inertia::render('Department/Registry/Questions',[
             'department'=>$department,
             'fields'=>Config::enquiryFormFields(),
@@ -143,7 +143,7 @@ class EnquiryQuestionController extends Controller
 
     public function sendEmail($email){
         Mail::send('emails.enquiryResponseMail',$email, function($message) use($email){
-            $message->from('no-replay@mpu.edu.mo','No Reply')
+            $message->from('no-reply@mpu.edu.mo','MPU Admission')
                     ->to($email["address"])
                     ->subject($email["title"]);
             if(isset($email['media'])){

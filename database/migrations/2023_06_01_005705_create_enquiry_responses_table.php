@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('enquiry_question_id');
             $table->text('title')->nullable();
-            $table->text('remark');
+            $table->text('remark')->nullable();
             $table->boolean('by_email');
             $table->string('email_address')->nullable();
             $table->string('email_subject')->nullable();

@@ -127,9 +127,8 @@
                         :rules="[{ required: true, message: 'Summarize your response.' }]">
                         <a-input v-model:value="myResponse.title" />
                     </a-form-item>
-                    <a-form-item name="remark" label="Remark"
-                        :rules="[{ required: true, message: 'Required your response remark' }]">
-                        <a-textarea v-model:value="myResponse.remark" :rows="10"></a-textarea>
+                    <a-form-item name="remark" label="Remark">
+                        <a-textarea v-model:value="myResponse.remark" :rows="5"></a-textarea>
                     </a-form-item>
                     <p><a-switch v-model:checked="myResponse.by_email" label="Email" />&nbsp;&nbsp;Response by email</p>
                     <span v-if="myResponse.by_email">
@@ -225,8 +224,8 @@ export default {
                 }
             }
             this.myResponse.email_address=this.enquiry.email
-            this.myResponse.email_subject="Re: MPU Admission enquiry - Ticket No."+question.id+"/"+this.enquiry.id
-            this.myResponse.title="Ticket No."+question.id+"/"+this.enquiry.id
+            this.myResponse.email_subject="Re: MPU Admission enquiry - Ticket No."+this.enquiry.id+"-"+question.id
+            this.myResponse.title="Ticket No."+this.enquiry.id+"-"+question.id
             this.myResponse.enquiry_question_id = question.id
             this.myResponse.question = question
             window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });

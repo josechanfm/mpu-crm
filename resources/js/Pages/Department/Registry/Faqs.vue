@@ -25,9 +25,6 @@
                         <template v-else-if="column.dataIndex=='created_at'">
                             {{ formatDate(record[column.dataIndex]) }}
                         </template>
-                        <template v-else-if="column.dataIndex=='updated_at'">
-                            {{ formatDate(record[column.dataIndex]) }}
-                        </template>
                         <template v-else-if="column.dataIndex=='valid'">
                             {{ text?'有效':'無效' }}
                         </template>
@@ -142,6 +139,9 @@ export default {
                     sorter:{
                         compare:(a,b)=>a.question_zh.localeCompare(b.question_zh)
                     }
+                },{
+                    title: '更新日期',
+                    dataIndex: 'created_at',
                 },{
                     title: '有效/無效',
                     dataIndex: 'valid',

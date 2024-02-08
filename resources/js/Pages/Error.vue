@@ -13,6 +13,5 @@ defineProps({
             <img src="/images/mpu_banner.png" width="300" />
         </a>
     </div>
-    {{ message }}
-
+    <div v-html="message"/>
 </template>
