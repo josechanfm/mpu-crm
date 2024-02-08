@@ -36,6 +36,11 @@
             常見問題
           </inertia-link>
         </a-menu-item>
+        <a-menu-item key="enqriry_3" >
+          <inertia-link :href="route('registry.report.index')">
+            統計及報告
+          </inertia-link>
+        </a-menu-item>
       </a-sub-menu>
       <a-menu-item key="personnel" v-if="is('PES | admin | master')">
         <template #icon>

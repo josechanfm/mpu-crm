@@ -9,13 +9,14 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Carbon\Carbon;
 
 class EnquiryQuestion extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
 
-    protected $fillable=['enquiry_id','parent_id','content','token','is_closed','admin_id','escalated'];
+    protected $fillable=['enquiry_id','parent_id','content','is_closed','close_at','admin_id','token'];
     protected $casts=['files'=>'json','is_closed'=>'boolean'];
     protected $appends=['admin_user'];
 
@@ -66,6 +67,37 @@ class EnquiryQuestion extends Model implements HasMedia
     public function children() {
         //return $this->hasMany(static::class, 'parent_id')->with('children')->with('adminUser')->with('emails')->orderBy('id', 'asc');
         return $this->hasMany(static::class, 'parent_id')->with('children')->orderBy('id', 'asc');
+    }
+
+    public static function getPerformance(){
+        $currentMonth=Carbon::now()->format('n');
+        $lastMonth=Carbon::now()->subMonths()->format('n');
+        $startMonth=Carbon::now()->subMonths(2)->format('n');
+        $results=self::selectRaw('
+            MONTH(close_at) as month,
+            CASE
+                WHEN day_used < 3 then "<3"
+                WHEN day_used >= 3 and day_used <= 5 then "3-5"
+                ELSE ">5"
+            END AS group_range,
+            COUNT(*) AS group_count
+        ')
+        ->whereBetween('close_at', [
+            Carbon::now()->subMonths(2)->startOfMonth(),
+            Carbon::now()->endOfMonth()
+        ])
+        ->groupBy('group_range','month')
+        ->get();
+        $data=[];
+        $data[$currentMonth]=['<3'=>0,'3-5'=>0,'>5'=>0];
+        $data[$lastMonth]=['<3'=>0,'3-5'=>0,'>5'=>0];
+        $data[$startMonth]=['<3'=>0,'3-5'=>0,'>5'=>0];
+
+        foreach($results as $result){
+            $data[$result->month][$result->group_range]=$result;
+        }
+        return $data;
+        
     }
 
 

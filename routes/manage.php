@@ -92,6 +92,7 @@ Route::middleware([
         Route::post('enquiry/question/response',[App\Http\Controllers\Department\Registry\EnquiryQuestionController::class,'response'])->name('registry.enquiry.question.response');
         Route::resource('enquiries',App\Http\Controllers\Department\Registry\EnquiryController::class)->names('registry.enquiries');
         Route::resource('faqs',App\Http\Controllers\Department\Registry\FaqController::class)->names('registry.faqs');
+        Route::get('report',[App\Http\Controllers\Department\Registry\ReportController::class,'index'])->name('registry.report.index');
     });
 });
 

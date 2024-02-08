@@ -5,6 +5,7 @@
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 Personnel department Dashboard
             </div>
+            <div v-html="department.landing_page"></div>
         </div>
     </DepartmentLayout>
 </template>

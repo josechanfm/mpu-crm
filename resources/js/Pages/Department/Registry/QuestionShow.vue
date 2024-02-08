@@ -61,6 +61,7 @@
             <template v-for="question in enquiry.questions" :key="question.id">
                 <a-collapse-panel :header="questionNubmer(question)">
                     <template #extra>
+                        <span v-if="question.is_closed" class="mr-5">已關閉@{{ dateFormat(question.close_at) }}</span>
                         <span v-if="question.admin_user">{{ question.admin_user.name }}</span>
                         <a-button type="primary" @click="toResponse(question)">回應</a-button>
                         {{ dateFormat(question.created_at) }}
@@ -84,7 +85,9 @@
                     <template v-for="response in question.responses">
                         <a-collapse>
                             <a-collapse-panel :header="responseNumber(response)" :style="responseStyle">
-                                <template #extra>{{response.admin_user?response.admin_user.name:'---'}}@{{ dateFormat(response.created_at) }}</template>
+                                <template #extra>
+                                    {{response.admin_user?response.admin_user.name:'---'}}@{{ dateFormat(response.created_at) }}
+                                </template>
                                 <a-typography-title :level="4">{{ response.title }}</a-typography-title>
                                 <p>{{ response.remark }}</p>
                                 <span v-if="response.by_email">
@@ -190,7 +193,7 @@ export default {
     data() {
         return {
             breadcrumb:[
-                {label:"招生注冊處" ,url:route('personnel.dashboard')},
+                {label:"招生注冊處" ,url:route('registry.dashboard')},
                 {label:"回應問題" ,url:null},
             ],
             myResponse: {
@@ -268,14 +271,18 @@ export default {
             if (question.enquiry_response_id) {
                 caption += ', 追問回應編號#' + question.enquiry_response_id
             }
-            if (question.is_closed) {
-                caption += ' (Closed)'
-            }
+            // if (question.is_closed) {
+            //     caption += ' (Closed)'
+            // }
             return caption;
         },
         responseNumber(response) {
             return '回應編號 #' + response.id
         },
+        dateFormat(date, format = 'YYYY-MM-DD HH:mm') {
+            return dayjs(date).format(format);
+        },
+
     },
 
 }

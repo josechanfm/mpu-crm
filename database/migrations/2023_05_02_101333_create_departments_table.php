@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('name_zh')->nullable();
             $table->string('name_en')->nullable();
             $table->string('name_pt')->nullable();
+            $table->text('landing_page')->nullable();
             $table->string('phone')->nullable();
             $table->string('href')->nullable();
             $table->string('default_route')->nullable();

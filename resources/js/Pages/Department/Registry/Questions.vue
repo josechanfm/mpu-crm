@@ -123,7 +123,7 @@ export default {
     data() {
         return {
             breadcrumb:[
-                {label:"招生注冊處" ,url:route('personnel.dashboard')},
+                {label:"招生注冊處" ,url:route('registry.dashboard')},
                 {label:"須回應提問" ,url:null},
             ],
             modal:{
