@@ -6,7 +6,7 @@
                     @change="handleTableChange">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <a-button @click="viewRecord(record)">Edit</a-button>
+                            <a-button @click="viewRecord(record)">View</a-button>
                         </template>
                         <template v-else-if="column.dataIndex == 'created_at'">
                             {{ dateFormat(record.created_at) }}
@@ -222,7 +222,7 @@ export default {
             });
 
         },
-        dateFormat(date, format = 'YY-MM-DD HH:mm') {
+        dateFormat(date, format = 'YYYY-MM-DD HH:mm') {
             return dayjs(date).format(format);
         },
         handleTableChange(pag, filters, sorter) {

@@ -11,6 +11,12 @@
                         <template v-else-if="column.dataIndex=='enquiry_id'">
                             {{ text }}
                         </template>
+                        <template v-else-if="column.dataIndex=='origin'">
+                            {{ record['enquiry']['origin'] }}
+                        </template>
+                        <template v-else-if="column.dataIndex=='admission'">
+                            {{ record['enquiry']['admission'] }}
+                        </template>
                         <template v-else-if="column.dataIndex=='givenname'">
                             {{ record['enquiry']['givenname'] }}
                         </template>
@@ -37,9 +43,9 @@
                         <template v-else-if="column.dataIndex=='content'">
                             {{ record.content.substring(0,10) }}...........................
                         </template>
-                        <!-- <template v-else-if="column.dataIndex=='escalated'">
-                            {{ text==1?'Escalated':'--' }}
-                        </template> -->
+                        <template v-else-if="column.dataIndex=='status'">
+                            status
+                        </template>
                         <template v-else>
                                 {{record[column.dataIndex]}}
                         </template>
@@ -128,8 +134,21 @@ export default {
             teacherStateLabels:{},
             columns:[
                 {
+                    title: '日期',
+                    dataIndex: 'created_at',
+                    sorter: (a, b) => {
+                        return new Date(a.enquiry.created_at).getTime() > new Date(b.enquiry.created_at).getTime()
+                        //a.enquiry.phone.localeCompare(b.enquiry.)
+                    },
+                },{
                     title: '查詢編號',
                     dataIndex: 'enquiry_id',
+                },{
+                    title: '證件類別('+this.fields.origin.short+')',
+                    dataIndex: 'origin',
+                },{
+                    title: this.fields.admission.short,
+                    dataIndex: 'admission',
                 },{
                     title: this.fields.givenname.short,
                     dataIndex: 'givenname',
@@ -146,22 +165,15 @@ export default {
                     title: this.fields.phone.short,
                     dataIndex: 'phone',
                     sorter: (a, b) => a.enquiry.phone.localeCompare(b.enquiry.phone),
-                //},{
-                //    title: 'Escalated',
-                //    dataIndex: 'escalated'
-                },{
-                    title: '創建日期',
-                    dataIndex: 'created_at',
-                    sorter: (a, b) => {
-                        return new Date(a.enquiry.created_at).getTime() > new Date(b.enquiry.created_at).getTime()
-                        //a.enquiry.phone.localeCompare(b.enquiry.)
-                    },
                 },{
                     title: '提問',
                     dataIndex: 'content',
                 },{
-                    title: '最後回應',
+                    title: '跟進人員',
                     dataIndex: 'admin_user',
+                },{
+                    title: '跟進情況',
+                    dataIndex: 'status',
                 },{
                     title: '操作',
                     dataIndex: 'operation',

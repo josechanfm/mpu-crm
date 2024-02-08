@@ -14,7 +14,7 @@ class Department extends Model
         return $this->belongsToMany(AdminUser::class);
     }
     public function enquiriesStat(){
-        $enquiries=$this->hasMany(Enquiry::class)->get();
+        $enquiries=$this->hasMany(Enquiry::class)->orderBy('created_at','desc')->get();
         foreach($enquiries as $id=>$enquiry){
             $enquiries[$id]->question_count=$enquiry->questionCount();
             $enquiries[$id]->response_count=$enquiry->responseCount();
