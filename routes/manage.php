@@ -93,6 +93,8 @@ Route::middleware([
         Route::resource('enquiries',App\Http\Controllers\Department\Registry\EnquiryController::class)->names('registry.enquiries');
         Route::resource('faqs',App\Http\Controllers\Department\Registry\FaqController::class)->names('registry.faqs');
         Route::get('report',[App\Http\Controllers\Department\Registry\ReportController::class,'index'])->name('registry.report.index');
+        Route::get('report/export_enquiries',[App\Http\Controllers\Department\Registry\ReportController::class,'exportEnquiries'])->name('registry.report.exportEnquiries');
+        Route::get('report/export_questions',[App\Http\Controllers\Department\Registry\ReportController::class,'exportQuestions'])->name('registry.report.exportQuestions');
     });
 });
 
