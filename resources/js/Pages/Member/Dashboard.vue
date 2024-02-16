@@ -1,29 +1,11 @@
-<script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
-
-const data = [{
-        title: 'Ant Design Title 1',
-    }, {
-        title: 'Ant Design Title 2',
-    }, {
-        title: 'Ant Design Title 3',
-    }, {
-        title: 'Ant Design Title 4',
-}];
-
-defineProps({
-    member:Object,
-});
-</script>
-
 <template>
-    <AppLayout title="Dashboard">
+    <MemberLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Dashboard..
             </h2>
         </template>
-        <div class="container mx-auto">
+        <div class="mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                 <div class="lg:col-span-3">
                     <div class="container mx-auto pt-5">
@@ -57,7 +39,7 @@ defineProps({
 
                             <div class="mt-16">
                                 <h1 class="font-bold text-center text-3xl text-gray-900">Macao Polytechnic University</h1>
-                                <p class="text-center text-sm text-gray-400 font-medium">{{ member.display_name }}</p>
+                                <p class="text-center text-sm text-gray-400 font-medium"> member.display_name </p>
                                 <p>
                                     <span>
                                         
@@ -131,5 +113,24 @@ defineProps({
             </div>
         </div>
 
-    </AppLayout>
+    </MemberLayout>
 </template>
+
+
+<script setup>
+import MemberLayout from '@/Layouts/MemberLayout.vue';
+
+const data = [{
+        title: 'Ant Design Title 1',
+    }, {
+        title: 'Ant Design Title 2',
+    }, {
+        title: 'Ant Design Title 3',
+    }, {
+        title: 'Ant Design Title 4',
+}];
+
+defineProps({
+    member:Object,
+});
+</script>

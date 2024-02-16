@@ -13,10 +13,10 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use App\Notifications\SetPasswordNotification;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
+use LaravelAndVueJS\Traits\LaravelPermissionToVueJS;
 
 
-
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
@@ -26,6 +26,7 @@ class User extends Authenticatable
     use TwoFactorAuthenticatable;
     use HasRoles;
     use Notifiable;
+    use LaravelPermissionToVueJS;
 
     /**
      * The attributes that are mass assignable.

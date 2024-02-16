@@ -271,8 +271,8 @@ class ConfigSeeder extends Seeder
               ]'
         ]);
         DB::table('configs')->insert([
-          'division'=>'phone_country_codes',
-          'label'=>'phone_country_code',
+          'division'=>'article_categories',
+          'label'=>'Article Categories',
           'value'=>'
           [
             {"value":"GENERAL","label":"General Page"},
@@ -280,7 +280,81 @@ class ConfigSeeder extends Seeder
             {"value":"DEPARTMENT","label":"Department Page"}
           ]'
         ]);
-          
+
+        DB::table('configs')->insert([
+          'division'=>'upload_document_types',
+          'label'=>'Upload Document Type',
+          'value'=>'
+          [
+            {"value":"IDC","label_zh":"身份證明文件","label_en":"Identification Document"},
+            {"value":"EDU","label_zh":"學歷證明文件","label_en":"Education Certificate"},
+            {"value":"RSM","label_zh":"履歷表","label_en":"Resume"},
+            {"value":"WRK","label_zh":"工作證明文件","label_en":"Work certificate document"},
+            {"value":"TRN","label_zh":"培訓證書/專業資格","label_en":"Training certificate/Professional qualification"},
+            {"value":"ACH","label_zh":"學術成就","label_en":"Academic Achievement"},
+            {"value":"OTH","label_zh":"其他相關證明文件","label_en":"Other relevant documents"}
+          ]'
+        ]);
+        DB::table('configs')->insert([
+          'division'=>'birth_places',
+          'label'=>'Place of Birth',
+          'value'=>'
+          [
+            {"value":"CHN","label_zh":"身份證明文件","label_en":"Identification Document"},
+            {"value":"MAC","label_zh":"學歷證明文件","label_en":"Education Certificate"},
+            {"value":"HKG","label_zh":"履歷表","label_en":"Resume"},
+            {"value":"OTH","label_zh":"履歷表","label_en":"Resume"}
+          ]'
+        ]);
+        DB::table('configs')->insert([
+          'division'=>'id_types',
+          'label'=>'ID Type',
+          'value'=>'
+          [
+            {"value":"MAC_RST","label_zh":"澳門(永久)居民身份證","label_en":"China, Macao (Permanent)"},
+            {"value":"MAC_TMP","label_zh":"澳門(非永久)居民身份證","label_en":"China, Macao (Non-permanent)"},
+            {"value":"HKG_RST","label_zh":"香港居民身份證","label_en":"China, Hong Kong"},
+            {"value":"CHN_IDC","label_zh":"中國內地居民身份證","label_en":"China, Mainland"},
+            {"value":"PPT_INT","label_zh":"護照","label_en":"Passport"},
+            {"value":"OTH_DOC","label_zh":"其他","label_en":"Other"}
+          ]'
+        ]);
+        DB::table('configs')->insert([
+          'division'=>'rec_nationalities',
+          'label'=>'Recruitment Nationality',
+          'value'=>'
+          [
+            {"value":"CHN","label_zh":"中國籍","label_en":"Chinese"},
+            {"value":"PPT","label_zh":"葡國籍","label_en":"Portugese"},
+            {"value":"OTH","label_zh":"其他","label_en":"Other"}
+          ]'
+        ]);
+        DB::table('configs')->insert([
+          'division'=>'rec_educations',
+          'label'=>'Recuitment Educations',
+          'value'=>'
+          [
+            {"value":"1_PRM","label_zh":"小學","label_en":"Primary"},
+            {"value":"2_JHS","label_zh":"初中畢業","label_en":"Junior High School"},
+            {"value":"3_SHS","label_zh":"高中畢業","label_en":"Senior High School"},
+            {"value":"4_HDP","label_zh":"高等課程","label_en":"Deploma"},
+            {"value":"5_BCH","label_zh":"學士學位","label_en":"Bachalor"},
+            {"value":"6_MAST","label_zh":"碩士學位","label_en":"Master"},
+            {"value":"7_PHD","label_zh":"博士學位","label_en":"PhD"},
+            {"value":"8_PPD","label_zh":"博士後","label_en":"Postdoctoral"}
+          ]'
+        ]);
+        DB::table('configs')->insert([
+          'division'=>'rec_vehicle',
+          'label'=>'Recuitment Vehicles',
+          'value'=>'
+          [
+            {"value":"HV3","label_zh":"重型汽車駕駛執照，並具三年駕駛重型汽車的工作經驗","label_en":"Heavy vehicle 3 years"},
+            {"value":"RH3","label_zh":"輕型汽車駕駛執照，並具三年駕駛輕型汽車的工作經驗","label_en":"Vehicle e years"},
+            {"value":"IRN","label_zh":"見開考通告","label_en":"refer to recruitment notices"}
+          ]'
+        ]);
+
 
     }
 }

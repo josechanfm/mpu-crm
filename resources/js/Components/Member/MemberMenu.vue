@@ -22,13 +22,13 @@
       SettingOutlined,
     },
     setup() {
-      const current = ref(['dashboard']);
+      const current = ref(['member']);
       const menuItems=ref([
         {
-            key:'dashboard',
+            key:'member',
             icon:'home-outlined',
             title:'主頁',
-            route:'dashboard',
+            route:'member',
         // },{
         //     key:'professionals.index',
         //     icon:'verified-outlined',

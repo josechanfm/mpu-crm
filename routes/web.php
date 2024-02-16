@@ -36,7 +36,6 @@ Route::prefix('enquiry')->group(function(){
 });
 Route::resource('forms',\App\Http\Controllers\FormController::class)->names('forms');
 
-
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -45,7 +44,10 @@ Route::middleware([
     // Route::get('/dashboard', function () {
     //     return Inertia::render('Member/Dashboard');
     // })->name('dashboard');
-    Route::get('/dashboard', [\App\Http\Controllers\Member\DashboardController::class,'index'])->name('dashboard');
+    Route::prefix('/member')->group(function(){
+        Route::get('/', [\App\Http\Controllers\Member\DashboardController::class,'index'])->name('member');
+        Route::get('recruitment/notifications',[App\Http\Controllers\Member\RecruitmentController::class,'notifications'])->name('member.recruitment.notifications');
+    });
     Route::resource('professionals',App\Http\Controllers\Member\ProfessionalController::class);
     Route::get('membership',[App\Http\Controllers\Member\MembershipController::class,'index'])->name('membership');
 

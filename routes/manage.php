@@ -110,6 +110,8 @@ Route::middleware([
         Route::get('/gpdps/emails',[App\Http\Controllers\Department\Personnel\GpdpController::class,'listEmails'])->name('personnel.gpdps.emails');
         Route::resource('/gpdps',App\Http\Controllers\Department\Personnel\GpdpController::class)->names('personnel.gpdps');
         Route::post('/gpdp/{gpdp}/sendEmailReminder',[App\Http\Controllers\Department\Personnel\GpdpController::class,'sendEmailReminder'])->name('personnel.gpdp.sendEmailReminder');
+        Route::resource('/recruitment/vacancies',App\Http\Controllers\Department\Personnel\Recruitment\VacancyController::class)->names('personnel.recruitment.vacancies');
+        Route::resource('/recruitment/vacancy/{vacancy}/notifications',App\Http\Controllers\Department\Personnel\Recruitment\NotificationController::class)->names('personnel.recruitment.vacancy.notifications');
     });
 });
 

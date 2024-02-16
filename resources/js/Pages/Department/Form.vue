@@ -207,12 +207,12 @@ export default {
     },
     storeRecord() {
         this.$inertia.post(route("manage.forms.store"), this.form, {
-        onSuccess: (page) => {
-            this.imageUrl = null;
-        },
-        onError: (err) => {
-            console.log(err);
-        },
+          onSuccess: (page) => {
+              this.imageUrl = null;
+          },
+          onError: (err) => {
+              console.log(err);
+          },
         });
     },
     updateRecord() {
