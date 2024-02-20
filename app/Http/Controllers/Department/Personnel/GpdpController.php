@@ -120,7 +120,6 @@ class GpdpController extends Controller
                 $emails=Email::where('emailable_type','App\Models\Gpdp')->orderBy('created_at','desc')->paginate(50);
             }
         };
-        
         return Inertia::render('Department/Personnel/GpdpsEmails',[
             'emails'=>$emails
         ]);

@@ -20,7 +20,7 @@
                             <a-button @click="showRecord(record)">查看電郵</a-button>
                         </template>
                         <template v-else-if="column.dataIndex == 'sender'">
-                            {{ record[column.dataIndex][0] }}
+                            {{ record[column.dataIndex] }}
                         </template>
                         <template v-else-if="column.dataIndex == 'created_at'">
                             {{ formatDate(record[column.dataIndex])}}
