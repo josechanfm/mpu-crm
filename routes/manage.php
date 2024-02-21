@@ -31,10 +31,9 @@ Route::middleware([
     'auth:admin_web',
     config('jetstream.auth_session'),
 ])->group(function() {
-    Route::get('staff', function () {
-        return Inertia::render('GeneralStaff',[
-        ]);
-    })->name('staff');
+    Route::prefix('/staff')->group(function(){
+        Route::get('/',[App\Http\Controllers\Staff\DashboardController::class,'index'])->name('staff');
+    });
     Route::get('/get-permissions', function () {
         return auth()->check()?auth()->user()->jsPermissions():0;
     });

@@ -1,19 +1,3 @@
-<script setup>
-import { Inertia } from '@inertiajs/inertia';
-import { Head, Link } from '@inertiajs/inertia-vue3';
-
-defineProps({
-    canLogin: Boolean,
-    canRegister: Boolean,
-    laravelVersion: String,
-    phpVersion: String,
-});
-const logout = () => {
-    Inertia.post(route('manage.logout'));
-};
-
-</script>
-
 <template>
 <!-- component -->
 <!-- Header -->
@@ -30,9 +14,9 @@ const logout = () => {
     <div>
       
       <div class="hover:cursor-pointer sm:hidden">
-        <spnan class="h-1 rounded-full block w-8 mb-1 bg-gradient-to-tr from-indigo-600 to-green-600"></spnan>
-        <spnan class="h-1 rounded-full block w-8 mb-1 bg-gradient-to-tr from-indigo-600 to-green-600"></spnan>
-        <spnan class="h-1 rounded-full block w-8 mb-1 bg-gradient-to-tr from-indigo-600 to-green-600"></spnan>
+        <span class="h-1 rounded-full block w-8 mb-1 bg-gradient-to-tr from-indigo-600 to-green-600"></span>
+        <span class="h-1 rounded-full block w-8 mb-1 bg-gradient-to-tr from-indigo-600 to-green-600"></span>
+        <span class="h-1 rounded-full block w-8 mb-1 bg-gradient-to-tr from-indigo-600 to-green-600"></span>
       </div>
       <div class="flex items-center">
 
@@ -93,3 +77,21 @@ const logout = () => {
 
 </main>
 </template>
+
+<script setup>
+import { Inertia } from '@inertiajs/inertia';
+import TeacherLayout from '@/Layouts/TeacherLayout.vue';
+
+
+defineProps({
+    canLogin: Boolean,
+    canRegister: Boolean,
+    laravelVersion: String,
+    phpVersion: String,
+    TeacherLayout
+});
+const logout = () => {
+    Inertia.post(route('manage.logout'));
+};
+
+</script>

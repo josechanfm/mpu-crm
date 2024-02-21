@@ -67,11 +67,13 @@
                         {{ dateFormat(question.created_at) }}
                     </template>
                     {{ question.content }}
+                    
                     <a-divider/>
                     <ol>
                         <li v-for="file in question.media">
                             <a :href="file.original_url" target="_blank">
                                 <template v-if="file.mime_type.includes('image/')">
+                                    {{ file.original_url }}
                                     <img :src="file.original_url" width="100" />
                                 </template>
                                 <template v-else>

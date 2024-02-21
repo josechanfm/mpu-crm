@@ -22,7 +22,7 @@ class Kernel extends ConsoleKernel
         // }
 
         
-        $schedule->command('gpdp:reminder')->daily();
+        $schedule->command('gpdp:reminder')->dailyAt('1:00')->timezone(env('APP_TIMEZONE','Asia/Macau'));
         // $schedule->call(function(){
         //     info('called evey minute');
         // })->everyMinute();

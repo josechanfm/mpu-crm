@@ -57,12 +57,12 @@ return [
         ],
         'media' => [
             'driver' => 'local',
-            'root'   => public_path('/media'),
+            'root'   => public_path('media'),
             'url'    => env('APP_URL').'/media',
         ],
         'enquiry' => [
             'driver' => 'local',
-            'root'   => public_path('/media/enquiry'),
+            'root'   => public_path('media/enquiry'),
             'url'    => env('APP_URL').'/media/enquiry',
             'permissions' =>[
                 'file'=>[

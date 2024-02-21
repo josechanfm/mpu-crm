@@ -243,7 +243,7 @@ export default {
                     dataIndex: "date_start",
                     width: 150,
                 }, {
-                    title: "期提醒日期(60日)",
+                    title: "提醒日期(60日)",
                     i18n: "date_remind",
                     dataIndex: "date_remind",
                     width: 150,
