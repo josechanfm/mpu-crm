@@ -61,7 +61,7 @@
             <template v-for="question in enquiry.questions" :key="question.id">
                 <a-collapse-panel :header="questionNubmer(question)">
                     <template #extra>
-                        <span v-if="question.is_closed" class="mr-5">已關閉@{{ dateFormat(question.close_at) }}</span>
+                        <span v-if="question.is_closed" class="mr-5">已關閉@{{ dateFormat(question.closed_at) }}</span>
                         <span v-if="question.admin_user">{{ question.admin_user.name }}</span>
                         <a-button type="primary" @click="toResponse(question)">回應</a-button>
                         {{ dateFormat(question.created_at) }}

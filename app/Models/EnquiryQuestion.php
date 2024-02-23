@@ -16,7 +16,7 @@ class EnquiryQuestion extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
 
-    protected $fillable=['enquiry_id','parent_id','content','is_closed','close_at','admin_id','token'];
+    protected $fillable=['enquiry_id','parent_id','content','is_closed','closed_at','admin_id','token'];
     protected $casts=['files'=>'json','is_closed'=>'boolean'];
     protected $appends=['admin_user'];
 
@@ -73,7 +73,7 @@ class EnquiryQuestion extends Model implements HasMedia
         $lastMonth=Carbon::now()->subMonths()->format('Y/n');
         $startMonth=Carbon::now()->subMonths(2)->format('Y/n');
         $results=self::selectRaw("
-            date_format(close_at,'%Y/%c') as yearMonth,
+            date_format(closed_at,'%Y/%c') as yearMonth,
             CASE
                 WHEN day_used < 3 then '<3'
                 WHEN day_used >= 3 and day_used <= 5 then '3-5'
@@ -81,7 +81,7 @@ class EnquiryQuestion extends Model implements HasMedia
             END AS group_range,
             COUNT(*) AS group_count
         ")
-        ->whereBetween('close_at', [
+        ->whereBetween('closed_at', [
             Carbon::now()->subMonths(2)->startOfMonth(),
             Carbon::now()->endOfMonth()
         ])

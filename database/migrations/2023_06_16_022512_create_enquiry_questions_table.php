@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('content');
             $table->string('token');
             $table->boolean('is_closed')->default(0);
-            $table->datetime('close_at')->nullable();
+            $table->datetime('closed_at')->nullable();
             $table->integer('day_used')->nullable();
             $table->foreignId('admin_id')->nullable();
             $table->boolean('escalated')->nullable();

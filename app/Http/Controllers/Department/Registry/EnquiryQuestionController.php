@@ -126,11 +126,11 @@ class EnquiryQuestionController extends Controller
         if(isset($request->is_closed) && $request->is_closed){
             $closeDate=date('Y-m-d h:i:s');
             $question->is_closed=true;
-            $question->close_at=$closeDate;
+            $question->closed_at=$closeDate;
             $question->day_used=abs(floor((strtotime($closeDate) - strtotime($question->created_at)) / 60 / 60 /24) );
         }else{
             $question->is_closed=false;
-            $question->close_at=null;
+            $question->closed_at=null;
             $question->day_used=null;
         }
         $question->save();
