@@ -11,22 +11,16 @@
                 </a-form>
             </div>
         </div>
-
-
-        <div class="pb-5">
-            <a :href="route('registry.report.exportEnquiries')" class="ant-btn ant-btn-primary mr-5">Export Enquiries</a>
-            <a :href="route('registry.report.exportQuestions')" class="ant-btn ant-btn-primary mr-5">Export Questions</a>
-        </div>
         <table class="border-collapse border border-slate-400 bg-white w-full max-w-96">
             <tr>
-                <th class="border border-slate-300">月份</th>
+                <th class="border border-slate-300">年/ 月份</th>
                 <th class="border border-slate-300"><3日</th>
                 <th class="border border-slate-300">3-5日</th>
                 <th class="border border-slate-300">>5日</th>
             </tr>
-            <template v-for="(stat,month) in enquiryQuestionStat">
+            <template v-for="(stat,yearMonth) in enquiryQuestionStat">
                 <tr>
-                    <td class="border border-slate-300 text-center">{{ month }}月 </td>
+                    <td class="border border-slate-300 text-center">{{ yearMonth }}月 </td>
                     <td class="border border-slate-300 text-center">
                         {{ stat['<3'].group_count??0 }}
                     </td>

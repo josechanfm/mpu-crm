@@ -48,7 +48,6 @@ class EnquiryQuestion extends Model implements HasMedia
             ->nonQueued();
     }
 
-
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('enquiryQuestionAttachments')->useDisk('enquiry');
@@ -70,23 +69,23 @@ class EnquiryQuestion extends Model implements HasMedia
     }
 
     public static function getPerformance(){
-        $currentMonth=Carbon::now()->format('n');
-        $lastMonth=Carbon::now()->subMonths()->format('n');
-        $startMonth=Carbon::now()->subMonths(2)->format('n');
-        $results=self::selectRaw('
-            MONTH(close_at) as month,
+        $currentMonth=Carbon::now()->format('Y/n');
+        $lastMonth=Carbon::now()->subMonths()->format('Y/n');
+        $startMonth=Carbon::now()->subMonths(2)->format('Y/n');
+        $results=self::selectRaw("
+            date_format(close_at,'%Y/%c') as yearMonth,
             CASE
-                WHEN day_used < 3 then "<3"
-                WHEN day_used >= 3 and day_used <= 5 then "3-5"
-                ELSE ">5"
+                WHEN day_used < 3 then '<3'
+                WHEN day_used >= 3 and day_used <= 5 then '3-5'
+                ELSE '>5'
             END AS group_range,
             COUNT(*) AS group_count
-        ')
+        ")
         ->whereBetween('close_at', [
             Carbon::now()->subMonths(2)->startOfMonth(),
             Carbon::now()->endOfMonth()
         ])
-        ->groupBy('group_range','month')
+        ->groupBy('group_range','yearMonth')
         ->get();
         $data=[];
         $data[$currentMonth]=['<3'=>0,'3-5'=>0,'>5'=>0];
@@ -94,8 +93,9 @@ class EnquiryQuestion extends Model implements HasMedia
         $data[$startMonth]=['<3'=>0,'3-5'=>0,'>5'=>0];
 
         foreach($results as $result){
-            $data[$result->month][$result->group_range]=$result;
+            $data[$result->yearMonth][$result->group_range]=$result;
         }
+
         return $data;
         
     }

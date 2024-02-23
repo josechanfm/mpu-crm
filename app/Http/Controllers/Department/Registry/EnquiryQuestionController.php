@@ -69,12 +69,15 @@ class EnquiryQuestionController extends Controller
     {
         $enquiryQuestion=EnquiryQuestion::find($id);
         $this->authorize('view',$enquiryQuestion);
-        
+        $department=$enquiryQuestion->enquiry->department;
+
         $enquiry=Enquiry::with('questions')->find($enquiryQuestion->enquiry_id);
-        $enquiryQuestion->enquiry->questions;
+        $enquiry->questions;
+        //$enquiryQuestion->enquiry->questions;
+        //dd($enquiry);
         //dd($enquiryQuestion->enquiry->questions[0]->media[0]->original_url);
         return Inertia::render('Department/Registry/QuestionShow',[
-            'department'=>$enquiryQuestion->enquiry->department,
+            'department'=>$department,
             'fields'=>Config::enquiryFormFields(),
             'enquiry'=>$enquiry,
             'active_question'=>$enquiryQuestion->id,

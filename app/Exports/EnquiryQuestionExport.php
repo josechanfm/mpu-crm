@@ -46,7 +46,7 @@ class EnquiryQuestionExport implements FromCollection, WithHeadings
                 "origin"=>explode(' ',$origins[$questions[$id]->enquiry->origin])[0],
                 "degree"=>explode(' ',$degrees[$questions[$id]->enquiry->degree])[0],
                 "admission"=>explode(' ',$admissions[$questions[$id]->enquiry->admission])[0],
-                "fullname"=>$question->enquiry->givenname.' '.$question->enquiry->surname,
+                "fullname"=>$question->enquiry->givenname.', '.$question->enquiry->surname,
                 "phone"=>$question->enquiry->phone,
                 "email"=>$question->enquiry->email,
             ];

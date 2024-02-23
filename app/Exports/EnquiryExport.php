@@ -35,10 +35,9 @@ class EnquiryExport implements FromCollection, WithHeadings
         $origins=array_column($fields['origin']['options'],'label','value');
         $degrees=array_column($fields['degree']['options'],'label','value');
         $admissions=array_column($fields['admission']['options'],'label','value');
-
         $department=Department::where('abbr','DAMIA')->first();
         $enquiries=Enquiry::
-            selectRaw('DATE_FORMAT(created_at,"%Y-%m-%d"), id, origin, degree, admission, concat(givenname," ",surname) as fullname, phone, email')
+            selectRaw('DATE_FORMAT(created_at,"%Y-%m-%d"), id, origin, degree, admission, concat(givenname,", ",surname) as fullname, phone, email')
             ->whereBelongsTo($department)
             ->whereBetween('created_at',$this->period)
             ->orderBy('created_at','desc')

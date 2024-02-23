@@ -22,7 +22,7 @@
                         <template v-else-if="column.dataIndex=='subjects'">
                             <div v-html="gatherLables(fields.subjects.options,text)"/>
                         </template>
-                        <template v-else-if="column.dataIndex=='created_at'">
+                        <template v-else-if="column.dataIndex=='updated_at'">
                             {{ formatDate(record[column.dataIndex]) }}
                         </template>
                         <template v-else-if="column.dataIndex=='valid'">
@@ -141,7 +141,7 @@ export default {
                     }
                 },{
                     title: '更新日期',
-                    dataIndex: 'created_at',
+                    dataIndex: 'updated_at',
                 },{
                     title: '有效/無效',
                     dataIndex: 'valid',
