@@ -61,7 +61,7 @@
                 <span class="pl-3">Login is required</span>
             </a-form-item>
             <a-form-item
-                label="For Member"
+                label="For Staff"
                 name="for_staff"
                 v-if="form.require_login"
             >

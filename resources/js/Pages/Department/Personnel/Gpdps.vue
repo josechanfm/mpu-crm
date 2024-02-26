@@ -135,7 +135,6 @@
                             <a-select v-model:value="modal.data.employment_type" :options="employmentOptions" />
                         </a-form-item>
                         <a-form-item label="有效" name="in_valid">
-                            {{ modal.data.is_valid }}
                             <a-switch v-model:checked="modal.data.is_valid"/>
                         </a-form-item>
                     </a-col>

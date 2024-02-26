@@ -1,12 +1,5 @@
 <template>
-
-    <WebLayout title="Dashboard">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                表格例表
-            </h2>
-        </template>
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+    <StaffLayout title="Dashboard">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
                 <a-table :dataSource="forms" :columns="columns">
                     <template #bodyCell="{column, text, record, index}">
@@ -19,18 +12,17 @@
                     </template>
                 </a-table>
             </div>
-        </div>
-    </WebLayout>
+    </StaffLayout>
 
 </template>
 
 <script>
-import WebLayout from '@/Layouts/WebLayout.vue';
+import StaffLayout from '@/Layouts/StaffLayout.vue';
 import { Inertia } from '@inertiajs/inertia';
 
 export default {
     components: {
-        WebLayout,
+        StaffLayout,
     },
     props: ['forms'],
     data() {
@@ -82,8 +74,8 @@ export default {
     },
     methods: {
         toApply(record){
-            if(record.require_login==0 || this.$page.props.user){
-                Inertia.get(route('forms.show',record.id));
+            if(record.require_login==0 || this.$page.props.currentUser){
+                Inertia.get(route('staff.forms.show',record.id));
             }else{
                 alert("login required");
             }

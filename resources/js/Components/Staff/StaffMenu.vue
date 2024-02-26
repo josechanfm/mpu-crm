@@ -9,7 +9,7 @@
                     <inertia-link :href="route(item.route)" :target="item.target">{{ item.title }}</inertia-link>
                 </template>
                 <template v-else>
-                    {{ item.path }}
+                  <a :href="item.url" :target="item.target">{{ item.title }}</a>
                 </template>
             </a-menu-item>
         </template>
@@ -43,16 +43,11 @@
             title:'主頁',
             route:'staff',
         },{
-            key:'professionals.index',
+            key:'official-web',
             icon:'verified-outlined',
-            title:'專業認證',
-            path:'staff',
-        },{
-            key:'membership',
-            icon:'idcard-outlined',
-            title:'會籍',
-            route:'staff',
-        // },{
+            title:'MPU',
+            url:'https://www.mpu.edu.mo',
+        //},{
         //     key:'courses',
         //     icon:'bank-outlined',
         //     title:'課程',

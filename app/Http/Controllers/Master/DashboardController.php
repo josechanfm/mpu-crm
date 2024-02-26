@@ -11,6 +11,9 @@ use App\Models\Department;
 class DashboardController extends Controller
 {
     public function index(){
+        // dd(Department::all());
+        // dd(AdminUser::with('departments')->get());
+        // dd('master');
         return Inertia::render('Master/Dashboard',[
             'adminUsers'=>AdminUser::with('departments')->get(),
             'departments'=>Department::all()

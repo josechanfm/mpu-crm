@@ -44,7 +44,7 @@
             <InboxOutlined />
           </template>
           <span>
-            <inertia-link :href="route('master.article.index')">Articles</inertia-link>
+            <inertia-link :href="route('master.articles.index')">Articles</inertia-link>
           </span>
         </a-menu-item>
 

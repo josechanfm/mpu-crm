@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { Inertia } from "@inertiajs/inertia";
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
+import ApplicationMark from '@/Components/ApplicationMark.vue';
 
 defineProps({
     canLogin: Boolean,
@@ -22,14 +23,12 @@ const showingNavigationDropdown = ref(false);
         <!-- navbar and menu -->
         <nav class="shadow">
             <div class="flex justify-between items-center py-6 px-10 container mx-auto">
-                <div>
-                    <h1
-                        class="text-2xl font-bold bg-gradient-to-tr from-indigo-600 to-green-600 bg-clip-text text-transparent hover:cursor-pointer">
-                        <a href="/">
-                            WIRE
-                        </a>
-                    </h1>
-                </div>
+                <div class="shrink-0 flex items-center">
+                        <Link :href="route('home')">
+                            <ApplicationMark class="block h-9 w-auto" />
+                        </Link>
+                        澳門理工大學    
+                    </div>
 
                 <div>
                     <!-- Hamburger -->
