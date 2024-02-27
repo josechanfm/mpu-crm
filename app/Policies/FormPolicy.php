@@ -34,7 +34,7 @@ class FormPolicy
         if($user->hasRole('admin|master')){
             return true;
         }
-        return $form->department->hasUser($user);
+        return $user->hasRole($form->department->abbr);
     }
 
     /**

@@ -27,22 +27,14 @@ class FormController extends Controller
      */
     public function index()
     {
-        //dd(Form::find($formId)->entries()->delete());
-        // echo ($entries);
-        // echo ($form);
-        //dd(Department::find(session('department')->id)->forms);
-        //$this->authorize('view',$department);
-        //dd(session('department'));
         if(auth()->user()->hasRole('admin|master')){
             $forms=Form::all();
         }else{
             if(!empty(session('department'))){
                 session(['department'=>auth()->user()->departments->first()]);
             }
-            $forms=Form::whereBelongsTo(session('department'))->get();
+            $forms=Form::where('department_id',session('department')->id)->get();
         }
-        $department=session('department');
-
         return Inertia::render('Department/Forms',[
             'departments'=>Department::all(),
             'forms'=>$forms
@@ -65,8 +57,6 @@ class FormController extends Controller
         ]);
         $form->media;
         return Inertia::render('Department/Form',[
-            //'department' => Department::find(session('department')->id),
-            //'forms'=>Department::find(session('department')->id)->forms
             'departments'=>Department::all(),
             'form'=>$form
         ]);
@@ -112,7 +102,7 @@ class FormController extends Controller
      */
     public function edit(Form $form)
     {
-        //dd(Department::find($form->department_id));
+        $this->authorize('view',$form);
         $form->media;
         return Inertia::render('Department/Form',[
             'departments'=>Department::orderBy('abbr')->get(),

@@ -33,6 +33,10 @@ class Form extends Model implements HasMedia
         return $this->belongsTo(Organization::class);
     }
 
+    public function department(){
+        return $this->belongsTo(Department::class);
+    }
+
     public function fields()
     {
         return $this->hasMany(FormField::class)->orderBy('sequence');

@@ -14,6 +14,7 @@
                     <p>Thanks your very much!</p>
                     <p>Your application reference is: {{ filled.uid }}</p>
                 </div>
+                <inertia-link :href="route('staff.forms.index')">Back To Forms</inertia-link>
             </div>
         </div>
     </WebLayout>

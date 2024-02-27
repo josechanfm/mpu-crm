@@ -26,6 +26,7 @@ class FortifyServiceProvider extends ServiceProvider
             config(['fortify.guard' => 'admin_web']);
             config(['fortify.username' => 'username']);
         }else{
+            config(['fortify.home' => '/member']);
             config(['fortify.username' => 'email']);
         }
         $this->app->singleton(

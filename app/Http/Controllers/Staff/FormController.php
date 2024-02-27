@@ -47,31 +47,22 @@ class FormController extends Controller
      */
     public function store(Request $request)
     {
-        //date('Y-m-d',strtotime($request->date))
-            // $this->validate($request,[
-            //     'form_id'=>'required',
-            // ]);
-            
-                $entry=new Entry();
-                $entry->form_id=$request->form['id'];
-                //$entry->member_id=auth()->user()->id;
-                $entry->save();
-                foreach($request->fields as $key=>$value){
-                    $field=new EntryRecord();
-                    $field->entry_id=$entry->id;
-                    $field->form_field_id=$key;
-                    $field->field_value=$value;
-                    $field->save();
-                }
-                $form=Form::find($entry->form_id);
-                return Inertia::render('Staff/Form/Thanks',[
-                    'form'=>$form,
-                    'filled'=>$entry,
-                ]);
-        
-                //return redirect()->route('form.thanks',$entry);
-                //return to_route('form.thanks', ['form'=>$request->form['id']]);
-                //return to_route('form.thanks',$request->form['id']);
+
+        $entry=new Entry();
+        $entry->form_id=$request->form['id'];
+        $entry->save();
+        foreach($request->fields as $key=>$value){
+            $field=new EntryRecord();
+            $field->entry_id=$entry->id;
+            $field->form_field_id=$key;
+            $field->field_value=$value;
+            $field->save();
+        }
+        $form=Form::find($entry->form_id);
+        return Inertia::render('Staff/Form/Thanks',[
+            'form'=>$form,
+            'filled'=>$entry,
+        ]);
     }
 
     /**

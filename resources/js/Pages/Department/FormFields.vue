@@ -93,6 +93,7 @@
                 </a-form-item>
             </a-form>
             <template #footer>
+                <a-button key="back" @click="modal.isOpen = false">cancel</a-button>
                 <a-button v-if="modal.mode == 'EDIT'" key="Update" type="primary" @click="updateRecord()">Update</a-button>
                 <a-button v-if="modal.mode == 'CREATE'" key="Store" type="primary" @click="storeRecord()">Create</a-button>
             </template>
@@ -187,7 +188,7 @@ export default {
                     ]
                 },
                 { value: 'gender', label: 'Gender', template: [{ value: 'M', label: 'Male' }, { value: 'F', label: 'Female' }] },
-                { value: 'department', label: 'Template', template: this.departments.map(d=>({value: d.id,label: d.abbr})) },
+                { value: 'department', label: 'Department', template: this.departments.map(d=>({value: d.id,label: d.abbr})) },
             ]
         }
     },

@@ -16,12 +16,13 @@ return new class extends Migration
         Schema::create('form_fields', function (Blueprint $table) {
             $table->id();
             $table->foreignId('form_id')->reference('id')->on('forms')->onDelete('restric');
+            $table->integer('sequence');
             $table->string('field_name');
             $table->string('field_label');
             $table->string('type')->default('input');
-            $table->string('text')->nullable();
             $table->text('options')->nullable();
             $table->boolean('required')->default(false);
+            $table->boolean('in_column')->default(false);
             $table->string('rule')->nullable();
             $table->string('validate')->nullable();
             $table->text('remark')->nullable();
