@@ -19,7 +19,14 @@
             @finish="onFinish"
         >
             <a-form-item label="Department" name="department_id" v-if="is('admin|master')">
-                <a-select v-model:value="form.department_id" :options="departments" :fieldNames="{value:'id',label:'abbr'}" />
+                <a-select 
+                  show-search 
+                  v-model:value="form.department_id" 
+                  :options="departments" 
+                  :fieldNames="{value:'id',label:'abbr'}" 
+                  optionFilterProp="abbr"
+                  optionLabelProp="abbr"
+                />
             </a-form-item>
             <a-form-item label="Form Name" name="name">
                 <a-input v-model:value="form.name" />
@@ -43,11 +50,11 @@
                 />
             </a-form-item>
             <div class="text-right">
-                <a @click="form.openThankyou=!form.openThankyou">Thank You Message</a>
+                <a @click="form.openThanks=!form.openThanks">Thank You Message</a>
             </div>
-            <a-form-item label="Thank you Message" name="thankyou" v-if="form.openThankyou">
+            <a-form-item label="Thank you Message" name="thankyou" v-if="form.openThanks">
                 <quill-editor
-                    v-model:value="form.thankyou"
+                    v-model:value="form.thanks"
                     style="min-height: 200px"
                 />
             </a-form-item>

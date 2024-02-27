@@ -57,7 +57,6 @@ class FormController extends Controller
      */
     public function create()
     {
-
         $form=Form::make([
             'department_id'=>session('department')->id??null,
             'require_login'=>false,
@@ -116,7 +115,7 @@ class FormController extends Controller
         //dd(Department::find($form->department_id));
         $form->media;
         return Inertia::render('Department/Form',[
-            'departments'=>Department::all(),
+            'departments'=>Department::orderBy('abbr')->get(),
             'form'=>$form
         ]);
         

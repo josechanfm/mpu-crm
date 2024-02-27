@@ -26,6 +26,7 @@ class FormFieldController extends Controller
     {
         $this->authorize('view',$form);
         return Inertia::render('Department/FormFields',[
+            'departments'=>Department::all(),
             'department'=>session('department'),
             'form'=>$form,
             'fields'=>$form->fields,

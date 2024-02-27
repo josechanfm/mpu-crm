@@ -51,6 +51,7 @@ class FormController extends Controller
             // $this->validate($request,[
             //     'form_id'=>'required',
             // ]);
+            
                 $entry=new Entry();
                 $entry->form_id=$request->form['id'];
                 //$entry->member_id=auth()->user()->id;
@@ -63,7 +64,7 @@ class FormController extends Controller
                     $field->save();
                 }
                 $form=Form::find($entry->form_id);
-                return Inertia::render('Form/Thanks',[
+                return Inertia::render('Staff/Form/Thanks',[
                     'form'=>$form,
                     'filled'=>$entry,
                 ]);

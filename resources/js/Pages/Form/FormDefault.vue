@@ -7,7 +7,8 @@
         </template>
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             <div class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
-
+                {{ form.fields }} 
+                11111111
                 <a-form
                     :model="formData"
                     ref="formRef"
@@ -53,6 +54,11 @@
                                     v-model:value="formData[field.id]"
                                     :options="JSON.parse(field.options)"
                                 ></a-checkbox-group>
+                            </a-form-item>                        
+                        </div>
+                        <div v-else-if="field.type=='dropdown'">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
+                                {{ field }}
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='textarea'">

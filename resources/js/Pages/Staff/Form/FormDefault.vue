@@ -1,15 +1,24 @@
 <template>
-    <WebLayout title="Dashboard">
+    <StaffLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 表格管理
             </h2>
         </template>
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+            <div class="p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
+                <div class="text-center">
+                    <a-typography-title :level="3">{{ form.title }}</a-typography-title>
+                </div>
+                <div id="pure-html">
+                    <div v-html="form.description" />
+                </div>
+            </div>
             <div class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
                 <div v-if="form.require_login">
-                    {{ $page.props.currentUser.username }}
-                    {{ $page.props.currentUser.email }}
+                    <a-typography-title :level="4">
+                        NetId: {{ $page.props.currentUser.username }}<br>
+                        Email: {{ $page.props.currentUser.email }}
+                    </a-typography-title>
                 </div>
                 <a-form
                     :model="formData"
@@ -18,7 +27,6 @@
                     layout="vertical"
                     :validate-messages="validateMessages"
                 >
-
                     <template v-for="field in form.fields">
                         <div v-if="form.require_member">
                             <a-form-item label="Member Id" :name="field.id" :rules="[{required:field.required}]">
@@ -64,6 +72,16 @@
                                 <a-textarea v-model:value="formData[field.id]" />
                             </a-form-item>                        
                         </div>
+                        <div v-else-if="field.type=='dropdown'">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
+                                <a-select
+                                    show-search
+                                    v-model:value="formData[field.id]"
+                                    :options="JSON.parse(field.options)"
+                                    optionFilterProp="label"
+                                />
+                            </a-form-item>                        
+                        </div>
                         <div v-else-if="field.type=='richtext'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
                                 <quill-editor
@@ -94,19 +112,18 @@
                     
                 </a-form>
             </div>
-        </div>
-    </WebLayout>
+    </StaffLayout>
 </template>
 
 <script>
 import MemberLayout from '@/Layouts/MemberLayout.vue';
-import WebLayout from '@/Layouts/WebLayout.vue';
+import StaffLayout from '@/Layouts/StaffLayout.vue';
 import { quillEditor } from 'vue3-quill';
 
 export default {
     components: {
         MemberLayout,
-        WebLayout,
+        StaffLayout,
         quillEditor
     },
     props: ['form'],
@@ -165,9 +182,8 @@ export default {
         },
         storeRecord(){
             console.log(this.form);
-            console.log(this.formData);
             this.$refs.formRef.validateFields().then(()=>{
-                this.$inertia.post(route('forms.store'), {
+                this.$inertia.post(route('staff.forms.store'), {
                     form:this.form,
                     fields:this.formData
                 },{
@@ -187,8 +203,15 @@ export default {
 }
 </script>
 
-<style>
+<style scope>
 .ant-form-vertical .ant-form-item-label{
     padding:0px !important;
+}
+#pure-html {
+  all: initial
+}
+
+#pure-html * {
+  all: revert;
 }
 </style>

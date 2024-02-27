@@ -25,7 +25,14 @@
                                 </td>
                                 <td>
                                     <a-button @click="editRecord(record)">Edit</a-button>
-                                    <a-button @click="deleteRecord(record)" :disabled="form.published==1">Delete</a-button>
+                                    <a-popconfirm
+                                        title="Are you sure delete this task?"
+                                        ok-text="Yes"
+                                        cancel-text="No"
+                                        @confirm="deleteRecord(record)"
+                                    >
+                                    <a-button :disabled="form.published==1">Delete</a-button>
+                                    </a-popconfirm>
                                </td>
                             </tr>
                         </transition-group>
@@ -39,9 +46,6 @@
         <a-modal v-model:visible="modal.isOpen" :title="modal.mode == 'CREATE' ? 'Create' : 'Update'" width="60%">
             <a-form ref="modalRef" :model="modal.data" name="formField" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }"
                 autocomplete="off" :rules="rules" :validate-messages="validateMessages">
-                <!-- <a-form-item label="Field name" name="field_name">
-                <a-input v-model:value="modal.data.field_name" />
-            </a-form-item> -->
                 <a-form-item label="Field Label" name="field_label">
                     <a-input v-model:value="modal.data.field_label" @blur="onFieldLabelChanged" />
                 </a-form-item>
@@ -107,7 +111,7 @@ export default {
         DepartmentLayout,
         draggable: VueDraggableNext,
     },
-    props: ['department','form', 'fields'],
+    props: ['departments','department','form', 'fields'],
     data() {
         return {
             modal: {
@@ -128,7 +132,8 @@ export default {
                 { value: "date", label: "日期格式" },
                 { value: "datetime", label: "日期時間" },
                 { value: "email", label: "電郵欄位" },
-                { value: "number", label: "數值欄位" }            ],
+                { value: "number", label: "數值欄位" }
+            ],
             columns: [
                 {
                     title: 'Field Label',
@@ -170,6 +175,7 @@ export default {
                 width: '100%'
             },
             optionTemplates: [
+                { value: 'clear', label: 'Reset', template: [{ value: 'option_1', label: 'option_1' }] },
                 {
                     value: 'agree', label: 'Level of Agreement', template: [
                         { value: 5, label: 'Strongly Agree' },
@@ -181,11 +187,14 @@ export default {
                     ]
                 },
                 { value: 'gender', label: 'Gender', template: [{ value: 'M', label: 'Male' }, { value: 'F', label: 'Female' }] },
-                { value: 'clear', label: 'Reset', template: [{ value: 'option_1', label: 'option_1' }] },
+                { value: 'department', label: 'Template', template: this.departments.map(d=>({value: d.id,label: d.abbr})) },
             ]
         }
     },
     created() {
+        console.log(this.departments);
+        //$d=this.departments.map(d=>({value:d.id,label:d.abbr}));
+        //console.log($d);
     },
     methods: {
         createRecord() {
@@ -243,8 +252,7 @@ export default {
             });
         },
         deleteRecord(record) {
-            if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete(route('form.fields.destroy', {
+            this.$inertia.delete(route('manage.form.fields.destroy', {
                 form: this.form.id, field: record.id
             }), {
                 onSuccess: (page) => {
@@ -253,11 +261,9 @@ export default {
                 onError: (error) => {
                     alert(error.message);
                 }
-
             });
         },
         addOptionItem() {
-            console.log(this.modal.data.options.length + 1);
             const newOption = 'option_' + (this.modal.data.options.length + 1);
             this.modal.data.options.push({ value: newOption, label: newOption })
         },

@@ -24,6 +24,8 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+
+
 Route::prefix('enquiry')->group(function(){
     Route::resource('/',App\Http\Controllers\EnquiryController::class)->names('enquiry');
     Route::get('faqs',[\App\Http\Controllers\EnquiryController::class,'faqs'])->name('enquiry.faqs');
@@ -41,9 +43,9 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    // Route::get('/dashboard', function () {
-    //     return Inertia::render('Member/Dashboard');
-    // })->name('dashboard');
+    Route::get('/dashboard', function () {
+        return Inertia::render('Member/Dashboard');
+    })->name('dashboard');
     Route::prefix('/member')->group(function(){
         Route::get('/', [\App\Http\Controllers\Member\DashboardController::class,'index'])->name('member');
         Route::get('recruitment/notifications',[App\Http\Controllers\Member\RecruitmentController::class,'notifications'])->name('member.recruitment.notifications');

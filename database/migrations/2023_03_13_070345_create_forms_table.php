@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->text('welcome')->nullable();
             $table->text('description')->nullable();
-            $table->text('thankyou')->nullable();
+            $table->text('thanks')->nullable();
             $table->boolean('require_login')->default(false);
             $table->boolean('for_staff')->default(false);
             $table->boolean('published')->default(false);
