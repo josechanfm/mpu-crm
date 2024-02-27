@@ -32,7 +32,6 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        
         Fortify::authenticateUsing(function ($request) {
             if(config('fortify.guard')=='admin_web'){
                 if($request->local){

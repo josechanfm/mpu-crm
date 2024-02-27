@@ -25,6 +25,8 @@ class FortifyServiceProvider extends ServiceProvider
             config(['fortify.home' => '/manage']);
             config(['fortify.guard' => 'admin_web']);
             config(['fortify.username' => 'username']);
+        }else{
+            config(['fortify.username' => 'email']);
         }
         $this->app->singleton(
             \Laravel\Fortify\Contracts\LoginResponse::class,

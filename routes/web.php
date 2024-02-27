@@ -43,12 +43,12 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/member/dashboard', function () {
         return Inertia::render('Member/Dashboard');
     })->name('dashboard');
     Route::prefix('/member')->group(function(){
         Route::get('/', [\App\Http\Controllers\Member\DashboardController::class,'index'])->name('member');
-        Route::get('recruitment/notifications',[App\Http\Controllers\Member\RecruitmentController::class,'notifications'])->name('member.recruitment.notifications');
+        Route::get('member/recruitment/notifications',[App\Http\Controllers\Member\RecruitmentController::class,'notifications'])->name('member.recruitment.notifications');
     });
     Route::resource('professionals',App\Http\Controllers\Member\ProfessionalController::class);
     Route::get('membership',[App\Http\Controllers\Member\MembershipController::class,'index'])->name('membership');

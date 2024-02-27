@@ -56,7 +56,7 @@ const showingNavigationDropdown = ref(false);
                             <a href="https://www.mpu.edu.mo/en/services.php" target="_blank"
                                 class="text-gray-700 hover:text-indigo-600 text-md ">Services</a>
                             <inertia-link :href="route('login')">登入</inertia-link>
-                            <inertia-link :href="route('manage.login')">後台</inertia-link>
+                            <inertia-link :href="route('manage.login')">教職員</inertia-link>
                         </div>
                     </div>
                 </div>
@@ -91,7 +91,7 @@ const showingNavigationDropdown = ref(false);
                                 <inertia-link :href="route('login')">登入</inertia-link>
                             </li>
                             <li>
-                                <inertia-link :href="route('manage.login')">後台</inertia-link>
+                                <inertia-link :href="route('manage.login')">教職員</inertia-link>
                             </li>
                         </ul>
                     </div>
