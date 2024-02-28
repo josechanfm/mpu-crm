@@ -30,6 +30,7 @@ class GpdpReminderCommand extends Command
      */
     public function handle()
     {
+
         $gpdps=Gpdp::where('is_valid',true)->where('date_remind',date('Y-m-d'))->get();
         foreach($gpdps as $gpdp){
             Mail::to($gpdp->email)->send(new GpdpReminderEmail($gpdp));

@@ -24,6 +24,7 @@ class GpdpController extends Controller
      */
     public function index(Request $request)
     {
+        dd(date('Y-m-d H:i:s'));
         $yesterday=date('Y-m-d',strtotime('-1 day'));
         $g=Gpdp::where('date_remind',$yesterday)->count();
         $m=Email::whereRaw('left(created_at,10) = "'.$yesterday.'"')->count();
