@@ -82,7 +82,6 @@ class FormController extends Controller
             ]);
     
         }
-        dd(auth()->user());
         //$form=Form::with('fields')->find($id);
         if(!$form->published){
             return redirect()->route('staff');
