@@ -26,4 +26,7 @@ class Entry extends Model
     public function events(){
         return $this->morphToMany(Event::class,'attendee');
     }
+    public function adminUser(){
+        return $this->belongsTo(AdminUser::class);
+    }
 }

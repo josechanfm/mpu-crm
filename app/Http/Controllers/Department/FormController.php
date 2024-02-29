@@ -30,7 +30,8 @@ class FormController extends Controller
         if(auth()->user()->hasRole('admin|master')){
             $forms=Form::all();
         }else{
-            if(!empty(session('department'))){
+            //dd(session('department'));
+            if(empty(session('department'))){
                 $departments=Department::whereIn('abbr',auth()->user()->roles->pluck('name'))->get();
                 session(['department'=>$departments[0]]);
                 $forms=Form::whereIn('department_id',$departments->pluck('id'))->get();

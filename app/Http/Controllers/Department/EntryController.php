@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Department;
 use App\Models\Form;
+use App\Models\FormField;
+use App\Models\EntryRecord;
 use App\Models\Entry;
 use Inertia\Inertia;
 use App\Exports\EntryExport;
@@ -115,8 +117,8 @@ class EntryController extends Controller
      */
     public function destroy(Form $form, $id)
     {
-        EntryRecord::where('entry_id', $id)->delete();
-        Entry::where('id', $id)->delete();
+        //  EntryRecord::where('entry_id', $id)->delete();
+        //Entry::where('id', $id)->delete();
 
         return Redirect()->back();
         //
@@ -136,15 +138,17 @@ class EntryController extends Controller
     }
     public function entrySuccess(Form $form, Entry $entry, Request $request)
     {
-        $entry_records = EntryRecord::where('entry_id', $entry->id)->with('form_field')->get();
-        $form_fields = FormField::where('form_id', $form->id)->get();
+        $entryRecords = EntryRecord::where('entry_id', $entry->id)->with('form_field')->get();
+        $formFields = FormField::where('form_id', $form->id)->get();
+        //dd($entryRecords);
+        //dd($formFields);
         $table_data = [];
         if (strtoupper($request->format) == 'PDF') {
             if (!session('entryPdf') || session('entryPdf') != $entry->id) {
                 return redirect()->route('/');
             }
-            collect($form_fields)->map(function ($field, $key) use ($entry_records, &$table_data) {
-                $entry_record = collect($entry_records)->filter(function ($item) use ($field) {
+            collect($formFields)->map(function ($field, $key) use ($entryRecords, &$table_data) {
+                $entry_record = collect($entryRecords)->filter(function ($item) use ($field) {
                     return $item->form_field_id == $field->id;
                 })->first();
                 if ($field->type == 'radio') {
@@ -178,14 +182,14 @@ class EntryController extends Controller
             $pdf->render();
             return $pdf->stream('receipt.pdf', array('Attachment' => false));
         } else {
-            if (!session('entry') || session('entry') != $entry->id) {
-                return redirect()->route('/');
-            }
-            Session::flash('entryPdf', $entry->id);
-            return Inertia::render('Form/Success', [
+            // if (!session('entry') || session('entry') != $entry->id) {
+            //     return redirect()->route('manage.form.entries.index',$form->id);
+            // }
+            // Session::flash('entryPdf', $entry->id);
+            return Inertia::render('Department/Success', [
                 'form' => $form,
                 'entry' => $entry,
-                'entry_records' => $entry_records,
+                'entry_records' => $entryRecords,
             ]);
         }
     }

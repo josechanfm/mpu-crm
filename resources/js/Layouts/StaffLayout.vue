@@ -87,11 +87,11 @@ const logout = () => {
             <!-- Page Content -->
             <main>
                 <div class="bg-gray-100 sm:grid grid-cols-5 grid-rows-2 px-4 py-6 min-h-full lg:min-h-screen space-y-6 sm:space-y-0 sm:gap-4">
-                    <div class="h-96 col-span-4">
+                    <div class="col-span-4">
                         <slot />
                     </div>
                     
-                    <div class="h-96 col-span-1 ">
+                    <div class="col-span-1 ">
                         <div class="bg-white py-3 px-4 rounded-lg flex justify-around items-center ">
                             <input type="text" placeholder="seach"
                                 class=" bg-gray-100 rounded-md  outline-none pl-2 ring-indigo-700 w-full mr-2 p-2">

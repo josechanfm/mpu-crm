@@ -1,11 +1,5 @@
 <template>
   <DepartmentLayout title="Dashboard">
-    <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Management Dashboard department
-      </h2>
-    </template>
-    {{ selectedDisplayName }}
     <!-- <a-select
       v-model:value="selectedDisplayName"
       style="width: 120px"
@@ -32,15 +26,17 @@
             >receipt</a
           >
           <a-popconfirm
-            :title="Confirm_delete_record"
-            :ok-text="Yes"
-            :cancel-text="No"
+            title="Confirm to delete therecord?"
+            ok-text="Yes"
+            cancel-text="No"
             @confirm="deleteRecord(record)"
           >
             <a-button>Delete</a-button>
           </a-popconfirm>
         </template>
-
+        <template v-else-if="column.dataIndex=='net_id' && record.admin_user">
+          {{ record.admin_user.username }}
+        </template>
         <template v-else-if="column.dataIndex == 'created_at'">
           {{ record[column.dataIndex] }}
         </template>
@@ -230,10 +226,12 @@
 import DepartmentLayout from "@/Layouts/DepartmentLayout.vue";
 import { message } from "ant-design-vue";
 //import CropperModal from "@/Components/Member/CropperModal.vue";
+import { quillEditor, Quill } from "vue3-quill";
 
 export default {
   components: {
     DepartmentLayout,
+    quillEditor
     //CropperModal,
   },
   props: ["form", "entries", "entryColumns"],
@@ -319,7 +317,7 @@ export default {
         route("manage.form.entries.destroy", { form: this.form, entry: record }),
         {
           onSuccess: (page) => {
-            message.success(this.$t("delete_success"));
+            message.success('Delete Success.');
           },
           onError: (err) => {
             console.log(err);

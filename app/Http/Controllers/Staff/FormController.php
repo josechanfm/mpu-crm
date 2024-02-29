@@ -50,6 +50,7 @@ class FormController extends Controller
 
         $entry=new Entry();
         $entry->form_id=$request->form['id'];
+        $entry->admin_user_id=auth()->user()->id;
         $entry->save();
         foreach($request->fields as $key=>$value){
             $field=new EntryRecord();

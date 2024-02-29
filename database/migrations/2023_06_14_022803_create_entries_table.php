@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('form_id');
             $table->boolean('staff')->default(false);
-            $table->bigInteger('user_id')->nullable();
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('admin_user_id')->nullable();
             $table->timestamps();
         });
     }

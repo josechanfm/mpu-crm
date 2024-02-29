@@ -50,8 +50,11 @@ class Form extends Model implements HasMedia
     public function entry_columns()
     {
         $columns[] = (object)['title' => '#', 'dataIndex' => 'uid'];
+        if($this->for_staff){
+            $columns[] = (object)['title'=>'Net Id','dataIndex'=>'net_id'];
+        }
         foreach ($this->in_column_fields as $column) {
-            $columns[] = (object)['title' => $column->field_name, 'dataIndex' => 'extra_' . $column->id];
+            $columns[] = (object)['title' => $column->field_label, 'dataIndex' => 'extra_' . $column->id];
         }
         $columns[] = (object)['title' => 'Submit at', 'dataIndex' => 'submitted_at'];
         $columns[] = (object)['title' => 'Action', 'dataIndex' => 'operation'];
@@ -68,6 +71,7 @@ class Form extends Model implements HasMedia
         $entries = $this->entries;
         $fields = $this->in_column_fields;
         foreach ($entries as $entry) {
+            $entry->adminUser;
             foreach ($fields as $field) {
                 $f = $entry->records->where('form_field_id', $field->id)->first();
                 if ($f) {

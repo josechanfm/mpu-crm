@@ -5,7 +5,7 @@
                 表格管理
             </h2>
         </template>
-            <div class="p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
+            <div class="p-4 bg-white overflow-hidden shadow sm:rounded-lg ">
                 <div class="text-center">
                     <a-typography-title :level="3">{{ form.title }}</a-typography-title>
                 </div>
@@ -13,7 +13,7 @@
                     <div v-html="form.description" />
                 </div>
             </div>
-            <div class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
+            <div class="mt-8 p-4 bg-white overflow-hidden shadow sm:rounded-lg ">
                 <div v-if="form.require_login">
                     <a-typography-title :level="4">
                         NetId: {{ $page.props.currentUser.username }}<br>
