@@ -31,7 +31,6 @@ Route::middleware([
     'auth:admin_web',
     config('jetstream.auth_session'),
 ])->group(function() {
-
     Route::prefix('/staff')->group(function(){
         Route::get('/',[App\Http\Controllers\Staff\DashboardController::class,'index'])->name('staff');
         Route::resource('forms',\App\Http\Controllers\Staff\FormController::class)->names('staff.forms');

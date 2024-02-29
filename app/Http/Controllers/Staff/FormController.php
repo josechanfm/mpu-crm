@@ -74,6 +74,15 @@ class FormController extends Controller
      */
     public function show(Form $form)
     {
+        $entry=$form->entries->where('admin_user_id',auth()->user()->id)->first();
+        if($entry){
+            return Inertia::render('Staff/Form/Duplicate',[
+                'form'=>$form,
+                'entry'=>$entry
+            ]);
+    
+        }
+        dd(auth()->user());
         //$form=Form::with('fields')->find($id);
         if(!$form->published){
             return redirect()->route('staff');
