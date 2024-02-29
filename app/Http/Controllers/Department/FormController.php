@@ -31,9 +31,13 @@ class FormController extends Controller
             $forms=Form::all();
         }else{
             if(!empty(session('department'))){
-                session(['department'=>auth()->user()->departments->first()]);
+                $departments=Department::whereIn('abbr',auth()->user()->roles->pluck('name'))->get();
+                session(['department'=>$departments[0]]);
+                $forms=Form::whereIn('department_id',$departments->pluck('id'))->get();
+            }else{
+                $forms=Form::where('department_id',session('department')->id)->get();
             }
-            $forms=Form::where('department_id',session('department')->id)->get();
+            
         }
         return Inertia::render('Department/Forms',[
             'departments'=>Department::all(),
