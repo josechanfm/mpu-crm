@@ -21,6 +21,14 @@ class DepartmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function redirect($roleName){
+        $department=Department::where('abbr',$roleName)->first();
+        if($department->default_route){
+            return redirect()->route($department->default_route);
+        }else{
+            return redirect()->route('staff');
+        }
+    }
     public function index()
     {
         //$department=session('currentDepartment');

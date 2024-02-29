@@ -31,6 +31,7 @@ Route::middleware([
     'auth:admin_web',
     config('jetstream.auth_session'),
 ])->group(function() {
+
     Route::prefix('/staff')->group(function(){
         Route::get('/',[App\Http\Controllers\Staff\DashboardController::class,'index'])->name('staff');
         Route::resource('forms',\App\Http\Controllers\Staff\FormController::class)->names('staff.forms');
@@ -59,10 +60,11 @@ Route::middleware([
     config('jetstream.auth_session'),
 ])->group(function () {
     Route::prefix('/manage')->group(function(){
-        Route::get('/masqueradeAdminUser/{department}',[App\Http\Controllers\Department\DashboardController::class,'masqueradeAdminUser'])->name('manage.masqueradeAdminUser');
         Route::get('/',[App\Http\Controllers\Department\DashboardController::class,'index'])->name('manage');
+        Route::get('/masqueradeAdminUser/{department}',[App\Http\Controllers\Department\DashboardController::class,'masqueradeAdminUser'])->name('manage.masqueradeAdminUser');
         Route::get('dashboard',[App\Http\Controllers\Department\DashboardController::class,'index'])->name('manage.dashboard');
         Route::resource('departments',App\Http\Controllers\Department\DepartmentController::class)->names('manage.departments');
+        Route::get('department/{roleName}',[App\Http\Controllers\Department\DepartmentController::class,'redirect'])->name('manage.department.redirect');
         //Route::resource('department/{department}/forms',App\Http\Controllers\Department\FormController::class)->names('manage.department.forms');
         Route::resource('forms',App\Http\Controllers\Department\FormController::class)->names('manage.forms');
         Route::resource('form/{form}/fields',App\Http\Controllers\Department\FormFieldController::class)->names('manage.form.fields');

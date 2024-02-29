@@ -33,23 +33,23 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         Fortify::authenticateUsing(function ($request) {
-            if(config('fortify.guard')=='admin_web'){
+            // dd($request->local);
+            // dd(config('fortify.guard'));
+            // dd(config('fortify.username'));
+            // dd($request->all());
+            if(config('fortify.guard')=='admin_web' || config('fortify.guard')=='admin_local'){
                 if($request->local){
-                    $adminLocal='admin_local';
-                    $adminUser=AdminUser::where('username', $request->username)->first();
-                    $validated=$adminUser && Hash::check($request->password,$adminUser->password);
-                    config(['fortify.guard' => $adminLocal]);
-                    Auth::shouldUse($adminLocal);
+                    config(['fortify.username' => 'username']);
+                    config(['fortify.guard' => 'admin_local']);
+                    Auth::shouldUse(config('fortify.guard'));
                     $validated = Auth::validate([
                         'username' => $request->username,
                         'password' => $request->password
                     ]);
                 }else{
-                    //$adminUser=AdminUser::where('email', $request->username)->first();
-                        // return redirect()->back()->with('error','Not account');
-                        Auth::shouldUse(config('fortify.guard'));
                         config(['fortify.username' => 'username']);
-                        //dd($request->all());
+                        config(['fortify.guard' => 'admin_web']);
+                        Auth::shouldUse(config('fortify.guard'));
                         $validated = Auth::validate([
                             //'mail' => $request->username,
                             'samaccountname' => $request->username,
@@ -57,6 +57,8 @@ class AuthServiceProvider extends ServiceProvider
                         ]);
                 }
             }else{
+                config(['fortify.username' => 'email']);
+                config(['fortify.guard' => 'web']);
                 Auth::shouldUse(config('fortify.guard'));
                 $validated = Auth::validate([
                     'email' => $request->email,

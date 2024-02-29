@@ -13,6 +13,11 @@
                 </template>
             </a-menu-item>
         </template>
+        <a-menu-item v-if="$page.props.currentUser.roles.length>0">
+          <template v-for="role in $page.props.currentUser.roles">
+            <inertia-link :href="route('manage.department.redirect',{roleName:role})">{{ role }}</inertia-link>
+        </template>
+        </a-menu-item>
         <a-menu-item>
             <a @click="logout">登出</a>
         </a-menu-item>

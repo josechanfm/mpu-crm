@@ -18,17 +18,19 @@ class DashboardController extends Controller
 
     public function index()
     {
-        session()->forget('department');
-        session(['department'=>Department::whereIn('abbr',auth()->user()->roles->pluck('name'))->first()]);
-        if(empty(session('department'))){
-            return redirect()->route('staff');
-        };
-        if(session('department')->default_route){
-            return redirect()->route(session('department')->default_route);
-        }
-        return Inertia::render('Department/Dashboard',[
-            'departments' => Department::all(),
-        ]);
+        // dd('manage logined');
+        // session()->forget('department');
+        // session(['department'=>Department::whereIn('abbr',auth()->user()->roles->pluck('name'))->first()]);
+        // if(empty(session('department'))){
+        //     return redirect()->route('staff');
+        // };
+        // if(session('department')->default_route){
+        //     return redirect()->route(session('department')->default_route);
+        // }
+        return redirect()->route('staff');
+        // return Inertia::render('Department/Dashboard',[
+        //     'departments' => Department::all(),
+        // ]);
 
     }
 

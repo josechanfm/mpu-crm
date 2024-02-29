@@ -31,7 +31,6 @@ class DepartmentPolicy
      */
     public function view(AdminUser $user, Department $department)
     {
-        dd($user);
         //$user=auth()->user();
         if($department->hasRight($user) || $user->hasRole('master')){
             return true;
@@ -64,7 +63,6 @@ class DepartmentPolicy
      */
     public function update()
     {
-        dd('abc');
         if(auth()->user()->hasRole('master')){
             return true;
         }
