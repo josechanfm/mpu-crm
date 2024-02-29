@@ -1,13 +1,6 @@
 <template>
     <DepartmentLayout title="Dashboard" :department="department">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                From Fields
-            </h2>
-        </template>
-        <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Field</button>
-
+        <button @click="createRecord()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Field</button>
         <div class="ant-table">
             <div class="ant-table-container">
                 <table style="table-layout: auto;">
@@ -216,6 +209,7 @@ export default {
             this.modal.isOpen = true;
         },
         storeRecord() {
+            console.log('manage.form.fields.store');
             this.$refs.modalRef.validateFields().then(() => {
                 this.$inertia.post(route('manage.form.fields.store', {
                     form: this.form.id

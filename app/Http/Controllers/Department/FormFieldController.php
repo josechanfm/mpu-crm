@@ -24,7 +24,6 @@ class FormFieldController extends Controller
      */
     public function index(Form $form)
     {
-        $this->authorize('view',$form);
         return Inertia::render('Department/FormFields',[
             'departments'=>Department::all(),
             'department'=>session('department'),
@@ -51,6 +50,7 @@ class FormFieldController extends Controller
      */
     public function store(Form $form, Request $request)
     {
+        //$this->authorize('create',$form);
         $this->validate($request,[
             'form_id' => 'required',
             'field_label'=>'required',
@@ -105,6 +105,7 @@ class FormFieldController extends Controller
      */
     public function update(Form $form, Request $request )
     {
+        //$this->authorize('update',$form);
         $this->validate($request,[
             'form_id' => 'required',
             'field_label'=>'required',

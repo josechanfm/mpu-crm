@@ -31,6 +31,7 @@ class FormPolicy
      */
     public function view(AdminUser $user, Form $form)
     {
+        // dd('form view permission');
         if($user->hasRole('admin|master')){
             return true;
         }
@@ -48,7 +49,7 @@ class FormPolicy
         if($user->hasRole(['admin','master'])){
             return true;
         }
-
+        return $user->hasRole(session('department')->abbr);
     }
 
     /**
@@ -63,7 +64,8 @@ class FormPolicy
         if($user->hasRole('admin|master')){
             return true;
         }
-        return $form->department->hasUser($user);
+        return $user->hasRole($form->department->abbr);
+        //return $form->department->hasUser($user);
     }
 
     /**
