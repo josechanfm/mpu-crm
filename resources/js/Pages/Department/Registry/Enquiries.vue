@@ -21,7 +21,7 @@
                             {{ record.surname }}, {{ record.givenname }}
                         </template>
                         <template v-else-if="column.dataIndex == 'admin_user'">
-                            <span v-if="record.last_response">
+                            <span v-if="record.last_response && record.last_response.admin_user">
                                 {{record.last_response.admin_user.username}}
                             </span>
                         </template>
@@ -53,8 +53,12 @@
                 </a-form-item>
                 <a-form-item :label="fields.profile.short">
                     {{ optionFind(fields.profile.options, modal.data.profile) }}
+                    {{ modal.data.profile_other }}
                 </a-form-item>
-
+                <a-form-item :label="fields.apply.short">
+                    {{ optionFind(fields.apply.options, modal.data.apply) }}
+                    {{ modal.data.apply_number }}
+                </a-form-item>
                 <a-form-item :label="fields.surname.short">
                     {{ modal.data.surname }}
                 </a-form-item>

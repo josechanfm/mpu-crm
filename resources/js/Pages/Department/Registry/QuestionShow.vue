@@ -32,11 +32,17 @@
                     </li>
                     <li>
                         <p class="font-bold">{{ fields.profile.question }}</p>
-                        <p>{{ optionFind(enquiry.profile, fields.profile.options) }}</p>
+                        <p>
+                            {{ optionFind(enquiry.profile, fields.profile.options) }}
+                            {{ enquiry.profile_other }}
+                        </p>
                     </li>
                     <li>
                         <p class="font-bold">{{ fields.apply.question }}</p>
-                        <p>{{ optionFind(enquiry.apply, fields.apply.options) }}</p>
+                        <p>
+                            {{ optionFind(enquiry.apply, fields.apply.options) }}
+                            {{ enquiry.apply_number }}
+                        </p>
                     </li>
                     <li>
                         <p class="font-bold">Name</p>

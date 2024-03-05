@@ -77,6 +77,11 @@
             </a-form-item>
             <a-form-item :label="fields.profile.short">
                 {{ optionFind(fields.profile.options,modal.data.enquiry.profile) }}
+                {{ modal.data.enquiry.profile_other }}
+            </a-form-item>
+            <a-form-item :label="fields.apply.short">
+                {{ optionFind(fields.apply.options,modal.data.enquiry.apply) }}
+                {{ modal.data.enquiry.apply_number }}
             </a-form-item>
             <a-form-item :label="fields.surname.short">
                 {{ modal.data.enquiry.surname }}
