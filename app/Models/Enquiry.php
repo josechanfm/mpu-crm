@@ -10,7 +10,7 @@ class Enquiry extends Model
 {
     use HasFactory;
 
-    protected $fillable=['department_id','lang','origin','degree','admission','profile','apply','surname','givenname','email','areacode','phone','subjects','has_question','token','is_closed'];
+    protected $fillable=['department_id','lang','origin','degree','admission','profile','profile_other','apply','apply_number','surname','givenname','email','areacode','phone','subjects','has_question','token','is_closed'];
     protected $casts=['subjects'=>'array'];
 
     protected static function boot(){

@@ -4,10 +4,10 @@
             <img src="/images/mpu_banner.png" width="300" />
         </a>
     </div>
+    {{ enquiry }}
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-
                 <a-form ref="refEnquiry" name="enquiry" :model="enquiry" :rules="rules" layout="vertical"
                     @finish="onFinish">
                     <a-form-item name="origin" :label="fields.origin.question">
@@ -17,7 +17,7 @@
                         </a-radio-group>
                     </a-form-item>
                     <a-form-item name="degree" :label="fields.degree.question" v-if="enquiry.origin">
-                        <a-radio-group v-model:value="enquiry.degree">
+                        <a-radio-group v-model:value="enquiry.degree" @change="delete enquiry.admission">
                             <a-radio v-for="option in fields.degree.options" :value="option.value" :style="radioStyle">{{
                                 option.label }}</a-radio>
                         </a-radio-group>
@@ -80,24 +80,23 @@
                             </template>
                         </a-radio-group>
                     </a-form-item>
-
                     <a-form-item name="profile" :label="fields.profile.question"
                         v-if="enquiry.admission || (enquiry.degree && enquiry.degree != 'B')">
-                        <a-radio-group v-model:value="enquiry.profile">
+                        <a-radio-group v-model:value="enquiry.profile" @change="delete enquiry.profile_other">
                             <a-radio v-for="option in fields.profile.options" :value="option.value" :style="radioStyle">{{
                                 option.label }}</a-radio>
                             <a-input v-if="enquiry.profile === 'OTH'" style="width: 300px; margin-left: 10px"
-                                v-model="enquiry.profileOther" />
+                                v-model:value="enquiry.profile_other" />
                         </a-radio-group>
                     </a-form-item>
-
                     <a-form-item name="apply" :label="fields.apply.question" v-if="enquiry.profile">
-                        <a-radio-group v-model:value="enquiry.apply">
+                        <a-radio-group v-model:value="enquiry.apply" @change="enquiry.apply_number=null">
                             <a-radio v-for="option in fields.apply.options" :value="option.value" :style="radioStyle">{{
-                                option.label }}</a-radio>
+                                option.label }}
+                            </a-radio>
                             <template v-if="enquiry.apply">
-                                <a-form-item name="applyNumber">
-                                    <a-input style="width: 100px; margin-left: 10px" v-model:value="enquiry.applyNumber" />
+                                <a-form-item name="apply_number">
+                                    <a-input style="width: 100px; margin-left: 10px" v-model:value="enquiry.apply_number" />
                                     {{ fields.apply.other.label }}
                                 </a-form-item>
                             </template>
@@ -211,7 +210,7 @@ export default {
                     required: true,
                     message: '必填欄位 Required field.'
                 }],
-                applyNumber: [{
+                apply_number: [{
                     required: true,
                     pattern: "^[0-9]{6}",
                     message: '必須為6位數字 6 numeric digits are required.'
@@ -272,6 +271,9 @@ export default {
                 }
             });
         },
+        onChangeDegree(){
+            delete this.enquiry.admission
+        }
     },
 }
 </script>
