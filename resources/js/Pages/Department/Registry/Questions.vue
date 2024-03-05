@@ -14,7 +14,7 @@
                         <template v-else-if="column.dataIndex=='origin'">
                             {{ mapOptionsItem(fields.origin.options,record['enquiry']['origin']) }}
                         </template>
-                        <template v-else-if="column.dataIndex=='admission'">
+                        <template v-else-if="column.dataIndex=='admission' && record.enquiry.admission">
                             {{ mapOptionsItem(fields.admission.options,record['enquiry']['admission']) }}
                         </template>
                         <template v-else-if="column.dataIndex=='fullname'">
@@ -72,7 +72,7 @@
             <a-form-item :label="fields.degree.short">
                 {{ optionFind(fields.degree.options,modal.data.enquiry.degree) }}
             </a-form-item>
-            <a-form-item :label="fields.admission.short">
+            <a-form-item :label="fields.admission.short" v-if="modal.data.enquiry.admission">
                 {{ optionFind(fields.admission.options,modal.data.enquiry.admission) }}
             </a-form-item>
             <a-form-item :label="fields.profile.short">

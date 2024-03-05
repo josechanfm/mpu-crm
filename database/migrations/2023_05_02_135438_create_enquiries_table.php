@@ -21,7 +21,9 @@ return new class extends Migration
             $table->string('degree')->nullable();
             $table->string('admission')->nullable();
             $table->string('profile')->nullable();
+            $table->string('profile_other')->nullable();
             $table->boolean('apply')->default(false);
+            $table->string('apply_number',10)->nullable();
             $table->string('surname')->nullable();
             $table->string('givenname')->nullable();
             $table->string('email')->nullable();

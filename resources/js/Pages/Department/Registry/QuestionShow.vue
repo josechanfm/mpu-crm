@@ -26,7 +26,7 @@
                         <p class="font-bold">{{ fields.degree.question }}</p>
                         <p>{{ optionFind(enquiry.degree, fields.degree.options) }}</p>
                     </li>
-                    <li>
+                    <li v-if="enquiry.admission">
                         <p class="font-bold">{{ fields.admission.question }}</p>
                         <p>{{ optionFind(enquiry.admission, fields.admission.options) }}</p>
                     </li>
