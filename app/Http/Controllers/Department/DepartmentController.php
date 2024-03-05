@@ -22,6 +22,9 @@ class DepartmentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function redirect($roleName){
+        if($roleName=='master'){
+            return redirect()->route('master');
+        }
         $department=Department::where('abbr',$roleName)->first();
         if($department->default_route){
             session(['department'=>$department]);
