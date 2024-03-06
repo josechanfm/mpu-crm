@@ -1,3 +1,3 @@
 <template>
-    <img src="/images/mpu_logo.png"/>
+    <img src="/images/mpu_banner.svg"/>
 </template>

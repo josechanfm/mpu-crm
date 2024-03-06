@@ -25,9 +25,8 @@ const showingNavigationDropdown = ref(false);
             <div class="flex justify-between items-center py-6 px-10 container mx-auto">
                 <div class="shrink-0 flex items-center">
                         <Link :href="route('home')">
-                            <ApplicationMark class="block h-9 w-auto" />
+                            <ApplicationMark class="block h-14 w-auto" />
                         </Link>
-                        澳門理工大學    
                     </div>
 
                 <div>

@@ -28,6 +28,7 @@
       <a-col :span="8">
       </a-col>
     </a-row>
+    
     <div v-if="$page.props.currentUser.roles.includes('master')">
       <a :href="route('master')">Master Dashboard</a>
     </div>
