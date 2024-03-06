@@ -52,15 +52,15 @@
         </div>
         <div class="flex justify-between py-10">
           <div>
-            <a href="route('/')">返回主頁</a>
+            <a onclick="window.close()">關閉此頁</a>
           </div>
           <div>
-            <a href="'/form/' + form.id + '/entry/' + entry.id + '/success?format=pdf'"
-              >打印表格</a
-            >
-          </div>
-          <div>
-            <a href="route('forms.index')">活動列表</a>
+            <a :href="route('manage.form.entry.success',{
+              form:form.id,
+              entry:entry.id,
+              format:'pdf'
+            })"
+              >打印表格</a>
           </div>
         </div>
       </div>

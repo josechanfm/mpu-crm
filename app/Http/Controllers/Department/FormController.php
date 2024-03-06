@@ -40,7 +40,7 @@ class FormController extends Controller
             }
             
         }
-        return Inertia::render('Department/Forms',[
+        return Inertia::render('Department/Form/Forms',[
             'departments'=>Department::all(),
             'forms'=>$forms
             //'forms'=>Department::find(session('department')->id)->forms
@@ -61,7 +61,7 @@ class FormController extends Controller
             'published'=>false
         ]);
         $form->media;
-        return Inertia::render('Department/Form',[
+        return Inertia::render('Department/Form/Form',[
             'departments'=>Department::all(),
             'form'=>$form
         ]);
@@ -109,7 +109,7 @@ class FormController extends Controller
     {
         $this->authorize('view',$form);
         $form->media;
-        return Inertia::render('Department/Form',[
+        return Inertia::render('Department/Form/Form',[
             'departments'=>Department::orderBy('abbr')->get(),
             'form'=>$form
         ]);

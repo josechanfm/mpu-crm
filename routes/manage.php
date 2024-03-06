@@ -15,16 +15,16 @@ use Inertia\Inertia;
 
 Route::group(['middleware' => config('fortify.middleware', ['admin_web'])], function () {
     $limiter = config('fortify.limiters.login');
-    Route::get('/manage/login', function () {
+    Route::get('/staff/login', function () {
         return Inertia::render('Auth/AdminLogin');
     })->middleware(['guest:'.config('fortify.guard')]);
-    Route::post('/manage/login', [AuthenticatedSessionController::class, 'store'])
+    Route::post('/staff/login', [AuthenticatedSessionController::class, 'store'])
         ->middleware(array_filter([
             'guest:'.config('fortify.guard'),
             $limiter ? 'throttle:'.$limiter : null,
         ])
-    )->name('manage.login');
-    Route::post('/manage/logout', [AuthenticatedSessionController::class, 'destroy'])->name('manage.logout');
+    )->name('staff.login');
+    Route::post('/staff/logout', [AuthenticatedSessionController::class, 'destroy'])->name('staff.logout');
 });
 
 Route::middleware([
@@ -69,7 +69,7 @@ Route::middleware([
         Route::resource('form/{form}/fields',App\Http\Controllers\Department\FormFieldController::class)->names('manage.form.fields');
         Route::resource('form/{form}/entries',App\Http\Controllers\Department\EntryController::class)->names('manage.form.entries');
         Route::get('entry/{form}/export', [App\Http\Controllers\Department\EntryController::class, 'export'])->name('manage.entry.export');
-        Route::get('form/{form}/entry/{entry}/success', [App\Http\Controllers\Department\EntryController::class, 'entrySuccess'])->name('manage.form.entry.success');
+        Route::get('form/{form}/entry/{entry}/success', [App\Http\Controllers\Department\EntryController::class, 'success'])->name('manage.form.entry.success');
 
         Route::resource('notification_mailers',App\Http\Controllers\NotificationMailerController::class)->names('manage.notification_mailers');
         Route::get('notification_mailer/send_mail',[App\Http\Controllers\NotificationMailerController::class,'sendMail']);

@@ -14,9 +14,11 @@
             </a-menu-item>
         </template>
         <template v-if="$page.props.currentUser.roles.length>0">
-          <a-menu-item v-for="role in $page.props.currentUser.roles">
-            <inertia-link :href="route('manage.department.redirect',{roleName:role})">{{ role }}</inertia-link>
+          <template v-for="role in $page.props.currentUser.roles">
+          <a-menu-item v-if="role!='admin' && role!='master'">
+              <inertia-link :href="route('manage.department.redirect',{roleName:role})">{{ role }}</inertia-link>
           </a-menu-item>
+        </template>
         </template>
         <a-menu-item>
             <a @click="logout">登出</a>
@@ -47,11 +49,11 @@
             icon:'home-outlined',
             title:'主頁',
             route:'staff',
-        },{
-            key:'official-web',
-            icon:'verified-outlined',
-            title:'MPU',
-            url:'https://www.mpu.edu.mo',
+        // },{
+        //     key:'official-web',
+        //     icon:'verified-outlined',
+        //     title:'MPU',
+        //     url:'https://www.mpu.edu.mo',
         //},{
         //     key:'courses',
         //     icon:'bank-outlined',
@@ -80,7 +82,7 @@
     methods: {
         logout(){
             console.log("logout");
-            Inertia.post(route('manage.logout'));
+            Inertia.post(route('staff.logout'));
         }
     }
 

@@ -1,5 +1,5 @@
 <template>
-    <WebLayout title="Dashboard">
+    <StaffLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 表格例表
@@ -17,16 +17,16 @@
                 <inertia-link :href="route('staff')">Back To Forms</inertia-link>
             </div>
         </div>
-    </WebLayout>
+    </StaffLayout>
 
 </template>
 
 <script>
-import WebLayout from '@/Layouts/WebLayout.vue';
+import StaffLayout from '@/Layouts/StaffLayout.vue';
 
 export default {
     components: {
-        WebLayout,
+        StaffLayout,
     },
     props: ['form','filled'],
     data() {

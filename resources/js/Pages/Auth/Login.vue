@@ -64,7 +64,7 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
             <div class="block mt-4">
-                <a href="manage/login" class="float-right">教職員</a>
+                <a href="staff/login" class="float-right">教職員</a>
                 <label class="flex items-center">
                     <Checkbox v-model:checked="form.remember" name="remember" />
                     <span class="ml-2 text-sm text-gray-600">Remember me</span>

@@ -56,7 +56,7 @@ const showingNavigationDropdown = ref(false);
                             <a href="https://www.mpu.edu.mo/en/services.php" target="_blank"
                                 class="text-gray-700 hover:text-indigo-600 text-md ">Services</a>
                             <inertia-link :href="route('login')">登入</inertia-link>
-                            <inertia-link :href="route('manage.login')">教職員</inertia-link>
+                            <inertia-link :href="route('staff.login')">教職員</inertia-link>
                         </div>
                     </div>
                 </div>
@@ -91,7 +91,7 @@ const showingNavigationDropdown = ref(false);
                                 <inertia-link :href="route('login')">登入</inertia-link>
                             </li>
                             <li>
-                                <inertia-link :href="route('manage.login')">教職員</inertia-link>
+                                <inertia-link :href="route('staff.login')">教職員</inertia-link>
                             </li>
                         </ul>
                     </div>
@@ -138,13 +138,11 @@ const showingNavigationDropdown = ref(false);
                             <li class="py-3 border-b-2"><inertia-link :href="route('enquiry.index')">Enquiry</inertia-link>
                             </li>
                             <li class="py-3 border-b-2"><inertia-link :href="route('forms.index')">Forms</inertia-link></li>
-                            <li class="py-3 border-b-2"><a href="http://www.mpu.edu.mo" target="_blank"
-                                    class="list-none  hover:text-indigo-600">Feature</a>
+                            <li class="py-3 border-b-2"><a href="https://www.mpu.edu.mo" target="_blank"
+                                    class="list-none  hover:text-indigo-600">MPU Web</a>
                             </li>
-                            <li class="py-3 border-b-2"><a href="#" class="list-none  hover:text-indigo-600">Feature</a>
-                            </li>
-                            <li class="py-3 "><a href="#" class="list-none border-b-2 hover:text-indigo-600">Feature</a>
-                            </li>
+                            <li class="py-3 border-b-2"><a href="https://it.mpu.edu.mo/" class="list-none hover:text-indigo-600">IT Department</a></li>
+                            <li class="py-3"><a href="https://teldir.mpu.edu.mo" class="list-none  hover:text-indigo-600">Phone Book (Intranet)</a></li>
                         </div>
                     </div>
                 </div>

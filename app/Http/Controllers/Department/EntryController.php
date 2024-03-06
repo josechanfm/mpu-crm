@@ -12,7 +12,7 @@ use App\Models\Entry;
 use Inertia\Inertia;
 use App\Exports\EntryExport;
 use Maatwebsite\Excel\Facades\Excel;
-
+use PDF;
 
 class EntryController extends Controller
 {
@@ -25,7 +25,7 @@ class EntryController extends Controller
     {
         //$form=Form::with('fields')->find($form->id);
         $entries = $form->tableEntries();
-        return Inertia::render('Department/FormEntries', [
+        return Inertia::render('Department/Form/Entries', [
             'organization' => session('organization'),
             'form' => $form,
             'entries' => $entries,
@@ -130,13 +130,7 @@ class EntryController extends Controller
         return Excel::download(new EntryExport($form), 'member.xlsx');
     }
 
-    public function success(Form $form, Entry $entry)
-    {
-        Session::flash('entry', $entry->id);
-        // dd($form, $entry);
-        return redirect()->route('form.entry.success', ['form' => $form->id, 'entry' => $entry->id]);
-    }
-    public function entrySuccess(Form $form, Entry $entry, Request $request)
+    public function success(Form $form, Entry $entry, Request $request)
     {
         $entryRecords = EntryRecord::where('entry_id', $entry->id)->with('form_field')->get();
         $formFields = FormField::where('form_id', $form->id)->get();
@@ -145,7 +139,7 @@ class EntryController extends Controller
         $table_data = [];
         if (strtoupper($request->format) == 'PDF') {
             if (!session('entryPdf') || session('entryPdf') != $entry->id) {
-                return redirect()->route('/');
+                return redirect()->route('manage.forms.index');
             }
             collect($formFields)->map(function ($field, $key) use ($entryRecords, &$table_data) {
                 $entry_record = collect($entryRecords)->filter(function ($item) use ($field) {
@@ -172,21 +166,24 @@ class EntryController extends Controller
                     $table_data[$field->field_label] = $entry_record?->field_value;
                 };
             });
-            // dd($table_data);
-            $pdf = PDF::loadView('Entry/EntrySuccess', [
-                'table_data' => $table_data,
-            ]);
-            // return view('Entry/EntrySuccess', [
+            //  dd($table_data);
+            // return view('Form/EntrySuccess', [
             //     'table_data' => $table_data,
             // ]);
+            $pdf = PDF::loadView('Form/EntrySuccess', [
+                'table_data' => $table_data,
+            ]);
             $pdf->render();
+            
             return $pdf->stream('receipt.pdf', array('Attachment' => false));
         } else {
             // if (!session('entry') || session('entry') != $entry->id) {
             //     return redirect()->route('manage.form.entries.index',$form->id);
             // }
-            // Session::flash('entryPdf', $entry->id);
-            return Inertia::render('Department/Success', [
+            //Session::flash('entryPdf', $entry->id);
+            session()->flash('entryPdf', $entry->id);
+
+            return Inertia::render('Department/Form/Success', [
                 'form' => $form,
                 'entry' => $entry,
                 'entry_records' => $entryRecords,

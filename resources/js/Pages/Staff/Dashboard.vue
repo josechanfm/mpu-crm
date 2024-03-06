@@ -28,6 +28,19 @@
       <a-col :span="8">
       </a-col>
     </a-row>
+    <div v-if="$page.props.currentUser.roles.includes('master')">
+      <a :href="route('master')">Master Dashboard</a>
+    </div>
+
+    <div v-if="$page.props.currentUser.roles.includes('admin')">
+      <ol>
+        <li v-for="department in departments">
+          <a :href="route(department.default_route)">
+            {{ department.abbr }} - {{ department.name_zh }}
+          </a>
+        </li>
+      </ol>
+    </div>
   </StaffLayout>
 </template>
 
@@ -41,7 +54,7 @@ export default {
     StaffLayout,
 
   },
-  props: ['offers'],
+  props: ['departments','forms'],
   data() {
     return {
 

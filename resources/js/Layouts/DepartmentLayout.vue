@@ -6,7 +6,7 @@
                 <inertia-link :href="route('staff')">MPU </inertia-link>
             </div>
             <div class="m-4 text-center text-lg" v-else>
-                <inertia-link :href="route('staff')">MPU </inertia-link>
+                <inertia-link :href="route('staff')">MPU</inertia-link>
             </div>
             <DepartmentMenu :menuKeys='menuKeys' />
         </a-layout-sider>
@@ -29,9 +29,6 @@
                             <a-menu-divider />
                             <a-menu-item>
                                 <a href="javascript:;">系統設置</a>
-                            </a-menu-item>
-                            <a-menu-item>
-                                <inertia-link :href="route('master')">行政管理後臺</inertia-link>
                             </a-menu-item>
                             <a-menu-item @click="logout">
                                 <a>登出</a>
@@ -125,7 +122,7 @@ onMounted(() => {
 });
 
 const logout = () => {
-    Inertia.post(route('manage.logout'));
+    Inertia.post(route('staff.logout'));
 };
 
 </script>

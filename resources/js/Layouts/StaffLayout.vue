@@ -109,7 +109,10 @@ const logout = () => {
                                 <li class="py-3 border-b-2"><inertia-link
                                         :href="route('staff.forms.index')">Forms</inertia-link></li>
                                 <li class="py-3 border-b-2">
-                                    <a href="https://csc.mpu.edu.mo/teldir" target="_blank" class="list-none  hover:text-indigo-600">Phone Book</a>
+                                    <a href="https://teldir.mpu.edu.mo" target="_blank" class="list-none  hover:text-indigo-600">Phone Book</a>
+                                </li>
+                                <li class="py-3 border-b-2">
+                                    <a href="https://it.mpu.edu.mo" target="_blank" class="list-none  hover:text-indigo-600">IT Department</a>
                                 </li>
                                 <li class="py-3 border-b-2">
                                     <a href="https://www.mpu.edu.mo" target="_blank" class="list-none  hover:text-indigo-600">Official Website</a>

@@ -18,7 +18,6 @@ class DashboardController extends Controller
 
     public function index()
     {
-        // dd('manage logined');
         // session()->forget('department');
         // session(['department'=>Department::whereIn('abbr',auth()->user()->roles->pluck('name'))->first()]);
         // if(empty(session('department'))){
