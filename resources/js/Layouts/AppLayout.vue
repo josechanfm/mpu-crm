@@ -52,9 +52,6 @@ const logout = () => {
                                 <NavLink :href="route('member')" >
                                     Dashboard
                                 </NavLink>
-                                <NavLink :href="route('professionals.index')" >
-                                    Professional
-                                </NavLink>
                                 <NavLink :href="route('membership')" >
                                     Membership
                                 </NavLink>

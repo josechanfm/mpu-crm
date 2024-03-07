@@ -50,7 +50,7 @@ Route::middleware([
         Route::get('/', [\App\Http\Controllers\Member\DashboardController::class,'index'])->name('member');
         Route::get('member/recruitment/notifications',[App\Http\Controllers\Member\RecruitmentController::class,'notifications'])->name('member.recruitment.notifications');
     });
-    Route::resource('professionals',App\Http\Controllers\Member\ProfessionalController::class);
+
     Route::get('membership',[App\Http\Controllers\Member\MembershipController::class,'index'])->name('membership');
 
     Route::prefix('student')->group(function(){

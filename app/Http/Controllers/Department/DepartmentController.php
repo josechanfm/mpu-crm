@@ -88,7 +88,6 @@ class DepartmentController extends Controller
         return Inertia::render('Department/Dashboard',[
             'department'=>$department,
         ]);
-        //return redirect(route('department.certificates.index',[$department->id]));
     }
 
     /**

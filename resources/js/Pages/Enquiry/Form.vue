@@ -1,10 +1,19 @@
 <template>
-    <div class="p-5 bg-gray-200">
-        <a href="/">
+    <div class="flex justify-between p-5 bg-gray-200">
+        <div class="">
+            <a href="/">
             <img src="/images/mpu_banner.png" width="300" />
         </a>
+        </div>
+        <div class="hidden lg:block lg:p-5 lg:text-4xl font-medium text-slate-500">
+            入學諮詢 Admission Enquiries
+        </div>
     </div>
     <div class="py-12">
+        <div class="lg:hidden lg:text-2xl font-medium text-slate-500">
+            入學諮詢 Admission Enquiries
+        </div>
+
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
                 <a-form ref="refEnquiry" name="enquiry" :model="enquiry" :rules="rules" layout="vertical"
@@ -145,7 +154,8 @@
                             <span v-html="fields.agree.question"></span>
                         </a-checkbox>
                     </a-form-item>
-                    <a-form-item>
+                    <br>
+                    <a-form-item v-if="enquiry.agree">
                         <a-button type="primary" html-type="submit">提交 Submit</a-button>
                     </a-form-item>
                 </a-form>

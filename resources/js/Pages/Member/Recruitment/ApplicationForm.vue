@@ -15,12 +15,10 @@
 
 <script>
 import MemberLayout from '@/Layouts/MemberLayout.vue';
-import CertificateCard from '@/Pages/CertificateCard.vue';
 
 export default {
     components: {
         MemberLayout,
-        CertificateCard
     },
     props: ['vacancy'],
     data() {

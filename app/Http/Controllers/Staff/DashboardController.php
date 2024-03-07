@@ -12,7 +12,7 @@ class DashboardController extends Controller
 {
     public function index(){
         return Inertia::render('Staff/Dashboard',[
-            'departments'=>Department::where('default_route','!=','staff')->get(),
+            'departments'=>Department::whereNull('default_route')->get(),
             'forms'=>Form::where('published',true)->where('for_staff',true)->get()
         ]);
     }

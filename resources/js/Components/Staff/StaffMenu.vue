@@ -44,7 +44,7 @@
 
           <template v-if="$page.props.currentUser.roles.length > 0">
             <template v-for="role in $page.props.currentUser.roles">
-              <a-menu-item v-if="role != 'admin' && role != 'master'">
+              <a-menu-item v-if="role==role.toUpperCase()">
                 <inertia-link :href="route('manage.department.redirect', { roleName: role })">{{ role }}</inertia-link>
               </a-menu-item>
             </template>
@@ -61,7 +61,7 @@
           class="sm:hidden bg-white">
           <div class="pt-2 pb-3 space-y-1">
             <ResponsiveNavLink :href="route('staff')">
-              dashboard
+              主頁
             </ResponsiveNavLink>
           </div>
 
@@ -73,7 +73,7 @@
               </ResponsiveNavLink>
               <form @submit.prevent="logout">
                 <DropdownLink as="button">
-                  Log Out
+                  登出
                 </DropdownLink>
               </form>
 

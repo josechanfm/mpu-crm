@@ -22,17 +22,40 @@ class AdminUserController extends Controller
     }
     public function store(Request $request){
         $data=$request->all();
-        $data['password']=Hash::make($data['password']);
+        if(isset($data['password'])){
+            $data['password']=Hash::make($data['password']);
+        }
+        $adminUser=AdminUser::where('email',$data['email'])->get();
+        if($adminUser){
+            return redirect()->back()->withError(['message'=>'Can not create with duplicate email!']);
+        }
         $adminUser=AdminUser::create($data);
-        $adminUser->departments()->sync(Department::whereIn('abbr',$request->belong_departments)->get());
-        $adminUser->roles()->sync(Role::whereIn('name',$request->manage_departments)->get());
+        if(isset($data['belongs_departments'])){
+            $adminUser->departments()->sync(Department::whereIn('abbr',$data['belong_departments'])->get());
+        }
+        if(isset($data['manage_departments'])){
+            $adminUser->roles()->sync(Role::whereIn('name',$data['manage_departments'])->get());
+        }
+        
         return redirect()->back();
     }
 
     public function update(AdminUser $adminUser,Request $request){
-        $adminUser->update($request->all());
-        $adminUser->departments()->sync(Department::whereIn('abbr',$request->belong_departments)->get());
-        $adminUser->roles()->sync(Role::whereIn('name',$request->manage_departments)->get());
+        $data=$request->all();
+        if(isset($data['password'])){
+            $data['password']=Hash::make($data['password']);
+        }
+        $adminUser=AdminUser::where('email',$data['email'])->get();
+        if($adminUser){
+            return redirect()->back()->withError(['message'=>'Can not update with duplicate email!']);
+        }
+        $adminUser->update($data);
+        if(isset($data['belongs_departments'])){
+            $adminUser->departments()->sync(Department::whereIn('abbr',$data['belong_departments'])->get());
+        }
+        if(isset($data['manage_departments'])){
+            $adminUser->roles()->sync(Role::whereIn('name',$data['manage_departments'])->get());
+        }
         return redirect()->back();
     }
 }
