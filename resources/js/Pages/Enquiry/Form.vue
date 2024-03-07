@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="py-12">
-        <div class="lg:hidden lg:text-2xl font-medium text-slate-500">
+        <div class="lg:hidden text-2xl text-center font-medium text-slate-500">
             入學諮詢 Admission Enquiries
         </div>
 
