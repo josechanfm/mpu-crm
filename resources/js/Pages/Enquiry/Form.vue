@@ -194,8 +194,8 @@ export default {
             },
             radioStyle: {
                 display: 'flex',
-                height: '30px',
-                lineHeight: '30px',
+                minHeight: '25px',
+                lineHeight: '20px',
                 marginLeft: '0'
             },
             rules: {
