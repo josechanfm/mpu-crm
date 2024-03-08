@@ -39,7 +39,7 @@
                             <a-popover title="證件類別 ID Type">
                             <template #content>
                                 <p><a href="https://www.mpu.edu.mo/admission_local/zh/index.php" target="_blank">澳門居民身份證
-                                        Macao ID</a></p>
+                                        MACAU ID</a></p>
                                 <p><a href="https://www.mpu.edu.mo/admission_mainland/zh/index.php"
                                         target="_blank">中華人民共和國居民身份證 CHINA ID</a></p>
                                 <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">香港居民身份證
@@ -154,8 +154,13 @@
                             <span v-html="fields.agree.question"></span>
                         </a-checkbox>
                     </a-form-item>
+                    <a-form-item name="privacy" v-if="enquiry.subjects">
+                        <a-checkbox v-model:checked="enquiry.privacy">
+                            <span v-html="fields.privacy.question"></span>
+                        </a-checkbox>
+                    </a-form-item>
                     <br>
-                    <a-form-item v-if="enquiry.agree">
+                    <a-form-item v-if="enquiry.agree && enquiry.privacy">
                         <a-button type="primary" html-type="submit">提交 Submit</a-button>
                     </a-form-item>
                 </a-form>
@@ -191,6 +196,7 @@ export default {
                 phone: '63860836',
                 subjects: ['ADM'],
                 agree: null,
+                privacy: null,
             },
             radioStyle: {
                 display: 'flex',
@@ -252,6 +258,14 @@ export default {
                     message: '必填欄位 Required field.'
                 }],
                 agree: [{
+                    required: true,
+                    validator: ((_rule, value)=>{
+                        if(value) return Promise.resolve();
+                        return Promise.reject();
+                    }),
+                    message: '您需要同意該條款You need to agree to the term.'
+                }],
+                privacy: [{
                     required: true,
                     validator: ((_rule, value)=>{
                         if(value) return Promise.resolve();
