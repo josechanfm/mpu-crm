@@ -1,24 +1,59 @@
 <template>
-    <div class="flex justify-between p-5 bg-gray-200">
-        <div class="">
+    <div class="flex justify-between bg-gray-200">
+        <div class="p-5">
             <a href="/">
             <img src="/images/mpu_banner.png" width="300" />
         </a>
         </div>
         <div class="hidden lg:block lg:p-5 lg:text-4xl font-medium text-slate-500">
-            入學諮詢 Admission Enquiries
+            學位課程入學諮詢 <br>Degree Program Admission Enquiries
         </div>
     </div>
     <div class="py-12">
         <div class="lg:hidden text-2xl text-center font-medium text-slate-500">
-            入學諮詢 Admission Enquiries
+            學位課程入學諮詢 <br>Degree Program Admission Enquiries
         </div>
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
                 <a-form ref="refEnquiry" name="enquiry" :model="enquiry" :rules="rules" layout="vertical"
                     @finish="onFinish">
-                    <a-form-item name="origin" :label="fields.origin.question">
+                    
+                    
+                    <a-typography-title :level="3">與 “理” 聯繫 Connect with MPU</a-typography-title>
+                    <p>
+                        歡迎與澳理大聯繫，諮詢學位課程入學事宜，請填寫以下資料，以便澳理大招生專員為你提供適切的入學相關資訊。<br>
+                        Welcome to “Connect with MPU” for Degree Programmes Admission Enquiries. Kindly fill in the information below for further details.
+                    </p>
+                    <p>
+                        感謝對澳門理工大學的支持。<br>
+                        Thank you once again for your interest in MPU.
+                    </p>
+                    <p class="font-bold underline">資料收集聲明 | Data Collection Statement:</p>
+                    <ol class="ml-8">
+                        <li class="-indent-5">
+                            &#x27A3;<span class="ml-2">澳門理工大學應申請人之要求提供相關學術及行政服務；</span><br>
+                            Macao Polytechnic University (hereafter referred to as “the University”) provides relevant academic and administrative services at the request of applicants.
+                        </li>
+                        <li class="-indent-5">
+                            &#x27A3;<span class="ml-2">澳門理工大學所收集的資料僅用作是次服務之用途。有關資料亦可在澳門理工大學內部及其他具法律規定或獲申請人授權的實體之間傳遞，以達至完成相關程序。網絡傳遞過程未能保證訊息絕對保密，且存在一定程度之風險。</span><br>
+                            The data collected by the University will be used solely for the stated purposes.  They may be transferred within the University or the entities that are in accordance with legal provision or with your prior consent.  It is necessary to note that internet transmission bears risk and may not guarantee absolute confidentiality.
+                        </li>
+                        <li class="-indent-5">
+                            &#x27A3;<span class="ml-2">為提供所要求的服務，有關申請須提供申請人身份識別及使用是次服務相關的資料，未能提供相關資料的申請將不予受理。</span><br>
+                            To enable the provision of the requested services, it is mandatory for the applicants to contain personal-identification and information related to the use of this service.  Applications absent of the stated information will not be processed.
+                        </li>
+                    </ol>
+
+
+                    <a-form-item name="privacy">
+                        <a-checkbox v-model:checked="enquiry.privacy">
+                            <span v-html="fields.privacy.question"></span>
+                        </a-checkbox>
+                    </a-form-item>
+
+
+                    <a-form-item name="origin" :label="fields.origin.question" v-if="enquiry.privacy">
                         <a-radio-group v-model:value="enquiry.origin">
                             <a-radio v-for="option in fields.origin.options" :value="option.value" :style="radioStyle">{{
                                 option.label }}</a-radio>
@@ -39,7 +74,7 @@
                             <a-popover title="證件類別 ID Type">
                             <template #content>
                                 <p><a href="https://www.mpu.edu.mo/admission_local/zh/index.php" target="_blank">澳門居民身份證
-                                        MACAU ID</a></p>
+                                        MACAO ID</a></p>
                                 <p><a href="https://www.mpu.edu.mo/admission_mainland/zh/index.php"
                                         target="_blank">中華人民共和國居民身份證 CHINA ID</a></p>
                                 <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">香港居民身份證
@@ -152,11 +187,6 @@
                     <a-form-item name="agree" v-if="enquiry.subjects">
                         <a-checkbox v-model:checked="enquiry.agree">
                             <span v-html="fields.agree.question"></span>
-                        </a-checkbox>
-                    </a-form-item>
-                    <a-form-item name="privacy" v-if="enquiry.subjects">
-                        <a-checkbox v-model:checked="enquiry.privacy">
-                            <span v-html="fields.privacy.question"></span>
                         </a-checkbox>
                     </a-form-item>
                     <br>
