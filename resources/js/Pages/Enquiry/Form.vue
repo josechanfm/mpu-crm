@@ -18,9 +18,7 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
                 <a-form ref="refEnquiry" name="enquiry" :model="enquiry" :rules="rules" layout="vertical"
                     @finish="onFinish">
-                    
-                    
-                    <a-typography-title :level="3">與 “理” 聯繫 Connect with MPU</a-typography-title>
+                    <a-typography-title :level="3" class="pb-0">與 “理” 聯繫 Connect with MPU</a-typography-title>
                     <p>
                         歡迎與澳理大聯繫，諮詢學位課程入學事宜，請填寫以下資料，以便澳理大招生專員為你提供適切的入學相關資訊。<br>
                         Welcome to “Connect with MPU” for Degree Programmes Admission Enquiries. Kindly fill in the information below for further details.
@@ -29,10 +27,10 @@
                         感謝對澳門理工大學的支持。<br>
                         Thank you once again for your interest in MPU.
                     </p>
-                    <p class="font-bold underline">資料收集聲明 | Data Collection Statement:</p>
+                    <p class="font-bold underline mb-0">資料收集聲明 | Data Collection Statement:</p>
                     <ol class="ml-8">
                         <li class="-indent-5">
-                            &#x27A3;<span class="ml-2">澳門理工大學應申請人之要求提供相關學術及行政服務；</span><br>
+                            &#x27A3;<span class="ml-2">澳門理工大學應申請人之要求提供相關學術及行政服務。</span><br>
                             Macao Polytechnic University (hereafter referred to as “the University”) provides relevant academic and administrative services at the request of applicants.
                         </li>
                         <li class="-indent-5">
