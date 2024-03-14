@@ -76,7 +76,7 @@
                     <a-divider/>
                     <ol>
                         <li v-for="file in question.media">
-                            <a :href="file.original_url" target="_blank">
+                            <a :href="'/media/enquiry/'+file.id+'/'+file.file_name" target="_blank">
                                 <template v-if="file.mime_type.includes('image/')">
                                     <img :src="'/media/enquiry/'+file.id+'/'+file.file_name" width="100"/>
                                 </template>
@@ -103,7 +103,7 @@
                                 </span>
                                 <ol>
                                     <li v-for="file in response.media">
-                                        <a :href="file.original_url" target="_blank">
+                                        <a :href="'/media/enquiry/'+file.id+'/'+file.file_name" target="_blank">
                                             <template v-if="file.mime_type.includes('image/')">
                                                 <img :src="'/media/enquiry/'+file.id+'/'+file.file_name" width="100"/>
                                             </template>
