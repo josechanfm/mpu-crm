@@ -14,7 +14,14 @@
                             <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
                         </template>
                         <template v-else-if="column.dataIndex=='thumbnail'">
-                            <img :src="'/media/enquiry/'+record.id+'/'+record.file_name" width="50px"/>
+                            <a :href="'/media/enquiry/'+record.id+'/'+record.file_name" target="_blank">
+                                <template v-if="file.mime_type.includes('image/')">
+                                    <img :src="'/media/enquiry/'+record.id+'/'+record.file_name" width="50px"/>
+                                </template>
+                                <template v-else>
+                                    {{ record.file_name }}
+                                </template>
+                            </a>
                         </template>
                         <template v-else>
                             {{record[column.dataIndex]}}
