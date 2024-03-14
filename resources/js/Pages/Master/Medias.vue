@@ -15,7 +15,7 @@
                         </template>
                         <template v-else-if="column.dataIndex=='thumbnail'">
                             <a :href="'/media/enquiry/'+record.id+'/'+record.file_name" target="_blank">
-                                <template v-if="file.mime_type.includes('image/')">
+                                <template v-if="record.mime_type.includes('image/')">
                                     <img :src="'/media/enquiry/'+record.id+'/'+record.file_name" width="50px"/>
                                 </template>
                                 <template v-else>
