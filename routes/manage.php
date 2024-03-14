@@ -51,6 +51,7 @@ Route::middleware([
         Route::resource('/admin_users',App\Http\Controllers\Master\AdminUserController::class)->names('master.adminUsers');
         Route::resource('/departments',App\Http\Controllers\Master\DepartmentController::class)->names('master.departments');
         Route::resource('/articles',App\Http\Controllers\Master\ArticleController::class)->names('master.articles');
+        Route::resource('/medias',App\Http\Controllers\Master\MediaController::class)->names('master.medias');
     });
 });
 
