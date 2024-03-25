@@ -99,7 +99,7 @@
                                 <span v-if="response.by_email">
                                     <p>Email: {{ response.email_address }}</p>
                                     <p>Subject: {{ response.email_subject }}</p>
-                                    <p>Content: {{ response.email_content }}</p>
+                                    <div v-html="response.email_content"/>
                                 </span>
                                 <ol>
                                     <li v-for="file in response.media">

@@ -162,6 +162,10 @@ export default {
                     dataIndex: 'admission',
                     sorter: (a, b) => a.enquiry.admission.localeCompare(b.enquiry.admission)
                 },{
+                    title: this.fields.degree.short,
+                    dataIndex: 'degree',
+                    sorter: (a, b) => a.enquiry.degree.localeCompare(b.enquiry.degree)
+                },{
                     title: '姓, 名',
                     dataIndex: 'fullname',
                     sorter: (a, b) => a.enquiry.surname.localeCompare(b.enquiry.surename)

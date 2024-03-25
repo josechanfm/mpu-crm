@@ -20,6 +20,11 @@
                         <template v-else-if="column.dataIndex == 'full_name'">
                             {{ record.surname }}, {{ record.givenname }}
                         </template>
+                        <template v-else-if="column.dataIndex == 'admission'">
+                            <template v-if="record.admission">
+                                {{ optionFind(fields.admission.options, record.admission) }}
+                            </template>
+                        </template>
                         <template v-else-if="column.dataIndex == 'admin_user'">
                             <span v-if="record.last_response && record.last_response.admin_user">
                                 {{record.last_response.admin_user.username}}

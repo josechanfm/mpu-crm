@@ -6,50 +6,73 @@
         </a>
         </div>
         <div class="hidden lg:block lg:p-5 lg:text-4xl font-medium text-slate-500">
-            學位課程入學諮詢 <br>Degree Program Admission Enquiries
+            學位課程入學諮詢 <br>Degree Programme Admission Enquiries
         </div>
     </div>
     <div class="py-12">
         <div class="lg:hidden text-2xl text-center font-medium text-slate-500">
             學位課程入學諮詢 <br>Degree Program Admission Enquiries
         </div>
-
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
                 <a-form ref="refEnquiry" name="enquiry" :model="enquiry" :rules="rules" layout="vertical"
                     @finish="onFinish">
-                    <a-typography-title :level="3" class="pb-0">與 “理” 聯繫 Connect with MPU</a-typography-title>
-                    <p>
-                        歡迎與澳理大聯繫，諮詢學位課程入學事宜，請填寫以下資料，以便澳理大招生專員為你提供適切的入學相關資訊。<br>
-                        Welcome to “Connect with MPU” for Degree Programmes Admission Enquiries. Kindly fill in the information below for further details.
-                    </p>
-                    <p>
-                        感謝對澳門理工大學的支持。<br>
-                        Thank you once again for your interest in MPU.
-                    </p>
-                    <p class="font-bold underline mb-0">資料收集聲明 | Data Collection Statement:</p>
-                    <ol class="ml-8">
-                        <li class="-indent-5">
-                            &#x27A3;<span class="ml-2">澳門理工大學應申請人之要求提供相關學術及行政服務。</span><br>
-                            Macao Polytechnic University (hereafter referred to as “the University”) provides relevant academic and administrative services at the request of applicants.
-                        </li>
-                        <li class="-indent-5">
-                            &#x27A3;<span class="ml-2">澳門理工大學所收集的資料僅用作是次服務之用途。有關資料亦可在澳門理工大學內部及其他具法律規定或獲申請人授權的實體之間傳遞，以達至完成相關程序。網絡傳遞過程未能保證訊息絕對保密，且存在一定程度之風險。</span><br>
-                            The data collected by the University will be used solely for the stated purposes.  They may be transferred within the University or the entities that are in accordance with legal provision or with your prior consent.  It is necessary to note that internet transmission bears risk and may not guarantee absolute confidentiality.
-                        </li>
-                        <li class="-indent-5">
-                            &#x27A3;<span class="ml-2">為提供所要求的服務，有關申請須提供申請人身份識別及使用是次服務相關的資料，未能提供相關資料的申請將不予受理。</span><br>
-                            To enable the provision of the requested services, it is mandatory for the applicants to contain personal-identification and information related to the use of this service.  Applications absent of the stated information will not be processed.
-                        </li>
-                    </ol>
+                    <a v-if="lang=='zh'" @click="onClickLanguage('pt')" class="float-right">Portuguese葡文</a>
+                    <a v-else @click="onClickLanguage('zh')" class="float-right">Chinese中文</a>
+                    <template v-if="lang=='pt'">
+                        <a-typography-title :level="3" class="pb-0">與 “理” 聯繫 Connect with MPU...</a-typography-title>
+                        <p>Seja bem-vindo a contactar a UPM para obter informações sobre a admissão dos cursos conferentes de grau académico. Preencha, por favor, as seguintes informações para que o pessoal da UPM lhe forneça informações adequadas sobre a admissão.</p>
+                        <p>Agradecemos o seu apoio dado à UPM. </p>
+                        <p class="font-bold underline mb-0">資料收集聲明 | Data Collection Statement:</p>
+                        <ol class="ml-8">
+                            <li class="-indent-5">
+                                &#x27A3;<span class="ml-2">Para os serviços académicos e administrativos prestados pela Universidade Politécnica de Macau, o requerente deve apresentar o respectivo pedido à unidade responsável.</span>
+                            </li>
+                            <li class="-indent-5">
+                                &#x27A3;<span class="ml-2">Os dados pessoais recolhidos pela Universidade Politécnica de Macau são utilizados exclusivamente para os efeitos referidos, sendo possível a sua divulgação às unidades internas da Universidade Politécnica de Macau e a outras entidades por exigência legal ou com o consentimento do requerente, a fim de concluir os processos necessários. Não é possível a garantia de total privacidade relativa às comunicações de dados em rede, havendo um certo grau de riscos.</span>
+                            </li>
+                            <li class="-indent-5">
+                                &#x27A3;<span class="ml-2">Para a prestação dos serviços solicitados, é necessário fornecer as informações relativas à identificação do requerente e à utilização dos serviços em causa, não sendo aceites pedidos que não forneçam informações relevantes.</span>
+                            </li>
+                        </ol>
+                        <a-form-item name="privacy">
+                            <a-checkbox v-model:checked="enquiry.privacy">
+                                Li e concordo com o conteúdo acima referido. 
+                            </a-checkbox>
+                        </a-form-item>
 
-
-                    <a-form-item name="privacy">
-                        <a-checkbox v-model:checked="enquiry.privacy">
-                            <span v-html="fields.privacy.question"></span>
-                        </a-checkbox>
-                    </a-form-item>
-
+                    </template>
+                    <template v-if="lang=='zh'">
+                        <a-typography-title :level="3" class="pb-0">與 “理” 聯繫 Connect with MPU...</a-typography-title>
+                        <p>
+                            歡迎與澳理大聯繫，諮詢學位課程入學事宜，請填寫以下資料，以便澳理大招生專員為你提供適切的入學相關資訊。<br>
+                            Welcome to “Connect with MPU” for Degree Programmes Admission Enquiries. Kindly fill in the information below for further details.
+                        </p>
+                        <p>
+                            感謝對澳門理工大學的支持。<br>
+                            Thank you once again for your interest in MPU.
+                        </p>
+                        <p class="font-bold underline mb-0">資料收集聲明 | Data Collection Statement:</p>
+                        <ol class="ml-8">
+                            <li class="-indent-5">
+                                &#x27A3;<span class="ml-2">澳門理工大學應申請人之要求提供相關學術及行政服務。</span><br>
+                                Macao Polytechnic University (hereafter referred to as “the University”) provides relevant academic and administrative services at the request of applicants.
+                            </li>
+                            <li class="-indent-5">
+                                &#x27A3;<span class="ml-2">澳門理工大學所收集的資料僅用作是次服務之用途。有關資料亦可在澳門理工大學內部及其他具法律規定或獲申請人授權的實體之間傳遞，以達至完成相關程序。網絡傳遞過程未能保證訊息絕對保密，且存在一定程度之風險。</span><br>
+                                The data collected by the University will be used solely for the stated purposes.  They may be transferred within the University or the entities that are in accordance with legal provision or with your prior consent.  It is necessary to note that internet transmission bears risk and may not guarantee absolute confidentiality.
+                            </li>
+                            <li class="-indent-5">
+                                &#x27A3;<span class="ml-2">為提供所要求的服務，有關申請須提供申請人身份識別及使用是次服務相關的資料，未能提供相關資料的申請將不予受理。</span><br>
+                                To enable the provision of the requested services, it is mandatory for the applicants to contain personal-identification and information related to the use of this service.  Applications absent of the stated information will not be processed.
+                            </li>
+                        </ol>
+                        <a-form-item name="privacy">
+                            <a-checkbox v-model:checked="enquiry.privacy">
+                                <span v-html="fields.privacy.question"></span>
+                            </a-checkbox>
+                        </a-form-item>
+                    </template>
 
                     <a-form-item name="origin" :label="fields.origin.question" v-if="enquiry.privacy">
                         <a-radio-group v-model:value="enquiry.origin">
@@ -208,7 +231,8 @@ export default {
     props: ['fields', 'faqs', 'phone_country_codes'],
     data() {
         return {
-            lang: this.$page.props.lang,
+            //lang: this.$page.props.lang,
+            lang: 'zh',
             enquiry: {
                 lang: 'zh',
                 origin: 'MO',
@@ -324,6 +348,10 @@ export default {
         },
         onChangeDegree(){
             delete this.enquiry.admission
+        },
+        onClickLanguage(lang){
+            this.lang=lang;
+            console.log(lang)
         }
     },
 }
