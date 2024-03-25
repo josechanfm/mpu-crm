@@ -17,11 +17,11 @@
                         <template v-else-if="column.dataIndex=='admission' && record.enquiry.admission">
                             {{ mapOptionsItem(fields.admission.options,record['enquiry']['admission']) }}
                         </template>
+                        <template v-else-if="column.dataIndex=='degree'">
+                            {{ mapOptionsItem(fields.degree.options,record['enquiry']['degree']) }}
+                        </template>
                         <template v-else-if="column.dataIndex=='fullname'">
                             {{ record['enquiry']['surname']}} {{record['enquiry']['givenname'] }}
-                        </template>
-                        <template v-else-if="column.dataIndex=='surname'">
-                            {{ record['enquiry']['surname'] }}
                         </template>
                         <template v-else-if="column.dataIndex=='email'">
                             {{ record['enquiry']['email'] }} 
