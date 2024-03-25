@@ -17,7 +17,8 @@ class Kernel extends ConsoleKernel
     {
         //$schedule->command('gpdp:reminder')->everyMinute();
         //$schedule->command('gpdp:reminder')->dailyAt('09:26')->timezone(env('APP_TIMEZONE','Asia/Macau'));
-        $schedule->command('gpdp:reminder')->dailyAt('08:00');
+        //php artisan schedule:run
+        $schedule->command('gpdp:reminder')->dailyAt('08:00')->timezone(env('APP_TIMEZONE','Asia/Macau'));
     }
 
     /**
