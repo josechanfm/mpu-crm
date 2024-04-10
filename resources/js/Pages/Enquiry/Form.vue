@@ -15,10 +15,14 @@
         </div>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                <a-form ref="refEnquiry" name="enquiry" :model="enquiry" :rules="rules" layout="vertical"
-                    @finish="onFinish">
+                <p>
                     <a v-if="lang=='zh'" @click="onClickLanguage('pt')" class="float-right">Portuguese葡文</a>
                     <a v-else @click="onClickLanguage('zh')" class="float-right">Chinese中文</a>
+                </p>
+                <a-form ref="refEnquiry" name="enquiry" :model="enquiry" :rules="rules" layout="vertical"
+                    @finish="onFinish">
+
+
                     <template v-if="lang=='pt'">
                         <a-typography-title :level="3" class="pb-0">與 “理” 聯繫 Connect with MPU...</a-typography-title>
                         <p>Seja bem-vindo a contactar a UPM para obter informações sobre a admissão dos cursos conferentes de grau académico. Preencha, por favor, as seguintes informações para que o pessoal da UPM lhe forneça informações adequadas sobre a admissão.</p>
