@@ -11,7 +11,7 @@
     </div>
     <div class="py-12">
         <div class="lg:hidden text-2xl text-center font-medium text-slate-500">
-            學位課程入學諮詢 <br>Degree Program Admission Enquiries
+            學位課程入學諮詢 <br>Degree Programme Admission Enquiries
         </div>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
