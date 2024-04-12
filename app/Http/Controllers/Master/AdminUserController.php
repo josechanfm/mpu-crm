@@ -42,15 +42,18 @@ class AdminUserController extends Controller
 
     public function update(AdminUser $adminUser,Request $request){
         $data=$request->all();
+        //dd($data);
         if(isset($data['password'])){
             $data['password']=Hash::make($data['password']);
         }
-        $adminUser=AdminUser::where('email',$data['email'])->get();
-        if($adminUser){
-            return redirect()->back()->withError(['message'=>'Can not update with duplicate email!']);
+        $adminUser=AdminUser::where('email',$data['email'])->first();
+        
+        if(!$adminUser){
+            return redirect()->back()->withErrors(['message'=>'Can not update with duplicate email!']);
         }
         $adminUser->update($data);
-        if(isset($data['belongs_departments'])){
+
+        if(isset($data['belong_departments'])){
             $adminUser->departments()->sync(Department::whereIn('abbr',$data['belong_departments'])->get());
         }
         if(isset($data['manage_departments'])){

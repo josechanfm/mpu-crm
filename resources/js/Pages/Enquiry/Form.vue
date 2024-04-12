@@ -22,7 +22,6 @@
                 <a-form ref="refEnquiry" name="enquiry" :model="enquiry" :rules="rules" layout="vertical"
                     @finish="onFinish">
 
-
                     <template v-if="lang=='pt'">
                         <a-typography-title :level="3" class="pb-0">與 “理” 聯繫 Connect with MPU...</a-typography-title>
                         <p>Seja bem-vindo a contactar a UPM para obter informações sobre a admissão dos cursos conferentes de grau académico. Preencha, por favor, as seguintes informações para que o pessoal da UPM lhe forneça informações adequadas sobre a admissão.</p>
