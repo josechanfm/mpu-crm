@@ -74,6 +74,7 @@ Route::middleware([
 
         Route::resource('notification_mailers',App\Http\Controllers\NotificationMailerController::class)->names('manage.notification_mailers');
         Route::get('notification_mailer/send_mail',[App\Http\Controllers\NotificationMailerController::class,'sendMail']);
+
         Route::resource('mailers',App\Http\Controllers\MailerController::class)->names('manage.mailers');
 
         // Route::get('/personnel',[App\Http\Controllers\Department\Personnel\DashboardController::class,'index'])->name('personnel.dashboard');
@@ -113,7 +114,8 @@ Route::middleware([
         Route::resource('/gpdps',App\Http\Controllers\Department\Personnel\GpdpController::class)->names('personnel.gpdps');
         Route::post('/gpdp/{gpdp}/sendEmailReminder',[App\Http\Controllers\Department\Personnel\GpdpController::class,'sendEmailReminder'])->name('personnel.gpdp.sendEmailReminder');
         Route::resource('/recruitment/vacancies',App\Http\Controllers\Department\Personnel\Recruitment\VacancyController::class)->names('personnel.recruitment.vacancies');
-        Route::resource('/recruitment/vacancy/{vacancy}/notifications',App\Http\Controllers\Department\Personnel\Recruitment\NotificationController::class)->names('personnel.recruitment.vacancy.notifications');
+        Route::resource('/recruitment/vacancy/{vacancy}/notices',App\Http\Controllers\Department\Personnel\Recruitment\NoticeController::class)->names('personnel.recruitment.vacancy.notices');
+        Route::get('/recruitment/notice/delete_media/{media}',[App\Http\Controllers\Department\Personnel\Recruitment\NoticeController::class,'deleteMedia'])->name('personnel.recruitment.notice.deleteMedia');
     });
 });
 

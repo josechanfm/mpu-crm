@@ -75,6 +75,21 @@ return [
                 ]
             ]
         ],
+        'recruitment' => [
+            'driver' => 'local',
+            'root'   => public_path('media/recruitment'),
+            'url'    => env('APP_URL').'/media/recruitment',
+            'permissions' =>[
+                'file'=>[
+                    'public'=> 0774,
+                    'private'=>0600,
+                ],
+                'dir'=>[
+                    'public'=>0775,
+                    'private'=>0775,
+                ]
+            ]
+        ],
 
     ],
 

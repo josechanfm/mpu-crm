@@ -37,12 +37,19 @@ Route::prefix('enquiry')->group(function(){
     Route::post('ticket',[\App\Http\Controllers\EnquiryTicketController::class,'store'])->name('enquiry.ticket.store');
 });
 Route::resource('forms',\App\Http\Controllers\FormController::class)->names('forms');
+Route::prefix('/recruitment')->group(function(){
+    Route::get('/',[\App\Http\Controllers\RecruitmentController::class,'index'])->name('recruitment');
+    Route::post('apply',[\App\Http\Controllers\RecruitmentController::class,'apply'])->name('recruitment.apply');
+});
+
+
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+
     Route::get('/member/dashboard', function () {
         return Inertia::render('Member/Dashboard');
     })->name('dashboard');

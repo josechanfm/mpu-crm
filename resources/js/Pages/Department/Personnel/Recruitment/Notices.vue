@@ -4,13 +4,13 @@
             <a-typography-title :level="3">{{ vacancy.code }} - {{ vacancy.title_zh }}</a-typography-title>
             <div class="flex-auto pb-3 text-right">
                 <inertia-link :href="route('personnel.recruitment.vacancies.index')" class="ant-btn mr-5">返回職位招聘</inertia-link>
-                <inertia-link :href="route('personnel.recruitment.vacancy.notifications.create',{vacancy:vacancy.id})" class="ant-btn ant-btn-primary">新關通告</inertia-link>
+                <inertia-link :href="route('personnel.recruitment.vacancy.notices.create',{vacancy:vacancy.id})" class="ant-btn ant-btn-primary">新關通告</inertia-link>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                <a-table :dataSource="notifications.data" :columns="columns" :pagination="pagination" @change="onPaginationChange" :expand-column-width="200">
+                <a-table :dataSource="notices.data" :columns="columns" :pagination="pagination" @change="onPaginationChange" :expand-column-width="200">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                        <inertia-link :href="route('personnel.recruitment.vacancy.notifications.edit',{vacancy:record.rec_vacancy_id,notification:record.id})" class="ant-btn">修改</inertia-link>
+                        <inertia-link :href="route('personnel.recruitment.vacancy.notices.edit',{vacancy:record.rec_vacancy_id,notice:record.id})" class="ant-btn">修改</inertia-link>
                             <a-popconfirm title="是否確定刪除?" ok-text="Yes" cancel-text="No"
                                 @confirm="deleteConfirmed(record)" :disabled="record.entries_count > 0">
                                 <a-button :disabled="record.entries_count > 0">刪除</a-button>
@@ -60,7 +60,7 @@ export default {
         message,
         dayjs
     },
-    props: ["vacancy","notifications"],
+    props: ["vacancy","notices"],
     data() {
         return {
             breadcrumb:[
@@ -83,9 +83,9 @@ export default {
                 mode: "",
             },
             pagination: {
-                total: this.notifications.total,
-                current: this.notifications.current_page,
-                pageSize: this.notifications.per_page,
+                total: this.notices.total,
+                current: this.notices.current_page,
+                pageSize: this.notices.per_page,
                 defaultPageSize:40,
                 showSizeChanger:true,
                 pageSizeOptions:['10','20','30','40','50']
@@ -150,7 +150,7 @@ export default {
         deleteConfirmed(record) {
             console.log("delete");
             console.log(record);
-            this.$inertia.delete(route("personnel.recruitment.vacancy.notifications.destroy", record.id ), {
+            this.$inertia.delete(route("personnel.recruitment.vacancy.notices.destroy", record.id ), {
                 onSuccess: (page) => {
                     console.log(page);
                 },
@@ -161,7 +161,7 @@ export default {
         },
         onPaginationChange(page, filters, sorter) {
             this.$inertia.get(
-                route("personnel.recruitment.vacancy.notifications.index"),
+                route("personnel.recruitment.vacancy.notices.index"),
                 {
                     page: page.current,
                     per_page: page.pageSize,

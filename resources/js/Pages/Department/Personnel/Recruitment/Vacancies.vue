@@ -8,7 +8,7 @@
                 <a-table :dataSource="vacancies.data" :columns="columns" :pagination="pagination" @change="onPaginationChange" :expand-column-width="200">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <inertia-link :href="route('personnel.recruitment.vacancy.notifications.index',{vacancy:record.id})" class="ant-btn">招聘通告</inertia-link>
+                            <inertia-link :href="route('personnel.recruitment.vacancy.notices.index',{vacancy:record.id})" class="ant-btn">招聘通告</inertia-link>
                             <inertia-link :href="route('personnel.recruitment.vacancies.edit',record.id)" class="ant-btn">修改</inertia-link>
                             <a-popconfirm title="是否確定刪除?" ok-text="Yes" cancel-text="No"
                                 @confirm="deleteConfirmed(record)" :disabled="record.entries_count > 0">

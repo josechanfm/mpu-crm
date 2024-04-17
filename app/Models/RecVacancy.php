@@ -15,7 +15,7 @@ class RecVacancy extends Model
     public function applications(){
         return $this->hasMany(RecApplication::class);
     }
-    public function notifications(){
-        return $this->hasMany(RecNotification::class);
+    public function notices(){
+        return $this->hasMany(RecNotice::class);
     }
 }

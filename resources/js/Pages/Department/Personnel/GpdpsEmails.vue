@@ -123,7 +123,7 @@ export default {
                     title: "收件人",
                     dataIndex: "receiver",
                 }, {
-                    title: "人動發件人",
+                    title: "手動發件人",
                     dataIndex: "admin_user_id",
                 }, {
                     title: "發出日期",

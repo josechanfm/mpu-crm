@@ -14,6 +14,7 @@ class EnquiryResponse extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
+    
     protected $fillable=['enquiry_question_id','title','remark','by_email','email_address','email_subject','email_content','has_question','token','is_used','admin_id'];
     protected $appends=['admin_user'];
     protected $casts=['is_used'=>'boolean'];
