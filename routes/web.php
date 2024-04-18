@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +26,11 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::get('/language/{language}', function ($language) {
+    Session::put('applocale', $language);
+    return Redirect::back();
+})->name('language');
+
 
 
 Route::prefix('enquiry')->group(function(){
@@ -39,7 +46,7 @@ Route::prefix('enquiry')->group(function(){
 Route::resource('forms',\App\Http\Controllers\FormController::class)->names('forms');
 Route::prefix('/recruitment')->group(function(){
     Route::get('/',[\App\Http\Controllers\RecruitmentController::class,'index'])->name('recruitment');
-    Route::post('apply',[\App\Http\Controllers\RecruitmentController::class,'apply'])->name('recruitment.apply');
+    Route::get('apply',[\App\Http\Controllers\RecruitmentController::class,'apply'])->name('recruitment.apply');
 });
 
 

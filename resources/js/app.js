@@ -11,7 +11,7 @@ import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 //import LaravelPermissionToVueJS from '../../vendor/ahmedsaoud31/laravel-permission-to-vuejs/src/js'
 import LaravelPermissionToVueJS from 'laravel-permission-to-vuejs'
-
+import { i18nVue } from 'laravel-vue-i18n'; 
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
@@ -24,6 +24,12 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .use(Antd)
+            .use(i18nVue, { 
+                resolve: async lang => {
+                    const langs = import.meta.glob('../../lang/*.json');
+                    return await langs[`../../lang/${lang}.json`]();
+                }
+            })
             .component('inertia-head',Head)
             .component('inertia-link',Link)
             .mount(el);

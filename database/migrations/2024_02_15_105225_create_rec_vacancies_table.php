@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('type');
             $table->string('code');
-            $table->string('title_zh');
+            $table->string('title_tw');
             $table->string('title_en')->nullable();
             $table->string('title_pt')->nullable();
             $table->string('education')->nullable();

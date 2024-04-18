@@ -14,7 +14,7 @@ class RecruitmentController extends Controller
         ]);
     }
     public function apply(Request $request){
-        $vacancy=RecVacancy::find($request->rec_vacancy_id);
+        $vacancy=RecVacancy::where('code',$request->code)->first();
         
         return Inertia::render('Recruitment/Apply',[
             'vacancy'=>$vacancy

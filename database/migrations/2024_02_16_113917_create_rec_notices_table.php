@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('rec_notices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('rec_vacancy_id');
-            $table->string('title_zh');
+            $table->string('title_tw');
             $table->string('title_en')->nullable();
             $table->string('title_pt')->nullable();
             $table->date('date_start')->nullable();
