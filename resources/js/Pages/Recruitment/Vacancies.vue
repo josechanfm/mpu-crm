@@ -23,7 +23,7 @@
                                             <li v-for="notice in vacancy.notices">
                                                 {{ notice.date_start }} {{ notice['title_'+$page.props.lang] }}
 
-                                                <inertia-link :href="route('recruitment.apply',{code:vacancy.code})">{{ $t('rec.apply') }}</inertia-link>
+                                                <inertia-link :href="route('application.apply',{code:vacancy.code})">{{ $t('rec.apply') }}</inertia-link>
                                             </li>
                                         </ol>
                                     </a-collapse-panel>
@@ -43,7 +43,7 @@
                                         <ol>
                                             <li v-for="notice in vacancy.notices">
                                                 {{ notice.date_start }} {{ notice['title_'+$page.props.lang] }}
-                                                <inertia-link :href="route('recruitment.apply',{code:vacancy.code})">{{ $t('rec.apply') }}</inertia-link>
+                                                <inertia-link :href="route('application.apply',{code:vacancy.code})">{{ $t('rec.apply') }}</inertia-link>
                                             </li>
                                         </ol>
                                     </a-collapse-panel>
@@ -84,12 +84,6 @@ export default {
     mounted() {
     },
     methods: {
-        applyLink(vacancy){
-            this.$inertia.post(route('recruitment.apply'),{rec_vacancy_id:vacancy.id});
-        },
-        loadLanguageAsync(lang){
-
-        }
     },
 };
 

@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class RecApplication extends Model
 {
     use HasFactory;
-    protected $fillable=['info_received','name_family_zh','name_given_zh','name_family_fn','name_given_fn','gender','pob','pob_oth','dob','id_type','id_num','id_issue',
-    'nationality','nationality_oth','language','address','tel','email','supplement','status','submitted','admin_id','payment','quick_pay'];
- 
+    protected $fillable=['user_id','rec_vacancy_id','obtain_info','name_zh','first_name_fn','last_name_fn','gender','pob','pob_oth','dob','id_type','id_type_name','id_num','id_issue',
+    'nationality','nationality_oth','language','address','phone','email','supplement','status','submitted','admin_id','payment','quick_pay'];
+    protected $casts=['obtain_info'=>'array','submitted'=>'boolean'];
+
     public function vacancy(){
-        return $this->belongsTo(RecVacancy::class);
+        return $this->belongsTo(RecVacancy::class,'rec_vacancy_id');
     }
     public function educations(){
         return $this->hasMany(RecEducation::class);
@@ -25,6 +26,9 @@ class RecApplication extends Model
     }
     public function uploads(){
         return $this->hasMany(RecUpload::class);
+    }
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 
 }

@@ -5,13 +5,16 @@
                 Vacancies
             </h2>
         </template>
-
+        {{ vacancy }}
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <div class="text-lg text-white bg-emerald-500 rounded p-3">{{ $t('login_success') }}</div>
                 </div>
-                <a-form :model="form" layout="vertical" :rules="rules">
+                <template v-if="$page.props.env=='local'">
+                    <a-button @click="sampleData">Sample Data</a-button>
+                </template>
+                <a-form :model="application" layout="vertical" :rules="rules" @finish="onFinish">
                 <CardBox :title="$t('rec.position_info')">
                     <template #content>
                         <a-row>
@@ -22,10 +25,25 @@
                             </a-col>
                             <a-col>
                                 <p>{{$t('rec.obtain_info')}}</p>
-                                <a-checkbox-group v-model:value="form.obtain_info" style="display: flex; flex-direction: column;margin-left:8">
+                                <a-checkbox-group v-model:value="application.obtain_info" style="display: flex; flex-direction: column;margin-left:8">
                                     <a-checkbox value="WEB">{{$t('rec.obtain_info_web')}}</a-checkbox>
-                                    <a-checkbox value="NEW">{{$t('rec.obtain_info_new')}}</a-checkbox>
-                                    <a-checkbox value="OTH">{{$t('rec.obtain_info_oth')}}</a-checkbox>
+                                    <a-row>
+                                        <a-col>
+                                            <a-checkbox value="NEW">{{$t('rec.obtain_info_new')}}</a-checkbox>
+                                        </a-col>
+                                        <a-col>
+                                            <a-input v-model:value="application.obtain_info_new"/>
+                                        </a-col>
+                                    </a-row>
+                                    <a-row>
+                                        <a-col>
+                                            <a-checkbox value="OTH">{{$t('rec.obtain_info_oth')}}</a-checkbox>
+                                        </a-col>
+                                        <a-col>
+                                            <a-input v-model:value="application.obtain_info_oth"/>
+                                        </a-col>
+                                    </a-row>
+                                    
                                 </a-checkbox-group>
                             </a-col>
                         </a-row>
@@ -49,43 +67,43 @@
                 <CardBox :title="$t('rec.personal_info')">
                     <template #content>
                         <a-form-item :label="$t('name_zh')" name="name_zh">
-                            <a-input v-model:value="form.name_zh" />
+                            <a-input v-model:value="application.name_zh" />
                         </a-form-item>
                         <a-form-item :label="$t('first_name_fn')" name="first_name_fn">
-                            <a-input v-model:value="form.gender" />
+                            <a-input v-model:value="application.gender" />
                         </a-form-item>
                         <a-form-item :label="$t('last_name_fn')" name="last_name_fn">
-                            <a-input v-model:value="form.gender" />
+                            <a-input v-model:value="application.gender" />
                         </a-form-item>
                         <a-form-item :label="$t('gender')" name="gender">
-                            <a-input v-model:value="form.gender" />
+                            <a-input v-model:value="application.gender" />
                         </a-form-item>
                         <a-form-item :label="$t('pob')" name="pob">
-                            <a-input v-model:value="form.pob" />
+                            <a-input v-model:value="application.pob" />
                         </a-form-item>
                         <a-form-item :label="$t('dob')" name="dob">
-                            <a-input v-model:value="form.dob" />
+                            <a-input v-model:value="application.dob" />
                         </a-form-item>
                         <a-form-item :label="$t('id_type')" name="id_type">
-                            <a-input v-model:value="form.id_type" />
+                            <a-input v-model:value="application.id_type" />
                         </a-form-item>
                         <a-form-item :label="$t('id_type_name')" name="id_type_name">
-                            <a-input v-model:value="form.id_type_name" />
+                            <a-input v-model:value="application.id_type_name" />
                         </a-form-item>
                         <a-form-item :label="$t('id_num')" name="id_num">
-                            <a-input v-model:value="form.id_num" />
+                            <a-input v-model:value="application.id_num" />
                         </a-form-item>
                         <a-form-item :label="$t('nationality')" name="nationality">
-                            <a-input v-model:value="form.nationality" />
+                            <a-input v-model:value="application.nationality" />
                         </a-form-item>
                         <a-form-item :label="$t('address')" name="address">
-                            <a-input v-model:value="form.address" />
+                            <a-input v-model:value="application.address" />
                         </a-form-item>
                         <a-form-item :label="$t('phone')" name="phone">
-                            <a-input v-model:value="form.phone" />
+                            <a-input v-model:value="application.phone" />
                         </a-form-item>
                         <a-form-item :label="$t('email')" name="email">
-                            <a-input v-model:value="form.email" />
+                            <a-input v-model:value="application.email" />
                         </a-form-item>
 
                     </template>
@@ -100,7 +118,8 @@
                 </div> -->
                 <a-divider />
                 <a-form-item :wrapper-col="{ span: 24, offset: 11,}">
-                    <a-button type="primary">Create</a-button>
+                    <a-button :href="route('application.apply',{'code':vacancy.code})">Back to main</a-button>
+                    <a-button type="primary" html-type="submit">Submit & next</a-button>
                 </a-form-item>
                 </a-form>
             </div>
@@ -119,12 +138,9 @@ export default {
         CaretRightOutlined,
         CardBox
     },
-    props: ["vacancy"],
+    props: ['vacancy','application'],
     data() {
         return {
-            form:{
-                obtain_info:null
-            },
             rules:{
                 name_zh:{required:true},
                 first_name_fn:{required:true},
@@ -152,6 +168,35 @@ export default {
 
     },
     methods: {
+        sampleData(){
+            this.application.obtain_info=['WEB','NEW'],
+            this.application.obtain_info_new='Macao Daily',
+            this.application.obtain_info_oth='Inernet',
+            this.application.name_zh='陳大文',
+            this.application.first_name_fn='Tai Man',
+            this.application.last_name_fn='Chan',
+            this.application.gender='M',
+            this.application.pob='OTH',
+            this.application.pob_oth='Germany',
+            this.application.dob='1970-07-18',
+            this.application.id_type='OTH',
+            this.application.id_type_name='Germany',
+            this.application.id_num='123456789',
+            this.application.nationality='German',
+            this.application.phone='66778899',
+            this.application.email='chantaiman@example.com',
+            this.application.address='Somewhere near by..'
+        },
+        onFinish(){
+            this.$inertia.post(route('application.save'), this.application,{
+                    onSuccess:(page)=>{
+                        console.log(page.data)
+                    },
+                    onError:(err)=>{
+                        console.log(err)
+                    }
+                });
+        }
     },
 };
 

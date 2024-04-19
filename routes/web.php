@@ -44,12 +44,7 @@ Route::prefix('enquiry')->group(function(){
     Route::post('ticket',[\App\Http\Controllers\EnquiryTicketController::class,'store'])->name('enquiry.ticket.store');
 });
 Route::resource('forms',\App\Http\Controllers\FormController::class)->names('forms');
-Route::prefix('/recruitment')->group(function(){
-    Route::get('/',[\App\Http\Controllers\RecruitmentController::class,'index'])->name('recruitment');
-    Route::get('apply',[\App\Http\Controllers\RecruitmentController::class,'apply'])->name('recruitment.apply');
-});
-
-
+Route::get('recruitment',[\App\Http\Controllers\RecruitmentController::class,'index'])->name('recruitment');
 
 Route::middleware([
     'auth:sanctum',
@@ -60,6 +55,13 @@ Route::middleware([
     Route::get('/member/dashboard', function () {
         return Inertia::render('Member/Dashboard');
     })->name('dashboard');
+    Route::prefix('/application')->group(function(){
+        Route::get('apply',[\App\Http\Controllers\ApplicationController::class,'apply'])->name('application.apply');
+        Route::post('save',[\App\Http\Controllers\ApplicationController::class,'save'])->name('application.save');
+        Route::post('submit',[\App\Http\Controllers\ApplicationController::class,'submit'])->name('application.submit');
+        Route::get('payment',[\App\Http\Controllers\ApplicationController::class,'payment'])->name('application.payment');
+    });
+    
     Route::prefix('/member')->group(function(){
         Route::get('/', [\App\Http\Controllers\Member\DashboardController::class,'index'])->name('member');
         Route::get('member/recruitment/notifications',[App\Http\Controllers\Member\RecruitmentController::class,'notifications'])->name('member.recruitment.notifications');

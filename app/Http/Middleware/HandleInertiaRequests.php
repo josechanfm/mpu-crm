@@ -38,6 +38,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'lang' => session('applocale'),
+            'env'=>env('APP_ENV','default')
         ]);
     }
 }
