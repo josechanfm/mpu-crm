@@ -2,22 +2,93 @@
     <RecruitmentLayout title="Vacancies">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Vacancies4 ....
+                Vacancies333
             </h2>
         </template>
-        {{ application }}
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <div class="text-lg text-white bg-emerald-500 rounded p-3">{{ $t('login_success') }}</div>
-                </div>
                 <template v-if="$page.props.env=='local'">
                     <a-button @click="sampleData">Sample Data</a-button>
                 </template>
-                <a-form :model="application" layout="vertical" :rules="rules" @finish="onFinish">
-                <CardBox :title="$t('rec.position_info')">
+                {{ application.experiences }}
+                <CardBox :title="$t('rec.experiences')">
                     <template #content>
-                        form 2
+                        <table width="100%">
+                            <tr>
+                                <th colspan="2"> {{ $t('rec.exp_company') }}</th>
+                                <th rowspan="2">{{ $t('rec.exp_position') }}</th>
+                                <th rowspan="2">{{ $t('rec.exp_salary') }}</th>
+                                <th rowspan="2">{{ $t('rec.exp_employment') }}</th>
+                                <th colspan="2">{{ $t('rec.exp_date') }}</th>
+                                <th rowspan="2">{{ $t('rec.operation') }}</th>
+                            </tr>
+                            <tr>
+                                <th>{{ $t('rec.exp_company_name') }}</th>
+                                <th>{{ $t('rec.exp_region') }}</th>
+                                <th>{{ $t('rec.exp_date_join') }}</th>
+                                <th>{{ $t('rec.exp_date_leave') }}</th>
+                            </tr>
+                            <template v-for="experience in application.experiences">
+                                <tr>
+                                    <td>{{ experience.company_name }}</td>
+                                    <td>{{ experience.region }}</td>
+                                    <td>{{ experience.position }}</td>
+                                    <td>{{ experience.salary }}</td>
+                                    <td>{{ experience.employment }}</td>
+                                    <td>{{ experience.date_join }}</td>
+                                    <td>{{ experience.date_leave }}</td>
+                                    <td>a</td>
+                                </tr>
+
+                            </template>
+                        </table>
+                        <a-divider/>
+                        <a-form :model="experience" layout="vertical" :rules="rules" @finish="onFinish">
+                            <a-row :gutter="10">
+                                <a-col :span="16">
+                                    <a-form-item :label="$t('rec.company_name')" name="company_name">
+                                        <a-input v-model:value="experience.company_name"/>
+                                    </a-form-item>
+                                </a-col>
+                                <a-col :span="8">
+                                    <a-form-item :label="$t('rec.region')" name="region">
+                                        <a-input v-model:value="experience.region"/>
+                                    </a-form-item>
+                                </a-col>
+                            </a-row>
+                            <a-row :gutter="10">
+                                <a-col :span="8">
+                                    <a-form-item :label="$t('rec.position')" name="position">
+                                        <a-input v-model:value="experience.position"/>
+                                    </a-form-item>
+                                </a-col>
+                                <a-col :span="8">
+                                    <a-form-item :label="$t('rec.salary')">
+                                        <a-input v-model:value="experience.salary"/>
+                                    </a-form-item>
+                                </a-col>
+                                <a-col :span="8">
+                                    <a-form-item :label="$t('rec.employment')" name="employment">
+                                        <a-radio-group v-model:value="experience.employment" :options="employmentOptions" />
+                                    </a-form-item>
+                                </a-col>
+                            </a-row>
+                            <a-row :gutter="10">
+                                <a-col :span="12">
+                                    <a-form-item :label="$t('rec.date_join')" name="date_join">
+                                        <a-date-picker v-model:value="experience.date_join" :format="dateFormat" :valueFormat="dateFormat"/>
+                                    </a-form-item>
+                                </a-col>
+                                <a-col :span="12">
+                                    <a-form-item :label="$t('rec.date_leave')">
+                                        <a-date-picker v-model:value="experience.date_leave" :format="dateFormat" :valueFormat="dateFormat"/>
+                                    </a-form-item>
+                                </a-col>
+                            </a-row>
+                            <a-form-item :wrapper-col="{ span: 24, offset: 11,}">
+                                <a-button type="primary" html-type="submit">{{ $t('rec.add_item') }}</a-button>
+                            </a-form-item>
+                        </a-form>
                     </template>
                 </CardBox>
 
@@ -29,11 +100,14 @@
                     <p>Card content</p>
                     </div>
                 </div> -->
-                <a-divider />
-                <a-form-item :wrapper-col="{ span: 24, offset: 11,}">
-                    <a-button type="primary" html-type="submit">Submit</a-button>
-                </a-form-item>
-                </a-form>
+                <div class="text-center pt-5">
+                    <a-button :href="route('application.apply',{code:vacancy.code,page:this.page.previours})" class="bg-amber-500 text-white p-3 rounded-lg">{{ $t('rec.back_no_save') }}</a-button>
+                    <a-button type="primary" @click="saveToNext">{{ $t('rec.save_next') }}</a-button>
+                </div>
+                
+                
+
+
             </div>
         </div>
     </RecruitmentLayout>
@@ -53,23 +127,16 @@ export default {
     props: ['vacancy','application'],
     data() {
         return {
-            form:{
-                
-            },
+            page:{},
+            experience:{},
+            employmentOptions:[],
+            dateFormat:'YYYY-MM-DD',
             rules:{
-                name_zh:{required:true},
-                first_name_fn:{required:true},
-                last_name_fn:{required:true},
-                gender:{required:true},
-                pob:{required:true},
-                pob_oth:{required:true},
-                dob:{required:true},
-                id_type:{required:true},
-                id_type_name:{required:true},
-                id_num:{required:true},
-                nationality:{required:true},
-                phone:{required:true},
-                email:{required:true},
+                company_name:{required:true},
+                position:{required:true},
+                region:{required:true},
+                employment:{required:true},
+                date_join:{required:true},
             },
             activeTag: '1',
             activeCollapse: null,
@@ -77,33 +144,40 @@ export default {
         }
     },
     created() {
+        axios.get(route('api.config.item',{key:'rec_employment_types'}))
+            .then(res=>{
+                this.employmentOptions=res.data[this.$page.props.lang].value
+                this.experience.employment=this.employmentOptions[0].value
+            })
+            .then(err=>{
+                console.log(err)
+            })
 
     },
     mounted() {
-
+        let urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.has('page')){
+            this.page.current=parseInt(urlParams.get('page'))
+            this.page.previours=this.page.current-1
+            this.page.next=this.page.current + 1
+        }
     },
     methods: {
         sampleData(){
-            this.application.obtain_info=['WEB','NEW'],
-            this.application.obtain_info_new='Macao Daily',
-            this.application.obtain_info_oth='Inernet',
-            this.application.name_zh='陳大文',
-            this.application.first_name_fn='Tai Man',
-            this.application.last_name_fn='Chan',
-            this.application.gender='M',
-            this.application.pob='OTH',
-            this.application.pob_oth='Germany',
-            this.application.dob='1970-07-18',
-            this.application.id_type='OTH',
-            this.application.id_type_name='Germany',
-            this.application.id_num='123456789',
-            this.application.nationality='German',
-            this.application.phone='66778899',
-            this.application.email='chantaiman@example.com',
-            this.application.address='Somewhere near by..'
+            this.experience.company_name='Company A'
+            this.experience.region='Macao'
+            this.experience.position='Manager'
+            this.experience.salary='123456'
+            this.experience.employment='FULL'
+            this.experience.date_join='2020-01-01'
+            this.experience.date_leave='2022-01-01'
         },
-        onFinish(){
-            this.$inertia.post(route('application.save'), this.application,{
+        saveToNext(){
+            this.onFinish();
+        },
+        saveToNext(){
+            console.log(this.currentPage);
+            this.$inertia.post(route('application.save'), {to_page:this.page.next,application:this.application},{
                     onSuccess:(page)=>{
                         console.log(page.data)
                     },
@@ -111,6 +185,12 @@ export default {
                         console.log(err)
                     }
                 });
+        },
+        onFinish(){
+            this.application.experiences.push({...this.experience})
+            this.experience={};
+            console.log(this.application);
+
         }
     },
 };
@@ -119,5 +199,9 @@ export default {
 <style>
 label.ant-checkbox-wrapper{
     margin-left:8px;
+}
+table, table tr th, table tr td{
+    border: 1px solid gray;
+    padding:5px
 }
 </style>

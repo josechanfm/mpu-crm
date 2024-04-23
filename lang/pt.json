@@ -1,7 +1,9 @@
 {
-    "chinese":"中語",
+    "chinese":"中文",
     "english":"English",
     "portuguese":"Português",
     "general.welcome":"Bem vindo geral.",
-    "welcome":"Bem vindo i18n"
+    "welcome":"Bem vindo i18n",
+    "read_more":"Consulte Mais",
+    "doc_id_type":"Tipo de identificação"
 }

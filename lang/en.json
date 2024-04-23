@@ -1,9 +1,11 @@
 {
-    "chinese":"中語",
+    "chinese":"中文",
     "english":"English",
     "portuguese":"Português",
     "general.welcome":"General Welcome message.",
     "welcome":"Welcome i18n",
+    "read_more":"Read More",
+    "doc_id_type":"Id type",
     "rec.vacancies":"Recruitments",
     "rec.academic":"Academic Staff",
     "rec.admin":"Non-Academic Statff",

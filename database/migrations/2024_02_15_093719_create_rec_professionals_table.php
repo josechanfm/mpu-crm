@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('rec_application_id');
             $table->string('organization_name');
-            $table->string('organization_locale');
-            $table->string('certificate');
-            $table->string('scope');
+            $table->string('region');
+            $table->string('qualification');
+            $table->string('area');
             $table->date('date_valid');
             $table->date('date_expire')->nullable();
             $table->timestamps();

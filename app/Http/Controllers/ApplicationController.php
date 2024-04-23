@@ -12,9 +12,10 @@ use App\Models\RecProfessional;
 
 class ApplicationController extends Controller
 {
-
     public function apply(Request $request){
-        $vacancy=RecVacancy::where('code',$request->code)->first();
+        $vacancyCode=$request->code;
+        $page=$request->page;
+        $vacancy=RecVacancy::where('code',$vacancyCode)->first();
         $application=RecApplication::whereBelongsTo($vacancy,'vacancy')->with('user')->first();
         if(empty($application)){
             $application=RecApplication::make();
@@ -28,15 +29,15 @@ class ApplicationController extends Controller
                 'application'=>$application
             ]);
         }
-
-        if(empty($request->page) || $application->submitted){
+        if($application->submitted){
             $application->educations;
-            return Inertia::render('Recruitment/FormZero',[
+            return Inertia::render('Recruitment/FormSix',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
         }
-        if($request->page==1 && $application->id){
+
+        if(empty($page)){
             $application->educations;
             return Inertia::render('Recruitment/FormOne',[
                 'vacancy'=>$vacancy,
@@ -44,30 +45,45 @@ class ApplicationController extends Controller
             ]);
         }
 
-        if($request->page && $request->page==2 && $application->id){
+        if($page==1 && $application->id){
+            $application->educations;
+            return Inertia::render('Recruitment/FormOne',[
+                'vacancy'=>$vacancy,
+                'application'=>$application
+            ]);
+        }
+
+        if($page && $page==2 && $application->id){
             $application->educations;
             return Inertia::render('Recruitment/FormTwo',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
         }
-        if($request->page && $request->page==3 && $application->id){
-            $application->experiences;
+        if($page && $page==3 && $application->id){
+            $application->professionals;
             return Inertia::render('Recruitment/FormThree',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
         }
-        if($request->page && $request->page==4 && $application->id){
-            $application->professionals;
+        if($page && $page==4 && $application->id){
+            $application->experiences;
             return Inertia::render('Recruitment/FormFour',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]); 
         }
-        if($request->page && $request->page==5 && $application->id){
+        if($page && $page==5 && $application->id){
             $application->uploads;
             return Inertia::render('Recruitment/FormFive',[
+                'vacancy'=>$vacancy,
+                'application'=>$application
+            ]);
+        }
+        if($page && $page==6 && $application->id){
+            $application->uploads;
+            return Inertia::render('Recruitment/FormSix',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
@@ -76,48 +92,65 @@ class ApplicationController extends Controller
     }
 
     public function save(Request $request){
-        $data=$request->all();
-        $toPage=1;
-        if($data['id']){
-            if(isset($data['educations'])){
-                foreach($data['educations'] as $edu){
-                    RecEducation::find($edu['id'])->update($edu);
+        $application=$request->application;
+        $toPage=$request->to_page;
+        if(empty($application)){
+            return redirect()->route('recruitment');
+        }
+        if(empty($application['id'])){
+            RecApplication::create($application);
+            $toPage=2;
+        }else{
+            $recApp=RecApplication::find($application['id']);
+            if($toPage==2 || empty($toPage)){
+                //dd($application);
+                RecApplication::find($application['id'])->update($application);
+            }elseif($toPage==3 && isset($application['educations'])){
+                foreach($application['educations'] as $edu){
+                    if(isset($edu['id'])){
+                        RecEducation::find($edu['id'])->update($edu);
+                    }else{
+                        $recApp->educations()->create($edu);
+                    }
                 }
-                $toPage=3;
-            }else if(isset($data['experiences'])){
-                foreach($data['experiences'] as $exp){
-                    RecExperience::find($exp['id'])->update($exp);
+            }elseif($toPage==4 && isset($application['professionals'])){
+                foreach($application['professionals'] as $pro){
+                    if(isset($pro['id'])){
+                        RecProfessional::find($pro['id'])->update($pro);
+                    }else{
+                        $recApp->professionals()->create($pro);
+                    }
                 }
-                $toPage=4;
-            }else if(isset($data['professionals'])){
-                foreach($data['professionals'] as $pro){
-                    RecProfessional::find($pro['id'])->update($pro);
+            }elseif($toPage==5 && isset($application['experiences'])){
+                //dd($application);
+                foreach($application['experiences'] as $exp){
+                    if(isset($exp['id'])){
+                        RecExperience::find($exp['id'])->update($exp);
+                    }else{
+                        $recApp->experiences()->create($exp);
+                    }
                 }
-                $toPage=5;
-            }else if(isset($data['uploads'])){
-                foreach($data['uploads'] as $upload){
-                    dd($upload);
+            }elseif($toPage==6){
+                foreach($application['uploads'] as $upload){
                     //RecExperience::find($edu['id'])->update($exp);
                 }
-                $toPage=0;
+                $toPage=7;
             }else{
-                RecApplication::find($data['id'])->update($data);
-                $toPage=2;
+                echo response()->json(['message'=>'What do you wanna actually?']);
             }
-        }else{
-            RecApplication::create($data);
-            $toPage=2;
         }
         //dd($toPage);
                 
         return redirect()->route('application.apply',[
-            'code'=>RecVacancy::find($data['rec_vacancy_id'])->code,
+            'code'=>RecVacancy::find($application['rec_vacancy_id'])->code,
             'page'=>$toPage
         ]);
     }
 
     public function submit(Request $request){
-        $application=RecApplication::find($request->id);
+        $app=$request->application;
+        $application=RecApplication::find($app['id']);
+        
         $application->submitted=true;
         $application->save();
         return redirect()->route('application.payment',['application_id'=>$application]);

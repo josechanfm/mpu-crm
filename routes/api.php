@@ -15,6 +15,14 @@ use Illuminate\Support\Facades\App;
 |
 */
 
+
+// Route::middleware('auth','guest.api')->group(function() {
+    
+// });
+Route::get('config/item', [\App\Http\Controllers\Api\ConfigController::class,'Item'])->name('api.config.item');        
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+

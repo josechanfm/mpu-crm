@@ -15,10 +15,11 @@
         </div>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                <p>
-                    <a v-if="lang=='zh'" @click="onClickLanguage('pt')" class="float-right">Portuguese葡文</a>
-                    <a v-else @click="onClickLanguage('zh')" class="float-right">Chinese中文</a>
-                </p>
+                <div class="flex space-x-4 float-right">
+                    <inertia-link :href="route('language', 'tw')" @click="onClickLanguage('tw')">{{ $t('chinese') }}</inertia-link>
+                    <inertia-link :href="route('language', 'en')" @click="onClickLanguage('en')">{{ $t('english') }}</inertia-link>
+                    <inertia-link :href="route('language', 'pt')" @click="onClickLanguage('pt')">{{ $t('portuguese') }}</inertia-link>
+                </div>
                 <a-form ref="refEnquiry" name="enquiry" :model="enquiry" :rules="rules" layout="vertical"
                     @finish="onFinish">
 
@@ -45,7 +46,60 @@
                         </a-form-item>
 
                     </template>
-                    <template v-if="lang=='zh'">
+                    <template v-if="lang=='tw'">
+                        <a-typography-title :level="3" class="pb-0">與 “理” 聯繫</a-typography-title>
+                        <p>
+                            歡迎與澳理大聯繫，諮詢學位課程入學事宜，請填寫以下資料，以便澳理大招生專員為你提供適切的入學相關資訊。
+                        </p>
+                        <p>
+                            感謝對澳門理工大學的支持。
+                        </p>
+                        <p class="font-bold underline mb-0">資料收集聲明:</p>
+                        <ol class="ml-8">
+                            <li class="-indent-5">
+                                &#x27A3;<span class="ml-2">澳門理工大學應申請人之要求提供相關學術及行政服務。</span>
+                            </li>
+                            <li class="-indent-5">
+                                &#x27A3;<span class="ml-2">澳門理工大學所收集的資料僅用作是次服務之用途。有關資料亦可在澳門理工大學內部及其他具法律規定或獲申請人授權的實體之間傳遞，以達至完成相關程序。網絡傳遞過程未能保證訊息絕對保密，且存在一定程度之風險。</span>
+                            </li>
+                            <li class="-indent-5">
+                                &#x27A3;<span class="ml-2">為提供所要求的服務，有關申請須提供申請人身份識別及使用是次服務相關的資料，未能提供相關資料的申請將不予受理。</span>
+                            </li>
+                        </ol>
+                        <a-form-item name="privacy">
+                            <a-checkbox v-model:checked="enquiry.privacy">
+                                <span v-html="fields.privacy.question"></span>
+                            </a-checkbox>
+                        </a-form-item>
+                    </template>
+                    <template v-if="lang=='en'">
+                        <a-typography-title :level="3" class="pb-0">Connect with MPU...</a-typography-title>
+                        <p>
+                            Welcome to “Connect with MPU” for Degree Programmes Admission Enquiries. Kindly fill in the information below for further details.
+                        </p>
+                        <p>
+                            Thank you once again for your interest in MPU.
+                        </p>
+                        <p class="font-bold underline mb-0">Data Collection Statement:</p>
+                        <ol class="ml-8">
+                            <li class="-indent-5">
+                                &#x27A3;<span class="ml-2">Macao Polytechnic University (hereafter referred to as “the University”) provides relevant academic and administrative services at the request of applicants.</span>
+                            </li>
+                            <li class="-indent-5">
+                                &#x27A3;<span class="ml-2">The data collected by the University will be used solely for the stated purposes.  They may be transferred within the University or the entities that are in accordance with legal provision or with your prior consent.  It is necessary to note that internet transmission bears risk and may not guarantee absolute confidentiality.</span>
+                            </li>
+                            <li class="-indent-5">
+                                &#x27A3;<span class="ml-2">To enable the provision of the requested services, it is mandatory for the applicants to contain personal-identification and information related to the use of this service.  Applications absent of the stated information will not be processed.</span>
+                            </li>
+                        </ol>
+                        <a-form-item name="privacy">
+                            <a-checkbox v-model:checked="enquiry.privacy">
+                                <span v-html="fields.privacy.question"></span>
+                            </a-checkbox>
+                        </a-form-item>
+                    </template>
+                    <!-- Backup Chinse and English together
+                    <template v-if="lang=='en'">
                         <a-typography-title :level="3" class="pb-0">與 “理” 聯繫 Connect with MPU...</a-typography-title>
                         <p>
                             歡迎與澳理大聯繫，諮詢學位課程入學事宜，請填寫以下資料，以便澳理大招生專員為你提供適切的入學相關資訊。<br>
@@ -76,6 +130,7 @@
                             </a-checkbox>
                         </a-form-item>
                     </template>
+                -->
 
                     <a-form-item name="origin" :label="fields.origin.question" v-if="enquiry.privacy">
                         <a-radio-group v-model:value="enquiry.origin">
@@ -95,20 +150,25 @@
                             <label for="enquiry_admission" class="ant-form-item-required" title="入學途徑 Admission route">
                                 {{fields.admission.question}}
                             </label>
-                            <a-popover title="證件類別 ID Type">
-                            <template #content>
-                                <p><a href="https://www.mpu.edu.mo/admission_local/zh/index.php" target="_blank">澳門居民身份證
-                                        MACAO ID</a></p>
+                            <a-popover :title="$t('doc_id_type')">
+                            <template #content v-if="lang=='tw'">
+                                <p><a href="https://www.mpu.edu.mo/admission_local/zh/index.php" target="_blank">澳門居民身份證</a></p>
                                 <p><a href="https://www.mpu.edu.mo/admission_mainland/zh/index.php"
-                                        target="_blank">中華人民共和國居民身份證 CHINA ID</a></p>
-                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">香港居民身份證
-                                        HONG KONG ID</a></p>
-                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">台灣居民身份證
-                                        TAIWAN ID</a></p>
-                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">外國護照
-                                        PASSPORT</a></p>
+                                        target="_blank">中華人民共和國居民身份證</a></p>
+                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">香港居民身份證</a></p>
+                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">台灣居民身份證</a></p>
+                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">外國護照</a></p>
                             </template>
-                            <a-button type="link">(更多資訊 Read More)</a-button>
+                            <template #content v-if="lang=='en'">
+                                <p><a href="https://www.mpu.edu.mo/admission_local/zh/index.php" target="_blank">MACAO ID</a></p>
+                                <p><a href="https://www.mpu.edu.mo/admission_mainland/zh/index.php"
+                                        target="_blank">CHINA ID</a></p>
+                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">HONG KONG ID</a></p>
+                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">TAIWAN ID</a></p>
+                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">PASSPORT</a></p>
+                            </template>
+
+                            <a-button type="link">{{ $t('read_more') }}</a-button>
                         </a-popover>
                         </div>
                         <a-radio-group v-model:value="enquiry.admission" class="w-full">
@@ -225,17 +285,19 @@
 
 <script>
 import axios from 'axios';
-
+import { loadLanguageAsync } from "laravel-vue-i18n";
 
 
 export default {
     components: {
+        loadLanguageAsync
     },
-    props: ['fields', 'faqs', 'phone_country_codes'],
+    props: ['fields2', 'faqs', 'phone_country_codes'],
     data() {
         return {
             //lang: this.$page.props.lang,
-            lang: 'zh',
+            fields:[],
+            lang: 'tw',
             enquiry: {
                 lang: 'zh',
                 origin: 'MO',
@@ -332,9 +394,14 @@ export default {
         }
     },
     created() {
+        this.lang=this.$page.props.lang
+        console.log(this.$page.props.lang);
         this.phone_country_codes.value.forEach(v => v.label = v.labelZh + '/' + v.labelEn)
+        this.fields=this.fields2[this.$page.props.lang]
+        console.log(this.fields2)
     },
     mounted() {
+        loadLanguageAsync(this.$page.props.lang);
         this.enquiry = {};
     },
     methods: {

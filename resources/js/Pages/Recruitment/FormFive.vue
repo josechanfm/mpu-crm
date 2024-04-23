@@ -5,19 +5,55 @@
                 Vacancies5 ....
             </h2>
         </template>
-        {{ application }}
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <div class="text-lg text-white bg-emerald-500 rounded p-3">{{ $t('login_success') }}</div>
-                </div>
                 <template v-if="$page.props.env=='local'">
                     <a-button @click="sampleData">Sample Data</a-button>
                 </template>
-                <a-form :model="application" layout="vertical" :rules="rules" @finish="onFinish">
+                
                 <CardBox :title="$t('rec.position_info')">
                     <template #content>
-                        form 2
+                        <a-form :model="application" layout="vertical" :rules="rules" @finish="onFinish">
+                        <table width="100%">
+                            <tr>
+                                <th width="150px">{{ $t('rec.doc_id') }}</th>
+                                <td></td>
+                                <td width="300px"><button class="ant-btn">upload</button></td>
+                            </tr>
+                            <tr>
+                                <th width="150px">{{ $t('rec.doc_educations') }}</th>
+                                <td></td>
+                                <td width="300px"><button class="ant-btn">upload</button></td>
+                            </tr>
+                            <tr>
+                                <th width="150px">{{ $t('rec.doc_resume') }}</th>
+                                <td></td>
+                                <td width="300px"><button class="ant-btn">upload</button></td>
+                            </tr>
+                            <tr>
+                                <th width="150px">{{ $t('rec.doc_employment') }}</th>
+                                <td></td>
+                                <td width="300px"><button class="ant-btn">upload</button></td>
+                            </tr>
+                            <tr>
+                                <th width="150px">{{ $t('rec.doc_training') }}</th>
+                                <td></td>
+                                <td width="300px"><button class="ant-btn">upload</button></td>
+                            </tr>
+                            <tr>
+                                <th width="150px">{{ $t('rec.doc_academic') }}</th>
+                                <td></td>
+                                <td width="300px"><button class="ant-btn">upload</button></td>
+                            </tr>
+                            <tr>
+                                <th width="150px">{{ $t('rec.doc_others') }}</th>
+                                <td></td>
+                                <td width="300px"><button class="ant-btn">upload</button></td>
+                            </tr>
+                        </table>
+                    </a-form>
+
+                        {{ $t('rec.doc_type_notes') }}
                     </template>
                 </CardBox>
 
@@ -30,10 +66,10 @@
                     </div>
                 </div> -->
                 <a-divider />
-                <a-form-item :wrapper-col="{ span: 24, offset: 11,}">
-                    <a-button type="primary" html-type="submit">Submit</a-button>
-                </a-form-item>
-                </a-form>
+                <div class="text-center pt-5">
+                    <a-button :href="route('application.apply',{code:vacancy.code,page:this.page.previours})" class="bg-amber-500 text-white p-3 rounded-lg">{{ $t('rec.back_no_save') }}</a-button>
+                    <a-button type="primary" @click="saveToNext">{{ $t('rec.save_next') }}</a-button>
+                </div>
             </div>
         </div>
     </RecruitmentLayout>
@@ -53,9 +89,7 @@ export default {
     props: ['vacancy','application'],
     data() {
         return {
-            form:{
-                
-            },
+            page:{},
             rules:{
                 name_zh:{required:true},
                 first_name_fn:{required:true},
@@ -80,7 +114,12 @@ export default {
 
     },
     mounted() {
-
+        let urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.has('page')){
+            this.page.current=parseInt(urlParams.get('page'))
+            this.page.previours=this.page.current-1
+            this.page.next=this.page.current + 1
+        }
     },
     methods: {
         sampleData(){
@@ -102,8 +141,11 @@ export default {
             this.application.email='chantaiman@example.com',
             this.application.address='Somewhere near by..'
         },
+        saveToNext(){
+            this.onFinish();
+        },
         onFinish(){
-            this.$inertia.post(route('application.save'), this.application,{
+            this.$inertia.post(route('application.save'), {to_page:6,application:this.application},{
                     onSuccess:(page)=>{
                         console.log(page.data)
                     },

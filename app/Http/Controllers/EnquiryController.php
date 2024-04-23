@@ -29,9 +29,8 @@ class EnquiryController extends Controller
             ]);
         };
         return Inertia::render('Enquiry/Form',[
-            'fields'=>$fields,
+            'fields2'=>$fields,
             'phone_country_codes'=>Config::item('phone_country_codes'),
-            'lang'=>'zh',
         ]);
 
     }

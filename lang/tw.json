@@ -1,9 +1,11 @@
 {
-    "chinese":"中語",
+    "chinese":"中文",
     "english":"English",
     "portuguese":"Português",
     "general.welcome":"中文歡迎詞",
     "welcome":"歡迎 i18n",
+    "read_more":"更多資訊",
+    "doc_id_type":"證件類別",
     "rec.vacancies":"招聘職位",
     "rec.academic":"教職人員",
     "rec.admin":"非教職人員",

@@ -17,13 +17,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('rec_application_id');
             $table->string('school_name');
-            $table->string('school_locale');
-            $table->string('level');
+            $table->string('region');
             $table->string('degree');
+            $table->string('qualification');
             $table->string('subject');
-            $table->string('lang');
+            $table->string('language');
             $table->string('date_start');
-            $table->string('date_end')->nullable();
+            $table->string('date_finish')->nullable();
             $table->timestamps();
         });
     }

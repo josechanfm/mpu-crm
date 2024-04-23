@@ -5,7 +5,6 @@
                 Vacancies
             </h2>
         </template>
-        {{ vacancy }}
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
@@ -105,7 +104,6 @@
                         <a-form-item :label="$t('email')" name="email">
                             <a-input v-model:value="application.email" />
                         </a-form-item>
-
                     </template>
                 </CardBox>
                 <!-- <div class="border border-sky-500 rounded-lg mt-5">
@@ -118,8 +116,7 @@
                 </div> -->
                 <a-divider />
                 <a-form-item :wrapper-col="{ span: 24, offset: 11,}">
-                    <a-button :href="route('application.apply',{'code':vacancy.code})">Back to main</a-button>
-                    <a-button type="primary" html-type="submit">Submit & next</a-button>
+                    <a-button type="primary" html-type="submit">{{ $t('save_next')}}</a-button>
                 </a-form-item>
                 </a-form>
             </div>
@@ -141,6 +138,7 @@ export default {
     props: ['vacancy','application'],
     data() {
         return {
+            page:{},
             rules:{
                 name_zh:{required:true},
                 first_name_fn:{required:true},
@@ -165,7 +163,12 @@ export default {
 
     },
     mounted() {
-
+        let urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.has('page')){
+            this.page.current=parseInt(urlParams.get('page'))
+            this.page.previours=this.page.current-1
+            this.page.next=this.page.current + 1
+        }
     },
     methods: {
         sampleData(){
@@ -188,7 +191,7 @@ export default {
             this.application.address='Somewhere near by..'
         },
         onFinish(){
-            this.$inertia.post(route('application.save'), this.application,{
+            this.$inertia.post(route('application.save'), {to_page:2,application:this.application},{
                     onSuccess:(page)=>{
                         console.log(page.data)
                     },
