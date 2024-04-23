@@ -5,5 +5,14 @@
     "general.welcome":"Bem vindo geral.",
     "welcome":"Bem vindo i18n",
     "read_more":"Consulte Mais",
-    "doc_id_type":"Tipo de identificação"
+    "doc_id_type":"Tipo de identificação",
+    "enquiry.title":"Consulta sobre Admissão a Cursos Conferentes de Grau Académico",
+    "enquiry.welcome_title":"Contactar a UPM ",
+    "enquiry.welcome_content":"Seja bem-vindo a contactar a UPM para obter informações sobre a admissão dos cursos conferentes de grau académico. Preencha, por favor, as seguintes informações para que o pessoal da UPM lhe forneça informações adequadas sobre a admissão.。<br>Agradecemos o seu apoio dado à UPM.",
+    "enquiry.disclaimer_title":"Declaração de Recolha de Dados Pessoais :",
+    "enquiry.disclaimer_list":[
+        "Para os serviços académicos e administrativos prestados pela UPM, o requerente deve apresentar o respectivo pedido à unidade responsável.",
+        "Os dados pessoais recolhidos pela UPM são utilizados exclusivamente para os efeitos referidos, sendo possível a sua divulgação às unidades internas da UPM e a outras entidades por exigência legal ou com o consentimento do requerente, a fim de concluir os processos necessários. Não é possível a garantia de total privacidade relativa às comunicações de dados em rede, havendo um certo grau de riscos.",
+        "Para a prestação dos serviços solicitados, é necessário fornecer as informações relativas à identificação do requerente e à utilização dos serviços em causa, não sendo aceites pedidos que não forneçam informações relevantes."
+    ]
 }

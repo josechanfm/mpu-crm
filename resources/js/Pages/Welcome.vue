@@ -13,7 +13,6 @@ defineProps({
 
 <template>
   <WebLayout title="Dashboard">
-    {{ $t('general.welcome') }}
     <div class="bg-gradient-to-tr from-indigo-800 to-indigo-500 rounded-md flex items-center">
       <div class="pt-5 pb-5 ml-5 mr-5 md:ml-20 md:w-3/5">
         <h2 class="text-white text-4xl">General Services</h2>

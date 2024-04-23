@@ -5,13 +5,13 @@
             <img src="/images/mpu_banner.png" width="300" />
         </a>
         </div>
-        <div class="hidden lg:block lg:p-5 lg:text-4xl font-medium text-slate-500">
-            學位課程入學諮詢 <br>Degree Programme Admission Enquiries
+        <div class="hidden lg:block lg:p-10 lg:text-4xl font-medium text-slate-500">
+            {{  $t('enquiry.title') }}
         </div>
     </div>
     <div class="py-12">
         <div class="lg:hidden text-2xl text-center font-medium text-slate-500">
-            學位課程入學諮詢 <br>Degree Programme Admission Enquiries
+            {{  $t('enquiry.title') }}
         </div>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
@@ -73,23 +73,12 @@
                         </a-form-item>
                     </template>
                     <template v-if="lang=='en'">
-                        <a-typography-title :level="3" class="pb-0">Connect with MPU...</a-typography-title>
-                        <p>
-                            Welcome to “Connect with MPU” for Degree Programmes Admission Enquiries. Kindly fill in the information below for further details.
-                        </p>
-                        <p>
-                            Thank you once again for your interest in MPU.
-                        </p>
-                        <p class="font-bold underline mb-0">Data Collection Statement:</p>
+                        <a-typography-title :level="3" class="pb-0">{{ $t('enquiry.welcome_title')}}</a-typography-title>
+                        <div v-html="$t('enquiry.welcome_content')"/>
+                        <p class="font-bold underline mt-10">{{ $t('enquiry.disclaimer_title') }}</p>
                         <ol class="ml-8">
-                            <li class="-indent-5">
-                                &#x27A3;<span class="ml-2">Macao Polytechnic University (hereafter referred to as “the University”) provides relevant academic and administrative services at the request of applicants.</span>
-                            </li>
-                            <li class="-indent-5">
-                                &#x27A3;<span class="ml-2">The data collected by the University will be used solely for the stated purposes.  They may be transferred within the University or the entities that are in accordance with legal provision or with your prior consent.  It is necessary to note that internet transmission bears risk and may not guarantee absolute confidentiality.</span>
-                            </li>
-                            <li class="-indent-5">
-                                &#x27A3;<span class="ml-2">To enable the provision of the requested services, it is mandatory for the applicants to contain personal-identification and information related to the use of this service.  Applications absent of the stated information will not be processed.</span>
+                            <li  class="-indent-5" v-for="item in $t('enquiry.disclaimer_list')">
+                                &#x27A3;<span class="ml-2">{{ item }}</span>
                             </li>
                         </ol>
                         <a-form-item name="privacy">

@@ -6,6 +6,15 @@
     "welcome":"Welcome i18n",
     "read_more":"Read More",
     "doc_id_type":"Id type",
+    "enquiry.title":"Degree Programme Admission Enquiries",
+    "enquiry.welcome_title":"Connect with MPU",
+    "enquiry.welcome_content":"Welcome to “Connect with MPU” for Degree Programmes Admission Enquiries. Kindly fill in the information below for further details.<br>Thank you once again for your interest in MPU.",
+    "enquiry.disclaimer_title":"Data Collection Statement:",
+    "enquiry.disclaimer_list":[
+        "Macao Polytechnic University (hereafter referred to as &ldquo;the University&rdquo;) provides relevant academic and administrative services at the request of applicants.",
+        "The data collected by the University will be used solely for the stated purposes. They may be transferred within the University or the entities that are in accordance with legal provision or with your prior consent. It is necessary to note that internet transmission bears risk and may not guarantee absolute confidentiality.",
+        "To enable the provision of the requested services, it is mandatory for the applicants to contain personal-identification and information related to the use of this service. Applications absent of the stated information will not be processed."
+    ],
     "rec.vacancies":"Recruitments",
     "rec.academic":"Academic Staff",
     "rec.admin":"Non-Academic Statff",
