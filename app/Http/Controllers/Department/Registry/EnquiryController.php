@@ -32,7 +32,8 @@ class EnquiryController extends Controller
         return Inertia::render('Department/Registry/Enquiries',[
             'department'=>$department,
             'enquiriesStat'=>$department->enquiriesStat(),
-            'configFields'=>Config::enquiryFormFields(),
+            //'configFields'=>Config::enquiryFormFields(),
+            'fields'=>Config::enquiryFormFields()['tw']
         ]);
     }
 

@@ -106,10 +106,9 @@ export default {
         loadLanguageAsync,
         dayjs
     },
-    props: ['department', 'enquiriesStat', 'configFields'],
+    props: ['department', 'enquiriesStat', 'fields'],
     data() {
         return {
-            fields:{},
             breadcrumb:[
                 {label:"招生注冊處" ,url:route('registry.dashboard')},
                 {label:"所有查詢" ,url:null},
@@ -179,7 +178,7 @@ export default {
         }
     },
     created() {
-        this.fields={...this.configFields['tw']}
+        // this.fields={...this.configFields['tw']}
         this.fields.origin.options.forEach(o => o.text = o.label)
         this.fields.degree.options.forEach(o => o.text = o.label)
         this.fields.admission.options.forEach(o => o.text = o.label)
