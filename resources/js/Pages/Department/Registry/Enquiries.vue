@@ -7,34 +7,6 @@
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button @click="viewRecord(record)">View</a-button>
                         </template>
-                        <template v-else-if="column.dataIndex == 'created_at'">
-                            {{ dateFormat(record.created_at) }}
-                            <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
-                        </template>
-                        <template v-else-if="column.dataIndex == 'origin'">
-                            <!-- {{ optionFind(fields.origin.options, record.origin) }} -->
-                        </template>
-                        <template v-else-if="column.dataIndex == 'degree'">
-                            <!-- {{ optionFind(fields.degree.options, record.degree) }} -->
-                        </template>
-                        <template v-else-if="column.dataIndex == 'full_name'">
-                            {{ record.surname }}, {{ record.givenname }}
-                        </template>
-                        <template v-else-if="column.dataIndex == 'admission'">
-                            <template v-if="record.admission">
-                                <!-- {{ optionFind(fields.admission.options, record.admission) }} -->
-                            </template>
-                        </template>
-                        <template v-else-if="column.dataIndex == 'admin_user'">
-                            <span v-if="record.last_response && record.last_response.admin_user">
-                                {{record.last_response.admin_user.username}}
-                            </span>
-                        </template>
-                        <template v-else-if="column.dataIndex == 'response_status'">
-                            <span v-if="record.question_count">
-                                提問:{{ record.question_count }} / 回應:{{ record.response_count }}
-                            </span>
-                        </template>
                         <template v-else>
                             {{ record[column.dataIndex] }}
                         </template>
