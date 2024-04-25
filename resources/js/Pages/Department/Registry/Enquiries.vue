@@ -179,7 +179,7 @@ export default {
         }
     },
     created() {
-        this.fields=this.configFields['tw']
+        this.fields={...this.configFields['tw']}
         this.fields.origin.options.forEach(o => o.text = o.label)
         this.fields.degree.options.forEach(o => o.text = o.label)
         this.fields.admission.options.forEach(o => o.text = o.label)
@@ -189,6 +189,7 @@ export default {
     },
     methods: {
         optionFind(options, item) {
+            console.log(options)
             if(options){
                 var label = options.find(option => option.value == item)['label'].split(" ");
                 return label[0];
@@ -196,6 +197,7 @@ export default {
             return null
         },
         getOptionItem(options, item) {
+            console.log(options)
             if(options){
                 var items = options.filter(option => {
                     return item.includes(option['value']);
