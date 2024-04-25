@@ -47,48 +47,6 @@ export default {
             teacherStateLabels: {},
             columns: [
                 {
-                    title: '日期',
-                    dataIndex: 'created_at',
-                    sorter: {
-                        compare: (a, b) => {
-                            console.log(a)
-                            return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-                        }
-                    }
-                }, {
-                    title: '查詢編號',
-                    dataIndex: 'id',
-                    sorter: (a, b) => a.id - b.id
-                }, {
-                    title: '證件類別(持有證件)',
-                    dataIndex: 'origin',
-                    // sorter: (a, b) => a.origin.localeCompare(b.origin),
-                    // filters: this.configFields['tw'].origin.options,
-                    // filterMultiple: false,
-                    // onFilter: (value, record) => record.origin == value
-                }, {
-                    title: '課程類別(入讀課程)',
-                    dataIndex: 'degree',
-                    // sorter: (a, b) => a.degree.localeCompare(b.degree),
-                    // filters: this.configFields['tw'].degree.options,
-                    // filterMultiple: false,
-                    // onFilter: (value, record) => record.degree == value
-                }, {
-                    title: '入學途徑',
-                    dataIndex: 'admission',
-                    // sorter: (a, b) => a.admission.localeCompare(b.admission),
-                    // filters: this.configFields['tw'].admission.options,
-                    // filterMultiple: false,
-                    // onFilter: (value, record) => record.admission == value
-                }, {
-                    title: '姓, 名',
-                    dataIndex: 'full_name',
-                    sorter: (a, b) => a.surname.localeCompare(b.surname)
-                }, {
-                    title: '電話',
-                    dataIndex: 'phone',
-                    sorter: (a, b) => a.phone.localeCompare(b.phone)
-                }, {
                     title: '最後回應',
                     dataIndex: 'admin_user',
                 }, {
