@@ -179,12 +179,12 @@ export default {
         }
     },
     created() {
-        this.fields=this.configFields[this.$page.props.lang]
-    },
-    mounted(){
+        this.fields=this.configFields['tw']
         this.fields.origin.options.forEach(o => o.text = o.label)
         this.fields.degree.options.forEach(o => o.text = o.label)
         this.fields.admission.options.forEach(o => o.text = o.label)
+    },
+    mounted(){
         loadLanguageAsync(this.$page.props.lang)
     },
     methods: {
