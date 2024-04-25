@@ -189,8 +189,11 @@ export default {
     },
     methods: {
         optionFind(options, item) {
-            var label = options.find(option => option.value == item)['label'].split(" ");
-            return label[0];
+            if(options){
+                var label = options.find(option => option.value == item)['label'].split(" ");
+                return label[0];
+            }
+            return null
         },
         getOptionItem(options, item) {
             var items = options.filter(option => {
