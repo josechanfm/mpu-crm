@@ -44,7 +44,7 @@
         </div>
 
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
+        <!-- <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
             <a-form ref="modalRef" :model="modal.data" name="Teacher" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }"
                 autocomplete="off">
                 <a-form-item :label="fields.origin.short">
@@ -89,7 +89,7 @@
             <template #footer>
                 <a-button @click="modal.isOpen = false">Close</a-button>
             </template>
-        </a-modal>
+        </a-modal> -->
         <!-- Modal End-->
     </DepartmentLayout>
 </template>
