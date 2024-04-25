@@ -48,20 +48,20 @@
             <a-form ref="modalRef" :model="modal.data" name="Teacher" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }"
                 autocomplete="off">
                 <a-form-item :label="fields.origin.short">
-                    {{ optionFind(fields.origin.options, modal.data.origin) }}
+                    <!-- {{ optionFind(fields.origin.options, modal.data.origin) }} -->
                 </a-form-item>
                 <a-form-item :label="fields.degree.short">
-                    {{ optionFind(fields.degree.options, modal.data.degree) }}
+                    <!-- {{ optionFind(fields.degree.options, modal.data.degree) }} -->
                 </a-form-item>
                 <a-form-item :label="fields.admission.short" v-if="modal.data.admission">
-                    {{ optionFind(fields.admission.options, modal.data.admission) }}
+                    <!-- {{ optionFind(fields.admission.options, modal.data.admission) }} -->
                 </a-form-item>
                 <a-form-item :label="fields.profile.short">
-                        {{ optionFind(fields.profile.options, modal.data.profile) }}
+                        <!-- {{ optionFind(fields.profile.options, modal.data.profile) }} -->
                         {{ modal.data.profile_other }}
                 </a-form-item>
                 <a-form-item :label="fields.apply.short">
-                    {{ optionFind(fields.apply.options, modal.data.apply) }}
+                    <!-- {{ optionFind(fields.apply.options, modal.data.apply) }} -->
                     {{ modal.data.apply_number }}
                 </a-form-item>
                 <a-form-item :label="fields.surname.short">
