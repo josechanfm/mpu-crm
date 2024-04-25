@@ -196,10 +196,13 @@ export default {
             return null
         },
         getOptionItem(options, item) {
-            var items = options.filter(option => {
-                return item.includes(option['value']);
-            });
-            return items;
+            if(options){
+                var items = options.filter(option => {
+                    return item.includes(option['value']);
+                });
+                return items;
+            }
+            return null
         },
         viewRecord(record) {
             this.modal.data = { ...record };
