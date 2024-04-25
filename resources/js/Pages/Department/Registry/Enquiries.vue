@@ -138,24 +138,24 @@ export default {
                 }, {
                     title: '證件類別(持有證件)',
                     dataIndex: 'origin',
-                    // sorter: (a, b) => a.origin.localeCompare(b.origin),
-                    // filters: this.configFields['tw'].origin.options,
-                    // filterMultiple: false,
-                    // onFilter: (value, record) => record.origin == value
+                    sorter: (a, b) => a.origin.localeCompare(b.origin),
+                    filters: this.configFields['tw'].origin.options,
+                    filterMultiple: false,
+                    onFilter: (value, record) => record.origin == value
                 }, {
                     title: '課程類別(入讀課程)',
                     dataIndex: 'degree',
-                    // sorter: (a, b) => a.degree.localeCompare(b.degree),
-                    // filters: this.configFields['tw'].degree.options,
-                    // filterMultiple: false,
-                    // onFilter: (value, record) => record.degree == value
+                    sorter: (a, b) => a.degree.localeCompare(b.degree),
+                    filters: this.configFields['tw'].degree.options,
+                    filterMultiple: false,
+                    onFilter: (value, record) => record.degree == value
                 }, {
                     title: '入學途徑',
                     dataIndex: 'admission',
-                    // sorter: (a, b) => a.admission.localeCompare(b.admission),
-                    // filters: this.configFields['tw'].admission.options,
-                    // filterMultiple: false,
-                    // onFilter: (value, record) => record.admission == value
+                    sorter: (a, b) => a.admission.localeCompare(b.admission),
+                    filters: this.configFields['tw'].admission.options,
+                    filterMultiple: false,
+                    onFilter: (value, record) => record.admission == value
                 }, {
                     title: '姓, 名',
                     dataIndex: 'full_name',
