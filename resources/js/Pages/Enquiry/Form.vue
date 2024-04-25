@@ -20,13 +20,12 @@
                     <inertia-link :href="route('language', 'en')" @click="onClickLanguage('en')">{{ $t('english') }}</inertia-link>
                     <inertia-link :href="route('language', 'pt')" @click="onClickLanguage('pt')">{{ $t('portuguese') }}</inertia-link>
                 </div>
-                <a-form ref="refEnquiry" name="enquiry" :model="enquiry" :rules="rules" layout="vertical"
-                    @finish="onFinish">
+                <a-form ref="refEnquiry" name="enquiry" :model="enquiry" :rules="rules" layout="vertical" :validate-messages="validateMessages" @finish="onFinish">
                         <a-typography-title :level="3" class="pb-0">{{ $t('enquiry.welcome_title')}}</a-typography-title>
                         <div v-html="$t('enquiry.welcome_content')"/>
                         <p class="font-bold underline mt-10">{{ $t('enquiry.disclaimer_title') }}</p>
                         <ol class="ml-8">
-                            <li  class="-indent-5" v-for="item in $t('enquiry.disclaimer_list')">
+                            <li  class="-indent-5 text-justify" v-for="item in $t('enquiry.disclaimer_list')">
                                 &#x27A3;<span class="ml-2">{{ item }}</span>
                             </li>
                         </ol>
@@ -35,40 +34,6 @@
                                 <span v-html="fields.privacy.question"></span>
                             </a-checkbox>
                         </a-form-item>
-                    <!-- Backup Chinse and English together
-                    <template v-if="lang=='en'">
-                        <a-typography-title :level="3" class="pb-0">與 “理” 聯繫 Connect with MPU...</a-typography-title>
-                        <p>
-                            歡迎與澳理大聯繫，諮詢學位課程入學事宜，請填寫以下資料，以便澳理大招生專員為你提供適切的入學相關資訊。<br>
-                            Welcome to “Connect with MPU” for Degree Programmes Admission Enquiries. Kindly fill in the information below for further details.
-                        </p>
-                        <p>
-                            感謝對澳門理工大學的支持。<br>
-                            Thank you once again for your interest in MPU.
-                        </p>
-                        <p class="font-bold underline mb-0">資料收集聲明 | Data Collection Statement:</p>
-                        <ol class="ml-8">
-                            <li class="-indent-5">
-                                &#x27A3;<span class="ml-2">澳門理工大學應申請人之要求提供相關學術及行政服務。</span><br>
-                                Macao Polytechnic University (hereafter referred to as “the University”) provides relevant academic and administrative services at the request of applicants.
-                            </li>
-                            <li class="-indent-5">
-                                &#x27A3;<span class="ml-2">澳門理工大學所收集的資料僅用作是次服務之用途。有關資料亦可在澳門理工大學內部及其他具法律規定或獲申請人授權的實體之間傳遞，以達至完成相關程序。網絡傳遞過程未能保證訊息絕對保密，且存在一定程度之風險。</span><br>
-                                The data collected by the University will be used solely for the stated purposes.  They may be transferred within the University or the entities that are in accordance with legal provision or with your prior consent.  It is necessary to note that internet transmission bears risk and may not guarantee absolute confidentiality.
-                            </li>
-                            <li class="-indent-5">
-                                &#x27A3;<span class="ml-2">為提供所要求的服務，有關申請須提供申請人身份識別及使用是次服務相關的資料，未能提供相關資料的申請將不予受理。</span><br>
-                                To enable the provision of the requested services, it is mandatory for the applicants to contain personal-identification and information related to the use of this service.  Applications absent of the stated information will not be processed.
-                            </li>
-                        </ol>
-                        <a-form-item name="privacy">
-                            <a-checkbox v-model:checked="enquiry.privacy">
-                                <span v-html="fields.privacy.question"></span>
-                            </a-checkbox>
-                        </a-form-item>
-                    </template>
-                -->
-
                     <a-form-item name="origin" :label="fields.origin.question" v-if="enquiry.privacy">
                         <a-radio-group v-model:value="enquiry.origin">
                             <a-radio v-for="option in fields.origin.options" :value="option.value" :style="radioStyle">{{
@@ -88,21 +53,12 @@
                                 {{fields.admission.question}}
                             </label>
                             <a-popover :title="$t('doc_id_type')">
-                            <template #content v-if="lang=='tw'">
-                                <p><a href="https://www.mpu.edu.mo/admission_local/zh/index.php" target="_blank">澳門居民身份證</a></p>
-                                <p><a href="https://www.mpu.edu.mo/admission_mainland/zh/index.php"
-                                        target="_blank">中華人民共和國居民身份證</a></p>
-                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">香港居民身份證</a></p>
-                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">台灣居民身份證</a></p>
-                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">外國護照</a></p>
-                            </template>
-                            <template #content v-if="lang=='en'">
-                                <p><a href="https://www.mpu.edu.mo/admission_local/zh/index.php" target="_blank">MACAO ID</a></p>
-                                <p><a href="https://www.mpu.edu.mo/admission_mainland/zh/index.php"
-                                        target="_blank">CHINA ID</a></p>
-                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">HONG KONG ID</a></p>
-                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">TAIWAN ID</a></p>
-                                <p><a href="https://www.mpu.edu.mo/admission_overseas/zh/index.php" target="_blank">PASSPORT</a></p>
+                            <template #content>
+                                <ol>
+                                    <li v-for="item in fields.origin.options" class="mb-2">
+                                        <a :href="item.url">{{ item.label }}</a>
+                                    </li>
+                                </ol>
                             </template>
 
                             <a-button type="link">{{ $t('read_more') }}</a-button>
@@ -235,6 +191,7 @@ export default {
             //lang: this.$page.props.lang,
             fields:[],
             lang: 'tw',
+            admissionLinks:[],
             enquiry: {
                 lang: 'zh',
                 origin: 'MO',
@@ -267,57 +224,35 @@ export default {
                     required: true,
                     message: '必填欄位 Required field.'
                 }],
-                admission: [{
-                    required: true,
-                    message: '必填欄位 Required field.'
-                }],
-                profile: [{
-                    required: true,
-                    message: '必填欄位 Required field.'
-                }],
-                apply: [{
-                    required: true,
-                    message: '必填欄位 Required field.'
-                }],
+                admission: {required: true,},
+                profile: {required: true,},
+                apply: {required: true,},
                 apply_number: [{
                     required: true,
                     pattern: "^[0-9]{6}",
-                    message: '必須為6位數字 6 numeric digits are required.'
                 }],
-                surname: [{
-                    required: true,
-                    message: '必填欄位 Required field.'
-                }],
-                givenname: [{
-                    required: true,
-                    message: '必填欄位 Required field.'
-                }],
+                surname: {required: true,},
+                givenname: {required: true,},
                 email: [{
                     required: true,
                     type: 'email',
-                    message: '必填有效的電郵地址 Required field and must be a valid email.'
                 }],
                 areacode: [{
                     required: true,
                     pattern: /^[0-9]*$/,
-                    message: '必填數字欄位 Required numeric field.'
                 }],
                 phone: [{
                     required: true,
                     pattern: /^[0-9]*$/,
-                    message: '必填數字欄位 Required muneric field.'
                 }],
-                subjects: [{
-                    required: true,
-                    message: '必填欄位 Required field.'
-                }],
+                subjects: {required: true,},
                 agree: [{
                     required: true,
                     validator: ((_rule, value)=>{
                         if(value) return Promise.resolve();
                         return Promise.reject();
                     }),
-                    message: '您需要同意該條款You need to agree to the term.'
+                    //message: '您需要同意該條款You need to agree to the term.'
                 }],
                 privacy: [{
                     required: true,
@@ -325,9 +260,20 @@ export default {
                         if(value) return Promise.resolve();
                         return Promise.reject();
                     }),
-                    message: '您需要同意該條款You need to agree to the term.'
+                    //message: '您需要同意該條款You need to agree to the term.'
                 }]
-            }
+            },
+            validateMessages:{
+                required: '${label} is required!',
+                types: {
+                    email: '${label} is not a valid email!',
+                    number: '${label} is not a valid number!',
+                },
+                number: {
+                    range: '${label} must be between ${min} and ${max}',
+                },
+            },
+
         }
     },
     created() {
@@ -335,6 +281,8 @@ export default {
         console.log(this.$page.props.lang);
         this.phone_country_codes.value.forEach(v => v.label = v.labelZh + '/' + v.labelEn)
         this.fields=this.fields2[this.$page.props.lang]
+        this.admissionLinks=this.fields.origin.options
+       
         console.log(this.fields2)
     },
     mounted() {

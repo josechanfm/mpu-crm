@@ -20,6 +20,7 @@
                     </h3>
                     <p class="text-gray-500 dark:text-gray-400" v-html="faq.answer_zh"></p>
                 </div>
+                
                 <a-form
                     ref="refQuestion"
                     :model="followup"
@@ -32,17 +33,17 @@
                         <!-- dummy row, show the question box directly -->
                     </template>
                     <template v-else>
-                        <p>是否尚有查詢? Still have Questions? </p>
+                        <p>{{this.configFields[$page.props.lang].still_have_question.question}} </p>
                         <a-form-item>
                             <a-radio-group v-model:value="followup.has_question">
-                                <a-radio :value='true'>是 Yes</a-radio>
-                                <a-radio :value='false'>否 No</a-radio>
+                                <a-radio :value='true'>{{ $t('yes') }}</a-radio>
+                                <a-radio :value='false'>{{ $t('no') }}</a-radio>
                             </a-radio-group>
                         </a-form-item>
                     </template>
 
                     <template v-if="followup.has_question">
-                        <label>請寫下你的問題 Please write your question.</label>
+                        <label>{{this.configFields[$page.props.lang].write_question.question}}</label>
                         <a-form-item>
                             <a-textarea v-model:value="followup.content" :rows="10"></a-textarea>
                         </a-form-item>
@@ -51,14 +52,14 @@
                                 <a-upload v-model:file-list="followup.fileList" list-type="picture" :beforeUpload="beforeUpload" :max-count="5">
                                     <a-button>
                                         <upload-outlined></upload-outlined>
-                                        Upload
+                                        {{ $t('upload') }}
                                     </a-button>
                                 </a-upload>
                             </a-form-item>
                         </div>
                     </template>
                     <a-form-item class="text-center">
-                        <a-button type="primary" class="self-end" @click="onSubmits">提交 Submit</a-button>
+                        <a-button type="primary" class="self-end" @click="onSubmits">{{ $t('submit')}}</a-button>
                     </a-form-item>
                 </a-form>
                 
@@ -68,14 +69,16 @@
 </template>
 
 <script>
+import { loadLanguageAsync } from "laravel-vue-i18n";
 import { UploadOutlined } from '@ant-design/icons-vue';
 import { message, Upload } from 'ant-design-vue';
 export default {
     components: {
+        loadLanguageAsync,
         UploadOutlined,
         message
     },
-    props: ['enquiry', 'faqs'],
+    props: ['configFields','enquiry', 'faqs'],
     data() {
         return {
             uploadValidator:{
@@ -92,6 +95,7 @@ export default {
         }
     },
     mounted(){
+        loadLanguageAsync(this.$page.props.lang);
         this.followup.has_question=this.enquiry.subjects.includes('OTH')
     },
     methods: {

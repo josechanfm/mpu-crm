@@ -123,8 +123,17 @@ class EnquiryController extends Controller
                 'message'=>'The enquiry question already submit!'
             ]);
         };
+        $configFields=Config::enquiryFormFields();
+        //dd($fields);
+        if(!isset($configFields) && sizeof($configFields)==0){
+            return Inertia::render('Error',[
+                'message'=>'Enquiry Config missing or data corrupted!'
+            ]);
+        };
+
         $faqs=Faq::getByEnquiry($enquiry);
         return Inertia::render('Enquiry/AnswerQuestion',[
+            'configFields'=>$configFields,
             'enquiry'=>$enquiry,
             'faqs'=>$faqs,
         ]);
@@ -173,7 +182,6 @@ class EnquiryController extends Controller
                 return Inertia::render('Error',[
                     'message'=>'Request prohibited!'
                 ]);
-    
             }
         }else{
             $enquiryQuestion=null;

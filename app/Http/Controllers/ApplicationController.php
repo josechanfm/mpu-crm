@@ -9,6 +9,7 @@ use App\Models\RecApplication;
 use App\Models\RecEducation;
 use App\Models\RecExperience;
 use App\Models\RecProfessional;
+use LdapRecord\Query\Events\Read;
 
 class ApplicationController extends Controller
 {
@@ -82,6 +83,9 @@ class ApplicationController extends Controller
             ]);
         }
         if($page && $page==6 && $application->id){
+            $application->educations;
+            $application->professionals;
+            $application->experiences;
             $application->uploads;
             return Inertia::render('Recruitment/FormSix',[
                 'vacancy'=>$vacancy,
@@ -134,7 +138,6 @@ class ApplicationController extends Controller
                 foreach($application['uploads'] as $upload){
                     //RecExperience::find($edu['id'])->update($exp);
                 }
-                $toPage=7;
             }else{
                 echo response()->json(['message'=>'What do you wanna actually?']);
             }
@@ -162,6 +165,19 @@ class ApplicationController extends Controller
             'application'=>$application
         ]);
 
+    }
+
+    public function fileUpload(Request $request){
+        
+        return response()->json(['message'=>'Upload was successfuly completed!']);    
+        dd($request->file());
+        if($request->hasFile('docOthers')){
+            return response()->json(['message'=>'Upload was successfuly completed!']);    
+        }
+        return response()->json($request->file());
+    }
+    public function fileDelete(){
+        return response()->json('file delete');
     }
 
 }

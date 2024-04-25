@@ -60,6 +60,8 @@ Route::middleware([
         Route::post('save',[\App\Http\Controllers\ApplicationController::class,'save'])->name('application.save');
         Route::post('submit',[\App\Http\Controllers\ApplicationController::class,'submit'])->name('application.submit');
         Route::get('payment',[\App\Http\Controllers\ApplicationController::class,'payment'])->name('application.payment');
+        Route::post('file_upload',[\App\Http\Controllers\ApplicationController::class,'fileUpload'])->name('application.fileUpload');
+        Route::post('file_delete',[\App\Http\Controllers\ApplicationController::class,'fileDelete'])->name('application.fileDelete');
     });
     
     Route::prefix('/member')->group(function(){
