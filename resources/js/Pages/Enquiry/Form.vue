@@ -168,7 +168,7 @@
                     </a-form-item>
                     <br>
                     <a-form-item v-if="enquiry.agree && enquiry.privacy">
-                        <a-button type="primary" html-type="submit">提交 Submit</a-button>
+                        <a-button type="primary" html-type="submit">{{ $t('submit') }}</a-button>
                     </a-form-item>
                 </a-form>
             </div>
