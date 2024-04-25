@@ -12,17 +12,17 @@
                             <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
                         </template>
                         <template v-else-if="column.dataIndex == 'origin'">
-                            {{ optionFind(fields.origin.options, record.origin) }}
+                            <!-- {{ optionFind(fields.origin.options, record.origin) }} -->
                         </template>
                         <template v-else-if="column.dataIndex == 'degree'">
-                            {{ optionFind(fields.degree.options, record.degree) }}
+                            <!-- {{ optionFind(fields.degree.options, record.degree) }} -->
                         </template>
                         <template v-else-if="column.dataIndex == 'full_name'">
                             {{ record.surname }}, {{ record.givenname }}
                         </template>
                         <template v-else-if="column.dataIndex == 'admission'">
                             <template v-if="record.admission">
-                                {{ optionFind(fields.admission.options, record.admission) }}
+                                <!-- {{ optionFind(fields.admission.options, record.admission) }} -->
                             </template>
                         </template>
                         <template v-else-if="column.dataIndex == 'admin_user'">
