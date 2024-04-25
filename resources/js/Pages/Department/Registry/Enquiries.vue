@@ -12,17 +12,17 @@
                             <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
                         </template>
                         <template v-else-if="column.dataIndex == 'origin'">
-                            <!-- {{ optionFind(fields.origin.options, record.origin) }} -->
+                            {{ optionFind(fields.origin.options, record.origin) }}
                         </template>
                         <template v-else-if="column.dataIndex == 'degree'">
-                            <!-- {{ optionFind(fields.degree.options, record.degree) }} -->
+                            {{ optionFind(fields.degree.options, record.degree) }}
                         </template>
                         <template v-else-if="column.dataIndex == 'full_name'">
                             {{ record.surname }}, {{ record.givenname }}
                         </template>
                         <template v-else-if="column.dataIndex == 'admission'">
                             <template v-if="record.admission">
-                                <!-- {{ optionFind(fields.admission.options, record.admission) }} -->
+                                {{ optionFind(fields.admission.options, record.admission) }}
                             </template>
                         </template>
                         <template v-else-if="column.dataIndex == 'admin_user'">
@@ -48,20 +48,20 @@
             <a-form ref="modalRef" :model="modal.data" name="Teacher" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }"
                 autocomplete="off">
                 <a-form-item :label="fields.origin.short">
-                    <!-- {{ optionFind(fields.origin.options, modal.data.origin) }} -->
+                    {{ optionFind(fields.origin.options, modal.data.origin) }}
                 </a-form-item>
                 <a-form-item :label="fields.degree.short">
-                    <!-- {{ optionFind(fields.degree.options, modal.data.degree) }} -->
+                    {{ optionFind(fields.degree.options, modal.data.degree) }}
                 </a-form-item>
                 <a-form-item :label="fields.admission.short" v-if="modal.data.admission">
-                    <!-- {{ optionFind(fields.admission.options, modal.data.admission) }} -->
+                    {{ optionFind(fields.admission.options, modal.data.admission) }}
                 </a-form-item>
                 <a-form-item :label="fields.profile.short">
-                        <!-- {{ optionFind(fields.profile.options, modal.data.profile) }} -->
+                        {{ optionFind(fields.profile.options, modal.data.profile) }}
                         {{ modal.data.profile_other }}
                 </a-form-item>
                 <a-form-item :label="fields.apply.short">
-                    <!-- {{ optionFind(fields.apply.options, modal.data.apply) }} -->
+                    {{ optionFind(fields.apply.options, modal.data.apply) }}
                     {{ modal.data.apply_number }}
                 </a-form-item>
                 <a-form-item :label="fields.surname.short">
@@ -106,9 +106,10 @@ export default {
         loadLanguageAsync,
         dayjs
     },
-    props: ['department', 'enquiriesStat', 'fields'],
+    props: ['department', 'enquiriesStat', 'configFields'],
     data() {
         return {
+            fields:[],
             breadcrumb:[
                 {label:"招生注冊處" ,url:route('registry.dashboard')},
                 {label:"所有查詢" ,url:null},
@@ -178,7 +179,7 @@ export default {
         }
     },
     created() {
-        // this.fields={...this.configFields['tw']}
+        this.fields=this.configFields['tw']
         this.fields.origin.options.forEach(o => o.text = o.label)
         this.fields.degree.options.forEach(o => o.text = o.label)
         this.fields.admission.options.forEach(o => o.text = o.label)
@@ -188,7 +189,6 @@ export default {
     },
     methods: {
         optionFind(options, item) {
-            console.log(options)
             if(options){
                 var label = options.find(option => option.value == item)['label'].split(" ");
                 return label[0];
@@ -196,7 +196,6 @@ export default {
             return null
         },
         getOptionItem(options, item) {
-            console.log(options)
             if(options){
                 var items = options.filter(option => {
                     return item.includes(option['value']);
