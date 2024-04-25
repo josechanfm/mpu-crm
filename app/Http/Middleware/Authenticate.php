@@ -19,7 +19,6 @@ class Authenticate extends Middleware
                 return '/staff/login';
             }
             return '/login';
-            return null;
         }
     }
 }

@@ -96,17 +96,20 @@
 
 <script>
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
+import { loadLanguageAsync } from "laravel-vue-i18n";
 import { defineComponent, reactive } from 'vue';
 import dayjs from 'dayjs';
 
 export default {
     components: {
         DepartmentLayout,
+        loadLanguageAsync,
         dayjs
     },
-    props: ['department', 'enquiriesStat', 'fields'],
+    props: ['department', 'enquiriesStat', 'configFields'],
     data() {
         return {
+            fields:[],
             breadcrumb:[
                 {label:"招生注冊處" ,url:route('registry.dashboard')},
                 {label:"所有查詢" ,url:null},
@@ -136,21 +139,21 @@ export default {
                     title: '證件類別(持有證件)',
                     dataIndex: 'origin',
                     sorter: (a, b) => a.origin.localeCompare(b.origin),
-                    filters: this.fields.origin.options,
+                    filters: this.configFields['tw'].origin.options,
                     filterMultiple: false,
                     onFilter: (value, record) => record.origin == value
                 }, {
                     title: '課程類別(入讀課程)',
                     dataIndex: 'degree',
                     sorter: (a, b) => a.degree.localeCompare(b.degree),
-                    filters: this.fields.degree.options,
+                    filters: this.configFields['tw'].degree.options,
                     filterMultiple: false,
                     onFilter: (value, record) => record.degree == value
                 }, {
                     title: '入學途徑',
                     dataIndex: 'admission',
                     sorter: (a, b) => a.admission.localeCompare(b.admission),
-                    filters: this.fields.admission.options,
+                    filters: this.configFields['tw'].admission.options,
                     filterMultiple: false,
                     onFilter: (value, record) => record.admission == value
                 }, {
@@ -176,9 +179,17 @@ export default {
         }
     },
     created() {
+        console.log(this.$page);
+
+        this.fields=this.configFields[this.$page.props.lang]
+        console.log(this.fields);
         this.fields.origin.options.forEach(o => o.text = o.label)
         this.fields.degree.options.forEach(o => o.text = o.label)
         this.fields.admission.options.forEach(o => o.text = o.label)
+    },
+    mounted(){
+        loadLanguageAsync(this.$page.props.lang)
+
     },
     methods: {
         optionFind(options, item) {

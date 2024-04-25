@@ -37,6 +37,7 @@ class HandleInertiaAdminRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
+            'lang' => session('applocale')??app()->getLocale(),
             'currentUser' => $request->user(),
             'currentUser.roles' => $request->user() ? $request->user()->roles->pluck('name') : [],
 

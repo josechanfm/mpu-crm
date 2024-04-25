@@ -117,20 +117,23 @@
 
 <script>
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
+import { loadLanguageAsync } from "laravel-vue-i18n";
 import { defineComponent, reactive } from 'vue';
 import dayjs from 'dayjs';
 
 export default {
     components: {
         DepartmentLayout,
+        loadLanguageAsync
     },
-    props: ['department','fields'],
+    props: ['department','configFields'],
     data() {
         return {
             breadcrumb:[
                 {label:"招生注冊處" ,url:route('registry.dashboard')},
                 {label:"須回應提問" ,url:null},
             ],
+            fields:[],
             modal:{
                 isOpen:false,
                 data:{},
@@ -150,19 +153,19 @@ export default {
                     title: '查詢編號',
                     dataIndex: 'enquiry_id',
                 },{
-                    title: '證件類別('+this.fields.origin.short+')',
+                    title: '證件類別('+this.configFields[this.$page.props.lang].origin.short+')',
                     dataIndex: 'origin',
                     sorter: (a, b) => a.enquiry.origin.localeCompare(b.enquiry.origin),
-                    filters: this.fields.origin.options,
+                    filters: this.configFields[this.$page.props.lang].origin.options,
                     filterMultiple: false,
                     onFilter: (value, record) => record.enquiry.origin == value
 
                 },{
-                    title: this.fields.admission.short,
+                    title: this.configFields[this.$page.props.lang].admission.short,
                     dataIndex: 'admission',
                     sorter: (a, b) => a.enquiry.admission.localeCompare(b.enquiry.admission)
                 },{
-                    title: this.fields.degree.short,
+                    title: this.configFields[this.$page.props.lang].degree.short,
                     dataIndex: 'degree',
                     sorter: (a, b) => a.enquiry.degree.localeCompare(b.enquiry.degree)
                 },{
@@ -200,9 +203,14 @@ export default {
         }
     },
     created(){
+        console.log(this.$page.props);
+        this.fields=this.configFields[this.$page.props.lang]
         this.fields.origin.options.forEach(o => o.text = o.label)
         this.fields.degree.options.forEach(o => o.text = o.label)
         this.fields.admission.options.forEach(o => o.text = o.label)
+    },
+    mounted(){
+        loadLanguageAsync(this.$page.props.lang)
     },
     methods: {
         optionFind(options,item){
