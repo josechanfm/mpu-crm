@@ -49,11 +49,11 @@
                             <td></td>
                             <td>
                                 <a-upload
-                                    v-model:file-list="docOthers"
-                                    name="file"
+                                    name="docOthers"
+                                    :action="''"
                                     :multiple="true"
-                                    :customRequest="{uploadFiles}"
-                                    @change="onChangeUpload"
+                                    :beforeUpload="handleBeforeUpload"
+                                    :customRequest="handleCustomeRequest"
                                 >
                                     <a-button>
                                     <upload-outlined></upload-outlined>
@@ -171,10 +171,42 @@ export default {
                 }
             });
         },
+        handleBeforeUpload(file){
+            // console.log('before upload');
+            // console.log(file);
+            return true
+        },
+        handleCustomeRequest({file,onSuccess,onError}){
+            console.log('handlecustomeRequest')
+            console.log(file)
+            const formData = new FormData();
+            formData.append('file', file);
+
+            this.$inertia.post(route('application.fileUpload'),formData,{
+                onSuccess: (page)=>{
+                    console.log(page)
+                },
+                onError:(err)=>{
+                    console.log(err);
+                }
+
+            })
+            axios.post('file_upload', formData)
+            .then(response => {
+                console.log(response.data)
+                // Handle the successful upload
+                onSuccess(response.data);
+            })
+            .catch(error => {
+                // Handle upload errors
+                onError(error);
+            });
+        },
         uploadfiles(options){
             console.log(options)
         },
         onChangeUpload(info){
+            console.log('onchnageupload')
             console.log(info)
             const status = info.file.status;
             if (status !== 'uploading') {

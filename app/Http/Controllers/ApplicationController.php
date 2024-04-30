@@ -169,8 +169,8 @@ class ApplicationController extends Controller
 
     public function fileUpload(Request $request){
         
+        dd($request->file(''));
         return response()->json(['message'=>'Upload was successfuly completed!']);    
-        dd($request->file());
         if($request->hasFile('docOthers')){
             return response()->json(['message'=>'Upload was successfuly completed!']);    
         }

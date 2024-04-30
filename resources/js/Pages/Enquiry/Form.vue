@@ -10,6 +10,7 @@
         </div>
     </div>
     <div class="py-12">
+        
         <div class="lg:hidden text-2xl text-center font-medium text-slate-500">
             {{  $t('enquiry.title') }}
         </div>
@@ -264,13 +265,14 @@ export default {
                 }]
             },
             validateMessages:{
-                required: '${label} is required!',
+                required: '${label} '+this.$t('is_required'),
                 types: {
-                    email: '${label} is not a valid email!',
-                    number: '${label} is not a valid number!',
+                    email: '${label} '+this.$t('is_not_email'),
+                    number: '${label} '+this.$t('is_no_number'),
                 },
                 number: {
-                    range: '${label} must be between ${min} and ${max}',
+                    //range: '${label} must be between ${min} and ${max}',
+                    range: '${label} '+this.$t('must_between')+' ${min} - ${max}',
                 },
             },
 
@@ -282,8 +284,6 @@ export default {
         this.phone_country_codes.value.forEach(v => v.label = v.labelZh + '/' + v.labelEn)
         this.fields=this.fields2[this.$page.props.lang]
         this.admissionLinks=this.fields.origin.options
-       
-        console.log(this.fields2)
     },
     mounted() {
         loadLanguageAsync(this.$page.props.lang);

@@ -26,7 +26,7 @@ class FaqController extends Controller
         $department=Department::where('abbr','DAMIA')->with('faqs')->first();
         return Inertia::render('Department/Registry/Faqs',[
             'department'=>$department,
-            'fields'=>Config::enquiryFormFields()
+            'fields'=>Config::enquiryFormFields()['tw']
         ]);
     }
 
