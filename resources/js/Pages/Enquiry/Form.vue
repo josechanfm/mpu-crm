@@ -2,122 +2,129 @@
     <div class="flex justify-between bg-gray-200">
         <div class="p-5">
             <a href="/">
-            <img src="/images/mpu_banner.png" width="300" />
-        </a>
+                <img src="/images/mpu_banner.png" width="300" />
+            </a>
         </div>
         <div class="hidden lg:block lg:p-10 lg:text-4xl font-medium text-slate-500">
-            {{  $t('enquiry.title') }}
+            {{ $t('enquiry.title') }}
         </div>
     </div>
     <div class="py-12">
-        
+
         <div class="lg:hidden text-2xl text-center font-medium text-slate-500">
-            {{  $t('enquiry.title') }}
+            {{ $t('enquiry.title') }}
         </div>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
                 <div class="flex space-x-4 float-right">
-                    <inertia-link :href="route('language', 'tw')" @click="onClickLanguage('tw')">{{ $t('chinese') }}</inertia-link>
-                    <inertia-link :href="route('language', 'en')" @click="onClickLanguage('en')">{{ $t('english') }}</inertia-link>
-                    <inertia-link :href="route('language', 'pt')" @click="onClickLanguage('pt')">{{ $t('portuguese') }}</inertia-link>
+                    <inertia-link :href="route('language', 'zh')">{{ $t('chinese') }}</inertia-link>
+                    <inertia-link :href="route('language', 'en')">{{ $t('english') }}</inertia-link>
+                    <inertia-link :href="route('language', 'pt')">{{ $t('portuguese') }}</inertia-link>
                 </div>
-                <a-form ref="refEnquiry" name="enquiry" :model="enquiry" :rules="rules" layout="vertical" :validate-messages="validateMessages" @finish="onFinish">
-                        <a-typography-title :level="3" class="pb-0">{{ $t('enquiry.welcome_title')}}</a-typography-title>
-                        <div v-html="$t('enquiry.welcome_content')"/>
-                        <p class="font-bold underline mt-10">{{ $t('enquiry.disclaimer_title') }}</p>
-                        <ol class="ml-8">
-                            <li  class="-indent-5 text-justify" v-for="item in $t('enquiry.disclaimer_list')">
-                                &#x27A3;<span class="ml-2">{{ item }}</span>
-                            </li>
-                        </ol>
-                        <a-form-item name="privacy">
-                            <a-checkbox v-model:checked="enquiry.privacy">
-                                <span v-html="fields.privacy.question"></span>
-                            </a-checkbox>
-                        </a-form-item>
-                    <a-form-item name="origin" :label="fields.origin.question" v-if="enquiry.privacy">
+                <a-form ref="refEnquiry" name="enquiry" 
+                    :model="enquiry" 
+                    
+                    layout="vertical"
+                    @finish="onFinish">
+                    <a-typography-title :level="3" class="pb-0">{{ $t('enquiry.welcome_title') }}</a-typography-title>
+                    <div v-html="$t('enquiry.welcome_content')" />
+                    <p class="font-bold underline mt-10">{{ $t('enquiry.disclaimer_title') }}</p>
+                    <ol class="ml-8">
+                        <li class="-indent-5 text-justify" v-for="item in $t('enquiry.disclaimer_list')">
+                            &#x27A3;<span class="ml-2">{{ item }}</span>
+                        </li>
+                    </ol>
+
+                    <a-form-item name="privacy">
+                        <a-checkbox v-model:checked="enquiry.privacy">
+                            <span v-html="fields.privacy['question_' + $t('lang')]"></span>
+                        </a-checkbox>
+                    </a-form-item>
+                    <a-form-item name="origin" :label="fields.origin['question_' + $t('lang')]" v-if="enquiry.privacy">
                         <a-radio-group v-model:value="enquiry.origin">
-                            <a-radio v-for="option in fields.origin.options" :value="option.value" :style="radioStyle">{{
-                                option.label }}</a-radio>
+                            <a-radio v-for="option in fields.origin.options" :value="option.value"
+                                :style="radioStyle">{{option['label_' + $t('lang')] }}</a-radio>
                         </a-radio-group>
                     </a-form-item>
-                    <a-form-item name="degree" :label="fields.degree.question" v-if="enquiry.origin">
+                    <a-form-item name="degree" :label="fields.degree['question_' + $t('lang')]" v-if="enquiry.origin">
                         <a-radio-group v-model:value="enquiry.degree" @change="delete enquiry.admission">
-                            <a-radio v-for="option in fields.degree.options" :value="option.value" :style="radioStyle">{{
-                                option.label }}</a-radio>
+                            <a-radio v-for="option in fields.degree.options" :value="option.value"
+                                :style="radioStyle">{{option['label_' + $t('lang')] }}</a-radio>
                         </a-radio-group>
                     </a-form-item>
 
-                    <a-form-item name="admission" v-if="enquiry.degree=='B'">
+                    <a-form-item name="admission" v-if="enquiry.degree == 'B'">
                         <div class="ant-col ant-form-item-label">
-                            <label for="enquiry_admission" class="ant-form-item-required" title="入學途徑 Admission route">
-                                {{fields.admission.question}}
+
+                            <label for="enquiry_admission" class="ant-form-item-required">
+                                {{ fields.admission['question_' + $t('lang')] }}
                             </label>
                             <a-popover :title="$t('doc_id_type')">
-                            <template #content>
-                                <ol>
-                                    <li v-for="item in fields.origin.options" class="mb-2">
-                                        <a :href="item.url">{{ item.label }}</a>
-                                    </li>
-                                </ol>
-                            </template>
-
-                            <a-button type="link">{{ $t('read_more') }}</a-button>
-                        </a-popover>
+                                <template #content>
+                                    <ol>
+                                        <li v-for="item in fields.origin.options" class="mb-2">
+                                            <a :href="item.url">{{ item['label_' + $t('lang')] }}</a>
+                                        </li>
+                                    </ol>
+                                </template>
+                                <a-button type="link">{{ $t('read_more') }}</a-button>
+                            </a-popover>
                         </div>
                         <a-radio-group v-model:value="enquiry.admission" class="w-full">
-                            <template v-if="enquiry.origin == 'MO' && enquiry.degree=='B'">
+                            <template v-if="enquiry.origin == 'MO' && enquiry.degree == 'B'">
                                 <a-radio :value="fields.admission.options[0].value" :style="radioStyle">
-                                    {{ fields.admission.options[0].label }} {{ fields.admission.options[0].remark }}
+                                    {{ fields.admission.options[0]['label_' + $t('lang')] }}
                                 </a-radio>
                                 <a-radio :value="fields.admission.options[1].value" :style="radioStyle">
-                                    {{ fields.admission.options[1].label }} {{ fields.admission.options[1].remark }}
+                                    {{ fields.admission.options[1]['label_' + $t('lang')] }}
                                 </a-radio>
                                 <a-radio :value="fields.admission.options[2].value" :style="radioStyle">
-                                    {{ fields.admission.options[2].label }} {{ fields.admission.options[2].remark }}
+                                    {{ fields.admission.options[2]['label_' + $t('lang')] }}
                                 </a-radio>
                                 <a-radio :value="fields.admission.options[3].value" :style="radioStyle">
-                                    {{ fields.admission.options[3].label }} {{ fields.admission.options[3].remark }}
+                                    {{ fields.admission.options[3]['label_' + $t('lang')] }}
                                 </a-radio>
                                 <a-radio :value="fields.admission.options[4].value">
-                                    {{ fields.admission.options[4].label }} {{ fields.admission.options[4].remark }}
+                                    {{ fields.admission.options[4]['label_' + $t('lang')] }}
                                 </a-radio>
                             </template>
-                            <template v-else-if="enquiry.origin == 'CN' && enquiry.degree=='B'">
+                            <template v-else-if="enquiry.origin == 'CN' && enquiry.degree == 'B'">
                                 <a-radio :value="fields.admission.options[5].value" :style="radioStyle">
-                                    {{ fields.admission.options[5].label }} {{ fields.admission.options[5].remark }}
+                                    {{ fields.admission.options[5]['label_' + $t('lang')] }}
                                 </a-radio>
                                 <a-radio :value="fields.admission.options[6].value">
-                                    {{ fields.admission.options[6].label }} {{ fields.admission.options[6].remark }}
+                                    {{ fields.admission.options[6]['label_' + $t('lang')] }}
                                 </a-radio>
                             </template>
                             <template v-else>
                                 <a-radio :value="fields.admission.options[7].value" :style="radioStyle">
-                                    {{ fields.admission.options[7].label }} {{ fields.admission.options[7].remark }}
+                                    {{ fields.admission.options[7]['label_' + $t('lang')] }}
                                 </a-radio>
                                 <a-radio :value="fields.admission.options[8].value" :style="radioStyle">
-                                    {{ fields.admission.options[8].label }} {{ fields.admission.options[8].remark }}
+                                    {{ fields.admission.options[8]['label_' + $t('lang')] }}
                                 </a-radio>
                             </template>
                         </a-radio-group>
                     </a-form-item>
-                    <a-form-item name="profile" :label="fields.profile.question"
+                    <a-form-item name="profile" :label="fields.profile['question_' + $t('lang')]"
                         v-if="enquiry.admission || (enquiry.degree && enquiry.degree != 'B')">
                         <a-radio-group v-model:value="enquiry.profile" @change="delete enquiry.profile_other">
-                            <a-radio v-for="option in fields.profile.options" :value="option.value" :style="radioStyle">{{
-                                option.label }}</a-radio>
+                            <a-radio v-for="option in fields.profile.options" :value="option.value"
+                                :style="radioStyle">{{ option['label_' + $t('lang')] }}</a-radio>
                             <a-input v-if="enquiry.profile === 'OTH'" style="width: 300px; margin-left: 10px"
                                 v-model:value="enquiry.profile_other" />
                         </a-radio-group>
                     </a-form-item>
-                    <a-form-item name="apply" :label="fields.apply.question" v-if="enquiry.profile">
-                        <a-radio-group v-model:value="enquiry.apply" @change="enquiry.apply_number=null">
-                            <a-radio v-for="option in fields.apply.options" :value="option.value" :style="radioStyle">{{
-                                option.label }}
+                    
+                    <a-form-item name="apply" :label="fields.apply['question_' + $t('lang')]" v-if="enquiry.profile">
+                        <a-radio-group v-model:value="enquiry.apply" @change="enquiry.apply_number = null">
+                            <a-radio v-for="option in fields.apply.options" :value="option.value" :style="radioStyle">
+                                {{ option['label_' + $t('lang')] }}
                             </a-radio>
                             <template v-if="enquiry.apply">
                                 <a-form-item name="apply_number">
-                                    <a-input style="width: 100px; margin-left: 10px" v-model:value="enquiry.apply_number" />
+                                    <a-input style="width: 100px; margin-left: 10px"
+                                        v-model:value="enquiry.apply_number" />
                                     {{ fields.apply.other.label }}
                                 </a-form-item>
                             </template>
@@ -127,44 +134,57 @@
                     <template v-if="enquiry.apply != null">
                         <a-row :gutter="24">
                             <a-col :span="12">
-                                <a-form-item name="surname" :label="fields.surname.question">
+                                <a-form-item name="surname" 
+                                    :label="fields.surname['question_' + $t('lang')]" 
+                                    :rules="{required:true, message:fields.surname['question_' + $t('lang')] + $t('is_required')}">
                                     <a-input v-model:value="enquiry.surname" />
                                 </a-form-item>
                             </a-col>
                             <a-col :span="12">
-                                <a-form-item name="givenname" :label="fields.givenname.question">
+                                <a-form-item name="givenname" 
+                                    :label="fields.givenname['question_' + $t('lang')]"
+                                    :rules="{required:true, message:fields.givenname['question_' + $t('lang')] + $t('is_required')}">
                                     <a-input v-model:value="enquiry.givenname" />
                                 </a-form-item>
                             </a-col>
                         </a-row>
-                        <a-form-item name="email" :label="fields.email.question">
+                        <a-form-item name="email" 
+                            :label="fields.email['question_' + $t('lang')]"
+                            :rules="{required:true, message:fields.email['question_' + $t('lang')] + $t('is_required')}">
                             <a-input v-model:value="enquiry.email" />
                         </a-form-item>
-                        <label>{{ fields.contact_number.question }}</label>
+                        <label>{{ fields.contact_number['question_' + $t('lang')] }}</label>
                         <a-row :gutter="24">
                             <a-col :span="12">
-                                <a-form-item name="areacode" :label="fields.areacode.question">
+                                <a-form-item name="areacode" 
+                                    :label="fields.areacode['question_' + $t('lang')]"
+                                    :rules="{required:true, message:fields.areacode['question_' + $t('lang')] + $t('is_required')}">
                                     <a-select v-model:value="enquiry.areacode" :options="phone_country_codes.value"
                                         :fieldNames="{ label: 'label', value: 'countryCode' }" />
 
                                 </a-form-item>
                             </a-col>
                             <a-col :span="12">
-                                <a-form-item name="phone" :label="fields.phone.question">
+                                <a-form-item name="phone" 
+                                    :label="fields.phone['question_' + $t('lang')]"
+                                    :rules="{required:true, message:fields.phone['question_' + $t('lang')] + $t('is_required')}">
                                     <a-input v-model:value="enquiry.phone" />
                                 </a-form-item>
                             </a-col>
                         </a-row>
                     </template>
-                    <a-form-item name="subjects" :label="fields.subjects.question" v-if="enquiry.apply != null">
+                    <a-form-item name="subjects" 
+                        v-if="enquiry.apply != null"
+                        :label="fields.subjects['question_' + $t('lang')]"
+                        :rules="{required:true, message:fields.subjects['question_' + $t('lang')] + $t('is_required')}">
                         <a-checkbox-group v-model:value="enquiry.subjects" style="width: 100%">
                             <a-checkbox v-for="option in fields.subjects.options" :value="option.value"
-                                :style="radioStyle">{{ option.label }}</a-checkbox>
+                                :style="radioStyle">{{ option['label_' + $t('lang')] }}</a-checkbox>
                         </a-checkbox-group>
                     </a-form-item>
                     <a-form-item name="agree" v-if="enquiry.subjects">
                         <a-checkbox v-model:checked="enquiry.agree">
-                            <span v-html="fields.agree.question"></span>
+                            <span v-html="fields.agree['question_' + $t('lang')]"></span>
                         </a-checkbox>
                     </a-form-item>
                     <br>
@@ -186,13 +206,12 @@ export default {
     components: {
         loadLanguageAsync
     },
-    props: ['fields2', 'faqs', 'phone_country_codes'],
+    props: ['fields', 'faqs', 'phone_country_codes'],
     data() {
         return {
             //lang: this.$page.props.lang,
-            fields:[],
-            lang: 'tw',
-            admissionLinks:[],
+            //fields:[],
+            admissionLinks: [],
             enquiry: {
                 lang: 'zh',
                 origin: 'MO',
@@ -225,15 +244,15 @@ export default {
                     required: true,
                     message: '必填欄位 Required field.'
                 }],
-                admission: {required: true,},
-                profile: {required: true,},
-                apply: {required: true,},
+                admission: { required: true, },
+                profile: { required: true, },
+                apply: { required: true, },
                 apply_number: [{
                     required: true,
                     pattern: "^[0-9]{6}",
                 }],
-                surname: {required: true,},
-                givenname: {required: true,},
+                surname: { required: true, },
+                givenname: { required: true, },
                 email: [{
                     required: true,
                     type: 'email',
@@ -246,48 +265,48 @@ export default {
                     required: true,
                     pattern: /^[0-9]*$/,
                 }],
-                subjects: {required: true,},
+                subjects: { required: true, },
                 agree: [{
                     required: true,
-                    validator: ((_rule, value)=>{
-                        if(value) return Promise.resolve();
+                    validator: ((_rule, value) => {
+                        if (value) return Promise.resolve();
                         return Promise.reject();
                     }),
                     //message: '您需要同意該條款You need to agree to the term.'
                 }],
                 privacy: [{
                     required: true,
-                    validator: ((_rule, value)=>{
-                        if(value) return Promise.resolve();
+                    validator: ((_rule, value) => {
+                        if (value) return Promise.resolve();
                         return Promise.reject();
                     }),
                     //message: '您需要同意該條款You need to agree to the term.'
                 }]
             },
-            validateMessages:{
-                required: '${label} '+this.$t('is_required'),
+            validateMessages: {
+                required: '${label} ' + this.$t('is_required'),
                 types: {
-                    email: '${label} '+this.$t('is_not_email'),
-                    number: '${label} '+this.$t('is_no_number'),
+                    email: '${label} ' + this.$t('is_not_email'),
+                    number: '${label} ' + this.$t('is_no_number'),
                 },
                 number: {
                     //range: '${label} must be between ${min} and ${max}',
-                    range: '${label} '+this.$t('must_between')+' ${min} - ${max}',
+                    range: '${label} ' + this.$t('must_between') + ' ${min} - ${max}',
                 },
             },
 
         }
     },
     created() {
-        this.lang=this.$page.props.lang
-        console.log(this.$page.props.lang);
-        this.phone_country_codes.value.forEach(v => v.label = v.labelZh + '/' + v.labelEn)
-        this.fields=this.fields2[this.$page.props.lang]
-        this.admissionLinks=this.fields.origin.options
+        
+        loadLanguageAsync(this.$page.props.lang)
+        console.log(this.validateMessages);
+        this.phone_country_codes.value.forEach(v => v.label = v.label_zh + '/' + v.label_en)
+        this.admissionLinks = this.fields.origin.options
+        this.enquiry = {};
     },
     mounted() {
-        loadLanguageAsync(this.$page.props.lang);
-        this.enquiry = {};
+        //this.$inertia.get(route('language','zh'))
     },
     methods: {
         onFinish() {
@@ -301,13 +320,9 @@ export default {
                 }
             });
         },
-        onChangeDegree(){
+        onChangeDegree() {
             delete this.enquiry.admission
         },
-        onClickLanguage(lang){
-            this.lang=lang;
-            console.log(lang)
-        }
     },
 }
 </script>

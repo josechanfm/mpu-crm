@@ -21,15 +21,16 @@ class EnquiryController extends Controller
      */
     public function index()
     {
+        
         $fields=Config::enquiryFormFields();
-        //dd($fields);
+        
         if(!isset($fields) && sizeof($fields)==0){
             return Inertia::render('Error',[
                 'message'=>'Enquiry Config missing or data corrupted!'
             ]);
         };
         return Inertia::render('Enquiry/Form',[
-            'fields2'=>$fields,
+            'fields'=>$fields,
             'phone_country_codes'=>Config::item('phone_country_codes'),
         ]);
 

@@ -1,8 +1,12 @@
 {
+    "lang":"en",
     "chinese":"中文",
     "english":"English",
     "portuguese":"Português",
     "is_required":" is required",
+    "is_not_email":" is not a valid email",
+    "is_not_number":" is not a valid number",
+    "must_between":" must between numbers of",
     "yes":"Yes",
     "no":"No",
     "upload":"Upload",

@@ -14,27 +14,28 @@ class Config extends Model
         return Config::where('key',$key)->first();
     }
     public static function enquiryFormFields(){
-        $items=Config::where('key','enquiry_form')->get()->groupBy('lang');
-        $fields=[];
-        forEach($items as $lang=>$group){
-            $fields[$lang]=[];
-            forEach($group as $g){
-                $fields[$lang][$g->label]=$g->value;
-            }
-            // $tmp=array_column($group->toArray(),null,'label');
-            // $fields[$lang]=[];
-            // forEach($tmp as $key=>$t){
-            //     dd($key);
-            //     $fields[$lang][]=$t['value'];
-            // }
-        }
+        $items=Config::where('key','enquiry_form')->get();
+        // return $items;
+        // $fields=[];
+        // forEach($items as $lang=>$group){
+        //     $fields[$lang]=[];
+        //     forEach($group as $g){
+        //         $fields[$lang][$g->label]=$g->value;
+        //     }
+        //     // $tmp=array_column($group->toArray(),null,'label');
+        //     // $fields[$lang]=[];
+        //     // forEach($tmp as $key=>$t){
+        //     //     dd($key);
+        //     //     $fields[$lang][]=$t['value'];
+        //     // }
+        // }
         
-        // $fields=Config::where('key','enquiry_form')->get()->toArray();
-        // dd(array_column($fields,null,'lang'));
-        // $fields=array_column($fields,null,'label');
-        // $fields=array_map(function($field){
-        //      return $field['value'];
-        // },$fields);
+        $fields=Config::where('key','enquiry_form')->get()->toArray();
+        
+        $fields=array_column($fields,null,'label');
+        $fields=array_map(function($field){
+             return $field['value'];
+        },$fields);
         return $fields;
     }
     public static function enquirySubjects(){
