@@ -298,7 +298,6 @@ export default {
         }
     },
     created() {
-        
         loadLanguageAsync(this.$page.props.lang)
         console.log(this.validateMessages);
         this.phone_country_codes.value.forEach(v => v.label = v.label_zh + '/' + v.label_en)

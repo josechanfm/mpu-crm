@@ -16,9 +16,9 @@
                                 d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        {{ faq.question_zh }}
+                        {{ faq['question_'+$t('lang')] }}
                     </h3>
-                    <p class="text-gray-500 dark:text-gray-400" v-html="faq.answer_zh"></p>
+                    <p class="text-gray-500 dark:text-gray-400" v-html="faq['answer_'+$t('lang')]"></p>
                 </div>
                 
                 <a-form
@@ -33,7 +33,7 @@
                         <!-- dummy row, show the question box directly -->
                     </template>
                     <template v-else>
-                        <p>{{this.configFields[$page.props.lang].still_have_question.question}} </p>
+                        <p>{{this.configFields.still_have_question['question_'+$t('lang')]}} </p>
                         <a-form-item>
                             <a-radio-group v-model:value="followup.has_question">
                                 <a-radio :value='true'>{{ $t('yes') }}</a-radio>
@@ -43,7 +43,7 @@
                     </template>
 
                     <template v-if="followup.has_question">
-                        <label>{{this.configFields[$page.props.lang].write_question.question}}</label>
+                        <label>{{this.configFields.write_question['question_'+$t('lang')]}}</label>
                         <a-form-item>
                             <a-textarea v-model:value="followup.content" :rows="10"></a-textarea>
                         </a-form-item>

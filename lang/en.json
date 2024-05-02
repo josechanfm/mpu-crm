@@ -26,6 +26,8 @@
     "doc_id_type":"Id type",
     "enquiry":"Enquiry",
     "response":"Response",
+    "response_title":"Response Title",
+    "response_content":"Reponse Content",
     "enquiry.title":"Degree Programme Admission Enquiries",
     "enquiry.welcome_title":"Connect with MPU",
     "enquiry.welcome_content":"Welcome to “Connect with MPU” for Degree Programmes Admission Enquiries. Kindly fill in the information below for further details.<br>Thank you once again for your interest in MPU.",

@@ -26,6 +26,8 @@
     "doc_id_type":"證件類別",
     "enquiry":"查詢",
     "response":"回應",
+    "response_title":"回應標題",
+    "response_content":"回應內容",
     "enquiry.title":"學位課程入學諮詢",
     "enquiry.welcome_title":"與 “理” 聯繫",
     "enquiry.welcome_content":"歡迎與澳理大聯繫，諮詢學位課程報考事宜，請填寫以下資料，以便澳理大招生專員為你提供適切的報考入學相關資訊。<br>感謝對澳門理工大學的支持。",

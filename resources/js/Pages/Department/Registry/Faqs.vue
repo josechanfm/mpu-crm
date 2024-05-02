@@ -42,16 +42,36 @@
                 <a-form-item label="課程類別" name="degrees" :rules="{ required: true }">
                     <a-select mode="multiple" v-model:value="modal.data.degrees" :options="fields.degree.options"  :fieldNames="{value:'value',label:'label_zh'}"/>
                 </a-form-item>
-
                 <a-form-item label="問題主旨" name="subjects" :rules="{ required: true }">
                     <a-select mode="multiple" v-model:value="modal.data.subjects" :options="fields.subjects.options"  :fieldNames="{value:'value',label:'label_zh'}"/>
                 </a-form-item>
-                <a-form-item label="回應標題" name="question_zh" :rules="{ required: true }">
-                    <a-input v-model:value="modal.data.question_zh" />
-                </a-form-item>
-                <a-form-item label="回應內容" name="answer_zh" :rules="{ required: true }">
-                    <quill-editor v-model:value="modal.data.answer_zh" style="min-height:200px;" />
-                </a-form-item>
+                <a-tabs>
+                    <a-tab-pane key="1" :tab="$t('chinese')">
+                        <a-form-item :label="$t('response_title')" name="question_zh" :rules="{ required: true }">
+                            <a-input v-model:value="modal.data.question_zh" />
+                        </a-form-item>
+                        <a-form-item :label="$t('response_content')" name="answer_zh" :rules="{ required: true }">
+                            <quill-editor v-model:value="modal.data.answer_zh" style="min-height:200px;" />
+                        </a-form-item>
+                    </a-tab-pane>
+                    <a-tab-pane key="2" :tab="$t('english')" >
+                        <a-form-item :label="$t('response_title')" name="question_en" :rules="{ required: true }">
+                            <a-input v-model:value="modal.data.question_en" />
+                        </a-form-item>
+                        <a-form-item :label="$t('response_content')" name="answer_en" :rules="{ required: true }">
+                            <quill-editor v-model:value="modal.data.answer_en" style="min-height:200px;" />
+                        </a-form-item>
+                    </a-tab-pane>
+                    <a-tab-pane key="3" :tab="$t('portuguese')">
+                        <a-form-item :label="$t('response_title')" name="question_pt" :rules="{ required: true }">
+                            <a-input v-model:value="modal.data.question_pt" />
+                        </a-form-item>
+                        <a-form-item :label="$t('response_content')" name="answer_pt" :rules="{ required: true }">
+                            <quill-editor v-model:value="modal.data.answer_pt" style="min-height:200px;" />
+                        </a-form-item>
+                    </a-tab-pane>
+                </a-tabs>
+                {{ withErrors }}
                 <a-form-item label="有效/無效" name="valid" :rules="{ required: true }">
                     <a-switch v-model:checked="modal.data.valid" checked-children="有效" un-checked-children="無效" />
                 </a-form-item>
@@ -70,9 +90,11 @@
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
 import { quillEditor } from 'vue3-quill';
 import dayjs from 'dayjs';
+import { loadLanguageAsync } from "laravel-vue-i18n";
 
 export default {
     components: {
+        loadLanguageAsync,
         DepartmentLayout,
         quillEditor
     },
@@ -84,6 +106,7 @@ export default {
                 { label: "常見問題", url: null },
             ],
             dateFormat: 'YY-MM-DD HH:mm',
+            withErrors:null,
             modal: {
                 isOpen: false,
                 data: {},
@@ -134,13 +157,13 @@ export default {
                 state: { required: true },
             },
             validateMessages: {
-                required: '${label} is required!',
+                required: '${label} ' + this.$t('is_required'),
                 types: {
-                    email: '${label} is not a valid email!',
-                    number: '${label} is not a valid number!',
+                    email: '${label} ' + this.$t('is_not_email'),
+                    number: '${label} ' + this.$t('is_not_number'),
                 },
                 number: {
-                    range: '${label} must be between ${min} and ${max}',
+                    range: '${label} ' + this.$t('must_between') + ' ${min} - ${max}',
                 },
             },
         }
@@ -149,6 +172,7 @@ export default {
         this.fields.origin.options.forEach(o => o.text = o.label)
         this.fields.degree.options.forEach(o => o.text = o.label)
         this.fields.subjects.options.forEach(o => o.text = o.label)
+        loadLanguageAsync(this.$page.props.lang)
     },
     methods: {
         createRecord() {
