@@ -63,7 +63,7 @@
                                 <template #content>
                                     <ol>
                                         <li v-for="item in fields.origin.options" class="mb-2">
-                                            <a :href="item.url">{{ item['label_' + $t('lang')] }}</a>
+                                            <a :href="item.url" target="_blank">{{ item['label_' + $t('lang')] }}</a>
                                         </li>
                                     </ol>
                                 </template>
