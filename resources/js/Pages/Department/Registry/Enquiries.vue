@@ -5,7 +5,7 @@
                 <a-table :dataSource="enquiriesStat" :columns="columns" :rowKey="record => record.id" @change="handleTableChange">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <a-button @click="viewRecord(record)">View</a-button>
+                            <a-button @click="viewRecord(record)">{{$t('view')}}</a-button>
                         </template>
                         <template v-else-if="column.dataIndex == 'created_at'">
                             {{ dateFormat(record.created_at) }}
@@ -87,7 +87,7 @@
                 </a-form-item>
             </a-form>
             <template #footer>
-                <a-button @click="modal.isOpen = false">Close</a-button>
+                <a-button @click="modal.isOpen = false">{{ $t('close')}}</a-button>
             </template>
         </a-modal>
         <!-- Modal End-->
@@ -139,21 +139,21 @@ export default {
                     title: '證件類別(持有證件)',
                     dataIndex: 'origin',
                     sorter: (a, b) => a.origin.localeCompare(b.origin),
-                    filters: this.configFields['tw'].origin.options,
+                    filters: this.configFields.origin.options,
                     filterMultiple: false,
                     onFilter: (value, record) => record.origin == value
                 }, {
                     title: '課程類別(入讀課程)',
                     dataIndex: 'degree',
                     sorter: (a, b) => a.degree.localeCompare(b.degree),
-                    filters: this.configFields['tw'].degree.options,
+                    filters: this.configFields.degree.options,
                     filterMultiple: false,
                     onFilter: (value, record) => record.degree == value
                 }, {
                     title: '入學途徑',
                     dataIndex: 'admission',
                     sorter: (a, b) => a.admission.localeCompare(b.admission),
-                    filters: this.configFields['tw'].admission.options,
+                    filters: this.configFields.admission.options,
                     filterMultiple: false,
                     onFilter: (value, record) => record.admission == value
                 }, {
@@ -179,7 +179,7 @@ export default {
         }
     },
     created() {
-        this.fields=this.configFields['tw']
+        this.fields=this.configFields
         this.fields.origin.options.forEach(o => o.text = o.label)
         this.fields.degree.options.forEach(o => o.text = o.label)
         this.fields.admission.options.forEach(o => o.text = o.label)
@@ -189,11 +189,8 @@ export default {
     },
     methods: {
         optionFind(options, item) {
-            if(options){
-                var label = options.find(option => option.value == item)['label'].split(" ");
-                return label[0];
-            }
-            return null
+            const option =options.find(o=>o.value==item)
+            return option?option['label_zh']:'--'
         },
         getOptionItem(options, item) {
             if(options){

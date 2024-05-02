@@ -21,6 +21,7 @@
                     <li>
                         <p class="font-bold">{{ fields.origin.question }}</p>
                         <p>{{ optionFind(enquiry.origin, fields.origin.options) }}</p>
+                        
                     </li>
                     <li>
                         <p class="font-bold">{{ fields.degree.question }}</p>
@@ -58,7 +59,7 @@
                     </li>
                     <li>
                         <p class="font-bold">{{ fields.subjects.question }}</p>
-                        <p v-for="item in optionFilter(enquiry.subjects, fields.subjects.options)">{{ item.label }}</p>
+                        <p v-for="item in optionFilter(enquiry.subjects, fields.subjects.options)">{{ item['label_'+$t('lang')] }}</p>
                     </li>
                 </ol>
             </a-collapse-panel>
@@ -249,12 +250,13 @@ export default {
         optionFind(value, options) {
             return options.find(option => {
                 return option['value'] == value;
-            })['label'];
+            })['label_zh'];
         },
         optionFilter(values, options) {
-            var items = options.filter(option => {
+           var items = options.filter(option => {
                 return values.includes(option['value']);
             });
+            console.log(items);            
             return items;
         },
         onFinish() {

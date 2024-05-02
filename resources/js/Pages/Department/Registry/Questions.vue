@@ -5,8 +5,8 @@
                 <a-table :dataSource="department.enquiry_questions_open" :columns="columns" :row-key="record => record.root_id">
                     <template #bodyCell="{column, text, record, index}" >
                         <template v-if="column.dataIndex=='operation'">
-                            <a-button @click="viewRecord(record)">View</a-button>
-                            <inertia-link :href="route('registry.enquiry.questions.show', { question:record.id})" class="ant-btn">Response</inertia-link>
+                            <a-button @click="viewRecord(record)">{{ $t('view')}}</a-button>
+                            <inertia-link :href="route('registry.enquiry.questions.show', { question:record.id})" class="ant-btn">{{ $t('response') }}</inertia-link>
                         </template>
                         <template v-else-if="column.dataIndex=='enquiry_id'">
                             {{ text }}
@@ -66,6 +66,7 @@
             :wrapper-col="{ span: 16 }"
             autocomplete="off"
         >
+        {{ modal.data }}
             <a-form-item :label="fields.origin.short">
                 {{ optionFind(fields.origin.options,modal.data.enquiry.origin) }}
             </a-form-item>
@@ -153,19 +154,19 @@ export default {
                     title: '查詢編號',
                     dataIndex: 'enquiry_id',
                 },{
-                    title: '證件類別('+this.configFields[this.$page.props.lang].origin.short+')',
+                    title: '證件類別('+this.configFields.origin.short+')',
                     dataIndex: 'origin',
                     sorter: (a, b) => a.enquiry.origin.localeCompare(b.enquiry.origin),
-                    filters: this.configFields[this.$page.props.lang].origin.options,
+                    filters: this.configFields.origin.options,
                     filterMultiple: false,
                     onFilter: (value, record) => record.enquiry.origin == value
 
                 },{
-                    title: this.configFields[this.$page.props.lang].admission.short,
+                    title: this.configFields.admission.short,
                     dataIndex: 'admission',
                     sorter: (a, b) => a.enquiry.admission.localeCompare(b.enquiry.admission)
                 },{
-                    title: this.configFields[this.$page.props.lang].degree.short,
+                    title: this.configFields.degree.short,
                     dataIndex: 'degree',
                     sorter: (a, b) => a.enquiry.degree.localeCompare(b.enquiry.degree)
                 },{
@@ -203,11 +204,12 @@ export default {
         }
     },
     created(){
-        console.log(this.$page.props);
-        this.fields=this.configFields[this.$page.props.lang]
-        this.fields.origin.options.forEach(o => o.text = o.label)
-        this.fields.degree.options.forEach(o => o.text = o.label)
-        this.fields.admission.options.forEach(o => o.text = o.label)
+        
+        this.fields=this.configFields
+        console.log(this.fields)
+        // this.fields.origin.options.forEach(o => o.text = o.label)
+        // this.fields.degree.options.forEach(o => o.text = o.label)
+        // this.fields.admission.options.forEach(o => o.text = o.label)
     },
     mounted(){
         loadLanguageAsync(this.$page.props.lang)
@@ -216,10 +218,10 @@ export default {
         optionFind(options,item){
             if(Array.isArray(item)){
                 var labels=options.filter(option=>item.includes(option.value))
-                return labels.map(l=>l.label).join("<br>")
+                return labels.map(l=>l.label_zh).join("<br>")
             }else{
-                var label=options.find(option=>option.value==item)['label'].split(" ")
-                return label[0]
+                var label=options.find(option=>option.value==item)['label_zh']
+                return label
             }
         },
         getOptionItem(options,item){
@@ -270,7 +272,8 @@ export default {
             return dayjs(date).format(format);
         },
         mapOptionsItem(options,item){
-            return options.find(f=>f.value==item).label.split(" ")[0];
+            const option = options.find(o=>o.value==item)
+            return option?option['label_zh']:'--'
         }
 
     },
