@@ -71,8 +71,15 @@
                         </a-form-item>
                     </a-tab-pane>
                 </a-tabs>
-                <p>中文、英文、葡文內容均須填寫</p>
-                <p>文字內容需以純文字方式，如複制自其它系統，建議點選右鍵，選擇純文字貼上。或使用快捷鍵Ctrl + Shift + V</p>
+                <a-alert type="success" closable>
+                    <template #message>
+                        <ol class="list-disc pl-5">
+                            <li>中文、英文、葡文內容均須填寫</li>
+                            <li>文字內容需以純文字方式，如複制自其它系統，建議點選右鍵，選擇純文字貼上。或使用快捷鍵Ctrl + Shift + V</li>
+                        </ol>
+                    </template>
+                </a-alert>
+
                 <a-form-item label="有效/無效" name="valid" :rules="{ required: true }">
                     <a-switch v-model:checked="modal.data.valid" checked-children="有效" un-checked-children="無效" />
                 </a-form-item>
