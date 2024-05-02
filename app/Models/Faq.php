@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Faq extends Model
 {
     use HasFactory;
-    protected $fillable=['department_id','category_id','origins','degrees','subjects','question_zh','answer_zh','question_ne','answer_en','question_pt','answer_pt','valid'];
+    protected $fillable=['department_id','category_id','origins','degrees','subjects','question_zh','answer_zh','question_en','answer_en','question_pt','answer_pt','valid'];
     protected $casts = ['origins'=>'json','degrees'=>'json','subjects'=>'json','valid'=>'boolean'];
     
     public static function getByEnquiry($enquiry){
