@@ -65,7 +65,7 @@
                             </li>
                             <li>
                                 <span class="pl-2 pr-2">|</span>
-                                <a href="javascript:history.back();" class="inline">Back</a>
+                                <a href="javascript:history.back();" class="inline">{{ $t('back') }}</a>
                             </li>
                         </ol>
 

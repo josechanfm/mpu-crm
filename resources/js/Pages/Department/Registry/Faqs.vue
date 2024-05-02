@@ -71,7 +71,8 @@
                         </a-form-item>
                     </a-tab-pane>
                 </a-tabs>
-                {{ withErrors }}
+                <p>中文、英文、葡文內容均須填寫</p>
+                <p>文字內容需以純文字方式，如複制自其它系統，建議點選右鍵，選擇純文字貼上。或使用快捷鍵Ctrl + Shift + V</p>
                 <a-form-item label="有效/無效" name="valid" :rules="{ required: true }">
                     <a-switch v-model:checked="modal.data.valid" checked-children="有效" un-checked-children="無效" />
                 </a-form-item>
@@ -106,7 +107,6 @@ export default {
                 { label: "常見問題", url: null },
             ],
             dateFormat: 'YY-MM-DD HH:mm',
-            withErrors:null,
             modal: {
                 isOpen: false,
                 data: {},
