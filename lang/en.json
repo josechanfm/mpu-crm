@@ -37,8 +37,8 @@
         "The data collected by the University will be used solely for the stated purposes. They may be transferred within the University or the entities that are in accordance with legal provision or with your prior consent. It is necessary to note that internet transmission bears risk and may not guarantee absolute confidentiality.",
         "To enable the provision of the requested services, it is mandatory for the applicants to contain personal-identification and information related to the use of this service. Applications absent of the stated information will not be processed."
     ],
-    "enquiry.number":"Reference Number:",
-    "enquiry.thank_question":"Thank you for contacting MPU, your message has been received, if you need to contact us prior to receiving a response, please reference case.",
+    "enquiry.number":"Reference case number:",
+    "enquiry.thank_question":"Thank you for contacting MPU. Your message has been received, and we will response as soon as posible. if you wish to enquire again before receiving a response, please include the reference case number to assist us in following up.",
     "enquiry.thanks":"Thank you for your enquiry.",
     "rec.save_next":"Save and Next",
     "rec.back_no_save":"Back without Save",

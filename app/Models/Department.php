@@ -13,16 +13,16 @@ class Department extends Model
     public function adminUsers(){
         return $this->belongsToMany(AdminUser::class);
     }
-    public function enquiriesStat(){
-        $enquiries=$this->hasMany(Enquiry::class)->orderBy('created_at','desc')->get();
-        foreach($enquiries as $id=>$enquiry){
-            $enquiries[$id]->question_count=$enquiry->questionCount();
-            $enquiries[$id]->response_count=$enquiry->responseCount();
-            $enquiries[$id]->last_response=$enquiry->lastResponse();
-        }
-        return $enquiries;
+    // public function enquiriesStat(){
+    //     $enquiries=$this->hasMany(Enquiry::class)->orderBy('created_at','desc')->get();
+    //     foreach($enquiries as $id=>$enquiry){
+    //         //$enquiries[$id]->question_count=$enquiry->questionCount();
+    //         //$enquiries[$id]->response_count=$enquiry->responseCount();
+    //         //$enquiries[$id]->last_response=$enquiry->lastResponse();
+    //     }
+    //     return $enquiries;
 
-    }
+    // }
     public function enquiries(){
         return $this->hasMany(Enquiry::class)->with('questions')->orderBy('created_at','desc');
     }

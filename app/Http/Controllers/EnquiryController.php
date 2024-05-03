@@ -23,7 +23,6 @@ class EnquiryController extends Controller
     {
         
         $fields=Config::enquiryFormFields();
-        
         if(!isset($fields) && sizeof($fields)==0){
             return Inertia::render('Error',[
                 'message'=>'Enquiry Config missing or data corrupted!'

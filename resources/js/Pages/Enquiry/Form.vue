@@ -10,7 +10,6 @@
         </div>
     </div>
     <div class="py-12">
-
         <div class="lg:hidden text-2xl text-center font-medium text-slate-500">
             {{ $t('enquiry.title') }}
         </div>
@@ -63,7 +62,7 @@
                                 <template #content>
                                     <ol>
                                         <li v-for="item in fields.origin.options" class="mb-2">
-                                            <a :href="item.url" target="_blank">{{ item['label_' + $t('lang')] }}</a>
+                                            <a :href="item['url_'+$t('lang')]" target="_blank">{{ item['label_' + $t('lang')] }}</a>
                                         </li>
                                     </ol>
                                 </template>
@@ -122,12 +121,13 @@
                                 {{ option['label_' + $t('lang')] }}
                             </a-radio>
                             <template v-if="enquiry.apply">
-                                <a-form-item name="apply_number">
+                                <a-form-item name="apply_number" :rules="{required:true, message:fields.apply.other['message_' + $t('lang')]}">
                                     <a-input style="width: 100px; margin-left: 10px"
-                                        v-model:value="enquiry.apply_number" />
-                                    {{ fields.apply.other.label }}
+                                        v-model:value="enquiry.apply_number"/>
+                                    {{ fields.apply.other['label_'+$t('lang')] }}
                                 </a-form-item>
                             </template>
+
                         </a-radio-group>
                     </a-form-item>
 
@@ -219,7 +219,7 @@ export default {
                 admission: 'EXAM',
                 profile: 'STD',
                 apply: true,
-                applyNumber: null,
+                apply_number: null,
                 surname: 'Jose',
                 givenname: 'Chan',
                 email: 'josechan@ipm.edu.mo',
@@ -299,7 +299,6 @@ export default {
     },
     created() {
         loadLanguageAsync(this.$page.props.lang)
-        console.log(this.validateMessages);
         this.phone_country_codes.value.forEach(v => v.label = v.label_zh + '/' + v.label_en)
         this.admissionLinks = this.fields.origin.options
         this.enquiry = {};

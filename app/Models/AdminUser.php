@@ -36,7 +36,7 @@ class AdminUser extends Authenticatable implements LdapAuthenticatable
      *
      * @var string[]
      */
-    protected $fillable = ['name', 'username','email', 'password',];
+    protected $fillable = ['name', 'username','email','email_varified_at', 'password','remember_token','current_team_id','profile_photo_path','guid','domain'];
 
     /**
      * The attributes that should be hidden for serialization.

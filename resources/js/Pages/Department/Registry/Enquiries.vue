@@ -2,7 +2,7 @@
     <DepartmentLayout title="所有查詢" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                <a-table :dataSource="enquiriesStat" :columns="columns" :rowKey="record => record.id" @change="handleTableChange">
+                <a-table :dataSource="enquiries.data" :columns="columns" :rowKey="record => record.id" @change="handleTableChange">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button @click="viewRecord(record)">{{$t('view')}}</a-button>
@@ -77,7 +77,13 @@
                     {{ modal.data.areacode }} - {{ modal.data.phone }}
                 </a-form-item>
                 <a-form-item :label="fields.subjects.short">
-                    {{ modal.data.subjects }}
+                    <ol>
+                        <li v-for="subject in modal.data.subjects">
+                            {{ getOptionItem(configFields.subjects.options, subject) }}
+                            ...
+                        </li>
+                    </ol>
+                    
                 </a-form-item>
                 <a-form-item label="Question">
                     {{ modal.data.question }}
@@ -106,7 +112,7 @@ export default {
         loadLanguageAsync,
         dayjs
     },
-    props: ['department', 'enquiriesStat', 'configFields'],
+    props: ['department','enquiries', 'enquiriesStat', 'configFields'],
     data() {
         return {
             fields:[],

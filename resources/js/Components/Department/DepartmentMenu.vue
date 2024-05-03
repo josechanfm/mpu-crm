@@ -36,7 +36,7 @@
             常見問題
           </inertia-link>
         </a-menu-item>
-        <a-menu-item key="enqriry_3" >
+        <a-menu-item key="enqriry_4" >
           <inertia-link :href="route('registry.report.index')">
             統計及報告
           </inertia-link>
