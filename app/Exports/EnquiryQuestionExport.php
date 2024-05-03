@@ -43,9 +43,9 @@ class EnquiryQuestionExport implements FromCollection, WithHeadings
             $tmp=[
                 "created_at"=>date_format($question->created_at,'Y-m-d'),
                 "id"=>$question->id,
-                "origin"=>$origins[$questions[$id]->enquiry->origin],
-                "degree"=>$degrees[$questions[$id]->enquiry->degree],
-                "admission"=>$admissions[$questions[$id]->enquiry->admission],
+                "origin"=>$questions[$id]->enquiry->origin?$origins[$questions[$id]->enquiry->origin]:'--',
+                "degree"=>$questions[$id]->enquiry->degree?$degrees[$questions[$id]->enquiry->degree]:'--',
+                "admission"=>$questions[$id]->enquiry->admission?$admissions[$questions[$id]->enquiry->admission]:'--',
                 "fullname"=>$question->enquiry->givenname.', '.$question->enquiry->surname,
                 "phone"=>$question->enquiry->phone,
                 "email"=>$question->enquiry->email,
