@@ -29,9 +29,9 @@ class EnquiryQuestionExport implements FromCollection, WithHeadings
     public function collection()
     {
         $fields=Config::enquiryFormFields();
-        $origins=array_column($fields['origin']['options'],'label','value');
-        $degrees=array_column($fields['degree']['options'],'label','value');
-        $admissions=array_column($fields['admission']['options'],'label','value');
+        $origins=array_column($fields['origin']['options'],'label_zh','value');
+        $degrees=array_column($fields['degree']['options'],'label_zh','value');
+        $admissions=array_column($fields['admission']['options'],'label_zh','value');
         
         $department=Department::where('abbr','DAMIA')->first();
         $questions=EnquiryQuestion::with('enquiry')->with('lastResponse')
@@ -43,9 +43,9 @@ class EnquiryQuestionExport implements FromCollection, WithHeadings
             $tmp=[
                 "created_at"=>date_format($question->created_at,'Y-m-d'),
                 "id"=>$question->id,
-                "origin"=>explode(' ',$origins[$questions[$id]->enquiry->origin])[0],
-                "degree"=>explode(' ',$degrees[$questions[$id]->enquiry->degree])[0],
-                "admission"=>explode(' ',$admissions[$questions[$id]->enquiry->admission])[0],
+                "origin"=>$origins[$questions[$id]->enquiry->origin],
+                "degree"=>$degrees[$questions[$id]->enquiry->degree],
+                "admission"=>$admissions[$questions[$id]->enquiry->admission],
                 "fullname"=>$question->enquiry->givenname.', '.$question->enquiry->surname,
                 "phone"=>$question->enquiry->phone,
                 "email"=>$question->enquiry->email,

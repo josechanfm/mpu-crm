@@ -32,9 +32,9 @@ class EnquiryExport implements FromCollection, WithHeadings
     public function collection()
     {
         $fields=Config::enquiryFormFields();
-        $origins=array_column($fields['origin']['options'],'label','value');
-        $degrees=array_column($fields['degree']['options'],'label','value');
-        $admissions=array_column($fields['admission']['options'],'label','value');
+        $origins=array_column($fields['origin']['options'],'label_zh','value');
+        $degrees=array_column($fields['degree']['options'],'label_zh','value');
+            $admissions=array_column($fields['admission']['options'],'label_zh','value');
         $department=Department::where('abbr','DAMIA')->first();
         $enquiries=Enquiry::
             selectRaw('DATE_FORMAT(created_at,"%Y-%m-%d"), id, origin, degree, admission, concat(givenname,", ",surname) as fullname, phone, email')
@@ -42,10 +42,11 @@ class EnquiryExport implements FromCollection, WithHeadings
             ->whereBetween('created_at',$this->period)
             ->orderBy('created_at','desc')
             ->get();
+
         foreach($enquiries as $id=>$enquiry){
-            $enquiries[$id]->origin=explode(' ',$origins[$enquiries[$id]->origin])[0];
-            $enquiries[$id]->degree=explode(' ',$degrees[$enquiries[$id]->degree])[0];
-            $enquiries[$id]->admission=explode(' ',$admissions[$enquiries[$id]->admission])[0];
+            $enquiries[$id]->origin=$origins[$enquiries[$id]->origin];
+            $enquiries[$id]->degree=$degrees[$enquiries[$id]->degree];
+            $enquiries[$id]->admission=$admissions[$enquiries[$id]->admission];
         }
         return collect($enquiries);
     }
