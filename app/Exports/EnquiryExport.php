@@ -42,7 +42,7 @@ class EnquiryExport implements FromCollection, WithHeadings
             ->whereBetween('created_at',$this->period)
             ->orderBy('created_at','desc')
             ->get();
-
+        dd($enquiries);
         foreach($enquiries as $id=>$enquiry){
             $enquiries[$id]->origin=$enquiry->origin?$origins[$enquiry->origin]:'--';
             $enquiries[$id]->degree=$enquiry->degree?$degrees[$enquiry->degree]:'--';
