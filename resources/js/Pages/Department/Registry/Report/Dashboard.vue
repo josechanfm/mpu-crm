@@ -65,7 +65,8 @@ export default {
             this.exportCriteria.period[1]=dayjs(this.exportCriteria.period[1]).format(this.dateFormat)+' 23:59:00'
             if(this.exportCriteria.period && this.exportCriteria.period.length==2){
                 const params='period[]='+this.exportCriteria.period[0]+'&period[]='+this.exportCriteria.period[1];
-                window.open('./report/export_enquiries?'+params);
+                window.open(route('registry.report.exportEnquiries',params));
+                //window.open('./report/export_enquiries?'+params);
             }
         },
         onExportQuestions(event){
@@ -73,7 +74,8 @@ export default {
             this.exportCriteria.period[1]=dayjs(this.exportCriteria.period[1]).format(this.dateFormat)+' 23:59:00'
             if(this.exportCriteria.period && this.exportCriteria.period.length==2){
                 const params='period[]='+this.exportCriteria.period[0]+'&period[]='+this.exportCriteria.period[1];
-                window.open('./report/export_questions?'+params);
+                window.open(route('registry.report.exportQuestions',params));
+                //window.open('./report/export_questions?'+params);
             }
         }
 
