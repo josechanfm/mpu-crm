@@ -34,7 +34,7 @@ class EnquiryExport implements FromCollection, WithHeadings
         $fields=Config::enquiryFormFields();
         $origins=array_column($fields['origin']['options'],'label_zh','value');
         $degrees=array_column($fields['degree']['options'],'label_zh','value');
-            $admissions=array_column($fields['admission']['options'],'label_zh','value');
+        $admissions=array_column($fields['admission']['options'],'label_zh','value');
         $department=Department::where('abbr','DAMIA')->first();
         $enquiries=Enquiry::
             selectRaw('DATE_FORMAT(created_at,"%Y-%m-%d"), id, origin, degree, admission, concat(givenname,", ",surname) as fullname, phone, email')
@@ -44,9 +44,9 @@ class EnquiryExport implements FromCollection, WithHeadings
             ->get();
 
         foreach($enquiries as $id=>$enquiry){
-            $enquiries[$id]->origin=$origins[$enquiries[$id]->origin];
-            $enquiries[$id]->degree=$degrees[$enquiries[$id]->degree];
-            $enquiries[$id]->admission=$admissions[$enquiries[$id]->admission];
+            $enquiries[$id]->origin=$enquiry->origin?$origins[$enquiry->origin]:'--';
+            $enquiries[$id]->degree=$enquiry->degree?$degrees[$enquiry->degree]:'--';
+            $enquiries[$id]->admission=$enquiry->admission?$admissions[$enquiry->admission]:"--";
         }
         return collect($enquiries);
     }
