@@ -31,7 +31,7 @@ class EnquiryController extends Controller
         //dd($department->enquiriesStat());
         return Inertia::render('Department/Registry/Enquiries',[
             'department'=>$department,
-            'enquiries'=>Enquiry::whereBelongsto($department)->with('lastResponse')->paginate(),
+            'enquiries'=>Enquiry::whereBelongsto($department)->with('lastResponse')->orderBy('created_at','DESC')->paginate(),
             'configFields'=>Config::enquiryFormFields(),
         ]);
     }
