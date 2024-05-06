@@ -7,8 +7,6 @@
         </template>
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             <div class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
-                {{ form.fields }} 
-                11111111
                 <a-form
                     :model="formData"
                     ref="formRef"
@@ -36,7 +34,7 @@
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
                                 <a-select
                                     v-model:value="formData[field.id]"
-                                    :options="JSON.parse(field.options)"
+                                    :options="field.options"
                                 ></a-select>
                             </a-form-item>                        
                         </div>
@@ -44,7 +42,7 @@
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
                                 <a-radio-group
                                     v-model:value="formData[field.id]"
-                                    :options="JSON.parse(field.options)"
+                                    :options="field.options"
                                 ></a-radio-group>
                             </a-form-item>                        
                         </div>
@@ -52,13 +50,16 @@
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
                                 <a-checkbox-group
                                     v-model:value="formData[field.id]"
-                                    :options="JSON.parse(field.options)"
+                                    :options="field.options"
                                 ></a-checkbox-group>
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='dropdown'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
-                                {{ field }}
+                                <a-select 
+                                    v-model:value="formData[field.id]"
+                                    :options="field.options"
+                                />
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='textarea'">
@@ -82,6 +83,11 @@
                         <div v-else-if="field.type=='email'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required},{type:'email'}]" >
                                 <a-input v-model:value="formData[field.id]" />
+                            </a-form-item>                        
+                        </div>
+                        <div v-else-if="field.type=='true_false'">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required},{type:'email'}]" >
+                                <a-checkbox v-model:checked="formData[field.id]" />
                             </a-form-item>                        
                         </div>
                         <div v-else>

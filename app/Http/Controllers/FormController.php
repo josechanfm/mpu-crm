@@ -86,9 +86,15 @@ class FormController extends Controller
         if($form->require_login==1 && !Auth()->user()){
             return redirect('forms');
         }
-        return Inertia::render('Form/FormDefault',[
-            'form'=>$form,
-        ]);
+        if($form->layout){
+            return Inertia::render('Form/'.$form->layout,[
+                'form'=>$form,
+            ]);
+        }else{
+            return Inertia::render('Form/FormDefault',[
+                'form'=>$form,
+            ]);
+        }
         
     }
 

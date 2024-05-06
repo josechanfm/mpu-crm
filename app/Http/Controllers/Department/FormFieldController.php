@@ -24,7 +24,7 @@ class FormFieldController extends Controller
      */
     public function index(Form $form)
     {
-        return Inertia::render('Department/FormFields',[
+        return Inertia::render('Department/Form/FormFields',[
             'departments'=>Department::all(),
             'department'=>session('department'),
             'form'=>$form,
@@ -56,20 +56,11 @@ class FormFieldController extends Controller
             'field_label'=>'required',
             'type'=>'required',
         ]);
-
-        $field=new FormField();
-        $field->form_id=$request->form_id;
-        $field->field_name=$request->field_name;
-        $field->field_label=$request->field_label;
-        $field->type=$request->type;
-        $field->options=json_encode($request->options);
-        $field->required=isset($request->required)?$request->required:false;
-        $field->in_column=isset($request->in_column)?$request->in_column:false;
-        $field->direction=isset($request->direction)?$request->direction:'H';
-        $field->rule=$request->rule;
-        $field->validate=$request->validate;
-        $field->remark=$request->remark;
-        $field->save();
+        $data=$request->all();
+        $data['direction']=isset($request->direction)?$request->direction:'H';
+        $data['required']=isset($request->required)?$request->required:false;
+        $field['in_column']=isset($request->in_column)?$request->in_column:false;
+        $form->fields()->create($data);
         return redirect()->back();
 
     }
@@ -111,17 +102,12 @@ class FormFieldController extends Controller
             'field_label'=>'required',
             'type'=>'required',
         ]);
-        $field=FormField::find($request->id);
-        $field->form_id=$request->form_id;
-        $field->field_name=$request->field_name;
-        $field->field_label=$request->field_label;
-        $field->type=$request->type;
-        $field->options=json_encode($request->options);
-        $field->direction=isset($request->direction)?$request->direction:'H';
-        $field->required=isset($request->required)?$request->required:false;
-        $field->in_column=isset($request->in_column)?$request->in_column:false;
-        $field->remark=$request->remark;
-        $field->save();
+        $data=$request->all();
+        $data['direction']=isset($request->direction)?$request->direction:'H';
+        $data['required']=isset($request->required)?$request->required:false;
+        $field['in_column']=isset($request->in_column)?$request->in_column:false;
+
+        FormField::find($request->id)->update($data);
         return redirect()->back();
     }
 

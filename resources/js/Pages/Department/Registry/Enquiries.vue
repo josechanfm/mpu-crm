@@ -2,7 +2,7 @@
     <DepartmentLayout title="所有查詢" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                <a-table :dataSource="enquiries.data" :columns="columns" :rowKey="record => record.id" @change="handleTableChange">
+                <a-table :dataSource="enquiries.data" :columns="columns" :rowKey="record => record.id" :pagination="pagination" @change="onPaginationChange" >
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button @click="viewRecord(record)">{{$t('view')}}</a-button>
@@ -126,7 +126,14 @@ export default {
                 title: "Modal",
                 mode: ""
             },
-            teacherStateLabels: {},
+            pagination: {
+                total: this.enquiries.total,
+                current: this.enquiries.current_page,
+                pageSize: this.enquiries.per_page,
+                defaultPageSize:40,
+                showSizeChanger:true,
+                pageSizeOptions:['10','20','30','40','50']
+            },
             columns: [
                 {
                     title: '日期',
@@ -194,6 +201,23 @@ export default {
         loadLanguageAsync(this.$page.props.lang)
     },
     methods: {
+        onPaginationChange(page, filters, sorter) {
+            this.$inertia.get(
+                route("registry.enquiries.index"),
+                {
+                    page: page.current,
+                    per_page: page.pageSize,
+                },
+                {
+                onSuccess: (page) => {
+                    console.log(page);
+                },
+                onError: (error) => {
+                    console.log(error);
+                },
+                }
+            );
+        },
         optionFind(options, item) {
             const option =options.find(o=>o.value==item)
             return option?option['label_zh']:'--'
@@ -248,10 +272,6 @@ export default {
         },
         dateFormat(date, format = 'YYYY-MM-DD HH:mm') {
             return dayjs(date).format(format);
-        },
-        handleTableChange(pag, filters, sorter) {
-            //console.log('params', pag, filters, sorter);
-
         },
 
 

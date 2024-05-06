@@ -104,7 +104,7 @@
             >
               <a-radio-group v-model:value="formData[field.id]">
                 <a-radio
-                  v-for="option in JSON.parse(field.options)"
+                  v-for="option in field.options"
                   :key="option.id"
                   :style="field.direction == 'H' ? '' : verticalStyle"
                   :value="option.value"
@@ -121,7 +121,7 @@
             >
               <a-checkbox-group v-model:value="formData[field.id]">
                 <a-checkbox
-                  v-for="option in JSON.parse(field.options)"
+                  v-for="option in field.options"
                   :key="option.id"
                   :style="field.direction == 'H' ? '' : verticalStyle"
                   :value="option.value"
@@ -138,7 +138,7 @@
             >
               <a-select
                 v-model:value="formData[field.id]"
-                :options="JSON.parse(field.options)"
+                :options="field.options"
               ></a-select>
             </a-form-item>
           </div>
@@ -148,7 +148,7 @@
               :name="field.id"
               :rules="[{ required: field.required }]"
             >
-              <a-switch v-model:checked="formData[field.id]" />
+              <a-checkbox v-model:checked="formData[field.id]" />
             </a-form-item>
           </div>
           <div v-else-if="field.type == 'date'">
@@ -306,7 +306,7 @@ export default {
         if (
           this.form.fields.find((x) => x.id == element.form_field_id).type == "checkbox"
         ) {
-          this.formData[element.form_field_id] = JSON.parse(element.field_value);
+          this.formData[element.form_field_id] = element.field_value;
         } else {
           this.formData[element.form_field_id] = element.field_value;
         }

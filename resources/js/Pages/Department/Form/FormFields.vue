@@ -81,6 +81,9 @@
                 <a-form-item label="Column data" name="in_column" v-if="modal.data.required">
                     <a-switch v-model:checked="modal.data.in_column" :unCheckedValue="0" :checkedValue="1" />
                 </a-form-item>
+                <a-form-item label="Extra">
+                    <a-textarea v-model:value="modal.data.extra" />
+                </a-form-item>
                 <a-form-item label="Remark" name="remark">
                     <a-textarea v-model:value="modal.data.remark" />
                 </a-form-item>
@@ -126,7 +129,8 @@ export default {
                 { value: "date", label: "日期格式" },
                 { value: "datetime", label: "日期時間" },
                 { value: "email", label: "電郵欄位" },
-                { value: "number", label: "數值欄位" }
+                { value: "number", label: "數值欄位" },
+                { value: "html", label:"HMTL text" }
             ],
             columns: [
                 {
@@ -201,7 +205,7 @@ export default {
         editRecord(record) {
             this.modal.data = { ...record };
             try {
-                this.modal.data.options = JSON.parse(this.modal.data.options);
+                this.modal.data.options = this.modal.data.options;
             } catch (e) {
                 this.modal.data.options = [{ value: 'option_1', label: 'option_1' }];
             }
