@@ -1,8 +1,8 @@
 <template>
-    <BlankLayout title="Dashboard">
+    <BlankLayout title="Survey">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                表格管理
+                問卷調查 Questionnaire
             </h2>
         </template>
         
@@ -88,7 +88,8 @@
                                 </tr>
                             </template>
                     </table>
-                <div class="text-center pb-10">
+
+                <div class="text-center pt-10">
                     <a-button @click="storeRecord" type="primary">遞交 Submit</a-button>
                 </div>
             </a-form>
