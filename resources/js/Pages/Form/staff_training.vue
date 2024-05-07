@@ -180,6 +180,12 @@ export default {
         genRow(){
             return {
                 props: ['formData','extra','fieldHour','fieldMonth'],
+                mounted(){
+                    console.log(this.formData);
+                    console.log(this.extra);
+                    console.log(this.fieldHour);
+                    console.log(this.fieldMonth);
+                },
                 template: `
                     <tr>
                         <td><div v-html="extra.title"/></td>
