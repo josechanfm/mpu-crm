@@ -14,17 +14,29 @@
                 :validate-messages="validateMessages">
                 <a-row :gutter="20">
                     <a-col :span="8">
-                        <a-form-item :label="formFields['faculty'].field_label" :rules="[{ required: formFields['faculty'].required }]">
+                        <a-form-item 
+                            :label="formFields['faculty'].field_label" 
+                            :name="formFields['faculty'].id" 
+                            :rules="[{ required: formFields['faculty'].required, message:'為必填欄位 is Required'}]"
+                        >
                             <a-select v-model:value="formData[formFields['faculty'].id]" :options="formFields['faculty'].options" />
                         </a-form-item>
                     </a-col>
                     <a-col :span="8">
-                        <a-form-item :label="formFields['staff_num'].field_label" :rules="[{ required: formFields['staff_num'].required }]">
+                        <a-form-item 
+                            :label="formFields['staff_num'].field_label" 
+                            :name="formFields['staff_num'].id"  
+                            :rules="[{ required: formFields['staff_num'].required, message:'為必填欄位 is Required' }]"
+                        >
                             <a-input v-model:value="formData[formFields['staff_num'].id]" />
                         </a-form-item>
                     </a-col>
                     <a-col :span="8">
-                        <a-form-item :label="formFields['fullname'].field_label" :rules="[{ required: formFields['fullname'].required }]">
+                        <a-form-item 
+                            :label="formFields['fullname'].field_label" 
+                            :name="formFields['fullname'].id"
+                            :rules="[{ required: formFields['fullname'].required, message:'為必填欄位 is Required'}]"
+                        >
                             <a-input v-model:value="formData[formFields['fullname'].id]" />
                         </a-form-item>
                     </a-col>
@@ -35,9 +47,9 @@
                 <div>
                     <table>
                         <tr>
-                            <th>課程類型（請說明）<br>Type of Training (Please indicate)</th>
-                            <th>參加人數<br>No. of participants</th>
-                            <th>最能配合工作的上課時間<br>The most convenient period</th>
+                            <th><span v-html="formFields['part_1_1'].extra"/></th>
+                            <th><span v-html="formFields['part_1_2'].extra"/></th>
+                            <th><span v-html="formFields['part_1_3'].extra"/></th>
                         </tr>
                         <tr>
                             <td><a-input v-model:value="formData[formFields['part_1_1'].id]" /></td>
@@ -62,17 +74,18 @@
                     <table>
                             <tr>
                                 <th width="400px"></th>
-                                <th width="100px">小時<br>Hours</th>
-                                <th width="200px">本人願意參加<br>I desire to participate</th>
-                                <th>最適合本人的月份<br>The best month(s) for me</th>
+                                <th width="100px"><span v-html="getExtraContent(formFields['table_header'].extra,'hour')"/></th>
+                                <th width="200px"><span v-html="getExtraContent(formFields['table_header'].extra,'participate')"/></th>
+                                <th><span v-html="getExtraContent(formFields['table_header'].extra,'month')"/></th>
                             </tr>
                             <template v-for="i in questionCount">
-                                <component :is="genRow" 
-                                    :formData="formData"
-                                    :extra="getExtraJson(formFields['question_'+i+'_1'].extra)"
-                                    :fieldHour="formFields['question_'+i+'_1'].id"
-                                    :fieldMonth="formFields['question_'+i+'_2'].id"
-                                />
+                                <tr>
+                                    <td><div v-html="getExtraContent(formFields['question_'+i+'_1'].extra,'title')" /></td>
+                                    <td class="text-center"><div v-html="getExtraContent(formFields['question_'+i+'_1'].extra,'hour')" /></td>
+                                    <td class="text-center">
+                                        <a-checkbox v-model:checked="formData[formFields['question_'+i+'_1'].id]" /></td>
+                                    <td><a-input v-model:value="formData[formFields['question_'+i+'_2'].id]" /></td>
+                                </tr>
                             </template>
                     </table>
                 <div class="text-center pb-10">
@@ -128,13 +141,13 @@ export default {
                 label: { required: true },
             },
             validateMessages: {
-                required: '${label}為必填欄位; ${label} is required!',
+                required: '${label}為必填欄位;',
                 types: {
-                    email: '${label}不是有效電郵; ${label} is not a valid email!',
-                    number: '${label}不是數字格式; ${label} is not a valid number!',
+                    email: '${label}不是有效電郵;',
+                    number: '${label}不是數字格式;',
                 },
                 number: {
-                    range: '${label} 必須介於 ${min} 至 ${max}; ${label} must be between ${min} and ${max}',
+                    range: '${label} 必須介於 ${min} 至 ${max};',
                 },
             },
             labelCol: {
@@ -149,7 +162,6 @@ export default {
             this.formFields[f.field_name]=f
         })
         this.questionCount=Object.keys(this.formFields).filter(f=>f.includes('question')).length/2
-        console.log(this.questionCount);
     },
     methods: {
         storeRecord() {
@@ -169,33 +181,15 @@ export default {
                 console.log(err);
             });
         },
-        getExtraJson(extra){
+        getExtraContent(extra,column){
             if(extra==null){
                 return {title:'Title',hour:'Hour'}
             }
-            return JSON.parse(extra)
+            const option =JSON.parse(extra)
+            return option[column]
         },
     },
     computed:{
-        genRow(){
-            return {
-                props: ['formData','extra','fieldHour','fieldMonth'],
-                mounted(){
-                    console.log(this.formData);
-                    console.log(this.extra);
-                    console.log(this.fieldHour);
-                    console.log(this.fieldMonth);
-                },
-                template: `
-                    <tr>
-                        <td><div v-html="extra.title"/></td>
-                        <td class="text-center">{{extra.hour}}</td>
-                        <td class="text-center"><a-checkbox v-model:checked="formData[fieldHour]" /></td>
-                        <td><a-input v-model:value="formData[fieldMonth]" /></td>
-                    </tr>
-                `
-            }
-        }
     }
 }
 </script>
