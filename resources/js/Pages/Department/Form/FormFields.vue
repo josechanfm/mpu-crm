@@ -7,16 +7,16 @@
                     <thead class="ant-table-thead">
                         <tr>
                             <th v-for="column in columns">{{ column.title }}</th>
-                            <th>Operation</th>
+                            <th>Operation</th>                                                                          
                         </tr>
-                    </thead>
+                    </thead>                                                    
                     <draggable tag="tbody" class="dragArea list-group ant-table-tbody" :list="fields" @change="rowChange">
                         <transition-group v-for="(record, idx) in fields">
                             <tr class="ant-table-row ant-table-row-level-0" :key="record.id">
                                 <td v-for="column in columns" class="ant-table-cell">
                                     {{ record[column.dataIndex] }}
                                 </td>
-                                <td>
+                                <td>    
                                     <a-button @click="editRecord(record)">Edit</a-button>
                                     <a-popconfirm
                                         title="Are you sure delete this task?"
@@ -39,6 +39,9 @@
         <a-modal v-model:visible="modal.isOpen" :title="modal.mode == 'CREATE' ? 'Create' : 'Update'" width="60%">
             <a-form ref="modalRef" :model="modal.data" name="formField" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }"
                 autocomplete="off" :rules="rules" :validate-messages="validateMessages">
+                <a-form-item label="Field Name" name="field_name">
+                    <a-input v-model:value="modal.data.field_name" />
+                </a-form-item>
                 <a-form-item label="Field Label" name="field_label">
                     <a-input v-model:value="modal.data.field_label" @blur="onFieldLabelChanged" />
                 </a-form-item>
@@ -190,7 +193,7 @@ export default {
         }
     },
     created() {
-        console.log(this.departments);
+        //console.log(this.departments);
         //$d=this.departments.map(d=>({value:d.id,label:d.abbr}));
         //console.log($d);
     },

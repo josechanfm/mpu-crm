@@ -68,6 +68,7 @@ Route::middleware([
         //Route::resource('department/{department}/forms',App\Http\Controllers\Department\FormController::class)->names('manage.department.forms');
         Route::resource('forms',App\Http\Controllers\Department\FormController::class)->names('manage.forms');
         Route::resource('form/{form}/fields',App\Http\Controllers\Department\FormFieldController::class)->names('manage.form.fields');
+        Route::post('form/{form}/fields_sequence',[App\Http\Controllers\Department\FormFieldController::class,'fieldsSequence'])->name('manage.form.fieldsSequence');
         Route::resource('form/{form}/entries',App\Http\Controllers\Department\EntryController::class)->names('manage.form.entries');
         Route::get('entry/{form}/export', [App\Http\Controllers\Department\EntryController::class, 'export'])->name('manage.entry.export');
         Route::get('form/{form}/entry/{entry}/success', [App\Http\Controllers\Department\EntryController::class, 'success'])->name('manage.form.entry.success');

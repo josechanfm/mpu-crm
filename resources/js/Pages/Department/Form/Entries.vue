@@ -1,5 +1,5 @@
 <template>
-  <DepartmentLayout title="Dashboard">
+  <DepartmentLayout title="Entries">
     <!-- <a-select
       v-model:value="selectedDisplayName"
       style="width: 120px"

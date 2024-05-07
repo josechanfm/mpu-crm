@@ -127,7 +127,7 @@ class EntryController extends Controller
     public function export(Form $form)
     {
         // dd($form->excelRecords());
-        return Excel::download(new EntryExport($form), 'member.xlsx');
+        return Excel::download(new EntryExport($form), $form->name.'.xlsx');
     }
 
     public function success(Form $form, Entry $entry, Request $request)
