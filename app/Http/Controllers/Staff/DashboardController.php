@@ -11,9 +11,13 @@ use App\Models\Form;
 class DashboardController extends Controller
 {
     public function index(){
-        dd($_SERVER['HTTP_CLIENT_IP']);
-        dd($_SERVER['HTTP_X_FORWARDED_FOR']);
-        dd($_SERVER['REMOTE_ADDR']);
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
         return Inertia::render('Staff/Dashboard',[
             'departments'=>Department::whereNull('default_route')->get(),
             'forms'=>Form::where('published',true)->where('for_staff',true)->get()
