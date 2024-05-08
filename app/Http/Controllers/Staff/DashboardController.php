@@ -18,6 +18,7 @@ class DashboardController extends Controller
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];
         }
+        echo $ip;
         return Inertia::render('Staff/Dashboard',[
             'departments'=>Department::whereNull('default_route')->get(),
             'forms'=>Form::where('published',true)->where('for_staff',true)->get()
