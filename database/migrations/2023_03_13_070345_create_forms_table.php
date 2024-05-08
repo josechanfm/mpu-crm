@@ -24,6 +24,8 @@ return new class extends Migration
             $table->boolean('require_login')->default(false);
             $table->boolean('for_staff')->default(false);
             $table->boolean('published')->default(false);
+            $table->string('layout')->nullable();
+            $table->text('remark')->nullable();
             $table->timestamps();
         });
 

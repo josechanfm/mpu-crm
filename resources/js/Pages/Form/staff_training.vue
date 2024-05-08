@@ -87,6 +87,15 @@
                                     <td><a-input v-model:value="formData[formFields['question_'+i+'_2'].id]" /></td>
                                 </tr>
                             </template>
+                            <template v-for="i in suggestCount">
+                                <tr>
+                                    <td><a-input v-model:value="formData[formFields['suggest_'+i+'_3'].id]" /></td>
+                                    <td><a-input v-model:value="formData[formFields['suggest_'+i+'_4'].id]" /></td>
+                                    <td class="text-center">
+                                        <a-checkbox v-model:checked="formData[formFields['suggest_'+i+'_1'].id]" /></td>
+                                    <td><a-input v-model:value="formData[formFields['suggest_'+i+'_2'].id]" /></td>
+                                </tr>
+                            </template>
                     </table>
 
                 <div class="text-center pt-10">
@@ -112,6 +121,7 @@ export default {
     data() {
         return {
             questionCount:0,
+            suggestCount:0,
             formFields:{},
             formData: {
 
@@ -162,7 +172,9 @@ export default {
         Object.values(this.form.fields).forEach(f=>{
             this.formFields[f.field_name]=f
         })
-        this.questionCount=Object.keys(this.formFields).filter(f=>f.includes('question')).length/2
+        this.questionCount=Object.keys(this.formFields).filter(f=>f.includes('question_')).length/2
+        this.suggestCount=Math.ceil(Object.keys(this.formFields).filter(f=>f.includes('suggest_')).length/4)
+        console.log(this.suggestCount);
     },
     methods: {
         storeRecord() {
