@@ -6,12 +6,17 @@
                         <template v-if="column.dataIndex=='operation'">
                             <a @click="toApply(record)">Apply</a>
                         </template>
+                        <template v-else-if="column.dataIndex=='for_staff'">
+                            <span v-if="text=='1'">Staff only</span>
+                            <span v-else>Public</span>
+                        </template>
                         <template v-else>
                             {{record[column.dataIndex]}}
                         </template>
                     </template>
                 </a-table>
             </div>
+            <p>Includes forms for staffs and public without login.</p>
     </StaffLayout>
 
 </template>
@@ -29,17 +34,17 @@ export default {
         return {
             columns:[
                 {
-                    title: 'Name',
-                    dataIndex: 'name',
-                },{
+                //     title: 'Name',
+                //     dataIndex: 'name',
+                // },{
                     title: 'Title',
                     dataIndex: 'title',
                 // },{
                 //     title: 'Login',
                 //     dataIndex: 'require_login',
-                // },{
-                //     title: 'For staff',
-                //     dataIndex: 'for_staff',
+                },{
+                    title: 'For staff',
+                    dataIndex: 'for_staff',
                 // },{
                 //     title: 'Published',
                 //     dataIndex: 'published',

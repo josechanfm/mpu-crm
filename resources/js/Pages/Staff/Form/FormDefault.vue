@@ -47,7 +47,7 @@
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
                                 <a-select
                                     v-model:value="formData[field.id]"
-                                    :options="JSON.parse(field.options)"
+                                    :options="field.options"
                                 ></a-select>
                             </a-form-item>                        
                         </div>
@@ -55,7 +55,7 @@
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
                                 <a-radio-group
                                     v-model:value="formData[field.id]"
-                                    :options="JSON.parse(field.options)"
+                                    :options="field.options"
                                 ></a-radio-group>
                             </a-form-item>                        
                         </div>
@@ -63,7 +63,7 @@
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
                                 <a-checkbox-group
                                     v-model:value="formData[field.id]"
-                                    :options="JSON.parse(field.options)"
+                                    :options="field.options"
                                 ></a-checkbox-group>
                             </a-form-item>                        
                         </div>
@@ -77,7 +77,7 @@
                                 <a-select
                                     show-search
                                     v-model:value="formData[field.id]"
-                                    :options="JSON.parse(field.options)"
+                                    :options="field.options"
                                     optionFilterProp="label"
                                 />
                             </a-form-item>                        

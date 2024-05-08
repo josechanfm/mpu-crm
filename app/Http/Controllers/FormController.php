@@ -79,6 +79,9 @@ class FormController extends Controller
     public function show(Form $form)
     {
         //$form=Form::with('fields')->find($id);
+        if(!$form->published){
+            return redirect()->route('/');
+        }
         $form->fields;
         if($form->require_login==1 && !Auth()->user()){
             return redirect('forms');

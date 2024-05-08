@@ -81,7 +81,7 @@ const logout = () => {
 
                                 <template #content>
                                     <div class="w-30">
-                                        <template v-if="$page.props.jetstream.hasTeamFeatures">
+                                        <template >
                                             <DropdownLink :href="route('language', 'tw')">
                                                 {{ $t("chinese") }}
                                             </DropdownLink>

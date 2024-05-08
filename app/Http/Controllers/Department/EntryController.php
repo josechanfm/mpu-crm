@@ -115,11 +115,11 @@ class EntryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Form $form, $id)
+    public function destroy(Form $form, Entry $entry)
     {
         //  EntryRecord::where('entry_id', $id)->delete();
         //Entry::where('id', $id)->delete();
-
+        $entry->delete();
         return Redirect()->back();
         //
     }

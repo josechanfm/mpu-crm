@@ -23,7 +23,7 @@ class FormController extends Controller
         // }else{
         //     $forms=Form::where('published',1)->where('for_staff',0)->get();
         // }
-        $forms=Form::where('published',1)->where('for_staff',1)->get();
+        $forms=Form::where('published',1)->where('for_staff',true)->orWhere('require_login',false)->get();
         return Inertia::render('Staff/Form/Forms',[
             'forms'=>$forms
         ]);
@@ -48,22 +48,22 @@ class FormController extends Controller
     public function store(Request $request)
     {
 
-        $entry=new Entry();
-        $entry->form_id=$request->form['id'];
-        $entry->admin_user_id=auth()->user()->id;
-        $entry->save();
-        foreach($request->fields as $key=>$value){
-            $field=new EntryRecord();
-            $field->entry_id=$entry->id;
-            $field->form_field_id=$key;
-            $field->field_value=$value;
-            $field->save();
-        }
-        $form=Form::find($entry->form_id);
-        return Inertia::render('Staff/Form/Thanks',[
-            'form'=>$form,
-            'filled'=>$entry,
-        ]);
+        // $entry=new Entry();
+        // $entry->form_id=$request->form['id'];
+        // $entry->admin_user_id=auth()->user()->id;
+        // $entry->save();
+        // foreach($request->fields as $key=>$value){
+        //     $field=new EntryRecord();
+        //     $field->entry_id=$entry->id;
+        //     $field->form_field_id=$key;
+        //     $field->field_value=$value;
+        //     $field->save();
+        // }
+        // $form=Form::find($entry->form_id);
+        // return Inertia::render('Staff/Form/Thanks',[
+        //     'form'=>$form,
+        //     'filled'=>$entry,
+        // ]);
     }
 
     /**
@@ -74,18 +74,32 @@ class FormController extends Controller
      */
     public function show(Form $form)
     {
-        $entry=$form->entries->where('admin_user_id',auth()->user()->id)->first();
-        if($entry){
-            return Inertia::render('Staff/Form/Duplicate',[
-                'form'=>$form,
-                'entry'=>$entry
-            ]);
-    
-        }
-        //$form=Form::with('fields')->find($id);
         if(!$form->published){
             return redirect()->route('staff');
         }
+        $form->fields;
+        if($form->require_login==0 || $form->for_staff){
+            $entry=$form->entries->where('admin_user_id',auth()->user()->id)->first();
+            if($entry){
+                return Inertia::render('Staff/Form/Duplicate',[
+                    'form'=>$form,
+                    'entry'=>$entry
+                ]);
+            }else if($form->layout){
+                return Inertia::render('Form/'.$form->layout,[
+                    'form'=>$form,
+                    'entry'=>$entry
+                ]);
+            }else{
+                return Inertia::render('Form/FormDefault',[
+                    'form'=>$form,
+                    'entry'=>$entry
+                ]);
+            }
+        }
+
+        //$form=Form::with('fields')->find($id);
+
         $form->fields;
         if($form->require_login==1 && !Auth()->user()){
             return redirect('forms');
