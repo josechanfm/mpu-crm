@@ -9,7 +9,11 @@
     <a-button @click="createEventAttendees" :disabled="!selectedDisplayName"
       >Event Attendees</a-button
     > -->
-    <a :href="route('manage.entry.export', form.id)" class="ant-btn">滙出Excel</a>
+    <div class="pb-3 float-right">
+      <a :href="route('manage.entry.export', form.id)" class="ant-btn ant-btn-primary">滙出Excel</a>
+    </div>
+    
+
     <a-table
       :dataSource="entries"
       :columns="entryColumns"

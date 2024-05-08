@@ -68,9 +68,6 @@ class FormController extends Controller
                     'filled'=>$entry,
                 ]);
         
-                //return redirect()->route('form.thanks',$entry);
-                //return to_route('form.thanks', ['form'=>$request->form['id']]);
-                //return to_route('form.thanks',$request->form['id']);
     }
 
     /**
