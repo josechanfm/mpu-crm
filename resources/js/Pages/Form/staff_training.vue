@@ -186,8 +186,13 @@ export default {
             if(extra==null){
                 return {title:'Title',hour:'Hour'}
             }
-            const option =JSON.parse(extra)
-            return option[column]
+            try{
+                const option =JSON.parse(extra)
+                return option[column]
+            }catch(err){
+                console.log(extra);
+                return {title:'Title',hour:'Hour'}
+            }                     
         },
     },
     computed:{
