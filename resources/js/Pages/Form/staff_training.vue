@@ -89,7 +89,10 @@
                             </template>
                             <template v-for="i in suggestCount">
                                 <tr>
-                                    <td><a-input v-model:value="formData[formFields['suggest_'+i+'_3'].id]" /></td>
+                                    <td>
+                                        <div v-html="getExtraContent(formFields['suggest_'+i+'_1'].extra,'title')" />
+                                        <a-input v-model:value="formData[formFields['suggest_'+i+'_3'].id]" />
+                                    </td>
                                     <td><a-input v-model:value="formData[formFields['suggest_'+i+'_4'].id]" /></td>
                                     <td class="text-center">
                                         <a-checkbox v-model:checked="formData[formFields['suggest_'+i+'_1'].id]" /></td>
