@@ -307,6 +307,7 @@ export default {
       this.modal.data = record;
       this.modal.isOpen = true;
       this.modal.data.records.forEach((element) => {
+        console.log(this.form.fields.find((x) => x.id == element.form_field_id));
         if (
           this.form.fields.find((x) => x.id == element.form_field_id).type == "checkbox"
         ) {
