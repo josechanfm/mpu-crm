@@ -306,16 +306,16 @@ export default {
       this.formData = {};
       this.modal.data = record;
       this.modal.isOpen = true;
-      this.modal.data.records.forEach((element) => {
-        console.log(this.form.fields.find((x) => x.id == element.form_field_id));
-        if (
-          this.form.fields.find((x) => x.id == element.form_field_id).type == "checkbox"
-        ) {
-          this.formData[element.form_field_id] = element.field_value;
-        } else {
-          this.formData[element.form_field_id] = element.field_value;
-        }
-      });
+      // this.modal.data.records.forEach((element) => {
+      //   console.log(this.form.fields.find((x) => x.id == element.form_field_id));
+      //   if (
+      //     this.form.fields.find((x) => x.id == element.form_field_id).type == "checkbox"
+      //   ) {
+      //     this.formData[element.form_field_id] = element.field_value;
+      //   } else {
+      //     this.formData[element.form_field_id] = element.field_value;
+      //   }
+      // });
     },
     deleteRecord(record) {
       this.$inertia.delete(
