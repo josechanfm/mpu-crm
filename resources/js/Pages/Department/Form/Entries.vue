@@ -147,13 +147,13 @@
             </a-form-item>
           </div>
           <div v-else-if="field.type == 'true_false'">
-            <a-form-item
-              :label="field.field_label"
-              :name="field.id"
-              :rules="[{ required: field.required }]"
-            >
-              <a-checkbox v-model:checked="formData[field.id]" />
-            </a-form-item>
+              <a-form-item
+                :label="field.field_label"
+                :name="field.id"
+                :rules="[{ required: field.required }]"
+              >
+                <a-switch v-model:checked="formData[field.id]" checkedValue="1" unCheckedValue="0"/>
+              </a-form-item>
           </div>
           <div v-else-if="field.type == 'date'">
             <a-form-item

@@ -182,22 +182,23 @@ export default {
     },
     methods: {
         storeRecord() {
-            this.$refs.formRef.validateFields().then(() => {
-                this.$inertia.post(route('forms.store'), {
-                    form: this.form,
-                    fields: this.formData
-                }, {
-                    onSuccess: (page) => {
-                        this.formData = {};
-                    },
-                    onError: (err) => {
-                        console.log(err);
-                    }
-                });
-            }).catch(err => {
-                message.error('必填欄位未填寫。\nRequired fields are not completed.');
-                console.log(err);
-            });
+            console.log(this.formData)
+            // this.$refs.formRef.validateFields().then(() => {
+            //     this.$inertia.post(route('forms.store'), {
+            //         form: this.form,
+            //         fields: this.formData
+            //     }, {
+            //         onSuccess: (page) => {
+            //             this.formData = {};
+            //         },
+            //         onError: (err) => {
+            //             console.log(err);
+            //         }
+            //     });
+            // }).catch(err => {
+            //     message.error('必填欄位未填寫。\nRequired fields are not completed.');
+            //     console.log(err);
+            // });
         },
         getExtraContent(extra,column){
             if(extra==null){

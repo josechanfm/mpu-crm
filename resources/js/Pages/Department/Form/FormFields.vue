@@ -52,7 +52,6 @@
                 <a-form-item label="Rows" name="rows" v-if="['textarea', 'longtext', 'richtext'].includes(modal.data.type)">
                     <a-input-number v-model:value="modal.data.options" />
                 </a-form-item>
-
                 <template v-if="['radio', 'checkbox', 'dropdown'].includes(modal.data.type)">
                     <a-form-item label="Options" name="options">
                         <a-radio-group>
@@ -76,13 +75,10 @@
                     </a-form-item>
                 </template>
                 <a-form-item label="Compulsory" name="required">
-                    <a-switch v-model:checked="modal.data.required" :unCheckedValue="0" :checkedValue="1" />
+                    <a-switch v-model:checked="modal.data.required" />
                 </a-form-item>
-                <!-- <a-form-item label="規則" name="rule">
-                <a-input v-model:value="modal.data.rule" />
-            </a-form-item> -->
                 <a-form-item label="Column data" name="in_column" v-if="modal.data.required">
-                    <a-switch v-model:checked="modal.data.in_column" :unCheckedValue="0" :checkedValue="1" />
+                    <a-switch v-model:checked="modal.data.in_column"/>
                 </a-form-item>
                 <a-form-item label="Extra">
                     <a-textarea v-model:value="modal.data.extra" />
