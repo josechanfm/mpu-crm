@@ -1,7 +1,7 @@
 <template>
   <DepartmentLayout title="表格" :breadcrumb="breadcrumb">
     <div class="flex-auto pb-3 text-right">
-      <inertia-link :href="route('manage.forms.create')" class="ant-btn ant-btn-primary !rounded">Create Form</inertia-link>
+      <inertia-link :href="route('manage.forms.create')" class="ant-btn ant-btn-primary !rounded">{{ $t('create') }}</inertia-link>
     </div>
     <div class="container mx-auto pt-5">
       <div class="bg-white relative shadow rounded-lg overflow-x-auto">
@@ -13,20 +13,18 @@
             <template v-if="column.dataIndex == 'operation'">
               <inertia-link
                 :href="route('manage.form.entries.index',record.id)"
-                class="ant-btn">Response</inertia-link
+                class="ant-btn">{{ $t('response') }}</inertia-link
               >
               <a
                 :href="route('manage.entry.export', { form: record.id })"
-                class="ant-btn">Export</a
+                class="ant-btn">{{ $t('export') }}</a
               >
               <inertia-link
                 :href="route('manage.form.fields.index', { form: record.id })"
-                class="ant-btn"
-              >Data Fields</inertia-link>
+                class="ant-btn">{{ $t('data_field') }}</inertia-link>
               <inertia-link 
                 :href="route('manage.forms.edit',record.id)"
-                class="ant-btn"
-              >Edit</inertia-link>
+                class="ant-btn">{{ $t('edit') }}</inertia-link>
 
               <a-popconfirm
                 title="Confirm Delete"
@@ -35,7 +33,7 @@
                 @confirm="deleteConfirmed(record)"
                 :disabled="record.entries_count > 0"
               >
-                <a-button :disabled="record.entries_count > 0">Delete</a-button>
+                <a-button :disabled="record.entries_count > 0">{{ $t('delete') }}</a-button>
               </a-popconfirm>
               <a-button @click="backupRecords(record)" v-if="record.entries_count > 0">Backup</a-button>
             </template>
@@ -96,34 +94,25 @@ export default {
       },
       columns: [
         {
-          title: "Name",
-          i18n: "name",
-          dataIndex: "name",
-        },
-        {
           title: "Title",
-          i18n: "title",
+          i18n: "form_title",
           dataIndex: "title",
-        },
-        {
-          title: "Require_login",
+        },{
+          title: "Require login",
           i18n: "require_login",
           dataIndex: "require_login",
           type: "yesno",
-        },
-        {
+        },{
           title: "Published",
           i18n: "published",
           dataIndex: "published",
           type: "yesno",
-        },
-        {
+        },{
           title: "Entries",
-          i18n: "entries",
+          i18n: "form_entries",
           dataIndex: "entries",
           key: "entries",
-        },
-        {
+        },{
           title: "Operation",
           i18n: "operation",
           dataIndex: "operation",
@@ -151,7 +140,7 @@ export default {
       this.$inertia.post(route("manage.form.backup", record.id), {
         onSuccess: (page) => {
           console.log(page);
-        },
+        }, 
         onError: (error) => {
           alert(error.message);
         },

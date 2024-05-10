@@ -76,6 +76,7 @@ class Form extends Model implements HasMedia
             foreach ($fields as $field) {
                 $f = $entry->records->where('form_field_id', $field->id)->first();
                 if ($f) {
+
                     if ($field->type == 'radio') {
                         $fieldOptions = json_decode($field->options);
                         $value = array_filter($fieldOptions, function ($item) use ($f) {
