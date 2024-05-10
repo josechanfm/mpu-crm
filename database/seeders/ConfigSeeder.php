@@ -626,7 +626,7 @@ class ConfigSeeder extends Seeder
           ]'
         ]);
         DB::table('configs')->insert([
-          'key'=>'rec_vehicle',
+          'key'=>'rec_vehicles',
           'label'=>'Recuitment Vehicles',
           'value'=>'
           [
