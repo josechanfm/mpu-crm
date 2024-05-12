@@ -17,9 +17,7 @@
                                 <template v-for="vacancy in vacancies">
                                     <a-collapse-panel :key="vacancy.code" :style="customStyle" v-if="vacancy.type == 'ACD'">
                                         <template #header style="color:#fff">
-                                            {{ vacancy['title_'+$page.props.lang] }}
-                                            {{ vacancy }}
-                                            {{ $page.props.lang }}
+                                            {{ vacancy['title_'+$t('lang')] }}
                                         </template>
                                         <ol>
                                             <li v-for="notice in vacancy.notices">

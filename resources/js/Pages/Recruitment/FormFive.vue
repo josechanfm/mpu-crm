@@ -9,43 +9,47 @@
         <template v-if="$page.props.env == 'local'">
             <a-button @click="sampleData">Sample Data</a-button>
         </template>
-        {{ application.uploads }}
-        <CardBox :title="$t('rec.position_info')">
+        <div class="pb-5">
+            <a-steps  progress-dot :current="4">
+                <a-step v-for="item in lang.steps" :description="item.title"/>
+            </a-steps>
+        </div>
+        <CardBox :title="lang.file_uploaded">
             <template #content>
-                <a-form :model="application" layout="vertical" :rules="rules" @finish="onFinish">
+                <a-form :model="application" layout="vertical" :rules="rules" @finish="onFinish" @finishFailed="onFinishFailed">
                     <table width="100%">
                         <tr>
-                            <th width="150px">{{ $t('rec.doc_id') }}</th>
+                            <th width="150px">{{ lang.doc_id }}</th>
                             <td width="50%"></td>
-                            <td><button class="ant-btn">upload</button></td>
+                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
                         </tr>
                         <tr>
-                            <th>{{ $t('rec.doc_educations') }}</th>
+                            <th>{{ lang.doc_education }}</th>
                             <td></td>
-                            <td><button class="ant-btn">upload</button></td>
+                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
                         </tr>
                         <tr>
-                            <th>{{ $t('rec.doc_resume') }}</th>
+                            <th>{{ lang.doc_resume }}</th>
                             <td></td>
-                            <td><button class="ant-btn">upload</button></td>
+                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
                         </tr>
                         <tr>
-                            <th>{{ $t('rec.doc_employment') }}</th>
+                            <th>{{ lang.doc_employment }}</th>
                             <td></td>
-                            <td><button class="ant-btn">upload</button></td>
+                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
                         </tr>
                         <tr>
-                            <th>{{ $t('rec.doc_training') }}</th>
+                            <th>{{ lang.doc_training }}</th>
                             <td></td>
-                            <td><button class="ant-btn">upload</button></td>
+                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
                         </tr>
                         <tr>
-                            <th>{{ $t('rec.doc_academic') }}</th>
+                            <th>{{ lang.doc_academic }}</th>
                             <td></td>
-                            <td><button class="ant-btn">upload</button></td>
+                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
                         </tr>
                         <tr>
-                            <th>{{ $t('rec.doc_others') }}</th>
+                            <th>{{ lang.doc_others }}</th>
                             <td></td>
                             <td>
                                 <a-upload
@@ -57,7 +61,7 @@
                                 >
                                     <a-button>
                                     <upload-outlined></upload-outlined>
-                                    {{ $t('file_upload')}}
+                                    {{ lang.upload }}
                                     </a-button>
                                 </a-upload>
                             </td>
@@ -65,12 +69,12 @@
                     </table>
                 </a-form>
 
-                {{ $t('rec.doc_type_notes') }}
+                {{ lang.doc_type_notes }}
             </template>
         </CardBox>
 
         <!-- <div class="border border-sky-500 rounded-lg mt-5">
-                    <h2 class="bg-sky-500 text-white p-4 rounded-t-lg">{{ $t('rec.personal_info') }}</h2>
+                    <h2 class="bg-sky-500 text-white p-4 rounded-t-lg">{{ lang.personal_info }}</h2>
                     <div class="p-4">
                         <p>Card content</p>
                     <p>Card content</p>
@@ -80,8 +84,8 @@
         <a-divider />
         <div class="text-center pt-5">
             <a-button :href="route('application.apply', { code: vacancy.code, page: this.page.previours })"
-                class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ $t('rec.back_no_save') }}</a-button>
-            <a-button type="primary" @click="saveToNext">{{ $t('rec.save_next') }}</a-button>
+                class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ lang.back_no_save }}</a-button>
+            <a-button type="primary" @click="saveToNext">{{ lang.save_next }}</a-button>
         </div>
     </RecruitmentLayout>
 </template>
@@ -91,6 +95,7 @@ import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
 import { UploadOutlined } from '@ant-design/icons-vue';
+import recLang  from '/lang/recruitment.json';
 import { message } from 'ant-design-vue';
 
 export default {
@@ -128,7 +133,7 @@ export default {
         }
     },
     created() {
-
+        this.lang = recLang[this.$page.props.lang]
     },
     mounted() {
         let urlParams = new URLSearchParams(window.location.search);
@@ -170,6 +175,9 @@ export default {
                     console.log(err)
                 }
             });
+        },
+        onFinishFailed(){
+            message.error(this.lang.error_required_fields);
         },
         handleBeforeUpload(file){
             // console.log('before upload');

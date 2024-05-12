@@ -9,21 +9,26 @@
         <template v-if="$page.props.env == 'local'">
             <a-button @click="sampleData">Sample Data</a-button>
         </template>
-        <CardBox :title="$t('rec.professional')">
+        <div class="pb-5">
+            <a-steps  progress-dot :current="2">
+                <a-step v-for="item in lang.steps" :description="item.title"/>
+            </a-steps>
+        </div>
+        <CardBox :title="lang.part_b">
             <template #content>
                 <table class="myTable" width="100%">
                     <tr>
-                        <th colspan="2"> {{ $t('rec.prof_organization') }}</th>
-                        <th rowspan="2">{{ $t('rec.prof_qualification') }}</th>
-                        <th rowspan="2">{{ $t('rec.prof_area') }}</th>
-                        <th colspan="2">{{ $t('rec.prof_date') }}</th>
-                        <th rowspan="2">{{ $t('rec.operation') }}</th>
+                        <th colspan="2"> {{ lang.prof_organization }}</th>
+                        <th rowspan="2">{{ lang.prof_qualification }}</th>
+                        <th rowspan="2">{{ lang.prof_area }}</th>
+                        <th colspan="2">{{ lang.prof_date }}</th>
+                        <th rowspan="2">{{ lang.operation }}</th>
                     </tr>
                     <tr>
-                        <th>{{ $t('rec.prof_organization_name') }}</th>
-                        <th>{{ $t('rec.prof_region') }}</th>
-                        <th>{{ $t('rec.prof_date_valid') }}</th>
-                        <th>{{ $t('rec.prof_date_expired') }}</th>
+                        <th>{{ lang.prof_organization_name }}</th>
+                        <th>{{ lang.prof_region }}</th>
+                        <th>{{ lang.prof_date_valid }}</th>
+                        <th>{{ lang.prof_date_expired }}</th>
                     </tr>
                     <template v-for="professional in application.professionals">
                         <tr>
@@ -39,54 +44,54 @@
 
                 </table>
                 <a-divider />
-                <a-form :model="professional" layout="vertical" :rules="rules" @finish="onFinish">
+                <a-form :model="professional" layout="vertical" :rules="rules" @finish="onFinish" @finishFailed="onFinishFailed">
                     <a-row :gutter="10">
                         <a-col :span="16">
-                            <a-form-item :label="$t('rec.prof_organization_name')" name="organization_name">
+                            <a-form-item :label="lang.prof_organization_name" name="organization_name">
                                 <a-input v-model:value="professional.organization_name" />
                             </a-form-item>
                         </a-col>
                         <a-col :span="8">
-                            <a-form-item :label="$t('rec.prof_region')" name="region">
+                            <a-form-item :label="lang.prof_region" name="region">
                                 <a-input v-model:value="professional.region" />
                             </a-form-item>
                         </a-col>
                     </a-row>
                     <a-row :gutter="10">
                         <a-col :span="12">
-                            <a-form-item :label="$t('rec.prof_qualification')" name="qualification">
+                            <a-form-item :label="lang.prof_qualification" name="qualification">
                                 <a-input v-model:value="professional.qualification" />
                             </a-form-item>
                         </a-col>
                         <a-col :span="12">
-                            <a-form-item :label="$t('rec.prof_area')">
+                            <a-form-item :label="lang.prof_area">
                                 <a-input v-model:value="professional.area" />
                             </a-form-item>
                         </a-col>
                     </a-row>
                     <a-row :gutter="10">
                         <a-col :span="12">
-                            <a-form-item :label="$t('rec.prof_date_valid')" name="date_valid">
+                            <a-form-item :label="lang.prof_date_valid" name="date_valid">
                                 <a-date-picker v-model:value="professional.date_valid" :format="dateFormat"
                                     :valueFormat="dateFormat" />
                             </a-form-item>
                         </a-col>
                         <a-col :span="12">
-                            <a-form-item :label="$t('rec.prof_date_expired')">
+                            <a-form-item :label="lang.prof_date_expired">
                                 <a-date-picker v-model:value="professional.date_expired" :format="dateFormat"
                                     :valueFormat="dateFormat" />
                             </a-form-item>
                         </a-col>
                     </a-row>
                     <a-form-item :wrapper-col="{ span: 24, offset: 11, }">
-                        <a-button type="primary" html-type="submit">{{ $t('rec.add_item') }}</a-button>
+                        <a-button type="primary" html-type="submit">{{ lang.add_item }}</a-button>
                     </a-form-item>
                 </a-form>
             </template>
         </CardBox>
 
         <!-- <div class="border border-sky-500 rounded-lg mt-5">
-                    <h2 class="bg-sky-500 text-white p-4 rounded-t-lg">{{ $t('rec.personal_info') }}</h2>
+                    <h2 class="bg-sky-500 text-white p-4 rounded-t-lg">{{ lang.personal_info }}</h2>
                     <div class="p-4">
                         <p>Card content</p>
                     <p>Card content</p>
@@ -95,8 +100,8 @@
                 </div> -->
         <div class="text-center pt-5">
             <a-button :href="route('application.apply', { code: vacancy.code, page: page.previours })"
-                class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ $t('rec.back_no_save') }}</a-button>
-            <a-button type="primary" @click="saveToNext">{{ $t('rec.save_next') }}</a-button>
+                class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ lang.back_no_save }}</a-button>
+            <a-button type="primary" @click="saveToNext">{{ lang.save_next }}</a-button>
         </div>
     </RecruitmentLayout>
 </template>
@@ -105,6 +110,8 @@
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
+import recLang  from '/lang/recruitment.json';
+import { message } from 'ant-design-vue';
 
 export default {
     components: {
@@ -130,7 +137,7 @@ export default {
         }
     },
     created() {
-
+        this.lang = recLang[this.$page.props.lang]
     },
     mounted() {
         let urlParams = new URLSearchParams(window.location.search);
@@ -167,6 +174,9 @@ export default {
             this.application.professionals.push({ ...this.professional })
             this.professional = {};
             console.log(this.application);
+        },
+        onFinishFailed(){
+            message.error(this.lang.error_required_fields);
         }
     },
 };

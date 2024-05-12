@@ -6,30 +6,31 @@
                 {{ vacancy['title_' + $page.props.lang] }}
             </h2>
         </template>
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-            <div class="text-lg text-white bg-emerald-500 rounded p-3">{{ $t('login_success') }}</div>
-        </div>
-
         <template v-if="$page.props.env == 'local'">
             <a-button @click="sampleData">Sample Data</a-button>
         </template>
-        <a-form :model="application" layout="vertical" :rules="rules" @finish="onFinish">
+        <div class="pb-5">
+            <a-steps  progress-dot :current="0">
+                <a-step v-for="item in lang.steps" :description="item.title"/>
+            </a-steps>
+        </div>
+        <a-form :model="application" layout="vertical" :rules="rules" @finish="onFinish" @finishFailed="onFinishFailed">
             <CardBox :title="$t('rec.position_info')">
                 <template #content>
                     <a-row>
                         <a-col :span="16">
-                            <p>{{ $t('rec.unit') }}: {{ vacancy.apply_in }}</p>
-                            <p>{{ $t('rec.code') }}: {{ vacancy.code }}</p>
-                            <p>{{ $t('rec.title') }}: {{ vacancy['title_' + $page.props.lang] }}</p>
+                            <p>{{ lang.unit }}: {{ vacancy.apply_in }}</p>
+                            <p>{{ lang.code }}:{{ vacancy.code }}</p>
+                            <p>{{ lang.title }}: {{ vacancy['title_' + $page.props.lang] }}</p>
                         </a-col>
                         <a-col>
-                            <p>{{ $t('rec.obtain_info') }}</p>
+                            <p>{{ lang.obtain_info }}</p>
                             <a-checkbox-group v-model:value="application.obtain_info"
                                 style="display: flex; flex-direction: column;margin-left:8">
-                                <a-checkbox value="WEB">{{ $t('rec.obtain_info_web') }}</a-checkbox>
+                                <a-checkbox value="WEB">{{ lang.obtain_info_web }}</a-checkbox>
                                 <a-row>
                                     <a-col>
-                                        <a-checkbox value="NEW">{{ $t('rec.obtain_info_new') }}</a-checkbox>
+                                        <a-checkbox value="NEW">{{ lang.obtain_info_new }}</a-checkbox>
                                     </a-col>
                                     <a-col>
                                         <a-input v-model:value="application.obtain_info_new" />
@@ -37,7 +38,7 @@
                                 </a-row>
                                 <a-row>
                                     <a-col>
-                                        <a-checkbox value="OTH">{{ $t('rec.obtain_info_oth') }}</a-checkbox>
+                                        <a-checkbox value="OTH">{{ lang.obtain_info_oth }}</a-checkbox>
                                     </a-col>
                                     <a-col>
                                         <a-input v-model:value="application.obtain_info_oth" />
@@ -50,62 +51,62 @@
                 </template>
             </CardBox>
 
-            <CardBox :title="$t('rec.notice_title')" themeColor="amber-500">
+            <CardBox :title="lang.notice_title" themeColor="amber-500">
                 <template #content>
                     <div class="pl-5 pr-3">
-                        <div v-html="$t('rec.notice_content')" />
+                        <div v-html="lang.notice_content" />
                     </div>
                 </template>
             </CardBox>
-            <CardBox :title="$t('rec.declaration_title')" themeColor="amber-500">
+            <CardBox :title="lang.declaration_title" themeColor="amber-500">
                 <template #content>
                     <div class="pl-5 pr-3">
-                        <div v-html="$t('rec.declaration_content')" />
+                        <div v-html="lang.declaration_content" />
                     </div>
                 </template>
             </CardBox>
-            <CardBox :title="$t('rec.personal_info')">
+            <CardBox :title="lang.personal_info">
                 <template #content>
                     <a-row :gutter="12">
                         <a-col :span="16">
-                            <a-form-item :label="$t('rec.name_zh')" name="name_zh">
+                            <a-form-item :label="lang.name_zh" name="name_zh">
                                 <a-input v-model:value="application.name_zh" />
                             </a-form-item>
                         </a-col>
                         <a-col :span="8">
-                            <a-form-item :label="$t('rec.gender')" name="gender">
+                            <a-form-item :label="lang.gender" name="gender">
                                 <a-radio-group v-model:value="application.gender">
-                                    <a-radio value="M">{{ $t('rec.male') }}</a-radio>
-                                    <a-radio value="F">{{ $t('rec.female') }}</a-radio>
+                                    <a-radio value="M">{{ lang.male }}</a-radio>
+                                    <a-radio value="F">{{ lang.female }}</a-radio>
                                 </a-radio-group>
                             </a-form-item>
                         </a-col>
                     </a-row>
-                    <a-form-item :label="$t('rec.first_name_fn')" name="first_name_fn">
-                        <a-input v-model:value="application.gender" />
+                    <a-form-item :label="lang.first_name_fn" name="first_name_fn">
+                        <a-input v-model:value="application.first_name_fn" />
                     </a-form-item>
-                    <a-form-item :label="$t('rec.last_name_fn')" name="last_name_fn">
-                        <a-input v-model:value="application.gender" />
+                    <a-form-item :label="lang.last_name_fn" name="last_name_fn">
+                        <a-input v-model:value="application.last_name_fn" />
                     </a-form-item>
                     <a-row :gutter="12">
                         <a-col :span="16">
-                            <a-form-item :label="$t('rec.pob')" name="pob">
+                            <a-form-item :label="lang.pob" name="pob">
                                 <a-radio-group v-model:value="application.pob">
-                                    <template v-for="(item, key) in $t('rec.pob_options')">
+                                    <template v-for="(item, key) in lang.pob_options">
                                         <a-radio :value="key">{{ item }}</a-radio>
                                     </template>
                                 </a-radio-group>
                             </a-form-item>
                         </a-col>
                         <a-col :span="8">
-                            <a-form-item :label="$t('rec.dob')" name="dob">
+                            <a-form-item :label="lang.dob" name="dob">
                                 <a-input v-model:value="application.dob" />
                             </a-form-item>
                         </a-col>
                     </a-row>
                     <a-row :gutter="12">
                         <a-col :span="12">
-                            <a-form-item :label="$t('rec.id_type')" name="id_type">
+                            <a-form-item :label="lang.id_type" name="id_type">
                                 <a-select v-model:value="application.id_type">
                                     <template v-for="(item, key) in $t('rec.id_type_options')">
                                         <a-select-option :value="key">{{ item }}</a-select-option>
@@ -114,21 +115,21 @@
                             </a-form-item>
                         </a-col>
                         <a-col :span="12">
-                            <a-form-item :label="$t('rec.id_type_name')" name="id_type_name">
+                            <a-form-item :label="lang.id_type_name" name="id_type_name">
                                 <a-input v-model:value="application.id_type_name" />
                             </a-form-item>
                         </a-col>
                     </a-row>
                     <a-row :gutter="12">
                         <a-col :span="12">
-                            <a-form-item :label="$t('rec.id_num')" name="id_num">
+                            <a-form-item :label="lang.id_num" name="id_num">
                                 <a-input v-model:value="application.id_num" />
                             </a-form-item>
                         </a-col>
                         <a-col :span="12">
-                            <a-form-item :label="$t('rec.nationality')" name="nationality">
+                            <a-form-item :label="lang.nationality" name="nationality">
                                 <a-radio-group v-model:value="application.nationality">
-                                    <template v-for="(item, key) in $t('rec.nationality_options')">
+                                    <template v-for="(item, key) in lang.nationality_options">
                                         <a-radio :value="key">{{ item }}</a-radio>
                                     </template>
                                 </a-radio-group>
@@ -136,17 +137,17 @@
                             </a-form-item>
                         </a-col>
                     </a-row>
-                    <a-form-item :label="$t('rec.address')" name="address">
+                    <a-form-item :label="lang.address" name="address">
                         <a-input v-model:value="application.address" />
                     </a-form-item>
                     <a-row :gutter="12">
                         <a-col :span="12">
-                            <a-form-item :label="$t('rec.phone')" name="phone">
+                            <a-form-item :label="lang.phone" name="phone">
                                 <a-input v-model:value="application.phone" />
                             </a-form-item>
                         </a-col>
                         <a-col :span="12">
-                            <a-form-item :label="$t('rec.email')" name="email">
+                            <a-form-item :label="lang.email" name="email">
                                 <a-input v-model:value="application.email" />
                             </a-form-item>
                         </a-col>
@@ -154,7 +155,7 @@
                 </template>
             </CardBox>
             <!-- <div class="border border-sky-500 rounded-lg mt-5">
-                    <h2 class="bg-sky-500 text-white p-4 rounded-t-lg">{{ $t('rec.personal_info') }}</h2>
+                    <h2 class="bg-sky-500 text-white p-4 rounded-t-lg">{{ lang.personal_info }}</h2>
                     <div class="p-4">
                         <p>Card content</p>
                     <p>Card content</p>
@@ -163,7 +164,7 @@
                 </div> -->
             <a-divider />
             <a-form-item :wrapper-col="{ span: 24, offset: 11, }">
-                <a-button type="primary" html-type="submit">{{ $t('rec.save_next') }}</a-button>
+                <a-button type="primary" html-type="submit">{{ lang.save_next }}</a-button>
             </a-form-item>
         </a-form>
     </RecruitmentLayout>
@@ -173,12 +174,14 @@
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
+import recLang  from '/lang/recruitment.json';
+import { message } from 'ant-design-vue';
 
 export default {
     components: {
         RecruitmentLayout,
         CaretRightOutlined,
-        CardBox
+        CardBox,
     },
     props: ['vacancy', 'application'],
     data() {
@@ -205,7 +208,7 @@ export default {
         }
     },
     created() {
-
+        this.lang = recLang[this.$page.props.lang]
     },
     mounted() {
         let urlParams = new URLSearchParams(window.location.search);
@@ -244,7 +247,10 @@ export default {
                     console.log(err)
                 }
             });
-        }
+        },
+        onFinishFailed(){
+            message.error(this.lang.error_required_fields);
+        },
     },
 };
 

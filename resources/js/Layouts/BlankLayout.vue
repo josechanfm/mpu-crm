@@ -82,7 +82,7 @@ const logout = () => {
                                 <template #content>
                                     <div class="w-30">
                                         <template >
-                                            <DropdownLink :href="route('language', 'tw')">
+                                            <DropdownLink :href="route('language', 'zh')">
                                                 {{ $t("chinese") }}
                                             </DropdownLink>
                                             <DropdownLink :href="route('language', 'en')">

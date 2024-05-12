@@ -9,22 +9,27 @@
         <template v-if="$page.props.env == 'local'">
             <a-button @click="sampleData">Sample Data</a-button>
         </template>
-        <CardBox :title="$t('rec.experiences')">
+        <div class="pb-5">
+            <a-steps  progress-dot :current="3">
+                <a-step v-for="item in lang.steps" :description="item.title"/>
+            </a-steps>
+        </div>
+        <CardBox :title="lang.experiences">
             <template #content>
                 <table width="100%">
                     <tr>
-                        <th colspan="2"> {{ $t('rec.exp_company') }}</th>
-                        <th rowspan="2">{{ $t('rec.exp_position') }}</th>
-                        <th rowspan="2">{{ $t('rec.exp_salary') }}</th>
-                        <th rowspan="2">{{ $t('rec.exp_employment') }}</th>
-                        <th colspan="2">{{ $t('rec.exp_date') }}</th>
-                        <th rowspan="2">{{ $t('rec.operation') }}</th>
+                        <th colspan="2">{{ lang.exp_company }}</th>
+                        <th rowspan="2">{{ lang.exp_position }}</th>
+                        <th rowspan="2">{{ lang.exp_salary }}</th>
+                        <th rowspan="2">{{ lang.exp_employment }}</th>
+                        <th colspan="2">{{ lang.exp_date }}</th>
+                        <th rowspan="2">{{ lang.operation }}</th>
                     </tr>
                     <tr>
-                        <th>{{ $t('rec.exp_company_name') }}</th>
-                        <th>{{ $t('rec.exp_region') }}</th>
-                        <th>{{ $t('rec.exp_date_join') }}</th>
-                        <th>{{ $t('rec.exp_date_leave') }}</th>
+                        <th>{{ lang.exp_company_name }}</th>
+                        <th>{{ lang.exp_region }}</th>
+                        <th>{{ lang.exp_date_join }}</th>
+                        <th>{{ lang.exp_date_leave }}</th>
                     </tr>
                     <template v-for="experience in application.experiences">
                         <tr>
@@ -41,59 +46,59 @@
                     </template>
                 </table>
                 <a-divider />
-                <a-form :model="experience" layout="vertical" :rules="rules" @finish="onFinish">
+                <a-form :model="experience" layout="vertical" :rules="rules" @finish="onFinish" @finishFailed="onFinishFailed">
                     <a-row :gutter="10">
                         <a-col :span="16">
-                            <a-form-item :label="$t('rec.company_name')" name="company_name">
+                            <a-form-item :label="lang.exp_company_name" name="company_name">
                                 <a-input v-model:value="experience.company_name" />
                             </a-form-item>
                         </a-col>
                         <a-col :span="8">
-                            <a-form-item :label="$t('rec.region')" name="region">
+                            <a-form-item :label="lang.exp_region" name="region">
                                 <a-input v-model:value="experience.region" />
                             </a-form-item>
                         </a-col>
                     </a-row>
                     <a-row :gutter="10">
                         <a-col :span="8">
-                            <a-form-item :label="$t('rec.position')" name="position">
+                            <a-form-item :label="lang.exp_position" name="position">
                                 <a-input v-model:value="experience.position" />
                             </a-form-item>
                         </a-col>
                         <a-col :span="8">
-                            <a-form-item :label="$t('rec.salary')">
+                            <a-form-item :label="lang.exp_salary">
                                 <a-input v-model:value="experience.salary" />
                             </a-form-item>
                         </a-col>
                         <a-col :span="8">
-                            <a-form-item :label="$t('rec.employment')" name="employment">
-                                <a-radio-group v-model:value="experience.employment" :options="employmentOptions" />
+                            <a-form-item :label="lang.exp_employment" name="employment">
+                                <a-radio-group v-model:value="experience.employment" :options="lang.exp_employmentOptions" />
                             </a-form-item>
                         </a-col>
                     </a-row>
                     <a-row :gutter="10">
                         <a-col :span="12">
-                            <a-form-item :label="$t('rec.date_join')" name="date_join">
+                            <a-form-item :label="lang.exp_date_join" name="date_join">
                                 <a-date-picker v-model:value="experience.date_join" :format="dateFormat"
                                     :valueFormat="dateFormat" />
                             </a-form-item>
                         </a-col>
                         <a-col :span="12">
-                            <a-form-item :label="$t('rec.date_leave')">
+                            <a-form-item :label="lang.exp_date_leave">
                                 <a-date-picker v-model:value="experience.date_leave" :format="dateFormat"
                                     :valueFormat="dateFormat" />
                             </a-form-item>
                         </a-col>
                     </a-row>
                     <a-form-item :wrapper-col="{ span: 24, offset: 11, }">
-                        <a-button type="primary" html-type="submit">{{ $t('rec.add_item') }}</a-button>
+                        <a-button type="primary" html-type="submit">{{ lang.add_item }}</a-button>
                     </a-form-item>
                 </a-form>
             </template>
         </CardBox>
 
         <!-- <div class="border border-sky-500 rounded-lg mt-5">
-                    <h2 class="bg-sky-500 text-white p-4 rounded-t-lg">{{ $t('rec.personal_info') }}</h2>
+                    <h2 class="bg-sky-500 text-white p-4 rounded-t-lg">{{ lang.personal_info }}</h2>
                     <div class="p-4">
                         <p>Card content</p>
                     <p>Card content</p>
@@ -102,8 +107,8 @@
                 </div> -->
         <div class="text-center pt-5">
             <a-button :href="route('application.apply', { code: vacancy.code, page: this.page.previours })"
-                class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ $t('rec.back_no_save') }}</a-button>
-            <a-button type="primary" @click="saveToNext">{{ $t('rec.save_next') }}</a-button>
+                class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ lang.back_no_save }}</a-button>
+            <a-button type="primary" @click="saveToNext">{{ lang.save_next }}</a-button>
         </div>
     </RecruitmentLayout>
 </template>
@@ -112,6 +117,8 @@
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
+import recLang  from '/lang/recruitment.json';
+import { message } from 'ant-design-vue';
 
 export default {
     components: {
@@ -139,14 +146,15 @@ export default {
         }
     },
     created() {
-        axios.get(route('api.config.item', { key: 'rec_employment_types' }))
-            .then(res => {
-                this.employmentOptions = res.data[this.$page.props.lang].value
-                this.experience.employment = this.employmentOptions[0].value
-            })
-            .then(err => {
-                console.log(err)
-            })
+        this.lang = recLang[this.$page.props.lang]
+        // axios.get(route('api.config.item', { key: 'rec_employment_types' }))
+        //     .then(res => {
+        //         this.employmentOptions = res.data[this.$page.props.lang].value
+        //         this.experience.employment = this.employmentOptions[0].value
+        //     })
+        //     .then(err => {
+        //         console.log(err)
+        //     })
 
     },
     mounted() {
@@ -185,7 +193,9 @@ export default {
             this.application.experiences.push({ ...this.experience })
             this.experience = {};
             console.log(this.application);
-
+        },
+        onFinishFailed(){
+            message.error(this.lang.error_required_fields);
         }
     },
 };
