@@ -19,11 +19,6 @@ class FormController extends Controller
 
     public function index()
     {
-        $form=Form::find(5);
-        return Inertia::render('Form/Thanks',[
-            'form'=>$form,
-        ]);
-
         // if(Auth()->user()){
         //     $forms=Form::where('published',1)->get();
         // }else{
