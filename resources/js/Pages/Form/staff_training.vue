@@ -83,7 +83,15 @@
                                     <td class="text-center"><div v-html="getExtraContent(formFields['question_'+i+'_1'].extra,'hour')" /></td>
                                     <td class="text-center">
                                         <a-checkbox v-model:checked="formData[formFields['question_'+i+'_1'].id]" /></td>
-                                    <td><a-input v-model:value="formData[formFields['question_'+i+'_2'].id]" /></td>
+                                    <td>
+                                        <a-select 
+                                            v-model:value="formData[formFields['question_'+i+'_2'].id]" 
+                                            mode="multiple"
+                                            style="width: 100%" 
+                                            :options="monthOptions"
+                                        />
+                                        <!-- <a-input v-model:value="formData[formFields['question_'+i+'_2'].id]" @input="checkInputMonthOnly"/> -->
+                                    </td>
                                 </tr>
                             </template>
                             <template v-for="i in suggestCount">
@@ -95,7 +103,14 @@
                                     <td><a-input v-model:value="formData[formFields['suggest_'+i+'_4'].id]" /></td>
                                     <td class="text-center">
                                         <a-checkbox v-model:checked="formData[formFields['suggest_'+i+'_1'].id]" /></td>
-                                    <td><a-input v-model:value="formData[formFields['suggest_'+i+'_2'].id]" /></td>
+                                    <td>
+                                        <a-select 
+                                            v-model:value="formData[formFields['suggest_'+i+'_2'].id]" 
+                                            mode="multiple"
+                                            style="width: 100%" 
+                                            :options="monthOptions"
+                                        />
+                                    </td>
                                 </tr>
                             </template>
                     </table>
@@ -115,6 +130,7 @@ import MemberLayout from '@/Layouts/MemberLayout.vue';
 import BlankLayout from '@/Layouts/BlankLayout.vue';
 import { quillEditor } from 'vue3-quill';
 import { message } from 'ant-design-vue';
+import { CheckOutlined } from '@ant-design/icons-vue';
 
 export default {
     components: {
@@ -133,6 +149,9 @@ export default {
             },
             richText: '<p>Jose</p>',
             dateFormat: 'YYYY-MM-DD',
+            monthOptions:[...Array(12)].map((_, i) => ({
+                value: (i + 1),
+            })),
             columns: [
                 {
                     title: 'Name',
@@ -183,10 +202,19 @@ export default {
     },
     methods: {
         storeRecord() {
+            let data={};
+            for(const key in this.formData){
+                if(Array.isArray(this.formData[key])){
+                    data[key]=this.formData[key].join(', ')
+                }else{
+                    data[key]=this.formData[key]
+                }
+            }
+
             this.$refs.formRef.validateFields().then(() => {
                 this.$inertia.post(route('forms.store'), {
                     form: this.form,
-                    fields: this.formData
+                    fields: data
                 }, {
                     onSuccess: (page) => {
                         this.formData = {};
