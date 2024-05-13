@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('rec_uploads', function (Blueprint $table) {
+        Schema::create('rec_academic_professionals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('rec_application_id');
-            $table->string('path');
-            $table->string('file_name');
-            $table->string('full_path');
-            $table->string('document_type'); //IDC,EDU,RSM,WRK,TRN,ACH,OTH
+            $table->string('organization_name');
+            $table->string('region');
+            $table->string('qualification');
+            $table->string('area');
+            $table->date('date_valid');
+            $table->date('date_expire')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rec_uploads');
+        Schema::dropIfExists('rec_academic_professionals');
     }
 };

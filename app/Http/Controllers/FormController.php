@@ -16,8 +16,14 @@ class FormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
+        $form=Form::find(5);
+        return Inertia::render('Form/Thanks',[
+            'form'=>$form,
+        ]);
+
         // if(Auth()->user()){
         //     $forms=Form::where('published',1)->get();
         // }else{
@@ -65,9 +71,7 @@ class FormController extends Controller
                 $form=Form::find($entry->form_id);
                 return Inertia::render('Form/Thanks',[
                     'form'=>$form,
-                    'filled'=>$entry,
                 ]);
-        
     }
 
     /**

@@ -53,7 +53,7 @@
                 <a @click="form.openThanks=!form.openThanks">Thank You Message</a>
             </div>
             <a-form-item label="Thank you Message" name="thankyou" v-if="form.openThanks">
-                <quill-editor
+                <a-textarea
                     v-model:value="form.thanks"
                     style="min-height: 200px"
                 />

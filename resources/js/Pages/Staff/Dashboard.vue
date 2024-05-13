@@ -7,7 +7,7 @@
           for both Administration and Teaching staff.</p>
         <a href="#"
           class="uppercase inline-block mt-8 text-sm bg-white py-2 px-4 rounded font-semibold hover:bg-indigo-100">Comming
-          soon...</a>
+          soon..!.</a>
       </div>
     </div>
     <a-row class="pt-5">

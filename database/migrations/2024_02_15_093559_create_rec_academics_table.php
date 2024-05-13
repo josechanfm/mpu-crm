@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('rec_applications', function (Blueprint $table) {
+        Schema::create('rec_academics', function (Blueprint $table) {
             $table->id();
             $table->foreignId('rec_vacancy_id');
             $table->string('info_received')->nullable();
@@ -53,6 +53,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rec_applications');
+        Schema::dropIfExists('rec_academics');
     }
 };

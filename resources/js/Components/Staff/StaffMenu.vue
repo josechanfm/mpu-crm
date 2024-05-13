@@ -41,7 +41,6 @@
               </template>
             </a-menu-item>
           </template>
-
           <template v-if="$page.props.currentUser.roles.length > 0">
             <template v-for="role in $page.props.currentUser.roles">
               <a-menu-item v-if="role==role.toUpperCase()">

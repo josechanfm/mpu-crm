@@ -1,5 +1,5 @@
 <template>
-    <WebLayout title="Dashboard">
+    <BlankLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{form.title}}
@@ -16,16 +16,16 @@
                 </div>
             </div>
         </div>
-    </WebLayout>
+    </BlankLayout>
 
 </template>
 
 <script>
-import WebLayout from '@/Layouts/WebLayout.vue';
+import BlankLayout from '@/Layouts/BlankLayout.vue';
 
 export default {
     components: {
-        WebLayout,
+        BlankLayout,
     },
     props: ['form','filled'],
     data() {

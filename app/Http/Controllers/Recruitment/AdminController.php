@@ -1,38 +1,39 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Recruitment;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\RecVacancy;
-use App\Models\RecApplication;
+use App\Models\RecAdmin;
 use App\Models\RecEducation;
 use App\Models\RecExperience;
 use App\Models\RecProfessional;
 use LdapRecord\Query\Events\Read;
 
-class ApplicationController extends Controller
+class AdminController extends Controller
 {
-    public function apply(Request $request){
+    public function form(Request $request){
         $vacancyCode=$request->code;
         $page=$request->page;
         $vacancy=RecVacancy::where('code',$vacancyCode)->first();
-        $application=RecApplication::whereBelongsTo($vacancy,'vacancy')->with('user')->first();
+        $application=RecAdmin::whereBelongsTo($vacancy,'vacancy')->with('user')->first();
         if(empty($application)){
-            $application=RecApplication::make();
+            $application=RecAdmin::make();
             $application->rec_vacancy_id=$vacancy->id;
             $application->user_id=auth()->user()->id;
             $application->user;
         }
         if($application->id==null){
-            return Inertia::render('Recruitment/FormOne',[
+            return Inertia::render('Recruitment/Admin/FormOne',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
         }
         if($application->submitted){
             $application->educations;
-            return Inertia::render('Recruitment/FormSix',[
+            return Inertia::render('Recruitment/Admin/FormSix',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
@@ -40,7 +41,7 @@ class ApplicationController extends Controller
 
         if(empty($page)){
             $application->educations;
-            return Inertia::render('Recruitment/FormOne',[
+            return Inertia::render('Recruitment/Admin/FormOne',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
@@ -48,7 +49,7 @@ class ApplicationController extends Controller
 
         if($page==1 && $application->id){
             $application->educations;
-            return Inertia::render('Recruitment/FormOne',[
+            return Inertia::render('Recruitment/Admin/FormOne',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
@@ -56,28 +57,28 @@ class ApplicationController extends Controller
 
         if($page && $page==2 && $application->id){
             $application->educations;
-            return Inertia::render('Recruitment/FormTwo',[
+            return Inertia::render('Recruitment/Admin/FormTwo',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
         }
         if($page && $page==3 && $application->id){
             $application->professionals;
-            return Inertia::render('Recruitment/FormThree',[
+            return Inertia::render('Recruitment/Admin/FormThree',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
         }
         if($page && $page==4 && $application->id){
             $application->experiences;
-            return Inertia::render('Recruitment/FormFour',[
+            return Inertia::render('Recruitment/Admin/FormFour',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]); 
         }
         if($page && $page==5 && $application->id){
             $application->uploads;
-            return Inertia::render('Recruitment/FormFive',[
+            return Inertia::render('Recruitment/Admin/FormFive',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
@@ -87,7 +88,7 @@ class ApplicationController extends Controller
             $application->professionals;
             $application->experiences;
             $application->uploads;
-            return Inertia::render('Recruitment/FormSix',[
+            return Inertia::render('Recruitment/Admin/FormSix',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
@@ -102,13 +103,13 @@ class ApplicationController extends Controller
             return redirect()->route('recruitment');
         }
         if(empty($application['id'])){
-            RecApplication::create($application);
+            RecAdmin::create($application);
             $toPage=2;
         }else{
-            $recApp=RecApplication::find($application['id']);
+            $recApp=RecAdmin::find($application['id']);
             if($toPage==2 || empty($toPage)){
                 //dd($application);
-                RecApplication::find($application['id'])->update($application);
+                RecAdmin::find($application['id'])->update($application);
             }elseif($toPage==3 && isset($application['educations'])){
                 foreach($application['educations'] as $edu){
                     if(isset($edu['id'])){
@@ -144,7 +145,7 @@ class ApplicationController extends Controller
         }
         //dd($toPage);
                 
-        return redirect()->route('application.apply',[
+        return redirect()->route('application.academic.form',[
             'code'=>RecVacancy::find($application['rec_vacancy_id'])->code,
             'page'=>$toPage
         ]);
@@ -152,7 +153,7 @@ class ApplicationController extends Controller
 
     public function submit(Request $request){
         $app=$request->application;
-        $application=RecApplication::find($app['id']);
+        $application=RecAdmin::find($app['id']);
         
         $application->submitted=true;
         $application->save();
@@ -160,7 +161,7 @@ class ApplicationController extends Controller
     }
 
     public function payment(Request $request){
-        $application=RecApplication::find($request->id);
+        $application=RecAdmin::find($request->id);
         return Inertia::render('Recruitment/Payment',[
             'application'=>$application
         ]);

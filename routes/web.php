@@ -44,7 +44,7 @@ Route::prefix('enquiry')->group(function(){
     Route::post('ticket',[\App\Http\Controllers\EnquiryTicketController::class,'store'])->name('enquiry.ticket.store');
 });
 Route::resource('forms',\App\Http\Controllers\FormController::class)->names('forms');
-Route::get('recruitment',[\App\Http\Controllers\RecruitmentController::class,'index'])->name('recruitment');
+Route::get('recruitment/vacancies',[\App\Http\Controllers\Recruitment\VacancyController::class,'index'])->name('recruitment.vacancies');
 
 Route::middleware([
     'auth:sanctum',
@@ -54,13 +54,21 @@ Route::middleware([
     Route::get('/member/dashboard', function () {
         return Inertia::render('Member/Dashboard');
     })->name('dashboard');
-    Route::prefix('/application')->group(function(){
-        Route::get('apply',[\App\Http\Controllers\ApplicationController::class,'apply'])->name('application.apply');
-        Route::post('save',[\App\Http\Controllers\ApplicationController::class,'save'])->name('application.save');
-        Route::post('submit',[\App\Http\Controllers\ApplicationController::class,'submit'])->name('application.submit');
-        Route::get('payment',[\App\Http\Controllers\ApplicationController::class,'payment'])->name('application.payment');
-        Route::post('file_upload',[\App\Http\Controllers\ApplicationController::class,'fileUpload'])->name('application.fileUpload');
-        Route::post('file_delete',[\App\Http\Controllers\ApplicationController::class,'fileDelete'])->name('application.fileDelete');
+    Route::prefix('/recruitment/acadmic')->group(function(){
+        Route::get('form',[\App\Http\Controllers\Recruitment\AcademicController::class,'form'])->name('recruitment.academic.form');
+        Route::post('save',[\App\Http\Controllers\Recruitment\AcademicController::class,'save'])->name('recruitment.academic.save');
+        Route::post('submit',[\App\Http\Controllers\Recruitment\AcademicController::class,'submit'])->name('recruitment.academic.submit');
+        Route::get('payment',[\App\Http\Controllers\Recruitment\AcademicController::class,'payment'])->name('recruitment.academic.payment');
+        Route::post('file_upload',[\App\Http\Controllers\Recruitment\AcademicController::class,'fileUpload'])->name('recruitment.academic.fileUpload');
+        Route::post('file_delete',[\App\Http\Controllers\Recruitment\AcademicController::class,'fileDelete'])->name('recruitment.academic.fileDelete');
+    });
+    Route::prefix('/recruitment/admin')->group(function(){
+        Route::get('form',[\App\Http\Controllers\Recruitment\AdminController::class,'form'])->name('recruitment.admin.form');
+        Route::post('save',[\App\Http\Controllers\Recruitment\AdminController::class,'save'])->name('recruitment.admin.save');
+        Route::post('submit',[\App\Http\Controllers\Recruitment\AdminController::class,'submit'])->name('recruitment.admin.submit');
+        Route::get('payment',[\App\Http\Controllers\Recruitment\AdminController::class,'payment'])->name('recruitment.admin.payment');
+        Route::post('file_upload',[\App\Http\Controllers\Recruitment\AdminController::class,'fileUpload'])->name('recruitment.admin.fileUpload');
+        Route::post('file_delete',[\App\Http\Controllers\Recruitment\AdminController::class,'fileDelete'])->name('recruitment.admin.fileDelete');
     });
     
     Route::prefix('/member')->group(function(){

@@ -184,7 +184,7 @@ export default {
                     ]
                 },
                 { value: 'gender', label: 'Gender', template: [{ value: 'M', label: 'Male' }, { value: 'F', label: 'Female' }] },
-                { value: 'department', label: 'Department', template: this.departments.map(d=>({value: d.abbr,label: d.abbr})) },
+                { value: 'department', label: 'Department', template: this.departments.map(d=>({value: d.abbr,label: d.abbr+" "+d.name_zh})) },
             ]
         }
     },

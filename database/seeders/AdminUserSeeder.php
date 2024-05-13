@@ -6,6 +6,8 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+use App\Models\AdminUser;
 
 class AdminUserSeeder extends Seeder
 {
@@ -40,5 +42,9 @@ class AdminUserSeeder extends Seeder
             'guid'=>null,
             'domain'=>null
         ]);
+        $role=Role::where('name','admin')->first();
+        $adminUser=AdminUser::where('username','admin')->first();
+        $adminUser->roles()->attach($role);
+
     }
 }

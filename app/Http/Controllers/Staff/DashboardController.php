@@ -19,7 +19,7 @@ class DashboardController extends Controller
         //     $remoteAddress = $_SERVER['REMOTE_ADDR'];
         // }
         return Inertia::render('Staff/Dashboard',[
-            'departments'=>Department::whereNull('default_route')->get(),
+            'departments'=>Department::whereNotNull('default_route')->get(),
             'forms'=>Form::where('published',true)->where('for_staff',true)->get()
         ]);
     }

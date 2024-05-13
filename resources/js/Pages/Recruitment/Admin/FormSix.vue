@@ -35,6 +35,7 @@
                             <a-button v-if="!application.submitted"
                                 :href="route('application.apply', { 'code': vacancy.code, 'page': 1 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
+                            <div class="float-right">{{ lang.part_aca_a }}</div>
                         </th>
                     </tr>
                     <tr>
@@ -72,9 +73,10 @@
                     </tr>
                     <tr>
                         <th>{{ lang.nationality }}</th>
-                        <td>{{ application.nationality }}</td>
-                        <th></th>
-                        <td>4</td>
+                        <td colspan="3">
+                            {{ application.nationality }}
+                            {{ application.nationality_oth }}
+                        </td>
                     </tr>
                     <tr>
                         <th>{{ lang.address }}</th>
@@ -86,12 +88,6 @@
                         <th>{{ lang.email }}</th>
                         <td>{{ application.email }}</td>
                     </tr>
-                    <tr>
-                        <th>{{ lang.name_zh }}</th>
-                        <td>b</td>
-                        <th>{{ lang.gender }}</th>
-                        <td>4</td>
-                    </tr>
                 </table>
 
                 <table class="mt-5" width="100%">
@@ -101,7 +97,7 @@
                             <a-button v-if="!application.submitted"
                                 :href="route('application.apply', { 'code': vacancy.code, 'page': 2 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
-                            <div class="float-right">{{ lang.part_a }}</div>
+                            <div class="float-right">{{ lang.part_aca_b }}</div>
                         </th>
                     </tr>
                     <tr>
@@ -136,7 +132,7 @@
                             <a-button v-if="!application.submitted"
                                 :href="route('application.apply', { 'code': vacancy.code, 'page': 3 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
-                            <div class="float-right">{{ lang.part_b }}</div>
+                            <div class="float-right">{{ lang.part_aca_c }}</div>
                         </th>
                     </tr>
                     <tr>
@@ -170,7 +166,7 @@
                             <a-button v-if="!application.submitted"
                                 :href="route('application.apply', { 'code': vacancy.code, 'page': 4 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
-                            <div class="float-right">{{ lang.part_c }}</div>
+                            <div class="float-right">{{ lang.part_aca_d }}</div>
                         </th>
                     </tr>
                     <tr>
@@ -210,7 +206,7 @@
                         </th>
                     </tr>
                     <tr>
-                        <th style="text-align: left;">{{ lang.doc_id}}</th>
+                        <th style="text-align: left;" width="250px">{{ lang.doc_id}}</th>
                         <td>---</td>
                     </tr>
                     <tr>
@@ -222,6 +218,10 @@
                         <td>---</td>
                     </tr>
                     <tr>
+                        <th style="text-align: left;">{{ lang.doc_employment }}</th>
+                        <td>---</td>
+                    </tr>
+                    <tr>
                         <th style="text-align: left;">{{ lang.doc_training }}</th>
                         <td>---</td>
                     </tr>
@@ -230,13 +230,12 @@
                         <td>---</td>
                     </tr>
                     <tr>
-                        <th style="text-align: left;">{{ lang.doc_orther }}</th>
+                        <th style="text-align: left;">{{ lang.doc_other }}</th>
                         <td>---</td>
                     </tr>
                 </table>
                 <div class="text-center">
                     <a-form :model="application" @finish="onFinish" @finishFailed="onFinishFailed">
-                        {{ application }}
                         <a-form-item>
                             <template v-if="application.submitted">
                                 <a-button type="primary" danger class="mt-5">Pay</a-button>

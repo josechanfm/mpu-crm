@@ -16,8 +16,6 @@ return new class extends Migration
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
             $table->string('abbr')->nullable();
-            $table->string('abbr')->nullable();
-            $table->string('abbr')->nullable();
             $table->string('name_zh')->nullable();
             $table->string('name_en')->nullable();
             $table->string('name_pt')->nullable();

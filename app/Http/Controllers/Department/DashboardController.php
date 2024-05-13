@@ -18,6 +18,8 @@ class DashboardController extends Controller
 
     public function index()
     {
+        // $role=Role::where('name','admin')->first();
+        // dd(auth()->user()->roles()->attach($role));
         // session()->forget('department');
         // session(['department'=>Department::whereIn('abbr',auth()->user()->roles->pluck('name'))->first()]);
         // if(empty(session('department'))){

@@ -68,9 +68,8 @@
                         </tr>
                     </table>
                 </div>
-                <div v-html="formFields['part_2'].extra" />
                 <a-divider/>
-                <div v-html="formFields['note_2'].extra" />
+                <div v-html="formFields['part_2'].extra" />
                     <table>
                             <tr>
                                 <th width="400px"></th>
@@ -106,6 +105,8 @@
                 </div>
             </a-form>
         </div>
+        <div v-html="formFields['note_2'].extra" />
+
     </BlankLayout>
 </template>
 
