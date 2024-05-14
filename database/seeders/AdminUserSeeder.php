@@ -44,6 +44,7 @@ class AdminUserSeeder extends Seeder
         ]);
         $role=Role::where('name','admin')->first();
         $adminUser=AdminUser::where('username','admin')->first();
+        $role=Role::where('name','PES')->first();
         $adminUser->roles()->attach($role);
 
     }

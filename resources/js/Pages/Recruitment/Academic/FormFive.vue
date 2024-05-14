@@ -16,42 +16,148 @@
         </div>
         <CardBox :title="lang.file_uploaded">
             <template #content>
-                <a-form :model="application" layout="vertical" :rules="rules" @finish="onFinish" @finishFailed="onFinishFailed">
+                
                     <table width="100%">
                         <tr>
                             <th width="150px">{{ lang.doc_id }}</th>
-                            <td width="50%"></td>
-                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
+                            <td width="50%">
+                                <ol>
+                                    <li v-for="file in getFileList('doc_id')">
+                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                        <a class="pl-5" :href="route('recruitment.application.fileDelete',{'rec_upload':file.id})"><delete-outlined /></a>
+                                    </li>
+                                </ol>
+                            </td>
+                            <td>
+                                <a-upload 
+                                    :showUploadList="false"
+                                    name="doc_id"
+                                    :multiple="true"
+                                    :beforeUpload="handleBeforeUpload"
+                                    :customRequest="customeFileUpload('doc_id')"
+                                >
+                                    <a-button>
+                                    <upload-outlined></upload-outlined>
+                                    {{ lang.upload }}
+                                    </a-button>
+                                </a-upload>
+                            </td>
                         </tr>
                         <tr>
                             <th>{{ lang.doc_education }}</th>
-                            <td></td>
-                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
+                            <td>
+                                <ol>
+                                    <li v-for="file in getFileList('doc_education')">
+                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                    </li>
+                                </ol>
+                            </td>
+                            <td> <button @click="()=>{console.log(this.$refs.asd)}">qwes</button>
+                                <a-upload ref="asd"
+                                    :showUploadList="false"
+                                    name="doc_education"
+                                    :multiple="true"
+                                    :beforeUpload="handleBeforeUpload"
+                                    :customRequest="customeFileUpload('doc_education')"
+                                >
+                                    <a-button>
+                                    <upload-outlined></upload-outlined>
+                                    {{ lang.upload }}
+                                    </a-button>
+                                </a-upload>
+                                
+                            </td>
                         </tr>
                         <tr>
                             <th>{{ lang.doc_resume }}</th>
-                            <td></td>
-                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
+                            <td>
+                                <ol>
+                                    <li v-for="file in getFileList('doc_resume')">
+                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                    </li>
+                                </ol>
+                            </td>
+                            <td>
+                                <a-upload
+                                    :showUploadList="false"
+                                    name="doc_resume"
+                                    :multiple="true"
+                                    :beforeUpload="handleBeforeUpload"
+                                    :customRequest="customeFileUpload('doc_resume')"
+                                >
+                                    <a-button>
+                                    <upload-outlined></upload-outlined>
+                                    {{ lang.upload }}
+                                    </a-button>
+                                </a-upload>
+                               
+                            </td>
                         </tr>
                         <tr>
                             <th>{{ lang.doc_employment }}</th>
-                            <td></td>
-                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
+                            <td>
+                                <ol>
+                                    <li v-for="file in getFileList('doc_employment')">
+                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                    </li>
+                                </ol>
+                            </td>
+                            <td>
+                                <a-upload
+                                    :showUploadList="false"
+                                    name="doc_employment"
+                                    :multiple="true"
+                                    :beforeUpload="handleBeforeUpload"
+                                    :customRequest="customeFileUpload('doc_employment')"
+                                >
+                                    <a-button>
+                                    <upload-outlined></upload-outlined>
+                                    {{ lang.upload }}
+                                    </a-button>
+                                </a-upload>
+                            </td>
                         </tr>
                         <tr>
                             <th>{{ lang.doc_training }}</th>
-                            <td></td>
-                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
+                            <td>
+                                <ol>
+                                    <li v-for="file in getFileList('doc_training')">
+                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                    </li>
+                                </ol>
+                            </td>
+                            <td>
+                                <a-upload
+                                    :showUploadList="false"
+                                    name="doc_training"
+                                    :multiple="true"
+                                    :beforeUpload="handleBeforeUpload"
+                                    :customRequest="customeFileUpload('doc_training')"
+                                >
+                                    <a-button>
+                                    <upload-outlined></upload-outlined>
+                                    {{ lang.upload }}
+                                    </a-button>
+                                </a-upload>
+
+                            </td>
                         </tr>
                         <tr>
                             <th>{{ lang.doc_academic }}</th>
-                            <td></td>
+                            <td>
+                                <ol>
+                                    <li v-for="file in getFileList('doc_academic')">
+                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                    </li>
+                                </ol>
+                            </td>
                             <td>
                                 <a-upload
+                                    :showUploadList="false"
                                     name="doc_academic"
                                     :multiple="true"
                                     :beforeUpload="handleBeforeUpload"
-                                    :customRequest="customeFileUpload"
+                                    :customRequest="customeFileUpload('doc_academic')"
                                 >
                                     <a-button>
                                     <upload-outlined></upload-outlined>
@@ -62,9 +168,16 @@
                         </tr>
                         <tr>
                             <th>{{ lang.doc_other }}</th>
-                            <td></td>
+                            <td>
+                                <ol>
+                                    <li v-for="file in getFileList('doc_other')">
+                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                    </li>
+                                </ol>
+                            </td>
                             <td>
                                 <a-upload
+                                    :showUploadList="false"
                                     name="doc_other"
                                     :multiple="true"
                                     :beforeUpload="handleBeforeUpload"
@@ -78,8 +191,6 @@
                             </td>
                         </tr>
                     </table>
-                </a-form>
-
                 {{ lang.doc_type_notes }}
             </template>
         </CardBox>
@@ -104,8 +215,7 @@
 <script>
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
-import { CaretRightOutlined, ConsoleSqlOutlined } from '@ant-design/icons-vue';
-import { UploadOutlined } from '@ant-design/icons-vue';
+import { CaretRightOutlined,UploadOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 import recLang  from '/lang/recruitment.json';
 import { message } from 'ant-design-vue';
 import axios from 'axios';
@@ -115,8 +225,8 @@ export default {
         RecruitmentLayout,
         CaretRightOutlined,
         CardBox,
-        UploadOutlined
-       
+        UploadOutlined,
+        DeleteOutlined
     },
     props: ['vacancy', 'application'],
     data() {
@@ -178,70 +288,30 @@ export default {
         saveToNext() {
             this.onFinish();
         },
-        onFinish() {
-            console.log('onFinish');
-            this.$inertia.post(route('recruitment.application.save'), { to_page: 6, application: this.application }, {
-                onSuccess: (page) => {
-                    console.log(page.data)
-                },
-                onError: (err) => {
-                    console.log(err)
-                }
-            });
-        },
-        onFinishFailed(){
-            message.error(this.lang.error_required_fields);
-        },
         handleBeforeUpload(file){
+            console.log(file)
             return true
         },
         customeFileUpload(fileType){
-            console.log(fileType);
             return ({ onSuccess, onError, file })=> {
                 let formData=new FormData();
-                formData.append('file_type',fileType)
+                formData.append('rec_application_id',this.application.id)
+                formData.append('document_type',fileType)
                 formData.append('file',file)
                 
-                console.log('upload files');
-                console.log(formData)
-                this.$inertia.post(route('recruitment.application.fileUpload',formData), {
+                this.$inertia.post(route('recruitment.application.fileUpload'),formData, {
                     onSuccess: (page) => {
-                        console.log(page)
-                        //this.formData = {};
+                        onSuccess(formData)
                     },
                     onError: (err) => {
-                        console.log(err);
+                        onError(err)
                     }
                 });
-
-            }
-        },
-        // handleChange(info) {
-        //     const status = info.file.status;
-        //     if (status !== 'uploading') {
-        //     // show update progress console.log(info.file, info.fileList);
-        //     }
-        //     if (status === 'done') {
-        //     // show success message
-        //     } else if (status === 'error') {
-        //     // show error message
-        //     }
-        // },
-         onChangeUpload(info){
-            console.log('onchnageupload')
-            console.log(info)
-            const status = info.file.status;
-            if (status !== 'uploading') {
-                // show update progress console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                // show success message
-            } else if (status === 'error') {
-                // show error message
+                return {status:'success'};
             }
         },
         varifyImage(info){
-            
+           
             console.log('varifyimage');
             const isJpgOrPng =
                 info.file.type === "image/jpeg" || info.file.type === "image/png";
@@ -273,6 +343,10 @@ export default {
             reader.addEventListener("load", () => callback(reader.result));
             reader.readAsDataURL(img);
         },
+        getFileList(documentType){
+            let files=this.application.uploads.filter(f=>f.document_type==documentType)
+            return files;
+        }
     },
 };
 

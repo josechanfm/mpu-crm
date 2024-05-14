@@ -16,10 +16,11 @@ return new class extends Migration
         Schema::create('rec_uploads', function (Blueprint $table) {
             $table->id();
             $table->foreignId('rec_application_id');
-            $table->string('path');
-            $table->string('file_name');
-            $table->string('full_path');
             $table->string('document_type'); //IDC,EDU,RSM,WRK,TRN,ACH,OTH
+            $table->string('file_name');
+            $table->string('path');
+            $table->string('full_path');
+            $table->string('original_name');
             $table->timestamps();
         });
     }

@@ -10,7 +10,9 @@ use App\Models\RecApplication;
 use App\Models\RecEducation;
 use App\Models\RecExperience;
 use App\Models\RecProfessional;
+use App\Models\RecUpload;
 use LdapRecord\Query\Events\Read;
+use Illuminate\Support\Str;
 
 class ApplicationController extends Controller
 {
@@ -169,18 +171,27 @@ class ApplicationController extends Controller
     }
 
     public function fileUpload(Request $request){
-        
-         //dd($request->file());
+        //echo 'abc';
+        // echo json_encode($request->all());
+        // echo json_encode($request->file('file'));
+        // return true;
+         
         // return response()->json(['message'=>'Upload was successfuly completed!']);
-        if($request->hasFile('doc_other')){
-            return response()->json(['message'=>'other Upload was successfuly completed!']);    
+        $data=$request->all();
+        if($request->hasFile('file')){
+            $file=$request->file('file');
+            $data['file_name']=$data['rec_application_id'].'_'.Str::uuid();
+            $data['path']='/recruitment/academic/';
+            $data['full_path']=$data['path'].$data['file_name'];
+            $data['original_name']=$file->getClientOriginalName();
+            $file->move(public_path($data['path']), $data['file_name']);
+            RecUpload::create($data);
+            //return response()->json(['message'=>'other Upload was successfuly completed!']);    
         }
-        if($request->hasFile('doc_academic')){
-            return response()->json(['message'=>'academic Upload was successfuly completed!']);    
-        }
-        return response()->json($request->file());
+        return redirect()->back();
     }
-    public function fileDelete(){
+    public function fileDelete(Request $request){
+        dd($request->all());
         return response()->json('file delete');
     }
 

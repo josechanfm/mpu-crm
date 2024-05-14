@@ -60,15 +60,7 @@ Route::middleware([
         Route::post('submit',[\App\Http\Controllers\Recruitment\ApplicationController::class,'submit'])->name('recruitment.application.submit');
         Route::get('payment',[\App\Http\Controllers\Recruitment\ApplicationController::class,'payment'])->name('recruitment.application.payment');
         Route::post('file_upload',[\App\Http\Controllers\Recruitment\ApplicationController::class,'fileUpload'])->name('recruitment.application.fileUpload');
-        Route::post('file_delete',[\App\Http\Controllers\Recruitment\ApplicationController::class,'fileDelete'])->name('recruitment.application.fileDelete');
-    });
-    Route::prefix('/recruitment/admin')->group(function(){
-        Route::get('form',[\App\Http\Controllers\Recruitment\AdminController::class,'form'])->name('recruitment.admin.form');
-        Route::post('save',[\App\Http\Controllers\Recruitment\AdminController::class,'save'])->name('recruitment.admin.save');
-        Route::post('submit',[\App\Http\Controllers\Recruitment\AdminController::class,'submit'])->name('recruitment.admin.submit');
-        Route::get('payment',[\App\Http\Controllers\Recruitment\AdminController::class,'payment'])->name('recruitment.admin.payment');
-        Route::post('file_upload',[\App\Http\Controllers\Recruitment\AdminController::class,'fileUpload'])->name('recruitment.admin.fileUpload');
-        Route::post('file_delete',[\App\Http\Controllers\Recruitment\AdminController::class,'fileDelete'])->name('recruitment.admin.fileDelete');
+        Route::delete('file_delete/{rec_upload}',[\App\Http\Controllers\Recruitment\ApplicationController::class,'fileDelete'])->name('recruitment.application.fileDelete');
     });
     
     Route::prefix('/member')->group(function(){

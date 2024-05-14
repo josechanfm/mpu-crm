@@ -53,6 +53,11 @@ class DatabaseSeeder extends Seeder
         ])->withPersonalTeam()->create();
 
         //$member->assignRole('member');
+        $adminUser=\App\Models\AdminUser::where('username','admin')->first();
+        $role=Role::where('name','admin')->first();
+        $adminUser->roles()->attach($role);
+        $role=Role::where('name','PES')->first();
+        $adminUser->roles()->attach($role);
 
 
         $this->call([
@@ -62,6 +67,7 @@ class DatabaseSeeder extends Seeder
             FormSeeder::class,
             FaqSeeder::class,
             EnquirySeeder::class,
+
             //UserSeeder::class,
             //EmailSeeder::class,
         ]);

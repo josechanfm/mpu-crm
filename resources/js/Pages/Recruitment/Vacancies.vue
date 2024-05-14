@@ -15,7 +15,7 @@
                                     <caret-right-outlined :rotate="isActive ? 90 : 0" />
                                 </template>
                                 <template v-for="vacancy in vacancies">
-                                    <a-collapse-panel :key="vacancy.code" :style="customStyle" v-if="vacancy.type == 'ACD'">
+                                    <a-collapse-panel :key="vacancy.code" :style="customStyle" v-if="vacancy.type == 'ACA'">
                                         <template #header style="color:#fff">
                                             {{ vacancy['title_'+$t('lang')] }}
                                         </template>
