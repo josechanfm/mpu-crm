@@ -54,13 +54,13 @@ Route::middleware([
     Route::get('/member/dashboard', function () {
         return Inertia::render('Member/Dashboard');
     })->name('dashboard');
-    Route::prefix('/recruitment/acadmic')->group(function(){
-        Route::get('form',[\App\Http\Controllers\Recruitment\AcademicController::class,'form'])->name('recruitment.academic.form');
-        Route::post('save',[\App\Http\Controllers\Recruitment\AcademicController::class,'save'])->name('recruitment.academic.save');
-        Route::post('submit',[\App\Http\Controllers\Recruitment\AcademicController::class,'submit'])->name('recruitment.academic.submit');
-        Route::get('payment',[\App\Http\Controllers\Recruitment\AcademicController::class,'payment'])->name('recruitment.academic.payment');
-        Route::post('file_upload',[\App\Http\Controllers\Recruitment\AcademicController::class,'fileUpload'])->name('recruitment.academic.fileUpload');
-        Route::post('file_delete',[\App\Http\Controllers\Recruitment\AcademicController::class,'fileDelete'])->name('recruitment.academic.fileDelete');
+    Route::prefix('/recruitment/application')->group(function(){
+        Route::get('form',[\App\Http\Controllers\Recruitment\ApplicationController::class,'form'])->name('recruitment.application.form');
+        Route::post('save',[\App\Http\Controllers\Recruitment\ApplicationController::class,'save'])->name('recruitment.application.save');
+        Route::post('submit',[\App\Http\Controllers\Recruitment\ApplicationController::class,'submit'])->name('recruitment.application.submit');
+        Route::get('payment',[\App\Http\Controllers\Recruitment\ApplicationController::class,'payment'])->name('recruitment.application.payment');
+        Route::post('file_upload',[\App\Http\Controllers\Recruitment\ApplicationController::class,'fileUpload'])->name('recruitment.application.fileUpload');
+        Route::post('file_delete',[\App\Http\Controllers\Recruitment\ApplicationController::class,'fileDelete'])->name('recruitment.application.fileDelete');
     });
     Route::prefix('/recruitment/admin')->group(function(){
         Route::get('form',[\App\Http\Controllers\Recruitment\AdminController::class,'form'])->name('recruitment.admin.form');

@@ -84,7 +84,7 @@ class Form extends Model implements HasMedia
                         });
                         $valueItem = reset($value);
                         $entry['extra_' . $field->id] = $valueItem->label ?? '';
-                        // dd($entry);
+                        // academic.form$entry);
                     } else if ($field->type == 'checkbox') {
                         $fieldOptions = json_decode($field->options);
                         $fieldValue = json_decode($f->field_value);
@@ -139,9 +139,7 @@ class Form extends Model implements HasMedia
                     $value = array_filter(json_decode($field->options), function ($item) use ($entry_record) {
                         return $item->value === $entry_record?->field_value;
                     });
-                    // dd($value);
                     $table_data[$field->field_label] = reset($value)->label ?? '';
-                    // 
                 } else if ($field->type == 'checkbox') {
                     $value = array_filter(json_decode($field->options), function ($item) use ($entry_record) {
                         return in_array($item->value, json_decode($entry_record->field_value));

@@ -109,7 +109,7 @@
                                             mode="multiple"
                                             style="width: 100%" 
                                             :options="monthOptions"
-                                        />
+                                        />  
                                     </td>
                                 </tr>
                             </template>

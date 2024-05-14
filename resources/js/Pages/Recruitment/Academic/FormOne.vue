@@ -69,8 +69,8 @@
                 <template #content>
                     <a-row :gutter="12">
                         <a-col :span="16">
-                            <a-form-item :label="lang.name_zh" name="name_zh">
-                                <a-input v-model:value="application.name_zh" />
+                            <a-form-item :label="lang.name_zh" name="name_full_zh">
+                                <a-input v-model:value="application.name_full_zh" />
                             </a-form-item>
                         </a-col>
                         <a-col :span="8">
@@ -114,7 +114,7 @@
                                 </a-select>
                             </a-form-item>
                         </a-col>
-                        <a-col :span="12">
+                        <a-col :span="12" v-if="application.id_type=='OTH'">
                             <a-form-item :label="lang.id_type_name" name="id_type_name">
                                 <a-input v-model:value="application.id_type_name" />
                             </a-form-item>
@@ -123,6 +123,9 @@
                     <a-row :gutter="12">
                         <a-col :span="12">
                             <a-form-item :label="lang.id_num" name="id_num">
+                                <div class="custom-label float-right">
+                                    {{ lang.id_required_copy }}
+                                </div>
                                 <a-input v-model:value="application.id_num" />
                             </a-form-item>
                         </a-col>
@@ -188,7 +191,7 @@ export default {
         return {
             page: {},
             rules: {
-                name_zh: { required: true },
+                name_full_zh: { required: true },
                 first_name_fn: { required: true },
                 last_name_fn: { required: true },
                 gender: { required: true },
@@ -223,7 +226,7 @@ export default {
             this.application.obtain_info = ['WEB', 'NEW'],
                 this.application.obtain_info_new = 'Macao Daily',
                 this.application.obtain_info_oth = 'Inernet',
-                this.application.name_zh = '陳大文',
+                this.application.name_full_zh = '陳大文',
                 this.application.first_name_fn = 'Tai Man',
                 this.application.last_name_fn = 'Chan',
                 this.application.gender = 'M',
@@ -239,7 +242,7 @@ export default {
                 this.application.address = 'Somewhere near by..'
         },
         onFinish() {
-            this.$inertia.post(route('recruitment.academic.save'), { to_page: 2, application: this.application }, {
+            this.$inertia.post(route('recruitment.application.save'), { to_page: 2, application: this.application }, {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },

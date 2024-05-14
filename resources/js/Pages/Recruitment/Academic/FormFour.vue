@@ -106,7 +106,7 @@
                     </div>
                 </div> -->
         <div class="text-center pt-5">
-            <a-button :href="route('recruitment.academic.form', { code: vacancy.code, page: this.page.previours })"
+            <a-button :href="route('recruitment.application.form', { code: vacancy.code, page: this.page.previours })"
                 class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ lang.back_no_save }}</a-button>
             <a-button type="primary" @click="saveToNext">{{ lang.save_next }}</a-button>
         </div>
@@ -180,7 +180,7 @@ export default {
         },
         saveToNext() {
             console.log(this.currentPage);
-            this.$inertia.post(route('recruitment.academic.save'), { to_page: this.page.next, application: this.application }, {
+            this.$inertia.post(route('recruitment.application.save'), { to_page: this.page.next, application: this.application }, {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },

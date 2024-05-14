@@ -46,18 +46,29 @@
                         <tr>
                             <th>{{ lang.doc_academic }}</th>
                             <td></td>
-                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
+                            <td>
+                                <a-upload
+                                    name="doc_academic"
+                                    :multiple="true"
+                                    :beforeUpload="handleBeforeUpload"
+                                    :customRequest="customeFileUpload"
+                                >
+                                    <a-button>
+                                    <upload-outlined></upload-outlined>
+                                    {{ lang.upload }}
+                                    </a-button>
+                                </a-upload>
+                            </td>
                         </tr>
                         <tr>
-                            <th>{{ lang.doc_others }}</th>
+                            <th>{{ lang.doc_other }}</th>
                             <td></td>
                             <td>
                                 <a-upload
-                                    name="docOthers"
-                                    :action="''"
+                                    name="doc_other"
                                     :multiple="true"
                                     :beforeUpload="handleBeforeUpload"
-                                    :customRequest="handleCustomeRequest"
+                                    :customRequest="customeFileUpload('doc_other')"
                                 >
                                     <a-button>
                                     <upload-outlined></upload-outlined>
@@ -83,7 +94,7 @@
                 </div> -->
         <a-divider />
         <div class="text-center pt-5">
-            <a-button :href="route('recruitment.academic.form', { code: vacancy.code, page: this.page.previours })"
+            <a-button :href="route('recruitment.application.form', { code: vacancy.code, page: this.page.previours })"
                 class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ lang.back_no_save }}</a-button>
             <a-button type="primary" @click="saveToNext">{{ lang.save_next }}</a-button>
         </div>
@@ -93,10 +104,11 @@
 <script>
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
-import { CaretRightOutlined } from '@ant-design/icons-vue';
+import { CaretRightOutlined, ConsoleSqlOutlined } from '@ant-design/icons-vue';
 import { UploadOutlined } from '@ant-design/icons-vue';
 import recLang  from '/lang/recruitment.json';
 import { message } from 'ant-design-vue';
+import axios from 'axios';
 
 export default {
     components: {
@@ -167,7 +179,8 @@ export default {
             this.onFinish();
         },
         onFinish() {
-            this.$inertia.post(route('recruitment.academic.save'), { to_page: 6, application: this.application }, {
+            console.log('onFinish');
+            this.$inertia.post(route('recruitment.application.save'), { to_page: 6, application: this.application }, {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },
@@ -180,40 +193,41 @@ export default {
             message.error(this.lang.error_required_fields);
         },
         handleBeforeUpload(file){
-            // console.log('before upload');
-            // console.log(file);
             return true
         },
-        handleCustomeRequest({file,onSuccess,onError}){
-            console.log('handlecustomeRequest')
-            console.log(file)
-            const formData = new FormData();
-            formData.append('file', file);
+        customeFileUpload(fileType){
+            console.log(fileType);
+            return ({ onSuccess, onError, file })=> {
+                let formData=new FormData();
+                formData.append('file_type',fileType)
+                formData.append('file',file)
+                
+                console.log('upload files');
+                console.log(formData)
+                this.$inertia.post(route('recruitment.application.fileUpload',formData), {
+                    onSuccess: (page) => {
+                        console.log(page)
+                        //this.formData = {};
+                    },
+                    onError: (err) => {
+                        console.log(err);
+                    }
+                });
 
-            this.$inertia.post(route('recruitment.academic.fileUpload'),formData,{
-                onSuccess: (page)=>{
-                    console.log(page)
-                },
-                onError:(err)=>{
-                    console.log(err);
-                }
-
-            })
-            axios.post('file_upload', formData)
-            .then(response => {
-                console.log(response.data)
-                // Handle the successful upload
-                onSuccess(response.data);
-            })
-            .catch(error => {
-                // Handle upload errors
-                onError(error);
-            });
+            }
         },
-        uploadfiles(options){
-            console.log(options)
-        },
-        onChangeUpload(info){
+        // handleChange(info) {
+        //     const status = info.file.status;
+        //     if (status !== 'uploading') {
+        //     // show update progress console.log(info.file, info.fileList);
+        //     }
+        //     if (status === 'done') {
+        //     // show success message
+        //     } else if (status === 'error') {
+        //     // show error message
+        //     }
+        // },
+         onChangeUpload(info){
             console.log('onchnageupload')
             console.log(info)
             const status = info.file.status;
@@ -227,7 +241,8 @@ export default {
             }
         },
         varifyImage(info){
-            console.log(info);
+            
+            console.log('varifyimage');
             const isJpgOrPng =
                 info.file.type === "image/jpeg" || info.file.type === "image/png";
             if (!isJpgOrPng) {

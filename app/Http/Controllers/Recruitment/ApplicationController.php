@@ -145,7 +145,7 @@ class ApplicationController extends Controller
         }
         //dd($toPage);
                 
-        return redirect()->route('recruitment.academic.form',[
+        return redirect()->route('recruitment.application.form',[
             'code'=>RecVacancy::find($application['rec_vacancy_id'])->code,
             'page'=>$toPage
         ]);
@@ -170,10 +170,13 @@ class ApplicationController extends Controller
 
     public function fileUpload(Request $request){
         
-        dd($request->file(''));
-        return response()->json(['message'=>'Upload was successfuly completed!']);    
-        if($request->hasFile('docOthers')){
-            return response()->json(['message'=>'Upload was successfuly completed!']);    
+         //dd($request->file());
+        // return response()->json(['message'=>'Upload was successfuly completed!']);
+        if($request->hasFile('doc_other')){
+            return response()->json(['message'=>'other Upload was successfuly completed!']);    
+        }
+        if($request->hasFile('doc_academic')){
+            return response()->json(['message'=>'academic Upload was successfuly completed!']);    
         }
         return response()->json($request->file());
     }

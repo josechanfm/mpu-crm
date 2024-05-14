@@ -40,19 +40,13 @@ class Enquiry extends Model
     public function questions(){
         return $this->hasMany(EnquiryQuestion::class)->with('responses')->with('media')->orderBy('created_at','desc');
     }
-    // public function questionCount(){
-    //     return $this->hasMany(EnquiryQuestion::class)->count();
-    // }
+
     public function responseCount(){
         return $this->hasManyThrough(EnquiryResponse::class,EnquiryQuestion::class)->count();
     }
     public function lastResponse(){
-        // dd($this->HasResponse() );
-        //return $this->throughQuestions()->hasResponses()->orderBy('created_at','desc');
         return $this->hasOneThrough(EnquiryResponse::class,EnquiryQuestion::class)->orderBy('created_at','desc');
     }
-    // public static function token(){
-    //     return hash('crc32',time().'mpu-crm');
-    // }
+
 
 }
