@@ -24,7 +24,7 @@
                                 <ol>
                                     <li v-for="file in getFileList('doc_id')">
                                         <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
-                                        <a class="pl-5" :href="route('recruitment.application.fileDelete',{'rec_upload':file.id})"><delete-outlined /></a>
+                                        <a class="pl-5" @click="deleteFile(file)"><delete-outlined /></a>
                                     </li>
                                 </ol>
                             </td>
@@ -194,30 +194,31 @@
                 {{ lang.doc_type_notes }}
             </template>
         </CardBox>
-
-        <!-- <div class="border border-sky-500 rounded-lg mt-5">
-                    <h2 class="bg-sky-500 text-white p-4 rounded-t-lg">{{ lang.personal_info }}</h2>
-                    <div class="p-4">
-                        <p>Card content</p>
-                    <p>Card content</p>
-                    <p>Card content</p>
-                    </div>
-                </div> -->
         <a-divider />
         <div class="text-center pt-5">
             <a-button :href="route('recruitment.application.form', { code: vacancy.code, page: this.page.previours })"
                 class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ lang.back_no_save }}</a-button>
             <a-button type="primary" @click="saveToNext">{{ lang.save_next }}</a-button>
         </div>
+
+        <a-modal v-model:visible="confirmFileDelete" title="Basic Modal" @ok="deleteFileConfirmed">
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+        </a-modal>
     </RecruitmentLayout>
 </template>
 
 <script>
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
-import { CaretRightOutlined,UploadOutlined, DeleteOutlined } from '@ant-design/icons-vue';
+import { CaretRightOutlined,UploadOutlined, DeleteOutlined, ConsoleSqlOutlined } from '@ant-design/icons-vue';
 import recLang  from '/lang/recruitment.json';
 import { message } from 'ant-design-vue';
+import { Modal } from 'ant-design-vue';
+import { createVNode, defineComponent } from 'vue';
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
+
 import axios from 'axios';
 
 export default {
@@ -226,14 +227,15 @@ export default {
         CaretRightOutlined,
         CardBox,
         UploadOutlined,
-        DeleteOutlined
+        DeleteOutlined,
+        Modal
     },
     props: ['vacancy', 'application'],
     data() {
         return {
             page: {},
             headers:{authorization:'header text'},
-            docOthers:[],
+            confirmFileDelete:false,
             rules: {
                 name_zh: { required: true },
                 first_name_fn: { required: true },
@@ -346,6 +348,40 @@ export default {
         getFileList(documentType){
             let files=this.application.uploads.filter(f=>f.document_type==documentType)
             return files;
+        },
+        deleteFile(file){
+            Modal.confirm({
+                title: 'Confirm',
+                icon: createVNode(ExclamationCircleOutlined),
+                content: 'Bla bla ...',
+                okText: '确认',
+                cancelText: '取消',
+                onOk: ()=>{
+                    this.$inertia.delete(route('recruitment.application.fileDelete',{rec_upload:file.id}), {
+                        onSuccess: (page) => {
+                            console.log(page.data)
+                        },
+                        onError: (err) => {
+                            onError(err)
+                        }
+                    });
+                },
+                onCancel: ()=>{
+                    console.log(' cancel')
+                }
+            });
+           
+            // this.$inertia.delete(route('recruitment.application.fileDelete',{rec_upload:file.id}), {
+            //     onSuccess: (page) => {
+            //         console.log(page.data)
+            //     },
+            //     onError: (err) => {
+            //         onError(err)
+            //     }
+            // });
+        },
+        deleteFileConfirmed(){
+            console.log('detel file cnfirmed')
         }
     },
 };

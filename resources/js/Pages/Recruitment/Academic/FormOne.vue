@@ -82,11 +82,11 @@
                             </a-form-item>
                         </a-col>
                     </a-row>
-                    <a-form-item :label="lang.first_name_fn" name="first_name_fn">
-                        <a-input v-model:value="application.first_name_fn" />
+                    <a-form-item :label="lang.name_given_fn" name="name_given_fn">
+                        <a-input v-model:value="application.name_given_fn" />
                     </a-form-item>
-                    <a-form-item :label="lang.last_name_fn" name="last_name_fn">
-                        <a-input v-model:value="application.last_name_fn" />
+                    <a-form-item :label="lang.name_family_fn" name="name_family_fn">
+                        <a-input v-model:value="application.name_family_fn" />
                     </a-form-item>
                     <a-row :gutter="12">
                         <a-col :span="16">
@@ -192,8 +192,8 @@ export default {
             page: {},
             rules: {
                 name_full_zh: { required: true },
-                first_name_fn: { required: true },
-                last_name_fn: { required: true },
+                name_family_fn: { required: true },
+                name_given_fn: { required: true },
                 gender: { required: true },
                 pob: { required: true },
                 pob_oth: { required: true },
@@ -227,8 +227,8 @@ export default {
                 this.application.obtain_info_new = 'Macao Daily',
                 this.application.obtain_info_oth = 'Inernet',
                 this.application.name_full_zh = '陳大文',
-                this.application.first_name_fn = 'Tai Man',
-                this.application.last_name_fn = 'Chan',
+                this.application.name_given_fn = 'Tai Man',
+                this.application.name_family_fn = 'Chan',
                 this.application.gender = 'M',
                 this.application.pob = 'OTH',
                 this.application.pob_oth = 'Germany',

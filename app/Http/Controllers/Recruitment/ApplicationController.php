@@ -190,9 +190,9 @@ class ApplicationController extends Controller
         }
         return redirect()->back();
     }
-    public function fileDelete(Request $request){
-        dd($request->all());
-        return response()->json('file delete');
+    public function fileDelete(RecUpload $recUpload){
+        $recUpload->delete();
+        return redirect()->back();
     }
 
 }
