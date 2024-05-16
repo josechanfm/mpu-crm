@@ -25,16 +25,15 @@
                                 <ol>
                                     <li v-for="file in getFileList('doc_id')">
                                         <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
-                                        <a-popover v-model:visible="file.isPopover" :title="lang.delete_confirm" trigger="click">
-                                            <template #content>
-                                                {{ file.original_name }}
-                                                <div class="text-right pt-5">
-                                                    <a-button @click="file.isPopover=false">{{ lang.no }}</a-button>  
-                                                    <a-button type="danger" @click="deleteFileConfirmed(file)" class="ml-5">{{ lang.confirmed }}</a-button>
-                                                </div>
-                                            </template>
-                                            <a class="pl-5 text-red-500" @click="file.isPopover=true"><delete-outlined /></a>
-                                        </a-popover>
+                                        <a-popconfirm
+                                            title="Are you sure delete this task?"
+                                            :ok-text="lang.confirmed"
+                                            :cancel-text="lang.no"
+                                            :okButtonProps="{danger:true}"
+                                            @confirm="deleteFileConfirmed(file)"
+                                        >
+                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                        </a-popconfirm>
                                     </li>
                                 </ol>
                             </td>
@@ -58,16 +57,15 @@
                                 <ol>
                                     <li v-for="file in getFileList('doc_education')">
                                         <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
-                                        <a-popover v-model:visible="file.isPopover" :title="lang.delete_confirm" trigger="click">
-                                            <template #content>
-                                                {{ file.original_name }}
-                                                <div class="text-right pt-5">
-                                                    <a-button @click="file.isPopover=false">{{ lang.no }}</a-button>  
-                                                    <a-button type="danger" @click="deleteFileConfirmed(file)" class="ml-5">{{ lang.confirmed }}</a-button>
-                                                </div>
-                                            </template>
-                                            <a class="pl-5 text-red-500" @click="file.isPopover=true"><delete-outlined /></a>
-                                        </a-popover>
+                                        <a-popconfirm
+                                            title="Are you sure delete this task?"
+                                            :ok-text="lang.confirmed"
+                                            :cancel-text="lang.no"
+                                            :okButtonProps="{danger:true}"
+                                            @confirm="deleteFileConfirmed(file)"
+                                        >
+                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                        </a-popconfirm>
                                     </li>
                                 </ol>
                             </td>
@@ -92,16 +90,15 @@
                                 <ol>
                                     <li v-for="file in getFileList('doc_resume')">
                                         <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
-                                        <a-popover v-model:visible="file.isPopover" :title="lang.delete_confirm" trigger="click">
-                                            <template #content>
-                                                {{ file.original_name }}
-                                                <div class="text-right pt-5">
-                                                    <a-button @click="file.isPopover=false">{{ lang.no }}</a-button>  
-                                                    <a-button type="danger" @click="deleteFileConfirmed(file)" class="ml-5">{{ lang.confirmed }}</a-button>
-                                                </div>
-                                            </template>
-                                            <a class="pl-5 text-red-500" @click="file.isPopover=true"><delete-outlined /></a>
-                                        </a-popover>
+                                        <a-popconfirm
+                                            title="Are you sure delete this task?"
+                                            :ok-text="lang.confirmed"
+                                            :cancel-text="lang.no"
+                                            :okButtonProps="{danger:true}"
+                                            @confirm="deleteFileConfirmed(file)"
+                                        >
+                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                        </a-popconfirm>
                                     </li>
                                 </ol>
                             </td>
@@ -126,16 +123,15 @@
                                 <ol>
                                     <li v-for="file in getFileList('doc_employment')">
                                         <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
-                                        <a-popover v-model:visible="file.isPopover" :title="lang.delete_confirm" trigger="click">
-                                            <template #content>
-                                                {{ file.original_name }}
-                                                <div class="text-right pt-5">
-                                                    <a-button @click="file.isPopover=false">{{ lang.no }}</a-button>  
-                                                    <a-button type="danger" @click="deleteFileConfirmed(file)" class="ml-5">{{ lang.confirmed }}</a-button>
-                                                </div>
-                                            </template>
-                                            <a class="pl-5 text-red-500" @click="file.isPopover=true"><delete-outlined /></a>
-                                        </a-popover>
+                                        <a-popconfirm
+                                            title="Are you sure delete this task?"
+                                            :ok-text="lang.confirmed"
+                                            :cancel-text="lang.no"
+                                            :okButtonProps="{danger:true}"
+                                            @confirm="deleteFileConfirmed(file)"
+                                        >
+                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                        </a-popconfirm>
                                     </li>
                                 </ol>
                             </td>
@@ -159,16 +155,15 @@
                                 <ol>
                                     <li v-for="file in getFileList('doc_training')">
                                         <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
-                                        <a-popover v-model:visible="file.isPopover" :title="lang.delete_confirm" trigger="click">
-                                            <template #content>
-                                                {{ file.original_name }}
-                                                <div class="text-right pt-5">
-                                                    <a-button @click="file.isPopover=false">{{ lang.no }}</a-button>  
-                                                    <a-button type="danger" @click="deleteFileConfirmed(file)" class="ml-5">{{ lang.confirmed }}</a-button>
-                                                </div>
-                                            </template>
-                                            <a class="pl-5 text-red-500" @click="file.isPopover=true"><delete-outlined /></a>
-                                        </a-popover>
+                                        <a-popconfirm
+                                            title="Are you sure delete this task?"
+                                            :ok-text="lang.confirmed"
+                                            :cancel-text="lang.no"
+                                            :okButtonProps="{danger:true}"
+                                            @confirm="deleteFileConfirmed(file)"
+                                        >
+                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                        </a-popconfirm>
                                     </li>
                                 </ol>
                             </td>
@@ -193,16 +188,15 @@
                                 <ol>
                                     <li v-for="file in getFileList('doc_academic')">
                                         <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
-                                        <a-popover v-model:visible="file.isPopover" :title="lang.delete_confirm" trigger="click">
-                                            <template #content>
-                                                {{ file.original_name }}
-                                                <div class="text-right pt-5">
-                                                    <a-button @click="file.isPopover=false">{{ lang.no }}</a-button>  
-                                                    <a-button type="danger" @click="deleteFileConfirmed(file)" class="ml-5">{{ lang.confirmed }}</a-button>
-                                                </div>
-                                            </template>
-                                            <a class="pl-5 text-red-500" @click="file.isPopover=true"><delete-outlined /></a>
-                                        </a-popover>
+                                        <a-popconfirm
+                                            title="Are you sure delete this task?"
+                                            :ok-text="lang.confirmed"
+                                            :cancel-text="lang.no"
+                                            :okButtonProps="{danger:true}"
+                                            @confirm="deleteFileConfirmed(file)"
+                                        >
+                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                        </a-popconfirm>
                                     </li>
                                 </ol>
                             </td>
@@ -226,16 +220,15 @@
                                 <ol>
                                     <li v-for="file in getFileList('doc_other')">
                                         <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
-                                        <a-popover v-model:visible="file.isPopover" :title="lang.delete_confirm" trigger="click">
-                                            <template #content>
-                                                {{ file.original_name }}
-                                                <div class="text-right pt-5">
-                                                    <a-button @click="file.isPopover=false">{{ lang.no }}</a-button>  
-                                                    <a-button type="danger" @click="deleteFileConfirmed(file)" class="ml-5">{{ lang.confirmed }}</a-button>
-                                                </div>
-                                            </template>
-                                            <a class="pl-5 text-red-500" @click="file.isPopover=true"><delete-outlined /></a>
-                                        </a-popover>
+                                        <a-popconfirm
+                                            title="Are you sure delete this task?"
+                                            :ok-text="lang.confirmed"
+                                            :cancel-text="lang.no"
+                                            :okButtonProps="{danger:true}"
+                                            @confirm="deleteFileConfirmed(file)"
+                                        >
+                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                        </a-popconfirm>
                                     </li>
                                 </ol>
                             </td>
@@ -259,9 +252,9 @@
         </CardBox>
         <a-divider />
         <div class="text-center pt-5">
-            <a-button :href="route('recruitment.application.form', { code: vacancy.code, page: this.page.previours })"
-                class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ lang.back_no_save }}</a-button>
-            <a-button type="primary" @click="saveToNext">{{ lang.save_next }}</a-button>
+            <a :href="route('recruitment.application.form', { code: vacancy.code, page: this.page.previours })" 
+                class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
+            <a-button type="primary"  @click="saveToNext">{{ lang.save_next }}</a-button>
         </div>
 
     </RecruitmentLayout>
@@ -404,7 +397,6 @@ export default {
             return files;
         },
         deleteFileConfirmed(file){
-            file.isPopover=false
             this.$inertia.delete(route('recruitment.application.fileDelete',{rec_upload:file.id}), {
                 onSuccess: (page) => {
                     console.log(page.data)

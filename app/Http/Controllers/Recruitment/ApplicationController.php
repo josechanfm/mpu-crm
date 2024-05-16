@@ -153,10 +153,30 @@ class ApplicationController extends Controller
         ]);
     }
 
+    public function fileUpload(Request $request){
+        $data=$request->all();
+        if($request->hasFile('file')){
+            $file=$request->file('file');
+            $data['file_name']=$data['rec_application_id'].'_'.Str::uuid();
+            $data['path']='/recruitment/academic/';
+            $data['full_path']=$data['path'].$data['file_name'];
+            $data['original_name']=$file->getClientOriginalName();
+            $file->move(public_path($data['path']), $data['file_name']);
+            RecUpload::create($data);
+            //return response()->json(['message'=>'other Upload was successfuly completed!']);    
+        }
+        return redirect()->back();
+    }
+
+    public function fileDelete(RecUpload $recUpload){
+        $recUpload->delete();
+        return redirect()->back();
+    }
+
     public function submit(Request $request){
         $app=$request->application;
         $application=RecApplication::find($app['id']);
-        //$application->submitted=true;
+        $application->submitted=true;
         $application->save();
          return redirect()->route('recruitment.application.payment',array('application_id'=>$application->id,'uuid'=>$application->uuid));
     }
@@ -173,32 +193,6 @@ class ApplicationController extends Controller
             'vacancy'=>$vacancy,
             'application'=>$application
         ]);
-
-    }
-
-    public function fileUpload(Request $request){
-        //echo 'abc';
-        // echo json_encode($request->all());
-        // echo json_encode($request->file('file'));
-        // return true;
-         
-        // return response()->json(['message'=>'Upload was successfuly completed!']);
-        $data=$request->all();
-        if($request->hasFile('file')){
-            $file=$request->file('file');
-            $data['file_name']=$data['rec_application_id'].'_'.Str::uuid();
-            $data['path']='/recruitment/academic/';
-            $data['full_path']=$data['path'].$data['file_name'];
-            $data['original_name']=$file->getClientOriginalName();
-            $file->move(public_path($data['path']), $data['file_name']);
-            RecUpload::create($data);
-            //return response()->json(['message'=>'other Upload was successfuly completed!']);    
-        }
-        return redirect()->back();
-    }
-    public function fileDelete(RecUpload $recUpload){
-        $recUpload->delete();
-        return redirect()->back();
     }
 
 }

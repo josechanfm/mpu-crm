@@ -102,17 +102,9 @@
             </template>
         </CardBox>
 
-        <!-- <div class="border border-sky-500 rounded-lg mt-5">
-                    <h2 class="bg-sky-500 text-white p-4 rounded-t-lg">{{ lang.personal_info }}</h2>
-                    <div class="p-4">
-                        <p>Card content</p>
-                    <p>Card content</p>
-                    <p>Card content</p>
-                    </div>
-                </div> -->
         <div class="text-center pt-5">
-            <a-button :href="route('recruitment.application.form', { code: vacancy.code, page: 1 })"
-                class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ lang.back_no_save }}</a-button>
+            <a :href="route('recruitment.application.form', { code: vacancy.code, page: this.page.previours })" 
+                class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
             <a-button type="primary" @click="saveToNext">{{ lang.save_next }}</a-button>
         </div>
     </RecruitmentLayout>
@@ -186,10 +178,6 @@ export default {
         saveToNext() {
             if(this.application.educations.length==0){
                 message.error(this.lang.at_least_one_education);
-                // Modal.error({
-                //     title: 'This is an error message',
-                //     content: 'some messages...some messages...',
-                // });
                 return false;
             }
             this.$inertia.post(route('recruitment.application.save'), { to_page: 3, application: this.application }, {
@@ -204,12 +192,11 @@ export default {
         onFinish() {
             this.application.educations.push({ ...this.education })
             this.education = {};
-            console.log(this.application);
+            
         },
         onFinishFailed(){
             message.error(this.lang.error_required_fields);
         }
-
     },
 };
 

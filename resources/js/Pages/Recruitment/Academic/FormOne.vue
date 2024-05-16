@@ -178,7 +178,9 @@ import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
 import recLang  from '/lang/recruitment.json';
-import { message } from 'ant-design-vue';
+import { message,Modal} from 'ant-design-vue';
+import { ref, createVNode } from 'vue';
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
 export default {
     components: {

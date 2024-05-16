@@ -235,15 +235,22 @@
                     </tr>
                 </table>
                 <div class="text-center">
-                    <a-form :model="application" @finish="onFinish" @finishFailed="onFinishFailed">
+                    <a-form :model="application">
                         <a-form-item>
                             <template v-if="application.submitted">
-                                <a-button type="primary" danger class="mt-5">Pay</a-button>
+                                <inertia-link :href="route('recruitment.application.payment',{application_id:application.id,uuid:application.uuid})" class="ant-btn ant-btn-primary ant-btn-dangerous mt-5">{{lang.pay}}ss</inertia-link>
                             </template>
                             <template v-else>
-                                <a-button :href="route('recruitment.application.form', { code: vacancy.code, page: this.page.previours })"
-                                    class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ lang.back_no_save }}</a-button>
-                                <a-button type="primary" html-type="submit" class="mt-5">{{ lang.submit }}</a-button>
+                                <a :href="route('recruitment.application.form', { code: vacancy.code, page: this.page.previours })" 
+                                    class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
+                                <a-popconfirm
+                                    :title="lang.submit_confirmed"
+                                    :ok-text="lang.confirmed"
+                                    :cancel-text="lang.cancel"
+                                    @confirm="confirmSubmit"
+                                >
+                                    <a-button type="primary" class="mt-5">{{ lang.submit }}</a-button>
+                                </a-popconfirm>
                             </template>
                         </a-form-item>
                     </a-form>
@@ -258,7 +265,8 @@ import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
 import recLang  from '/lang/recruitment.json';
-import { message } from 'ant-design-vue';
+import { message, Modal } from 'ant-design-vue';
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
 export default {
     components: {
@@ -305,8 +313,7 @@ export default {
         }
     },
     methods: {
-        onFinish() {
-            console.log('onfinish')
+        confirmSubmit(){
             this.$inertia.post(route('recruitment.application.submit'), { to_page: 7, application: this.application }, {
                 onSuccess: (page) => {
                     console.log(page.data)
@@ -315,9 +322,6 @@ export default {
                     console.log(err)
                 }
             });
-        },
-        onFinishFailed(){
-            message.error(this.lang.error_required_fields);
         },
         optionItem(options, value){
             console.log(options);
