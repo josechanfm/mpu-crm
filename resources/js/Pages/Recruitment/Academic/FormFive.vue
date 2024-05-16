@@ -19,12 +19,22 @@
                 
                     <table width="100%">
                         <tr>
-                            <th width="150px">{{ lang.doc_id }}</th>
+                            <th width="150px"><span class="text-red-500">*</span> {{ lang.doc_id }}</th>
                             <td width="50%">
+                                <div v-if="getFileList('doc_id').length<=0" class="text-red-500">{{ lang.id_required_copy }}</div>
                                 <ol>
                                     <li v-for="file in getFileList('doc_id')">
                                         <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
-                                        <a class="pl-5" @click="deleteFile(file)"><delete-outlined /></a>
+                                        <a-popover v-model:visible="file.isPopover" :title="lang.delete_confirm" trigger="click">
+                                            <template #content>
+                                                {{ file.original_name }}
+                                                <div class="text-right pt-5">
+                                                    <a-button @click="file.isPopover=false">{{ lang.no }}</a-button>  
+                                                    <a-button type="danger" @click="deleteFileConfirmed(file)" class="ml-5">{{ lang.confirmed }}</a-button>
+                                                </div>
+                                            </template>
+                                            <a class="pl-5 text-red-500" @click="file.isPopover=true"><delete-outlined /></a>
+                                        </a-popover>
                                     </li>
                                 </ol>
                             </td>
@@ -33,7 +43,6 @@
                                     :showUploadList="false"
                                     name="doc_id"
                                     :multiple="true"
-                                    :beforeUpload="handleBeforeUpload"
                                     :customRequest="customeFileUpload('doc_id')"
                                 >
                                     <a-button>
@@ -49,15 +58,24 @@
                                 <ol>
                                     <li v-for="file in getFileList('doc_education')">
                                         <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                        <a-popover v-model:visible="file.isPopover" :title="lang.delete_confirm" trigger="click">
+                                            <template #content>
+                                                {{ file.original_name }}
+                                                <div class="text-right pt-5">
+                                                    <a-button @click="file.isPopover=false">{{ lang.no }}</a-button>  
+                                                    <a-button type="danger" @click="deleteFileConfirmed(file)" class="ml-5">{{ lang.confirmed }}</a-button>
+                                                </div>
+                                            </template>
+                                            <a class="pl-5 text-red-500" @click="file.isPopover=true"><delete-outlined /></a>
+                                        </a-popover>
                                     </li>
                                 </ol>
                             </td>
-                            <td> <button @click="()=>{console.log(this.$refs.asd)}">qwes</button>
+                            <td>
                                 <a-upload ref="asd"
                                     :showUploadList="false"
                                     name="doc_education"
                                     :multiple="true"
-                                    :beforeUpload="handleBeforeUpload"
                                     :customRequest="customeFileUpload('doc_education')"
                                 >
                                     <a-button>
@@ -74,6 +92,16 @@
                                 <ol>
                                     <li v-for="file in getFileList('doc_resume')">
                                         <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                        <a-popover v-model:visible="file.isPopover" :title="lang.delete_confirm" trigger="click">
+                                            <template #content>
+                                                {{ file.original_name }}
+                                                <div class="text-right pt-5">
+                                                    <a-button @click="file.isPopover=false">{{ lang.no }}</a-button>  
+                                                    <a-button type="danger" @click="deleteFileConfirmed(file)" class="ml-5">{{ lang.confirmed }}</a-button>
+                                                </div>
+                                            </template>
+                                            <a class="pl-5 text-red-500" @click="file.isPopover=true"><delete-outlined /></a>
+                                        </a-popover>
                                     </li>
                                 </ol>
                             </td>
@@ -82,7 +110,6 @@
                                     :showUploadList="false"
                                     name="doc_resume"
                                     :multiple="true"
-                                    :beforeUpload="handleBeforeUpload"
                                     :customRequest="customeFileUpload('doc_resume')"
                                 >
                                     <a-button>
@@ -99,6 +126,16 @@
                                 <ol>
                                     <li v-for="file in getFileList('doc_employment')">
                                         <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                        <a-popover v-model:visible="file.isPopover" :title="lang.delete_confirm" trigger="click">
+                                            <template #content>
+                                                {{ file.original_name }}
+                                                <div class="text-right pt-5">
+                                                    <a-button @click="file.isPopover=false">{{ lang.no }}</a-button>  
+                                                    <a-button type="danger" @click="deleteFileConfirmed(file)" class="ml-5">{{ lang.confirmed }}</a-button>
+                                                </div>
+                                            </template>
+                                            <a class="pl-5 text-red-500" @click="file.isPopover=true"><delete-outlined /></a>
+                                        </a-popover>
                                     </li>
                                 </ol>
                             </td>
@@ -107,7 +144,6 @@
                                     :showUploadList="false"
                                     name="doc_employment"
                                     :multiple="true"
-                                    :beforeUpload="handleBeforeUpload"
                                     :customRequest="customeFileUpload('doc_employment')"
                                 >
                                     <a-button>
@@ -123,6 +159,16 @@
                                 <ol>
                                     <li v-for="file in getFileList('doc_training')">
                                         <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                        <a-popover v-model:visible="file.isPopover" :title="lang.delete_confirm" trigger="click">
+                                            <template #content>
+                                                {{ file.original_name }}
+                                                <div class="text-right pt-5">
+                                                    <a-button @click="file.isPopover=false">{{ lang.no }}</a-button>  
+                                                    <a-button type="danger" @click="deleteFileConfirmed(file)" class="ml-5">{{ lang.confirmed }}</a-button>
+                                                </div>
+                                            </template>
+                                            <a class="pl-5 text-red-500" @click="file.isPopover=true"><delete-outlined /></a>
+                                        </a-popover>
                                     </li>
                                 </ol>
                             </td>
@@ -131,7 +177,6 @@
                                     :showUploadList="false"
                                     name="doc_training"
                                     :multiple="true"
-                                    :beforeUpload="handleBeforeUpload"
                                     :customRequest="customeFileUpload('doc_training')"
                                 >
                                     <a-button>
@@ -148,6 +193,16 @@
                                 <ol>
                                     <li v-for="file in getFileList('doc_academic')">
                                         <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                        <a-popover v-model:visible="file.isPopover" :title="lang.delete_confirm" trigger="click">
+                                            <template #content>
+                                                {{ file.original_name }}
+                                                <div class="text-right pt-5">
+                                                    <a-button @click="file.isPopover=false">{{ lang.no }}</a-button>  
+                                                    <a-button type="danger" @click="deleteFileConfirmed(file)" class="ml-5">{{ lang.confirmed }}</a-button>
+                                                </div>
+                                            </template>
+                                            <a class="pl-5 text-red-500" @click="file.isPopover=true"><delete-outlined /></a>
+                                        </a-popover>
                                     </li>
                                 </ol>
                             </td>
@@ -156,7 +211,6 @@
                                     :showUploadList="false"
                                     name="doc_academic"
                                     :multiple="true"
-                                    :beforeUpload="handleBeforeUpload"
                                     :customRequest="customeFileUpload('doc_academic')"
                                 >
                                     <a-button>
@@ -172,6 +226,16 @@
                                 <ol>
                                     <li v-for="file in getFileList('doc_other')">
                                         <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                        <a-popover v-model:visible="file.isPopover" :title="lang.delete_confirm" trigger="click">
+                                            <template #content>
+                                                {{ file.original_name }}
+                                                <div class="text-right pt-5">
+                                                    <a-button @click="file.isPopover=false">{{ lang.no }}</a-button>  
+                                                    <a-button type="danger" @click="deleteFileConfirmed(file)" class="ml-5">{{ lang.confirmed }}</a-button>
+                                                </div>
+                                            </template>
+                                            <a class="pl-5 text-red-500" @click="file.isPopover=true"><delete-outlined /></a>
+                                        </a-popover>
                                     </li>
                                 </ol>
                             </td>
@@ -180,7 +244,6 @@
                                     :showUploadList="false"
                                     name="doc_other"
                                     :multiple="true"
-                                    :beforeUpload="handleBeforeUpload"
                                     :customRequest="customeFileUpload('doc_other')"
                                 >
                                     <a-button>
@@ -201,11 +264,6 @@
             <a-button type="primary" @click="saveToNext">{{ lang.save_next }}</a-button>
         </div>
 
-        <a-modal v-model:visible="confirmFileDelete" title="Basic Modal" @ok="deleteFileConfirmed">
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-        </a-modal>
     </RecruitmentLayout>
 </template>
 
@@ -220,6 +278,7 @@ import { createVNode, defineComponent } from 'vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
 import axios from 'axios';
+import { modalProps } from 'ant-design-vue/lib/modal/Modal';
 
 export default {
     components: {
@@ -235,7 +294,6 @@ export default {
         return {
             page: {},
             headers:{authorization:'header text'},
-            confirmFileDelete:false,
             rules: {
                 name_zh: { required: true },
                 first_name_fn: { required: true },
@@ -288,101 +346,74 @@ export default {
                 this.application.address = 'Somewhere near by..'
         },
         saveToNext() {
-            this.onFinish();
-        },
-        handleBeforeUpload(file){
-            console.log(file)
-            return true
+            const file=this.application.uploads.find((f)=>f.document_type=='doc_id')
+            if(!file){
+                message.error('Document Id required!')
+                return false
+            }
+            this.$inertia.post(route('recruitment.application.save'), { to_page: this.page.next, application: this.application }, {
+                onSuccess: (page) => {
+                    console.log(page.data)
+                },
+                onError: (err) => {
+                    console.log(err)
+                }
+            });
+
         },
         customeFileUpload(fileType){
             return ({ onSuccess, onError, file })=> {
-                let formData=new FormData();
-                formData.append('rec_application_id',this.application.id)
-                formData.append('document_type',fileType)
-                formData.append('file',file)
-                
-                this.$inertia.post(route('recruitment.application.fileUpload'),formData, {
-                    onSuccess: (page) => {
-                        onSuccess(formData)
-                    },
-                    onError: (err) => {
-                        onError(err)
-                    }
-                });
-                return {status:'success'};
-            }
-        },
-        varifyImage(info){
-           
-            console.log('varifyimage');
-            const isJpgOrPng =
-                info.file.type === "image/jpeg" || info.file.type === "image/png";
-            if (!isJpgOrPng) {
-                console.log("image format!");
-                message.error("You can only upload JPG/PNG file!");
-            }
-            const isLt2M = info.file.size / 1024 / 1024 < 0.2;
-            if (!isLt2M) {
-                console.log("image size");
-                message.error("Image must smaller than 2MB!");
-            }
-
-            if (isJpgOrPng && isLt2M) {
-                //this.getBase64(info.file.originFileObj, (base64Url) => {
-                //this.imageUrl = base64Url;
-                //this.loading = true;
-                //});
-                console.log('image type and size are corrent!');
-                return true
-            } else {
-                console.log('nonono image is not correct');
-                return false;
-                //this.form.image = [];
-            }
-        },
-        getBase64(img, callback) {
-            const reader = new FileReader();
-            reader.addEventListener("load", () => callback(reader.result));
-            reader.readAsDataURL(img);
-        },
-        getFileList(documentType){
-            let files=this.application.uploads.filter(f=>f.document_type==documentType)
-            return files;
-        },
-        deleteFile(file){
-            Modal.confirm({
-                title: 'Confirm',
-                icon: createVNode(ExclamationCircleOutlined),
-                content: 'Bla bla ...',
-                okText: '确认',
-                cancelText: '取消',
-                onOk: ()=>{
-                    this.$inertia.delete(route('recruitment.application.fileDelete',{rec_upload:file.id}), {
+                if(this.varifyFile(file)){
+                    let formData=new FormData();
+                    formData.append('rec_application_id',this.application.id)
+                    formData.append('document_type',fileType)
+                    formData.append('file',file)
+                    
+                    this.$inertia.post(route('recruitment.application.fileUpload'),formData, {
                         onSuccess: (page) => {
-                            console.log(page.data)
+                            onSuccess(formData)
                         },
                         onError: (err) => {
                             onError(err)
                         }
                     });
+                    return {status:'success'};
+                }
+            }
+        },
+        varifyFile(file){
+            let isValid=true;
+            const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+            const isDoc = file.type === 'application/msword' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+            const isPDF = file.type === 'application/pdf';
+
+            if (!isJpgOrPng && !isDoc && !isPDF) {
+                isValid=false
+                message.error("Not match to required file format!");
+            }
+            const isLt2M = file.size / 1024 / 1024 < 0.2;
+            if (!isLt2M) {
+                isValid=false
+                message.error("File exceeds the limit!");
+            }
+            return isValid
+        },
+
+        getFileList(documentType){
+            let files=this.application.uploads.filter(f=>f.document_type==documentType)
+            return files;
+        },
+        deleteFileConfirmed(file){
+            file.isPopover=false
+            this.$inertia.delete(route('recruitment.application.fileDelete',{rec_upload:file.id}), {
+                onSuccess: (page) => {
+                    console.log(page.data)
                 },
-                onCancel: ()=>{
-                    console.log(' cancel')
+                onError: (err) => {
+                    onError(err)
                 }
             });
-           
-            // this.$inertia.delete(route('recruitment.application.fileDelete',{rec_upload:file.id}), {
-            //     onSuccess: (page) => {
-            //         console.log(page.data)
-            //     },
-            //     onError: (err) => {
-            //         onError(err)
-            //     }
-            // });
         },
-        deleteFileConfirmed(){
-            console.log('detel file cnfirmed')
-        }
     },
 };
 

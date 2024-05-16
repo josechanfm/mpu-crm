@@ -138,15 +138,15 @@ class ApplicationController extends Controller
                     }
                 }
             }elseif($toPage==6){
-                foreach($application['uploads'] as $upload){
-                    //RecExperience::find($edu['id'])->update($exp);
-                }
+                //dd($application);
+                // foreach($application['uploads'] as $upload){
+                //     //RecExperience::find($edu['id'])->update($exp);
+                // }
             }else{
                 echo response()->json(['message'=>'What do you wanna actually?']);
             }
         }
-        //dd($toPage);
-                
+        // dd($toPage);
         return redirect()->route('recruitment.application.form',[
             'code'=>RecVacancy::find($application['rec_vacancy_id'])->code,
             'page'=>$toPage
@@ -156,15 +156,21 @@ class ApplicationController extends Controller
     public function submit(Request $request){
         $app=$request->application;
         $application=RecApplication::find($app['id']);
-        
-        $application->submitted=true;
+        //$application->submitted=true;
         $application->save();
-        return redirect()->route('application.payment',['application_id'=>$application]);
+         return redirect()->route('recruitment.application.payment',array('application_id'=>$application->id,'uuid'=>$application->uuid));
     }
 
     public function payment(Request $request){
-        $application=RecApplication::find($request->id);
-        return Inertia::render('Recruitment/Payment',[
+        $application=RecApplication::find($request->application_id);
+        if($application->user_id != auth()->user()->id || $application->uuid != $request->uuid){
+            return Inertia::render('Error',[
+                'message'=>'Permission denied!'
+            ]);
+        }
+        $vacancy=RecVacancy::find($application->rec_vacancy_id);
+        return Inertia::render('Recruitment/Academic/Payment',[
+            'vacancy'=>$vacancy,
             'application'=>$application
         ]);
 

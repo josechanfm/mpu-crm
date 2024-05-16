@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('rec_applications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('rec_vacancy_id');
+            $table->uuid('uuid');
             $table->string('obtain_info')->nullable();
             $table->string('name_full_zh')->nullable();
             $table->string('name_family_zh')->nullable();

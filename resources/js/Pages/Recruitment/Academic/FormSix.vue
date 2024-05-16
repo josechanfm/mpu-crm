@@ -33,7 +33,7 @@
                         <th colspan="4" style="text-align: left;">
                             {{ lang.personal_info }}
                             <a-button v-if="!application.submitted"
-                                :href="route('recruitment.academic.form', { 'code': vacancy.code, 'page': 1 })"
+                                :href="route('recruitment.application.form', { 'code': vacancy.code, 'page': 1 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
                             <div class="float-right">{{ lang.part_aca_a }}</div>
                         </th>
@@ -95,7 +95,7 @@
                         <th colspan="8" style="text-align: left;">
                             {{ lang.educations }}
                             <a-button v-if="!application.submitted"
-                                :href="route('recruitment.academic.form', { 'code': vacancy.code, 'page': 2 })"
+                                :href="route('recruitment.application.form', { 'code': vacancy.code, 'page': 2 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
                             <div class="float-right">{{ lang.part_aca_b }}</div>
                         </th>
@@ -130,7 +130,7 @@
                         <th colspan="6" style="text-align: left;">
                             {{ lang.professional }}
                             <a-button v-if="!application.submitted"
-                                :href="route('recruitment.academic.form', { 'code': vacancy.code, 'page': 3 })"
+                                :href="route('recruitment.application.form', { 'code': vacancy.code, 'page': 3 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
                             <div class="float-right">{{ lang.part_aca_c }}</div>
                         </th>
@@ -164,7 +164,7 @@
                         <th colspan="7" style="text-align: left;">
                             {{ lang.experiences }}
                             <a-button v-if="!application.submitted"
-                                :href="route('recruitment.academic.form', { 'code': vacancy.code, 'page': 4 })"
+                                :href="route('recruitment.application.form', { 'code': vacancy.code, 'page': 4 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
                             <div class="float-right">{{ lang.part_aca_d }}</div>
                         </th>
@@ -201,7 +201,7 @@
                         <th colspan="2" style="text-align: left;">
                             {{ lang.file_uploaded }}
                             <a-button v-if="!application.submitted"
-                                :href="route('recruitment.academic.form', { 'code': vacancy.code, 'page': 5 })"
+                                :href="route('recruitment.application.form', { 'code': vacancy.code, 'page': 5 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">{{ lang.edit }}</a-button>
                         </th>
                     </tr>
@@ -241,7 +241,7 @@
                                 <a-button type="primary" danger class="mt-5">Pay</a-button>
                             </template>
                             <template v-else>
-                                <a-button :href="route('recruitment.academic.form', { code: vacancy.code, page: this.page.previours })"
+                                <a-button :href="route('recruitment.application.form', { code: vacancy.code, page: this.page.previours })"
                                     class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ lang.back_no_save }}</a-button>
                                 <a-button type="primary" html-type="submit" class="mt-5">{{ lang.submit }}</a-button>
                             </template>
@@ -307,7 +307,7 @@ export default {
     methods: {
         onFinish() {
             console.log('onfinish')
-            this.$inertia.post(route('recruitment.academic.submit'), { to_page: 7, application: this.application }, {
+            this.$inertia.post(route('recruitment.application.submit'), { to_page: 7, application: this.application }, {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },

@@ -2,6 +2,11 @@
     "zh":{
         "steps":[{"title":"個人資料"},{"title":"學歷"},{"title":"專業資格"},{"title":"工作經驗"},{"title":"文件上載"},{"title":"支付"}],
         "operation":"操作",
+        "delete_confirm":"是否確認刪除?",
+        "confirmed":"確認",
+        "cancel":"放棄",
+        "yes":"是",
+        "no":"否",
         "if_applicable":"(倘適用)",
         "at_least_one_education":"至少需要輸入一項高教記錄",
         "error_required_fields":"必填欄位未完成",
@@ -102,6 +107,11 @@
     "en":{
         "steps":[{"title":"Personal Information"},{"title":"Education"},{"title":"Professional Qualifications"},{"title":"Work Experience"},{" title":"File Upload"},{"title":"Payment"}],
         "operation":"Operation",
+        "delete_confirm":"Confirm to Delete?",
+        "confirmed":"Confirm",
+        "cancel":"Cancel",
+        "yes":"Yes",
+        "no":"No",
         "if_applicable":"(If applicable)",
         "at_least_one_education":"At least one higher education record needs to be entered",
         "error_required_fields":"Required fields are incomplete",
@@ -195,7 +205,13 @@
         "finish":"finish"
     },
     "pt":{
-        "steps":[{"title":"Personal Information"},{"title":"Education"},{"title":"Professional Qualifications"},{"title":"Work Experience"},{" title":"File Upload"},{"title":"Payment"}],        "operation":"Operation",
+        "steps":[{"title":"Personal Information"},{"title":"Education"},{"title":"Professional Qualifications"},{"title":"Work Experience"},{" title":"File Upload"},{"title":"Payment"}],
+        "operation":"Operation",
+        "delete_confirm":"Confirm to Delete?",
+        "confirmed":"Confirm",
+        "cancel":"Cancel",
+        "yes":"Yes",
+        "no":"No",
         "if_applicable":"(If applicable)",
         "at_least_one_education":"At least one higher education record needs to be entered",
         "error_required_fields":"Required fields are incomplete",

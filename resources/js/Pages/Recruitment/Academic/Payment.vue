@@ -8,7 +8,7 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <p>Payment</p>
-                <inertia-link :href="route('recruitment')">Back to Vacancy List</inertia-link>
+                <a-button :href="route('recruitment.application.form', { code: vacancy.code, page:6 })" class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ lang.back_no_save }}</a-button>
             </div>
         </div>
     </RecruitmentLayout>
@@ -18,6 +18,7 @@
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
+import recLang  from '/lang/recruitment.json';
 
 export default {
     components: {
@@ -28,9 +29,7 @@ export default {
     props: ['vacancy','application'],
     data() {
         return {
-            form:{
-                
-            },
+            page: {},
             rules:{
                 name_zh:{required:true},
                 first_name_fn:{required:true},
@@ -52,10 +51,15 @@ export default {
         }
     },
     created() {
-
+        this.lang = recLang[this.$page.props.lang]
     },
     mounted() {
-
+        let urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('page')) {
+            this.page.current = parseInt(urlParams.get('page'))
+            this.page.previours = this.page.current - 1
+            this.page.next = this.page.current + 1
+        }
     },
     methods: {
         sampleData(){
@@ -78,7 +82,7 @@ export default {
             this.application.address='Somewhere near by..'
         },
         onFinish(){
-            this.$inertia.post(route('recruitment.academic.save'), this.application,{
+            this.$inertia.post(route('application.save'), this.application,{
                     onSuccess:(page)=>{
                         console.log(page.data)
                     },
