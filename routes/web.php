@@ -64,7 +64,7 @@ Route::middleware([
         Route::get('boc_payment',[\App\Http\Controllers\Recruitment\ApplicationController::class,'bocPayment'])->name('recruitment.application.bocPayment');
         Route::post('boc_result',[\App\Http\Controllers\Recruitment\ApplicationController::class,'bocResult'])->name('recruitment.application.bocResult');
         Route::get('test_boc_payment',[\App\Http\Controllers\Recruitment\ApplicationController::class,'testBocPayment'])->name('recruitment.application.testBocPayment');
-        Route::get('test_boc_result',[\App\Http\Controllers\Recruitment\ApplicationController::class,'testBocResult'])->name('recruitment.application.testBocResult');
+        Route::post('test_boc_result',[\App\Http\Controllers\Recruitment\ApplicationController::class,'testBocResult'])->name('recruitment.application.testBocResult');
     });
     
     Route::prefix('/member')->group(function(){

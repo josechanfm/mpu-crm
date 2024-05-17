@@ -183,36 +183,48 @@ class ApplicationController extends Controller
          return redirect()->route('recruitment.application.payment',array('application_id'=>$application->id,'uuid'=>$application->uuid));
     }
 
-    public function bocPayment(Request $request){
+    public function payment(Request $request){
         $application=RecApplication::find($request->application_id);
         if($application->user_id != auth()->user()->id || $application->uuid != $request->uuid){
             // https://epay.mpu.edu.mo/bocpaytest/api/boc/cashier
-            $data=[
-                'systemCode'=>'', //Required 授權後獲得
-                'ipAddress'=>'', 
-                'requester'=>'', //Optional 支付者名稱
-                'cashierLanguage'=>'', //Required zh_TW或en_US
-                'amount'=>'', //Required 交易金額(折後，如無折扣，則和originalAmount一樣即可)
-                'originalAmount'=>'', //Required 交易原金額
-                'subject'=>'', //Required 交易標題
-                'productDesc'=>'', //Optional 交易描述
-                'mercOrderNo'=>'', //Required 訂單唯一編號
-                'orderDate'=>'', //Optional 請求日期。如不填，則自動填寫系統即時日期
-                'orderTime'=>'', //Optional 請求時間。如不填，則自動填寫系統即時時間
-                'validNumber'=>'', //Optional 交易有效時間(單位:秒)，預設為300秒
-                'otherBusinessType'=>'', //Required 交易類型
-                'merchantPreferentialCnName'=>'', //Optional 優惠中文名稱
-                'merchantPreferencitalEnName'=>'', //Optional 優惠英文名稱
-                'supplier'=>'', //
-            ];
             return Inertia::render('Error',[
                 'message'=>'Permission denied!'
             ]);
         }
+        $systemCode='MPUCRM';
+        $mercOrderNo=time().'-'.rand(1000,9999);
+        $amount='300';
+        $salt='8Ier5T)1up]_S7)XHd(KcHwtM><cuF415P$=Dqb6}OtN_[bd';
+
+        $payment=[
+            'systemCode'=>$systemCode, //Required 授權後獲得
+            'ipAddress'=>$request->getClientIp(), 
+            'cashierLanguage'=>'zh_TW', //Required zh_TW或en_US
+            'amount'=>$amount, //Required 交易金額(折後，如無折扣，則和originalAmount一樣即可)
+            'originalAmount'=>$amount, //Required 交易原金額
+            'subject'=>'Academic', //Required 交易標題
+            'productDesc'=>'', //Optional 交易描述
+            'mercOrderNo'=>$mercOrderNo, //Required 訂單唯一編號
+            'requester'=>'Test User', //Optional 支付者名稱
+            'orderDate'=>'', //Optional 請求日期。如不填，則自動填寫系統即時日期
+            'orderTime'=>'', //Optional 請求時間。如不填，則自動填寫系統即時時間
+            'validNumber'=>'', //Optional 交易有效時間(單位:秒)，預設為300秒
+            'otherBusinessType'=>'Recruitment', //Required 交易類型
+            'paymentChannel'=>'boc', //boc, cep 當有多於一個交易渠道，使用|間隔，例如boc|cep，如不填或格式錯誤，則顯示所有可用交易渠道
+            'mcsSyncOrderNo'=>'', //
+            'email'=>'tester@mpu.edu.mo', //交易成功後同步MCS(如有)，搜尋並更新相同orderNo的MCS記錄。
+            //注1: 當你填寫了mcsSyncOrderNo，則不需要另外通過MCS paybill API做交易動作。
+            //注2: MCS的交易金額不會在此步驟中發生變化，若交易時與MCS記錄創建時的金額不相同，請及時通過MCS API更新記錄。
+            'signText'=>hash('sha256',$systemCode.$mercOrderNo.$amount.$salt)
+            //System Code + mercOrderNo + amount + Salt使用SHA256生成的不可逆的字串。用於識別是否為經授權的系統發出的交易。
+            //(2023-08-31 更新singText中加入amount以作檢查金額沒有被惡意修改)
+        ];
+
         $vacancy=RecVacancy::find($application->rec_vacancy_id);
         return Inertia::render('Recruitment/Academic/Payment',[
             'vacancy'=>$vacancy,
-            'application'=>$application
+            'application'=>$application,
+            'payment'=>$payment
         ]);
     }
 
@@ -237,35 +249,54 @@ class ApplicationController extends Controller
     }
 
     public function testBocPayment(Request $request){
-        $data=[
-            'systemCode'=>'MPUCRM', //Required 授權後獲得
+        $systemCode='MPUCRM';
+        $mercOrderNo='order_no-'.time().'-'.rand(1000,9999);
+        $amount='300';
+        $salt='8Ier5T)1up]_S7)XHd(KcHwtM><cuF415P$=Dqb6}OtN_[bd';
+        $payment=[
+            'systemCode'=>$systemCode, //Required 授權後獲得
             'ipAddress'=>$request->getClientIp(), 
-            'requester'=>'Test User', //Optional 支付者名稱
             'cashierLanguage'=>'zh_Tw', //Required zh_TW或en_US
-            'amount'=>'300', //Required 交易金額(折後，如無折扣，則和originalAmount一樣即可)
-            'originalAmount'=>'300', //Required 交易原金額
+            'amount'=>$amount, //Required 交易金額(折後，如無折扣，則和originalAmount一樣即可)
+            'originalAmount'=>$amount, //Required 交易原金額
             'subject'=>'Academic', //Required 交易標題
             'productDesc'=>'', //Optional 交易描述
-            'mercOrderNo'=>'test_order_num'.rand(1000,9999), //Required 訂單唯一編號
+            'mercOrderNo'=>$mercOrderNo, //Required 訂單唯一編號
+            'requester'=>'Test User', //Optional 支付者名稱
             'orderDate'=>'', //Optional 請求日期。如不填，則自動填寫系統即時日期
             'orderTime'=>'', //Optional 請求時間。如不填，則自動填寫系統即時時間
             'validNumber'=>'', //Optional 交易有效時間(單位:秒)，預設為300秒
             'otherBusinessType'=>'Recruitment', //Required 交易類型
-            'merchantPreferentialCnName'=>'', //Optional 優惠中文名稱
-            'merchantPreferencitalEnName'=>'', //Optional 優惠英文名稱
-            'supplier'=>'', //
+            'paymentChannel'=>'boc', //boc, cep 當有多於一個交易渠道，使用|間隔，例如boc|cep，如不填或格式錯誤，則顯示所有可用交易渠道
+            'mscSyncOrderNo'=>'', //
+            'email'=>'tester@mpu.edu.mo', //交易成功後同步MCS(如有)，搜尋並更新相同orderNo的MCS記錄。
+            //注1: 當你填寫了mcsSyncOrderNo，則不需要另外通過MCS paybill API做交易動作。
+            //注2: MCS的交易金額不會在此步驟中發生變化，若交易時與MCS記錄創建時的金額不相同，請及時通過MCS API更新記錄。
+            'signText'=>hash('sha256',$systemCode.$mercOrderNo.$amount.$salt)
+            //System Code + mercOrderNo + amount + Salt使用SHA256生成的不可逆的字串。用於識別是否為經授權的系統發出的交易。
+            //(2023-08-31 更新singText中加入amount以作檢查金額沒有被惡意修改)
         ];
         //dd($data);
-        $url='https://epay.mpu.edu.mo/bocpaytest/api/boc/cashier';
-        $response=Http::asForm()->post($url,$data);
-        echo $response;
+        $application=RecApplication::find(1);
+        $vacancy=RecVacancy::find($application->rec_vacancy_id);
+        return Inertia::render('Recruitment/Academic/FormSix',[
+            'vacancy'=>$vacancy,
+            'application'=>$application,
+            'payment'=>$payment
+        ]);
+
+        // $url='https://epay.mpu.edu.mo/bocpaytest/ipm/cashier';
+        // $response=Http::asForm()->post($url,$data);
+        // echo $response;
+        // //dd($response);
     }
 
     public function notify(){
 
     }
 
-    public function testBocResult(){
+    public function testBocResult(Request $request){
+        dd($request->all());
         $data=[
             'iopName'=>'iop_name', //系統請求結果
             'iopCode'=>'iop_code', //系統請求結果代碼
@@ -279,7 +310,7 @@ class ApplicationController extends Controller
         ];
         // $url=url(route('recruitment.application.bocResult'));
         // $response=Http::post($url,$data);
-        dd($response);
+        // dd($response);
     }
 
     public function bocOrderQuery(){

@@ -7,8 +7,14 @@
         </template>
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <p>Payment</p>
+                <form method="post" action="https://epay.mpu.edu.mo/bocpaytest/ipm/cashier">
+                    <div v-for="(value,field) in payment" hidden>
+                        <input :name="field" :value="payment[field]"/><br>
+                    </div>
+                    <input type="submit"/>
+                </form>
                 <a-button :href="route('recruitment.application.form', { code: vacancy.code, page:6 })" class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ lang.back_no_save }}</a-button>
+                <a-button @click="confirmPayment">Confirm Payment</a-button>
             </div>
         </div>
     </RecruitmentLayout>
@@ -26,7 +32,7 @@ export default {
         CaretRightOutlined,
         CardBox
     },
-    props: ['vacancy','application'],
+    props: ['vacancy','application','payment'],
     data() {
         return {
             page: {},
@@ -62,34 +68,15 @@ export default {
         }
     },
     methods: {
-        sampleData(){
-            this.application.obtain_info=['WEB','NEW'],
-            this.application.obtain_info_new='Macao Daily',
-            this.application.obtain_info_oth='Inernet',
-            this.application.name_zh='陳大文',
-            this.application.first_name_fn='Tai Man',
-            this.application.last_name_fn='Chan',
-            this.application.gender='M',
-            this.application.pob='OTH',
-            this.application.pob_oth='Germany',
-            this.application.dob='1970-07-18',
-            this.application.id_type='OTH',
-            this.application.id_type_name='Germany',
-            this.application.id_num='123456789',
-            this.application.nationality='German',
-            this.application.phone='66778899',
-            this.application.email='chantaiman@example.com',
-            this.application.address='Somewhere near by..'
-        },
-        onFinish(){
-            this.$inertia.post(route('application.save'), this.application,{
-                    onSuccess:(page)=>{
-                        console.log(page.data)
-                    },
-                    onError:(err)=>{
-                        console.log(err)
-                    }
-                });
+        confirmPayment(){
+            console.log(this.payment);
+            let formData=new FormData();
+            Object.entries(this.payment).forEach(([key,value])=>{
+                formData.append(key,value)
+            })
+            axios.post('https://epay.mpu.edu.mo/bocpaytest/ipm/cashier',formData)
+            console.log(formData)
+
         }
     },
 };

@@ -105,7 +105,7 @@ export default {
             dateFormat: "YYYY-MM-DD",
             dateTimeFormat: "YYYY-MM-DD HH:mm",
             recruitmentTypes:[
-                {value:"ACD",label:"教職人員"},
+                {value:"ACA",label:"教職人員"},
                 {value:"ADM",label:"非教職人員"}
             ],
             columns: [
