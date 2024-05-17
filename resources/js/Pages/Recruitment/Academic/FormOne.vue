@@ -69,7 +69,7 @@
                 <template #content>
                     <a-row :gutter="12">
                         <a-col :span="16">
-                            <a-form-item :label="lang.name_zh" name="name_full_zh">
+                            <a-form-item :label="lang.name_full_zh" name="name_full_zh">
                                 <a-input v-model:value="application.name_full_zh" />
                             </a-form-item>
                         </a-col>

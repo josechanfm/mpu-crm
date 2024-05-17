@@ -54,17 +54,17 @@ Route::middleware([
     Route::get('/member/dashboard', function () {
         return Inertia::render('Member/Dashboard');
     })->name('dashboard');
-    Route::prefix('/recruitment/application')->group(function(){
-        Route::get('form',[\App\Http\Controllers\Recruitment\ApplicationController::class,'form'])->name('recruitment.application.form');
-        Route::post('save',[\App\Http\Controllers\Recruitment\ApplicationController::class,'save'])->name('recruitment.application.save');
-        Route::post('submit',[\App\Http\Controllers\Recruitment\ApplicationController::class,'submit'])->name('recruitment.application.submit');
-        Route::post('file_upload',[\App\Http\Controllers\Recruitment\ApplicationController::class,'fileUpload'])->name('recruitment.application.fileUpload');
-        Route::delete('file_delete/{rec_upload}',[\App\Http\Controllers\Recruitment\ApplicationController::class,'fileDelete'])->name('recruitment.application.fileDelete');
-        Route::get('payment',[\App\Http\Controllers\Recruitment\ApplicationController::class,'payment'])->name('recruitment.application.payment');
-        Route::get('boc_payment',[\App\Http\Controllers\Recruitment\ApplicationController::class,'bocPayment'])->name('recruitment.application.bocPayment');
-        Route::post('boc_result',[\App\Http\Controllers\Recruitment\ApplicationController::class,'bocResult'])->name('recruitment.application.bocResult');
-        Route::get('test_boc_payment',[\App\Http\Controllers\Recruitment\ApplicationController::class,'testBocPayment'])->name('recruitment.application.testBocPayment');
-        Route::post('test_boc_result',[\App\Http\Controllers\Recruitment\ApplicationController::class,'testBocResult'])->name('recruitment.application.testBocResult');
+    Route::prefix('/recruitment/admin')->group(function(){
+        Route::get('apply',[\App\Http\Controllers\Recruitment\AdminController::class,'apply'])->name('recruitment.admin.apply');
+        Route::post('save',[\App\Http\Controllers\Recruitment\AdminController::class,'save'])->name('recruitment.admin.save');
+        Route::post('submit',[\App\Http\Controllers\Recruitment\AdminController::class,'submit'])->name('recruitment.admin.submit');
+        Route::post('file_upload',[\App\Http\Controllers\Recruitment\AdminController::class,'fileUpload'])->name('recruitment.admin.fileUpload');
+        Route::delete('file_delete/{rec_upload}',[\App\Http\Controllers\Recruitment\AdminController::class,'fileDelete'])->name('recruitment.admin.fileDelete');
+        Route::get('payment',[\App\Http\Controllers\Recruitment\AdminController::class,'payment'])->name('recruitment.admin.payment');
+        Route::get('boc_payment',[\App\Http\Controllers\Recruitment\AdminController::class,'bocPayment'])->name('recruitment.admin.bocPayment');
+        Route::post('boc_result',[\App\Http\Controllers\Recruitment\AdminController::class,'bocResult'])->name('recruitment.admin.bocResult');
+        Route::get('test_boc_payment',[\App\Http\Controllers\Recruitment\AdminController::class,'testBocPayment'])->name('recruitment.admin.testBocPayment');
+        Route::post('test_boc_result',[\App\Http\Controllers\Recruitment\AdminController::class,'testBocResult'])->name('recruitment.admin.testBocResult');
     });
     
     Route::prefix('/member')->group(function(){

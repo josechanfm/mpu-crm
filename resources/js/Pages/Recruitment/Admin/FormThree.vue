@@ -28,7 +28,7 @@
                         <th>{{ lang.prof_organization_name }}</th>
                         <th>{{ lang.prof_region }}</th>
                         <th>{{ lang.prof_date_valid }}</th>
-                        <th>{{ lang.prof_date_expired }}</th>
+                        <th>{{ lang.prof_date_expire }}</th>
                     </tr>
                     <template v-for="professional in application.professionals">
                         <tr>
@@ -37,7 +37,7 @@
                             <td>{{ professional.qualification }}</td>
                             <td>{{ professional.area }}</td>
                             <td>{{ professional.date_valid }}</td>
-                            <td>{{ professional.date_expired }}</td>
+                            <td>{{ professional.date_expire }}</td>
                             <td>a</td>
                         </tr>
                     </template>
@@ -77,8 +77,8 @@
                             </a-form-item>
                         </a-col>
                         <a-col :span="12">
-                            <a-form-item :label="lang.prof_date_expired">
-                                <a-date-picker v-model:value="professional.date_expired" :format="dateFormat"
+                            <a-form-item :label="lang.prof_date_expire">
+                                <a-date-picker v-model:value="professional.date_expire" :format="dateFormat"
                                     :valueFormat="dateFormat" />
                             </a-form-item>
                         </a-col>
@@ -89,18 +89,9 @@
                 </a-form>
             </template>
         </CardBox>
-
-        <!-- <div class="border border-sky-500 rounded-lg mt-5">
-                    <h2 class="bg-sky-500 text-white p-4 rounded-t-lg">{{ lang.personal_info }}</h2>
-                    <div class="p-4">
-                        <p>Card content</p>
-                    <p>Card content</p>
-                    <p>Card content</p>
-                    </div>
-                </div> -->
         <div class="text-center pt-5">
-            <a-button :href="route('application.apply', { code: vacancy.code, page: page.previours })"
-                class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ lang.back_no_save }}</a-button>
+            <a :href="route('recruitment.admin.apply', { code: vacancy.code, page: this.page.previours })" 
+                class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
             <a-button type="primary" @click="saveToNext">{{ lang.save_next }}</a-button>
         </div>
     </RecruitmentLayout>
@@ -110,7 +101,7 @@
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
-import recLang  from '/lang/recruitment.json';
+import recLang  from '/lang/recruitment_admin.json';
 import { message } from 'ant-design-vue';
 
 export default {
@@ -154,14 +145,14 @@ export default {
             this.professional.qualification = 'MPM'
             this.professional.area = 'PM'
             this.professional.date_valid = '2020-01-01'
-            this.professional.date_expired = '2022-01-01'
+            this.professional.date_expire = '2022-01-01'
         },
         saveToNext() {
             this.onFinish();
         },
         saveToNext() {
             console.log(this.currentPage);
-            this.$inertia.post(route('application.save'), { to_page: this.page.next, application: this.application }, {
+            this.$inertia.post(route('recruitment.admin.save'), { to_page: this.page.next, application: this.application }, {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },

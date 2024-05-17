@@ -39,18 +39,18 @@
                         </th>
                     </tr>
                     <tr>
-                        <th width="200px">{{ lang.name_zh }}</th>
-                        <td width="40%">{{ application.name_zh }}</td>
+                        <th width="200px">{{ lang.name_full_zh }}</th>
+                        <td width="40%">{{ application.name_full_zh }}</td>
                         <th width="150px">{{ lang.gender }}</th>
                         <td>{{ application.gender }}</td>
                     </tr>
                     <tr>
-                        <th>{{ lang.last_name_fn }}</th>
-                        <td colspan="3">{{ application.last_name_fn }}</td>
+                        <th>{{ lang.name_family_fn }}</th>
+                        <td colspan="3">{{ application.name_family_fn }}</td>
                     </tr>
                     <tr>
-                        <th>{{ lang.first_name_fn }}</th>
-                        <td colspan="3">{{ application.first_name_fn }}</td>
+                        <th>{{ lang.name_given_fn }}</th>
+                        <td colspan="3">{{ application.name_given_fn }}</td>
                     </tr>
                     <tr>
                         <th>{{ lang.pob }}</th>
@@ -207,31 +207,73 @@
                     </tr>
                     <tr>
                         <th style="text-align: left;" width="250px">{{ lang.doc_id}}</th>
-                        <td>---</td>
+                        <td>
+                            <ol>
+                                <li v-for="file in getFileList('doc_id')">
+                                    {{file.original_name}}
+                                </li>
+                            </ol>
+                        </td>
                     </tr>
                     <tr>
                         <th style="text-align: left;">{{ lang.doc_education }}</th>
-                        <td>---</td>
+                        <td>
+                            <ol>
+                                <li v-for="file in getFileList('doc_education')">
+                                    {{file.original_name}}
+                                </li>
+                            </ol>
+                        </td>
                     </tr>
                     <tr>
                         <th style="text-align: left;">{{ lang.doc_resume }}</th>
-                        <td>---</td>
+                        <td>
+                            <ol>
+                                <li v-for="file in getFileList('doc_resume')">
+                                    {{file.original_name}}
+                                </li>
+                            </ol>
+                        </td>
                     </tr>
                     <tr>
                         <th style="text-align: left;">{{ lang.doc_employment }}</th>
-                        <td>---</td>
+                        <td>
+                            <ol>
+                                <li v-for="file in getFileList('doc_employment')">
+                                    {{file.original_name}}
+                                </li>
+                            </ol>
+                        </td>
                     </tr>
                     <tr>
                         <th style="text-align: left;">{{ lang.doc_training }}</th>
-                        <td>---</td>
+                        <td>
+                            <ol>
+                                <li v-for="file in getFileList('doc_training')">
+                                    {{file.original_name}}
+                                </li>
+                            </ol>
+                        </td>
                     </tr>
                     <tr>
                         <th style="text-align: left;">{{ lang.doc_academic }}</th>
-                        <td>---</td>
+                        <td>
+                            <ol>
+                                <li v-for="file in getFileList('doc_academic')">
+                                    {{file.original_name}}
+                                </li>
+                            </ol>
+                        </td>
                     </tr>
                     <tr>
                         <th style="text-align: left;">{{ lang.doc_other }}</th>
-                        <td>---</td>
+                        <td>
+                            <ol>
+                                <li v-for="file in getFileList('doc_other')">
+                                    {{file.original_name}}
+                                </li>
+                            </ol>
+                        </td>
                     </tr>
                 </table>
                 <div class="text-center">
@@ -331,7 +373,12 @@ export default {
                 }else{
                     return null;
                 }
-        }
+        },
+        getFileList(documentType){
+            let files=this.application.uploads.filter(f=>f.document_type==documentType)
+            return files;
+        },
+
     },
 };
 

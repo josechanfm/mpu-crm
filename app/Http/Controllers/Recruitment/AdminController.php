@@ -16,9 +16,9 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class ApplicationController extends Controller
+class AdminController extends Controller
 {
-    public function form(Request $request){
+    public function apply(Request $request){
         $vacancyCode=$request->code;
         $page=$request->page;
         $vacancy=RecVacancy::where('code',$vacancyCode)->first();
@@ -30,22 +30,14 @@ class ApplicationController extends Controller
             $application->user;
         }
         if($application->id==null){
-            return Inertia::render('Recruitment/Academic/FormOne',[
+            return Inertia::render('Recruitment/Admin/FormOne',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
         }
-        if($application->submitted){
-            $application->educations;
-            return Inertia::render('Recruitment/Academic/FormSix',[
-                'vacancy'=>$vacancy,
-                'application'=>$application
-            ]);
-        }
-
         if(empty($page)){
             $application->educations;
-            return Inertia::render('Recruitment/Academic/FormOne',[
+            return Inertia::render('Recruitment/Admin/FormOne',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
@@ -53,7 +45,7 @@ class ApplicationController extends Controller
 
         if($page==1 && $application->id){
             $application->educations;
-            return Inertia::render('Recruitment/Academic/FormOne',[
+            return Inertia::render('Recruitment/Admin/FormOne',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
@@ -61,28 +53,28 @@ class ApplicationController extends Controller
 
         if($page && $page==2 && $application->id){
             $application->educations;
-            return Inertia::render('Recruitment/Academic/FormTwo',[
+            return Inertia::render('Recruitment/Admin/FormTwo',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
         }
         if($page && $page==3 && $application->id){
             $application->professionals;
-            return Inertia::render('Recruitment/Academic/FormThree',[
+            return Inertia::render('Recruitment/Admin/FormThree',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
         }
         if($page && $page==4 && $application->id){
             $application->experiences;
-            return Inertia::render('Recruitment/Academic/FormFour',[
+            return Inertia::render('Recruitment/Admin/FormFour',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]); 
         }
         if($page && $page==5 && $application->id){
             $application->uploads;
-            return Inertia::render('Recruitment/Academic/FormFive',[
+            return Inertia::render('Recruitment/Admin/FormFive',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
@@ -92,7 +84,7 @@ class ApplicationController extends Controller
             $application->professionals;
             $application->experiences;
             $application->uploads;
-            return Inertia::render('Recruitment/Academic/FormSix',[
+            return Inertia::render('Recruitment/Admin/FormSix',[
                 'vacancy'=>$vacancy,
                 'application'=>$application
             ]);
@@ -149,7 +141,7 @@ class ApplicationController extends Controller
             }
         }
         // dd($toPage);
-        return redirect()->route('recruitment.application.form',[
+        return redirect()->route('recruitment.admin.apply',[
             'code'=>RecVacancy::find($application['rec_vacancy_id'])->code,
             'page'=>$toPage
         ]);
@@ -160,7 +152,7 @@ class ApplicationController extends Controller
         if($request->hasFile('file')){
             $file=$request->file('file');
             $data['file_name']=$data['rec_application_id'].'_'.Str::uuid();
-            $data['path']='/recruitment/academic/';
+            $data['path']='/recruitment/admin/';
             $data['full_path']=$data['path'].$data['file_name'];
             $data['original_name']=$file->getClientOriginalName();
             $file->move(public_path($data['path']), $data['file_name']);
@@ -180,7 +172,7 @@ class ApplicationController extends Controller
         $application=RecApplication::find($app['id']);
         $application->submitted=true;
         $application->save();
-         return redirect()->route('recruitment.application.payment',array('application_id'=>$application->id,'uuid'=>$application->uuid));
+         return redirect()->route('recruitment.admin.payment',array('application_id'=>$application->id,'uuid'=>$application->uuid));
     }
 
     public function payment(Request $request){
@@ -202,7 +194,7 @@ class ApplicationController extends Controller
             'cashierLanguage'=>'zh_TW', //Required zh_TW或en_US
             'amount'=>$amount, //Required 交易金額(折後，如無折扣，則和originalAmount一樣即可)
             'originalAmount'=>$amount, //Required 交易原金額
-            'subject'=>'Academic', //Required 交易標題
+            'subject'=>'Admin', //Required 交易標題
             'productDesc'=>'', //Optional 交易描述
             'mercOrderNo'=>$mercOrderNo, //Required 訂單唯一編號
             'requester'=>'Test User', //Optional 支付者名稱
@@ -221,7 +213,7 @@ class ApplicationController extends Controller
         ];
 
         $vacancy=RecVacancy::find($application->rec_vacancy_id);
-        return Inertia::render('Recruitment/Academic/Payment',[
+        return Inertia::render('Recruitment/Admin/Payment',[
             'vacancy'=>$vacancy,
             'application'=>$application,
             'payment'=>$payment
@@ -259,7 +251,7 @@ class ApplicationController extends Controller
             'cashierLanguage'=>'zh_Tw', //Required zh_TW或en_US
             'amount'=>$amount, //Required 交易金額(折後，如無折扣，則和originalAmount一樣即可)
             'originalAmount'=>$amount, //Required 交易原金額
-            'subject'=>'Academic', //Required 交易標題
+            'subject'=>'Admin', //Required 交易標題
             'productDesc'=>'', //Optional 交易描述
             'mercOrderNo'=>$mercOrderNo, //Required 訂單唯一編號
             'requester'=>'Test User', //Optional 支付者名稱
@@ -279,7 +271,7 @@ class ApplicationController extends Controller
         //dd($data);
         $application=RecApplication::find(1);
         $vacancy=RecVacancy::find($application->rec_vacancy_id);
-        return Inertia::render('Recruitment/Academic/FormSix',[
+        return Inertia::render('Recruitment/Admin/FormSix',[
             'vacancy'=>$vacancy,
             'application'=>$application,
             'payment'=>$payment
@@ -292,7 +284,6 @@ class ApplicationController extends Controller
     }
 
     public function notify(){
-
     }
 
     public function testBocResult(Request $request){
@@ -308,7 +299,7 @@ class ApplicationController extends Controller
             'result'=>'', //中銀請求結果(S或F)
             'payUrl'=>'', //若請求成功，則會返回交易鏈接
         ];
-        // $url=url(route('recruitment.application.bocResult'));
+        // $url=url(route('recruitment.admin.bocResult'));
         // $response=Http::post($url,$data);
         // dd($response);
     }

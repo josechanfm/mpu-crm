@@ -22,7 +22,7 @@
                                         <ol>
                                             <li v-for="notice in vacancy.notices">
                                                 {{ notice.date_start }} {{ notice['title_'+$page.props.lang] }}
-                                                <inertia-link :href="route('recruitment.application.form',{code:vacancy.code})">{{ $t('rec.apply') }}</inertia-link>
+                                                <inertia-link :href="route('recruitment.academic.form',{code:vacancy.code})">{{ $t('rec.apply') }}</inertia-link>
                                             </li>
                                         </ol>
                                     </a-collapse-panel>
@@ -42,7 +42,7 @@
                                         <ol>
                                             <li v-for="notice in vacancy.notices">
                                                 {{ notice.date_start }} {{ notice['title_'+$page.props.lang] }}
-                                                <inertia-link :href="route('recruitment.acadmic.form',{code:vacancy.code})">{{ $t('rec.apply') }}</inertia-link>
+                                                <inertia-link :href="route('recruitment.admin.apply',{code:vacancy.code})">{{ $t('rec.apply') }}</inertia-link>
                                             </li>
                                         </ol>
                                     </a-collapse-panel>

@@ -16,48 +16,228 @@
         </div>
         <CardBox :title="lang.file_uploaded">
             <template #content>
-                <a-form :model="application" layout="vertical" :rules="rules" @finish="onFinish" @finishFailed="onFinishFailed">
+                
                     <table width="100%">
                         <tr>
-                            <th width="150px">{{ lang.doc_id }}</th>
-                            <td width="50%"></td>
-                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
+                            <th width="150px"><span class="text-red-500">*</span> {{ lang.doc_id }}</th>
+                            <td width="50%">
+                                <div v-if="getFileList('doc_id').length<=0" class="text-red-500">{{ lang.id_required_copy }}</div>
+                                <ol>
+                                    <li v-for="file in getFileList('doc_id')">
+                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                        <a-popconfirm
+                                            title="Are you sure delete this task?"
+                                            :ok-text="lang.confirmed"
+                                            :cancel-text="lang.no"
+                                            :okButtonProps="{danger:true}"
+                                            @confirm="deleteFileConfirmed(file)"
+                                        >
+                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                        </a-popconfirm>
+                                    </li>
+                                </ol>
+                            </td>
+                            <td>
+                                <a-upload 
+                                    :showUploadList="false"
+                                    name="doc_id"
+                                    :multiple="true"
+                                    :customRequest="customeFileUpload('doc_id')"
+                                >
+                                    <a-button>
+                                    <upload-outlined></upload-outlined>
+                                    {{ lang.upload }}
+                                    </a-button>
+                                </a-upload>
+                            </td>
                         </tr>
                         <tr>
                             <th>{{ lang.doc_education }}</th>
-                            <td></td>
-                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
+                            <td>
+                                <ol>
+                                    <li v-for="file in getFileList('doc_education')">
+                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                        <a-popconfirm
+                                            title="Are you sure delete this task?"
+                                            :ok-text="lang.confirmed"
+                                            :cancel-text="lang.no"
+                                            :okButtonProps="{danger:true}"
+                                            @confirm="deleteFileConfirmed(file)"
+                                        >
+                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                        </a-popconfirm>
+                                    </li>
+                                </ol>
+                            </td>
+                            <td>
+                                <a-upload ref="asd"
+                                    :showUploadList="false"
+                                    name="doc_education"
+                                    :multiple="true"
+                                    :customRequest="customeFileUpload('doc_education')"
+                                >
+                                    <a-button>
+                                    <upload-outlined></upload-outlined>
+                                    {{ lang.upload }}
+                                    </a-button>
+                                </a-upload>
+                                
+                            </td>
                         </tr>
                         <tr>
                             <th>{{ lang.doc_resume }}</th>
-                            <td></td>
-                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
+                            <td>
+                                <ol>
+                                    <li v-for="file in getFileList('doc_resume')">
+                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                        <a-popconfirm
+                                            title="Are you sure delete this task?"
+                                            :ok-text="lang.confirmed"
+                                            :cancel-text="lang.no"
+                                            :okButtonProps="{danger:true}"
+                                            @confirm="deleteFileConfirmed(file)"
+                                        >
+                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                        </a-popconfirm>
+                                    </li>
+                                </ol>
+                            </td>
+                            <td>
+                                <a-upload
+                                    :showUploadList="false"
+                                    name="doc_resume"
+                                    :multiple="true"
+                                    :customRequest="customeFileUpload('doc_resume')"
+                                >
+                                    <a-button>
+                                    <upload-outlined></upload-outlined>
+                                    {{ lang.upload }}
+                                    </a-button>
+                                </a-upload>
+                               
+                            </td>
                         </tr>
                         <tr>
                             <th>{{ lang.doc_employment }}</th>
-                            <td></td>
-                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
+                            <td>
+                                <ol>
+                                    <li v-for="file in getFileList('doc_employment')">
+                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                        <a-popconfirm
+                                            title="Are you sure delete this task?"
+                                            :ok-text="lang.confirmed"
+                                            :cancel-text="lang.no"
+                                            :okButtonProps="{danger:true}"
+                                            @confirm="deleteFileConfirmed(file)"
+                                        >
+                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                        </a-popconfirm>
+                                    </li>
+                                </ol>
+                            </td>
+                            <td>
+                                <a-upload
+                                    :showUploadList="false"
+                                    name="doc_employment"
+                                    :multiple="true"
+                                    :customRequest="customeFileUpload('doc_employment')"
+                                >
+                                    <a-button>
+                                    <upload-outlined></upload-outlined>
+                                    {{ lang.upload }}
+                                    </a-button>
+                                </a-upload>
+                            </td>
                         </tr>
                         <tr>
                             <th>{{ lang.doc_training }}</th>
-                            <td></td>
-                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
+                            <td>
+                                <ol>
+                                    <li v-for="file in getFileList('doc_training')">
+                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                        <a-popconfirm
+                                            title="Are you sure delete this task?"
+                                            :ok-text="lang.confirmed"
+                                            :cancel-text="lang.no"
+                                            :okButtonProps="{danger:true}"
+                                            @confirm="deleteFileConfirmed(file)"
+                                        >
+                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                        </a-popconfirm>
+                                    </li>
+                                </ol>
+                            </td>
+                            <td>
+                                <a-upload
+                                    :showUploadList="false"
+                                    name="doc_training"
+                                    :multiple="true"
+                                    :customRequest="customeFileUpload('doc_training')"
+                                >
+                                    <a-button>
+                                    <upload-outlined></upload-outlined>
+                                    {{ lang.upload }}
+                                    </a-button>
+                                </a-upload>
+
+                            </td>
                         </tr>
                         <tr>
                             <th>{{ lang.doc_academic }}</th>
-                            <td></td>
-                            <td><button class="ant-btn"><upload-outlined></upload-outlined><span>{{ lang.upload }}</span></button></td>
-                        </tr>
-                        <tr>
-                            <th>{{ lang.doc_others }}</th>
-                            <td></td>
+                            <td>
+                                <ol>
+                                    <li v-for="file in getFileList('doc_academic')">
+                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                        <a-popconfirm
+                                            title="Are you sure delete this task?"
+                                            :ok-text="lang.confirmed"
+                                            :cancel-text="lang.no"
+                                            :okButtonProps="{danger:true}"
+                                            @confirm="deleteFileConfirmed(file)"
+                                        >
+                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                        </a-popconfirm>
+                                    </li>
+                                </ol>
+                            </td>
                             <td>
                                 <a-upload
-                                    name="docOthers"
-                                    :action="''"
+                                    :showUploadList="false"
+                                    name="doc_academic"
                                     :multiple="true"
-                                    :beforeUpload="handleBeforeUpload"
-                                    :customRequest="handleCustomeRequest"
+                                    :customRequest="customeFileUpload('doc_academic')"
+                                >
+                                    <a-button>
+                                    <upload-outlined></upload-outlined>
+                                    {{ lang.upload }}
+                                    </a-button>
+                                </a-upload>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{ lang.doc_other }}</th>
+                            <td>
+                                <ol>
+                                    <li v-for="file in getFileList('doc_other')">
+                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                        <a-popconfirm
+                                            title="Are you sure delete this task?"
+                                            :ok-text="lang.confirmed"
+                                            :cancel-text="lang.no"
+                                            :okButtonProps="{danger:true}"
+                                            @confirm="deleteFileConfirmed(file)"
+                                        >
+                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                        </a-popconfirm>
+                                    </li>
+                                </ol>
+                            </td>
+                            <td>
+                                <a-upload
+                                    :showUploadList="false"
+                                    name="doc_other"
+                                    :multiple="true"
+                                    :customRequest="customeFileUpload('doc_other')"
                                 >
                                     <a-button>
                                     <upload-outlined></upload-outlined>
@@ -67,51 +247,46 @@
                             </td>
                         </tr>
                     </table>
-                </a-form>
-
                 {{ lang.doc_type_notes }}
             </template>
         </CardBox>
-
-        <!-- <div class="border border-sky-500 rounded-lg mt-5">
-                    <h2 class="bg-sky-500 text-white p-4 rounded-t-lg">{{ lang.personal_info }}</h2>
-                    <div class="p-4">
-                        <p>Card content</p>
-                    <p>Card content</p>
-                    <p>Card content</p>
-                    </div>
-                </div> -->
         <a-divider />
         <div class="text-center pt-5">
-            <a-button :href="route('application.apply', { code: vacancy.code, page: this.page.previours })"
-                class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ lang.back_no_save }}</a-button>
-            <a-button type="primary" @click="saveToNext">{{ lang.save_next }}</a-button>
+            <a :href="route('recruitment.admin.apply', { code: vacancy.code, page: this.page.previours })" 
+                class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
+            <a-button type="primary"  @click="saveToNext">{{ lang.save_next }}</a-button>
         </div>
+
     </RecruitmentLayout>
 </template>
 
 <script>
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
-import { CaretRightOutlined } from '@ant-design/icons-vue';
-import { UploadOutlined } from '@ant-design/icons-vue';
-import recLang  from '/lang/recruitment.json';
+import { CaretRightOutlined,UploadOutlined, DeleteOutlined, ConsoleSqlOutlined } from '@ant-design/icons-vue';
+import recLang  from '/lang/recruitment_admin.json';
 import { message } from 'ant-design-vue';
+import { Modal } from 'ant-design-vue';
+import { createVNode, defineComponent } from 'vue';
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
+
+import axios from 'axios';
+import { modalProps } from 'ant-design-vue/lib/modal/Modal';
 
 export default {
     components: {
         RecruitmentLayout,
         CaretRightOutlined,
         CardBox,
-        UploadOutlined
-       
+        UploadOutlined,
+        DeleteOutlined,
+        Modal
     },
     props: ['vacancy', 'application'],
     data() {
         return {
             page: {},
             headers:{authorization:'header text'},
-            docOthers:[],
             rules: {
                 name_zh: { required: true },
                 first_name_fn: { required: true },
@@ -164,10 +339,12 @@ export default {
                 this.application.address = 'Somewhere near by..'
         },
         saveToNext() {
-            this.onFinish();
-        },
-        onFinish() {
-            this.$inertia.post(route('application.save'), { to_page: 6, application: this.application }, {
+            const file=this.application.uploads.find((f)=>f.document_type=='doc_id')
+            if(!file){
+                message.error('Document Id required!')
+                return false
+            }
+            this.$inertia.post(route('recruitment.admin.save'), { to_page: this.page.next, application: this.application }, {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },
@@ -175,88 +352,58 @@ export default {
                     console.log(err)
                 }
             });
-        },
-        onFinishFailed(){
-            message.error(this.lang.error_required_fields);
-        },
-        handleBeforeUpload(file){
-            // console.log('before upload');
-            // console.log(file);
-            return true
-        },
-        handleCustomeRequest({file,onSuccess,onError}){
-            console.log('handlecustomeRequest')
-            console.log(file)
-            const formData = new FormData();
-            formData.append('file', file);
 
-            this.$inertia.post(route('application.fileUpload'),formData,{
-                onSuccess: (page)=>{
-                    console.log(page)
-                },
-                onError:(err)=>{
-                    console.log(err);
+        },
+        customeFileUpload(fileType){
+            return ({ onSuccess, onError, file })=> {
+                if(this.varifyFile(file)){
+                    let formData=new FormData();
+                    formData.append('rec_application_id',this.application.id)
+                    formData.append('document_type',fileType)
+                    formData.append('file',file)
+                    
+                    this.$inertia.post(route('recruitment.application.fileUpload'),formData, {
+                        onSuccess: (page) => {
+                            onSuccess(formData)
+                        },
+                        onError: (err) => {
+                            onError(err)
+                        }
+                    });
+                    return {status:'success'};
                 }
+            }
+        },
+        varifyFile(file){
+            let isValid=true;
+            const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+            const isDoc = file.type === 'application/msword' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+            const isPDF = file.type === 'application/pdf';
 
-            })
-            axios.post('file_upload', formData)
-            .then(response => {
-                console.log(response.data)
-                // Handle the successful upload
-                onSuccess(response.data);
-            })
-            .catch(error => {
-                // Handle upload errors
-                onError(error);
-            });
-        },
-        uploadfiles(options){
-            console.log(options)
-        },
-        onChangeUpload(info){
-            console.log('onchnageupload')
-            console.log(info)
-            const status = info.file.status;
-            if (status !== 'uploading') {
-                // show update progress console.log(info.file, info.fileList);
+            if (!isJpgOrPng && !isDoc && !isPDF) {
+                isValid=false
+                message.error("Not match to required file format!");
             }
-            if (status === 'done') {
-                // show success message
-            } else if (status === 'error') {
-                // show error message
-            }
-        },
-        varifyImage(info){
-            console.log(info);
-            const isJpgOrPng =
-                info.file.type === "image/jpeg" || info.file.type === "image/png";
-            if (!isJpgOrPng) {
-                console.log("image format!");
-                message.error("You can only upload JPG/PNG file!");
-            }
-            const isLt2M = info.file.size / 1024 / 1024 < 0.2;
+            const isLt2M = file.size / 1024 / 1024 < 0.2;
             if (!isLt2M) {
-                console.log("image size");
-                message.error("Image must smaller than 2MB!");
+                isValid=false
+                message.error("File exceeds the limit!");
             }
-
-            if (isJpgOrPng && isLt2M) {
-                //this.getBase64(info.file.originFileObj, (base64Url) => {
-                //this.imageUrl = base64Url;
-                //this.loading = true;
-                //});
-                console.log('image type and size are corrent!');
-                return true
-            } else {
-                console.log('nonono image is not correct');
-                return false;
-                //this.form.image = [];
-            }
+            return isValid
         },
-        getBase64(img, callback) {
-            const reader = new FileReader();
-            reader.addEventListener("load", () => callback(reader.result));
-            reader.readAsDataURL(img);
+        getFileList(documentType){
+            let files=this.application.uploads.filter(f=>f.document_type==documentType)
+            return files;
+        },
+        deleteFileConfirmed(file){
+            this.$inertia.delete(route('recruitment.application.fileDelete',{rec_upload:file.id}), {
+                onSuccess: (page) => {
+                    console.log(page.data)
+                },
+                onError: (err) => {
+                    onError(err)
+                }
+            });
         },
     },
 };

@@ -61,8 +61,13 @@
                     </a-row>
                     <a-row :gutter="10">
                         <a-col :span="8">
+                            <a-form-item :label="lang.edu_qualification" name="qualification">
+                                <a-select v-model:value="education.qualification" :options="educationOptions"/>
+                            </a-form-item>
+                        </a-col>
+                        <a-col :span="8">
                             <a-form-item :label="lang.edu_degree" name="degree">
-                                <a-select v-model:value="education.degree" :options="educationOptions" />
+                                <a-input v-model:value="education.degree" />
                             </a-form-item>
                         </a-col>
                         <a-col :span="8">
@@ -70,16 +75,11 @@
                                 <a-input v-model:value="education.subject" />
                             </a-form-item>
                         </a-col>
-                        <a-col :span="8">
-                            <a-form-item :label="lang.edu_qualification" name="qualification">
-                                <a-input v-model:value="education.qualification" />
-                            </a-form-item>
-                        </a-col>
                     </a-row>
                     <a-row :gutter="10">
                         <a-col :span="8">
                             <a-form-item :label="lang.edu_language" name="language">
-                                <a-select v-model:value="education.language" :options="languageOptions" />
+                                <a-input v-model:value="education.language"/>
                             </a-form-item>
                         </a-col>
                         <a-col :span="8">
@@ -102,17 +102,9 @@
             </template>
         </CardBox>
 
-        <!-- <div class="border border-sky-500 rounded-lg mt-5">
-                    <h2 class="bg-sky-500 text-white p-4 rounded-t-lg">{{ lang.personal_info }}</h2>
-                    <div class="p-4">
-                        <p>Card content</p>
-                    <p>Card content</p>
-                    <p>Card content</p>
-                    </div>
-                </div> -->
         <div class="text-center pt-5">
-            <a-button :href="route('application.apply', { code: vacancy.code, page: 1 })"
-                class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ lang.back_no_save }}</a-button>
+            <a :href="route('recruitment.admin.apply', { code: vacancy.code, page: this.page.previours })" 
+                class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
             <a-button type="primary" @click="saveToNext">{{ lang.save_next }}</a-button>
         </div>
     </RecruitmentLayout>
@@ -122,8 +114,10 @@
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
-import recLang  from '/lang/recruitment.json';
+import recLang  from '/lang/recruitment_admin.json';
 import { message } from 'ant-design-vue';
+import axios from 'axios';
+import { Modal } from 'ant-design-vue';
 
 export default {
     components: {
@@ -155,6 +149,12 @@ export default {
     },
     created() {
         this.lang = recLang[this.$page.props.lang]
+        axios.get(route('api.config.item',{key:'rec_educations'})).then(resp=>{
+            this.educationOptions=resp.data.value.map(item=> {return {
+                value:item.value,
+                label:item['label_'+this.$page.props.lang]
+            }})
+        })
     },
     mounted() {
         let urlParams = new URLSearchParams(window.location.search);
@@ -176,7 +176,11 @@ export default {
             this.education.date_finish = '2005-01-01'
         },
         saveToNext() {
-            this.$inertia.post(route('application.save'), { to_page: 3, application: this.application }, {
+            if(this.application.educations.length==0){
+                message.error(this.lang.at_least_one_education);
+                return false;
+            }
+            this.$inertia.post(route('recruitment.admin.save'), { to_page: 3, application: this.application }, {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },
@@ -188,12 +192,11 @@ export default {
         onFinish() {
             this.application.educations.push({ ...this.education })
             this.education = {};
-            console.log(this.application);
+            
         },
         onFinishFailed(){
             message.error(this.lang.error_required_fields);
         }
-
     },
 };
 

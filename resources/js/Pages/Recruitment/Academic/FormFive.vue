@@ -391,7 +391,6 @@ export default {
             }
             return isValid
         },
-
         getFileList(documentType){
             let files=this.application.uploads.filter(f=>f.document_type==documentType)
             return files;

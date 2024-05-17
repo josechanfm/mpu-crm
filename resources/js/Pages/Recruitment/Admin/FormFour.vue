@@ -97,17 +97,9 @@
             </template>
         </CardBox>
 
-        <!-- <div class="border border-sky-500 rounded-lg mt-5">
-                    <h2 class="bg-sky-500 text-white p-4 rounded-t-lg">{{ lang.personal_info }}</h2>
-                    <div class="p-4">
-                        <p>Card content</p>
-                    <p>Card content</p>
-                    <p>Card content</p>
-                    </div>
-                </div> -->
         <div class="text-center pt-5">
-            <a-button :href="route('application.apply', { code: vacancy.code, page: this.page.previours })"
-                class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ lang.back_no_save }}</a-button>
+            <a :href="route('recruitment.admin.apply', { code: vacancy.code, page: this.page.previours })" 
+                class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
             <a-button type="primary" @click="saveToNext">{{ lang.save_next }}</a-button>
         </div>
     </RecruitmentLayout>
@@ -117,7 +109,7 @@
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
-import recLang  from '/lang/recruitment.json';
+import recLang  from '/lang/recruitment_admin.json';
 import { message } from 'ant-design-vue';
 
 export default {
@@ -180,7 +172,7 @@ export default {
         },
         saveToNext() {
             console.log(this.currentPage);
-            this.$inertia.post(route('application.save'), { to_page: this.page.next, application: this.application }, {
+            this.$inertia.post(route('recruitment.admin.save'), { to_page: this.page.next, application: this.application }, {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },

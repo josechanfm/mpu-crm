@@ -26,7 +26,7 @@
                         <input :name="field" :value="payment[field]"/><br>
                     </div>
                     <div class="text-center">
-                        <a :href="route('recruitment.application.form', { code: vacancy.code, page:6 })" 
+                        <a :href="route('recruitment.admin.apply', { code: vacancy.code, page:6 })" 
                             class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
                         <a-button type="primary" html-type="submit" class="mt-5">{{ lang.pay_confirm }}</a-button>
                     </div>
@@ -38,7 +38,7 @@
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
-import recLang  from '/lang/recruitment.json';
+import recLang  from '/lang/recruitment_admin.json';
 
 export default {
     components: {

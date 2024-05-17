@@ -28,7 +28,7 @@
                             <tr>
                                 <th colspan="4" style="text-align: left;">
                                     {{ $t('rec.personal') }}
-                                    <a-button v-if="!application.submitted" :href="route('application.apply',{'code':vacancy.code,'page':1})" class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
+                                    <a-button v-if="!application.submitted" :href="route('recruitment.academic.form',{'code':vacancy.code,'page':1})" class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
                                     <div class="float-right">{{ $t('rec.part_a') }}</div>
                                 </th>
                             </tr>
@@ -93,7 +93,7 @@
                             <tr>
                                 <th colspan="8" style="text-align: left;">
                                     {{ $t('rec.education') }}
-                                    <a-button v-if="!application.submitted" :href="route('application.apply',{'code':vacancy.code,'page':2})" class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
+                                    <a-button v-if="!application.submitted" :href="route('recruitment.academic.form',{'code':vacancy.code,'page':2})" class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
                                     <div class="float-right">{{ $t('rec.part_b') }}</div>
                                 </th>
                             </tr>
@@ -131,7 +131,7 @@
                             <tr>
                                 <th colspan="6" style="text-align: left;">
                                     {{ $t('rec.professional') }}
-                                    <a-button v-if="!application.submitted" :href="route('application.apply',{'code':vacancy.code,'page':3})" class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
+                                    <a-button v-if="!application.submitted" :href="route('recruitment.academic.form',{'code':vacancy.code,'page':3})" class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
                                     <div class="float-right">{{ $t('rec.part_c') }}</div>
                                 </th>
                             </tr>
@@ -163,7 +163,7 @@
                             <tr>
                                 <th colspan="7" style="text-align: left;">
                                     {{ $t('rec.experience') }}
-                                    <a-button v-if="!application.submitted" :href="route('application.apply',{'code':vacancy.code,'page':4})" class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
+                                    <a-button v-if="!application.submitted" :href="route('recruitment.academic.form',{'code':vacancy.code,'page':4})" class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
                                     <div class="float-right">{{ $t('rec.part_d') }}</div>
                                 </th>
                             </tr>
@@ -198,7 +198,7 @@
                             <tr>
                                 <th colspan="2" style="text-align: left;">
                                     {{ $t('rec.upload') }}
-                                    <a-button v-if="!application.submitted" :href="route('application.apply',{'code':vacancy.code,'page':5})" class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
+                                    <a-button v-if="!application.submitted" :href="route('recruitment.academic.form',{'code':vacancy.code,'page':5})" class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
                                 </th>
                             </tr>
                             <tr>
@@ -285,7 +285,7 @@ export default {
         },
         onFinish(){
             console.log('onfinish')
-            this.$inertia.post(route('application.submit'), this.application,{
+            this.$inertia.post(route('recruitment.academic.submit'), this.application,{
                     onSuccess:(page)=>{
                         console.log(page.data)
                     },

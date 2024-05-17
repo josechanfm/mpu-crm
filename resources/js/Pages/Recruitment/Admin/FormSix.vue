@@ -33,24 +33,24 @@
                         <th colspan="4" style="text-align: left;">
                             {{ lang.personal_info }}
                             <a-button v-if="!application.submitted"
-                                :href="route('application.apply', { 'code': vacancy.code, 'page': 1 })"
+                                :href="route('recruitment.admin.apply', { 'code': vacancy.code, 'page': 1 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
                             <div class="float-right">{{ lang.part_aca_a }}</div>
                         </th>
                     </tr>
                     <tr>
-                        <th width="200px">{{ lang.name_zh }}</th>
-                        <td width="40%">{{ application.name_zh }}</td>
+                        <th width="200px">{{ lang.name_full_zh }}</th>
+                        <td width="40%">{{ application.name_full_zh }}</td>
                         <th width="150px">{{ lang.gender }}</th>
                         <td>{{ application.gender }}</td>
                     </tr>
                     <tr>
-                        <th>{{ lang.last_name_fn }}</th>
-                        <td colspan="3">{{ application.last_name_fn }}</td>
+                        <th>{{ lang.name_family_fn }}</th>
+                        <td colspan="3">{{ application.name_family_fn }}</td>
                     </tr>
                     <tr>
-                        <th>{{ lang.first_name_fn }}</th>
-                        <td colspan="3">{{ application.first_name_fn }}</td>
+                        <th>{{ lang.name_given_fn }}</th>
+                        <td colspan="3">{{ application.name_given_fn }}</td>
                     </tr>
                     <tr>
                         <th>{{ lang.pob }}</th>
@@ -95,7 +95,7 @@
                         <th colspan="8" style="text-align: left;">
                             {{ lang.educations }}
                             <a-button v-if="!application.submitted"
-                                :href="route('application.apply', { 'code': vacancy.code, 'page': 2 })"
+                                :href="route('recruitment.admin.apply', { 'code': vacancy.code, 'page': 2 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
                             <div class="float-right">{{ lang.part_aca_b }}</div>
                         </th>
@@ -130,7 +130,7 @@
                         <th colspan="6" style="text-align: left;">
                             {{ lang.professional }}
                             <a-button v-if="!application.submitted"
-                                :href="route('application.apply', { 'code': vacancy.code, 'page': 3 })"
+                                :href="route('recruitment.admin.apply', { 'code': vacancy.code, 'page': 3 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
                             <div class="float-right">{{ lang.part_aca_c }}</div>
                         </th>
@@ -164,7 +164,7 @@
                         <th colspan="7" style="text-align: left;">
                             {{ lang.experiences }}
                             <a-button v-if="!application.submitted"
-                                :href="route('application.apply', { 'code': vacancy.code, 'page': 4 })"
+                                :href="route('recruitment.admin.apply', { 'code': vacancy.code, 'page': 4 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
                             <div class="float-right">{{ lang.part_aca_d }}</div>
                         </th>
@@ -201,49 +201,98 @@
                         <th colspan="2" style="text-align: left;">
                             {{ lang.file_uploaded }}
                             <a-button v-if="!application.submitted"
-                                :href="route('application.apply', { 'code': vacancy.code, 'page': 5 })"
+                                :href="route('recruitment.admin.apply', { 'code': vacancy.code, 'page': 5 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">{{ lang.edit }}</a-button>
                         </th>
                     </tr>
                     <tr>
                         <th style="text-align: left;" width="250px">{{ lang.doc_id}}</th>
-                        <td>---</td>
+                        <td>
+                            <ol>
+                                <li v-for="file in getFileList('doc_id')">
+                                    {{file.original_name}}
+                                </li>
+                            </ol>
+                        </td>
                     </tr>
                     <tr>
                         <th style="text-align: left;">{{ lang.doc_education }}</th>
-                        <td>---</td>
+                        <td>
+                            <ol>
+                                <li v-for="file in getFileList('doc_education')">
+                                    {{file.original_name}}
+                                </li>
+                            </ol>
+                        </td>
                     </tr>
                     <tr>
                         <th style="text-align: left;">{{ lang.doc_resume }}</th>
-                        <td>---</td>
+                        <td>
+                            <ol>
+                                <li v-for="file in getFileList('doc_resume')">
+                                    {{file.original_name}}
+                                </li>
+                            </ol>
+                        </td>
                     </tr>
                     <tr>
                         <th style="text-align: left;">{{ lang.doc_employment }}</th>
-                        <td>---</td>
+                        <td>
+                            <ol>
+                                <li v-for="file in getFileList('doc_employment')">
+                                    {{file.original_name}}
+                                </li>
+                            </ol>
+                        </td>
                     </tr>
                     <tr>
                         <th style="text-align: left;">{{ lang.doc_training }}</th>
-                        <td>---</td>
+                        <td>
+                            <ol>
+                                <li v-for="file in getFileList('doc_training')">
+                                    {{file.original_name}}
+                                </li>
+                            </ol>
+                        </td>
                     </tr>
                     <tr>
                         <th style="text-align: left;">{{ lang.doc_academic }}</th>
-                        <td>---</td>
+                        <td>
+                            <ol>
+                                <li v-for="file in getFileList('doc_academic')">
+                                    {{file.original_name}}
+                                </li>
+                            </ol>
+                        </td>
                     </tr>
                     <tr>
                         <th style="text-align: left;">{{ lang.doc_other }}</th>
-                        <td>---</td>
+                        <td>
+                            <ol>
+                                <li v-for="file in getFileList('doc_other')">
+                                    {{file.original_name}}
+                                </li>
+                            </ol>
+                        </td>
                     </tr>
                 </table>
                 <div class="text-center">
-                    <a-form :model="application" @finish="onFinish" @finishFailed="onFinishFailed">
+                    <a-form :model="application">
                         <a-form-item>
                             <template v-if="application.submitted">
-                                <a-button type="primary" danger class="mt-5">Pay</a-button>
+                                <inertia-link :href="route('recruitment.admin.payment',{application_id:application.id,uuid:application.uuid})" class="ant-btn ant-btn-primary ant-btn-dangerous mt-5">{{lang.pay}}ss</inertia-link>
                             </template>
                             <template v-else>
-                                <a-button :href="route('application.apply', { code: vacancy.code, page: this.page.previours })"
-                                    class="bg-amber-500 text-white p-3 rounded-lg m-5">{{ lang.back_no_save }}</a-button>
-                                <a-button type="primary" html-type="submit" class="mt-5">{{ lang.submit }}</a-button>
+                                <a :href="route('recruitment.admin.apply', { code: vacancy.code, page: this.page.previours })" 
+                                    class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
+                                <a-popconfirm
+                                    :title="lang.submit_confirmed"
+                                    :ok-text="lang.confirmed"
+                                    :cancel-text="lang.cancel"
+                                    @confirm="confirmSubmit"
+                                >
+                                    <a-button type="primary" class="mt-5">{{ lang.submit }}</a-button>
+                                </a-popconfirm>
                             </template>
                         </a-form-item>
                     </a-form>
@@ -257,8 +306,9 @@
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
-import recLang  from '/lang/recruitment.json';
-import { message } from 'ant-design-vue';
+import recLang  from '/lang/recruitment_admin.json';
+import { message, Modal } from 'ant-design-vue';
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
 export default {
     components: {
@@ -305,9 +355,8 @@ export default {
         }
     },
     methods: {
-        onFinish() {
-            console.log('onfinish')
-            this.$inertia.post(route('application.submit'), { to_page: 7, application: this.application }, {
+        confirmSubmit(){
+            this.$inertia.post(route('recruitment.application.submit'), { to_page: 7, application: this.application }, {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },
@@ -315,9 +364,6 @@ export default {
                     console.log(err)
                 }
             });
-        },
-        onFinishFailed(){
-            message.error(this.lang.error_required_fields);
         },
         optionItem(options, value){
             console.log(options);
@@ -327,7 +373,12 @@ export default {
                 }else{
                     return null;
                 }
-        }
+        },
+        getFileList(documentType){
+            let files=this.application.uploads.filter(f=>f.document_type==documentType)
+            return files;
+        },
+
     },
 };
 
