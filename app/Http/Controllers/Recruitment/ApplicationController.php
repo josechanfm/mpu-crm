@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Recruitment;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\RecVacancy;
@@ -11,8 +12,9 @@ use App\Models\RecEducation;
 use App\Models\RecExperience;
 use App\Models\RecProfessional;
 use App\Models\RecUpload;
-use LdapRecord\Query\Events\Read;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class ApplicationController extends Controller
 {
@@ -181,9 +183,28 @@ class ApplicationController extends Controller
          return redirect()->route('recruitment.application.payment',array('application_id'=>$application->id,'uuid'=>$application->uuid));
     }
 
-    public function payment(Request $request){
+    public function bocPayment(Request $request){
         $application=RecApplication::find($request->application_id);
         if($application->user_id != auth()->user()->id || $application->uuid != $request->uuid){
+            // https://epay.mpu.edu.mo/bocpaytest/api/boc/cashier
+            $data=[
+                'systemCode'=>'', //Required 授權後獲得
+                'ipAddress'=>'', 
+                'requester'=>'', //Optional 支付者名稱
+                'cashierLanguage'=>'', //Required zh_TW或en_US
+                'amount'=>'', //Required 交易金額(折後，如無折扣，則和originalAmount一樣即可)
+                'originalAmount'=>'', //Required 交易原金額
+                'subject'=>'', //Required 交易標題
+                'productDesc'=>'', //Optional 交易描述
+                'mercOrderNo'=>'', //Required 訂單唯一編號
+                'orderDate'=>'', //Optional 請求日期。如不填，則自動填寫系統即時日期
+                'orderTime'=>'', //Optional 請求時間。如不填，則自動填寫系統即時時間
+                'validNumber'=>'', //Optional 交易有效時間(單位:秒)，預設為300秒
+                'otherBusinessType'=>'', //Required 交易類型
+                'merchantPreferentialCnName'=>'', //Optional 優惠中文名稱
+                'merchantPreferencitalEnName'=>'', //Optional 優惠英文名稱
+                'supplier'=>'', //
+            ];
             return Inertia::render('Error',[
                 'message'=>'Permission denied!'
             ]);
@@ -193,6 +214,79 @@ class ApplicationController extends Controller
             'vacancy'=>$vacancy,
             'application'=>$application
         ]);
+    }
+
+    public function bocResult(Request $request){
+        // $validator = Validator::make($request->all(), [
+        //     'iopName'=>'', //系統請求結果
+        //     'iopCode'=>'', //系統請求結果代碼
+        //     'iopMessage'=>'', //系統請求結果信息
+        //     'returnCode'=>'', //中銀返回的代碼
+        //     'returnMessage'=>'', //中銀返回交易信息
+        //     'requestId'=>'', //系統流水號
+        //     'logNo'=>'', //交易查詢號碼
+        //     'result'=>'', //中銀請求結果(S或F)
+        //     'payUrl'=>'', //若請求成功，則會返回交易鏈接
+        // ]);
+        echo 'abc123';
+        //return response()->json($request->all());
+        //'merchantOrderNo'
+        // if cancel 訂單號碼(不含systemCode)
+        // if fail and return , //訂單號碼(systemCode + mercOrderNo + XX) XX為兩位數字，由01 – 99，代表該訂單編號提交的次數。
+
+    }
+
+    public function testBocPayment(Request $request){
+        $data=[
+            'systemCode'=>'MPUCRM', //Required 授權後獲得
+            'ipAddress'=>$request->getClientIp(), 
+            'requester'=>'Test User', //Optional 支付者名稱
+            'cashierLanguage'=>'zh_Tw', //Required zh_TW或en_US
+            'amount'=>'300', //Required 交易金額(折後，如無折扣，則和originalAmount一樣即可)
+            'originalAmount'=>'300', //Required 交易原金額
+            'subject'=>'Academic', //Required 交易標題
+            'productDesc'=>'', //Optional 交易描述
+            'mercOrderNo'=>'test_order_num'.rand(1000,9999), //Required 訂單唯一編號
+            'orderDate'=>'', //Optional 請求日期。如不填，則自動填寫系統即時日期
+            'orderTime'=>'', //Optional 請求時間。如不填，則自動填寫系統即時時間
+            'validNumber'=>'', //Optional 交易有效時間(單位:秒)，預設為300秒
+            'otherBusinessType'=>'Recruitment', //Required 交易類型
+            'merchantPreferentialCnName'=>'', //Optional 優惠中文名稱
+            'merchantPreferencitalEnName'=>'', //Optional 優惠英文名稱
+            'supplier'=>'', //
+        ];
+        //dd($data);
+        $url='https://epay.mpu.edu.mo/bocpaytest/api/boc/cashier';
+        $response=Http::asForm()->post($url,$data);
+        echo $response;
+    }
+
+    public function notify(){
+
+    }
+
+    public function testBocResult(){
+        $data=[
+            'iopName'=>'iop_name', //系統請求結果
+            'iopCode'=>'iop_code', //系統請求結果代碼
+            'iopMessage'=>'', //系統請求結果信息
+            'returnCode'=>'', //中銀返回的代碼
+            'returnMessage'=>'', //中銀返回交易信息
+            'requestId'=>'', //系統流水號
+            'logNo'=>'', //交易查詢號碼
+            'result'=>'', //中銀請求結果(S或F)
+            'payUrl'=>'', //若請求成功，則會返回交易鏈接
+        ];
+        // $url=url(route('recruitment.application.bocResult'));
+        // $response=Http::post($url,$data);
+        dd($response);
+    }
+
+    public function bocOrderQuery(){
+        //https://epay.mpu.edu.mo/bocpaytest/api/boc/orderquery
+        //systemCode	必填	授權後獲得
+        //queryNo	可選*	交易編號(mercOrderNo)
+        //queryLogNo	可選*	交易查詢號碼(logNo)，與queryNo必須填一個，若兩個都不為空則只查詢queryNo
     }
 
 }

@@ -3,6 +3,7 @@
 /public/hot
 /public/storage
 /public/media
+/public/recruitment/academic
 /public/thumbnail
 /storage/*.key
 /vendor

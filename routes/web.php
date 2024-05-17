@@ -58,9 +58,13 @@ Route::middleware([
         Route::get('form',[\App\Http\Controllers\Recruitment\ApplicationController::class,'form'])->name('recruitment.application.form');
         Route::post('save',[\App\Http\Controllers\Recruitment\ApplicationController::class,'save'])->name('recruitment.application.save');
         Route::post('submit',[\App\Http\Controllers\Recruitment\ApplicationController::class,'submit'])->name('recruitment.application.submit');
-        Route::get('payment',[\App\Http\Controllers\Recruitment\ApplicationController::class,'payment'])->name('recruitment.application.payment');
         Route::post('file_upload',[\App\Http\Controllers\Recruitment\ApplicationController::class,'fileUpload'])->name('recruitment.application.fileUpload');
         Route::delete('file_delete/{rec_upload}',[\App\Http\Controllers\Recruitment\ApplicationController::class,'fileDelete'])->name('recruitment.application.fileDelete');
+        Route::get('payment',[\App\Http\Controllers\Recruitment\ApplicationController::class,'payment'])->name('recruitment.application.payment');
+        Route::get('boc_payment',[\App\Http\Controllers\Recruitment\ApplicationController::class,'bocPayment'])->name('recruitment.application.bocPayment');
+        Route::post('boc_result',[\App\Http\Controllers\Recruitment\ApplicationController::class,'bocResult'])->name('recruitment.application.bocResult');
+        Route::get('test_boc_payment',[\App\Http\Controllers\Recruitment\ApplicationController::class,'testBocPayment'])->name('recruitment.application.testBocPayment');
+        Route::get('test_boc_result',[\App\Http\Controllers\Recruitment\ApplicationController::class,'testBocResult'])->name('recruitment.application.testBocResult');
     });
     
     Route::prefix('/member')->group(function(){
@@ -75,7 +79,6 @@ Route::middleware([
     })->name('student');
 
 });
-
 
 
 
