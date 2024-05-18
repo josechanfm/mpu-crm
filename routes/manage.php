@@ -11,6 +11,7 @@ use Inertia\Inertia;
 //     return auth()->check()?auth()->user()->jsPermissions():0;
 // });
 
+Route::resource('/accountcharts',App\Http\Controllers\AccountchartController::class)->names('accountcharts');
 
 
 Route::group(['middleware' => config('fortify.middleware', ['admin_web'])], function () {
