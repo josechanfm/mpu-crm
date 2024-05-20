@@ -81,17 +81,15 @@ const logout = () => {
 
                                 <template #content>
                                     <div class="w-30">
-                                        <template v-if="$page.props.jetstream.hasTeamFeatures">
-                                            <DropdownLink :href="route('language', 'zh')">
-                                                {{ $t("chinese") }}
-                                            </DropdownLink>
-                                            <DropdownLink :href="route('language', 'en')">
-                                                {{ $t("english") }}
-                                            </DropdownLink>
-                                            <DropdownLink :href="route('language', 'pt')">
-                                                {{ $t("portuguese") }}
-                                            </DropdownLink>
-                                        </template>
+                                        <DropdownLink :href="route('language', 'zh')">
+                                            {{ $t("chinese") }}
+                                        </DropdownLink>
+                                        <DropdownLink :href="route('language', 'en')">
+                                            {{ $t("english") }}
+                                        </DropdownLink>
+                                        <DropdownLink :href="route('language', 'pt')">
+                                            {{ $t("portuguese") }}
+                                        </DropdownLink>
                                     </div>
                                 </template>
                             </Dropdown>

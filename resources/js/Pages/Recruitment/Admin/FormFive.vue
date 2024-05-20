@@ -409,7 +409,7 @@ export default {
 };
 
 </script>
-<style>
+<style scoped>
 label.ant-checkbox-wrapper {
     margin-left: 8px;
 }

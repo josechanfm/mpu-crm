@@ -2,30 +2,35 @@
     <DepartmentLayout title="職位招聘" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
             <div class="flex-auto pb-3 text-right">
-                <inertia-link :href="route('personnel.recruitment.vacancies.create')" class="ant-btn ant-btn-primary">新增職位招聘</inertia-link>
+                <inertia-link :href="route('personnel.recruitment.applications.create',{vacancy:vacancy})" class="ant-btn ant-btn-primary">add applicaiton</inertia-link>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                <a-table :dataSource="vacancies.data" :columns="columns" :pagination="pagination" @change="onPaginationChange" :expand-column-width="200">
+                <a-table :dataSource="applications.data" :columns="columns" :pagination="pagination" @change="onPaginationChange" :expand-column-width="200">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <div class="flex flex-row gap-2">
-                                <a-tooltip placement="topRight" title="Applications">
-                                    <inertia-link :href="route('personnel.recruitment.applications.index',{vacancy:record.id})"><team-outlined /></inertia-link>
-                                </a-tooltip>
-                                <a-tooltip placement="topRight" title="Notices">
-                                    <inertia-link :href="route('personnel.recruitment.vacancy.notices.index',{vacancy:record.id})"><bell-outlined /></inertia-link>
-                                </a-tooltip>
-                                <a-tooltip placement="topRight" title="Edit Vacancy">
-                                    <inertia-link :href="route('personnel.recruitment.vacancies.edit',record.id)"><form-outlined /></inertia-link>
-                                </a-tooltip>
-                                <a-popconfirm title="是否確定刪除?" ok-text="Yes" cancel-text="No"
-                                    @confirm="deleteConfirmed(record)" :disabled="record.entries_count > 0">
-                                    <a :disabled="record.entries_count > 0"><delete-outlined /></a>
-                                </a-popconfirm>
-                            </div>
+                            <a :href="route('personnel.recruitment.applications.show',{vacancy:vacancy,application:record.id})" class="ant-btn" target="_blank">show</a>
+                            <inertia-link :href="route('personnel.recruitment.applications.edit',{vacancy:vacancy,application:record.id})" class="ant-btn">修改</inertia-link>
+                            <a-popconfirm title="是否確定刪除?" ok-text="Yes" cancel-text="No"
+                                @confirm="deleteConfirmed(record)" :disabled="record.entries_count > 0">
+                                <a-button :disabled="record.entries_count > 0">刪除</a-button>
+                            </a-popconfirm>
                         </template>
-                        <template v-else-if="column.dataIndex=='progress'">
-                            <span :class="text?'':'text-orange-600'">{{ text?'進行中':'已完成' }}</span>
+                        <template v-else-if="column.dataIndex=='vacancy_type'">
+                            {{ vacancy.type }}
+                        </template>
+                        <template v-else-if="column.dataIndex=='vacancy_code'">
+                            {{ vacancy.code }}
+                        </template>
+                        <template v-else-if="column.dataIndex=='name_full'">
+                            {{ record.name_full_zh }}
+                            {{ record.name_given_fn }}
+                            {{ record.name_family_fn }}
+                        </template>
+
+                        <template v-else-if="column.dataIndex=='paid'">
+                            {{ record.paid.merc_order_no }}<br>
+                            {{ record.paid.payment_date }}
+                            {{ record.paid.payment_time }}
                         </template>
                         <template v-else-if="column.dataIndex=='active'">
                             <span :class="text?'':'text-orange-600'">{{ text?'有效':'無效' }}</span>
@@ -54,7 +59,6 @@ import { quillEditor, Quill } from "vue3-quill";
 import { message } from "ant-design-vue";
 import dayjs from 'dayjs';
 import axios from "axios";
-import { TeamOutlined, BellOutlined, FormOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 
 export default {
     components: {
@@ -65,10 +69,9 @@ export default {
         RestFilled,
         quillEditor,
         message,
-        dayjs,
-        TeamOutlined, BellOutlined, FormOutlined, DeleteOutlined
+        dayjs
     },
-    props: ["vacancies"],
+    props: ["vacancy","applications"],
     data() {
         return {
             breadcrumb:[
@@ -90,9 +93,9 @@ export default {
                 mode: "",
             },
             pagination: {
-                total: this.vacancies.total,
-                current: this.vacancies.current_page,
-                pageSize: this.vacancies.per_page,
+                total: this.applications.total,
+                current: this.applications.current_page,
+                pageSize: this.applications.per_page,
                 defaultPageSize:40,
                 showSizeChanger:true,
                 pageSizeOptions:['10','20','30','40','50']
@@ -100,36 +103,36 @@ export default {
             columns: [
                 {
                     title: "類別",
-                    dataIndex: "type",
+                    dataIndex: "vacancy_type",
                     width: 90,
                 }, {
                     title: "招聘編號",
-                    dataIndex: "code",
-                    width: 100,
+                    dataIndex: "vacancy_code",
+                    width: 140,
                 }, {
-                    title: "職位名稱",
-                    dataIndex: "title_zh",
+                    title: "名稱",
+                    dataIndex: "name_full",
                     maxWidth: 500,
                 }, {
-                    title: "開始日期",
-                    dataIndex: "date_start",
-                    width: 120,
+                    title: "Gender",
+                    dataIndex: "gender",
+                    width: 40,
                 }, {
-                    title: "截止日期",
-                    dataIndex: "date_end",
-                    width: 120,
-                }, {
-                    title: "發佈日期",
-                    dataIndex: "date_publish",
-                    width: 120,
-                }, {
-                    title: "程序進度",
-                    dataIndex: "progress",
+                    title: "Phone",
+                    dataIndex: "phone",
                     width: 80,
                 }, {
-                    title: "有效",
-                    dataIndex: "active",
-                    width:80,
+                    title: "日期",
+                    dataIndex: "created_at",
+                    width: 120,
+                }, {
+                    title: "Submit",
+                    dataIndex: "submitted",
+                    width: 40,
+                }, {
+                    title: "Paid",
+                    dataIndex: "paid",
+                    width: 180,
                 }, {
                     title: "操作",
                     dataIndex: "operation",
@@ -165,7 +168,7 @@ export default {
         deleteConfirmed(record) {
             console.log("delete");
             console.log(record);
-            this.$inertia.delete(route("personnel.recruitment.vacancies.destroy", record.id ), {
+            this.$inertia.delete(route("personnel.recruitment.applications.destroy", record.id ), {
                 onSuccess: (page) => {
                     console.log(page);
                 },
@@ -176,7 +179,7 @@ export default {
         },
         onPaginationChange(page, filters, sorter) {
             this.$inertia.get(
-                route("personnel.recruitment.vacancies.index"),
+                route("personnel.recruitment.applications.index"),
                 {
                     page: page.current,
                     per_page: page.pageSize,

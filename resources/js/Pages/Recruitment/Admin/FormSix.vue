@@ -310,11 +310,12 @@ import recLang  from '/lang/recruitment_admin.json';
 import { message, Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
+
 export default {
     components: {
         RecruitmentLayout,
         CaretRightOutlined,
-        CardBox
+        CardBox,
     },
     props: ['vacancy', 'application'],
     data() {
@@ -383,7 +384,7 @@ export default {
 };
 
 </script>
-<style>
+<style scoped>
 label.ant-checkbox-wrapper {
     margin-left: 8px;
 }

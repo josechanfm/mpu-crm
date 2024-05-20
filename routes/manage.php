@@ -118,6 +118,7 @@ Route::middleware([
         Route::resource('/recruitment/vacancies',App\Http\Controllers\Department\Personnel\Recruitment\VacancyController::class)->names('personnel.recruitment.vacancies');
         Route::resource('/recruitment/vacancy/{vacancy}/notices',App\Http\Controllers\Department\Personnel\Recruitment\NoticeController::class)->names('personnel.recruitment.vacancy.notices');
         Route::get('/recruitment/notice/delete_media/{media}',[App\Http\Controllers\Department\Personnel\Recruitment\NoticeController::class,'deleteMedia'])->name('personnel.recruitment.notice.deleteMedia');
+        Route::resource('/recruitment/{vacancy}/applications',App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class)->names('personnel.recruitment.applications');
     });
 });
 

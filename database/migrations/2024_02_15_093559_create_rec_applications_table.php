@@ -45,6 +45,7 @@ return new class extends Migration
             $table->string('payment')->nullable();
             $table->string('quick_pay')->nullable();
             $table->foreignId('user_id')->nullable();
+            $table->foreignId('payment_id')->nullable();
             $table->timestamps();
         });
     }

@@ -39,5 +39,11 @@ class RecApplication extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+    public function payments(){
+        return $this->hasMany(RecPayment::class);
+    }
+    public function paid(){
+        return $this->hasOneThrough(RecPaymentReturn::class,RecPayment::class)->where('status','SUCCESS');
+    }
 
 }
