@@ -35,6 +35,7 @@ return new class extends Migration
             $table->string('attach_pt')->nullable();
             $table->boolean('progress')->nullable();
             $table->boolean('active')->nullable();
+            $table->integer('fee')->nullable();
             $table->timestamps();
         });
     }

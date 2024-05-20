@@ -8,7 +8,7 @@ class RecVacancy extends Model
 {
     use HasFactory;
     protected $fillable=['type','code','title_zh','title_en','title_pt','education','vechicle','apply_id','apply_title','description','date_start','date_end',
-                        'supplement_start','supplement_end','date_publish','attach_zh','attach_en','attach_pt','progress','active'];
+                        'supplement_start','supplement_end','date_publish','attach_zh','attach_en','attach_pt','progress','active','fee'];
     protected $casts=['progress'=>'boolean','active'=>'boolean'];
 
     public function applications(){

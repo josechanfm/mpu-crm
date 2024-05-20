@@ -21,6 +21,10 @@ use Illuminate\Support\Facades\App;
 // });
 Route::get('config/item', [\App\Http\Controllers\Api\ConfigController::class,'Item'])->name('api.config.item');        
 
+Route::post('boc/notify',[\App\Http\Controllers\Api\BocController::class,'notify']);
+Route::post('boc/result',[\App\Http\Controllers\Api\BocController::class,'result']);
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

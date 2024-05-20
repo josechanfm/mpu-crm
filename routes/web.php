@@ -61,8 +61,9 @@ Route::middleware([
         Route::post('file_upload',[\App\Http\Controllers\Recruitment\AdminController::class,'fileUpload'])->name('recruitment.admin.fileUpload');
         Route::delete('file_delete/{rec_upload}',[\App\Http\Controllers\Recruitment\AdminController::class,'fileDelete'])->name('recruitment.admin.fileDelete');
         Route::get('payment',[\App\Http\Controllers\Recruitment\AdminController::class,'payment'])->name('recruitment.admin.payment');
-        Route::get('boc_payment',[\App\Http\Controllers\Recruitment\AdminController::class,'bocPayment'])->name('recruitment.admin.bocPayment');
-        Route::post('boc_result',[\App\Http\Controllers\Recruitment\AdminController::class,'bocResult'])->name('recruitment.admin.bocResult');
+        
+        Route::post('boc_notify',[\App\Http\Controllers\Recruitment\AdminController::class,'bocNotify']);
+        Route::post('boc_result',[\App\Http\Controllers\Recruitment\AdminController::class,'bocResult']);
         Route::get('test_boc_payment',[\App\Http\Controllers\Recruitment\AdminController::class,'testBocPayment'])->name('recruitment.admin.testBocPayment');
         Route::post('test_boc_result',[\App\Http\Controllers\Recruitment\AdminController::class,'testBocResult'])->name('recruitment.admin.testBocResult');
     });
