@@ -101,7 +101,7 @@
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
-import recLang  from '/lang/recruitment.json';
+import recLang  from '/lang/recruitment_academic.json';
 import { message } from 'ant-design-vue';
 
 export default {
