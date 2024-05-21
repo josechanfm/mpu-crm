@@ -33,11 +33,13 @@ class NoticeController extends Controller
     public function create(RecVacancy $vacancy)
     {
         if($vacancy){
+            $notice=RecNotice::make([
+                'rec_vacancy_id'=>$vacancy->id,
+            ]);
+            $notice->media=[];
             return Inertia::render('Department/Personnel/Recruitment/Notice',[
                 'vacancy'=>$vacancy,
-                'notice'=>RecNotice::make([
-                    'rec_vacancy_id'=>$vacancy->id,
-                ])
+                'notice'=>$notice
             ]);
         };
         return redirect()->route('personnel.recruitment.vacancies.index');

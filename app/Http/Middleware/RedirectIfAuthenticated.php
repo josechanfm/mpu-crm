@@ -25,7 +25,6 @@ class RedirectIfAuthenticated
                 return redirect(config('fortify.home'));
             }
         }
-
         return $next($request);
     }
 }

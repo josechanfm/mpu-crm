@@ -244,7 +244,7 @@ export default {
                 this.application.address = 'Somewhere near by..'
         },
         onFinish() {
-            this.$inertia.post(route('recruitment.application.save'), { to_page: 2, application: this.application }, {
+            this.$inertia.post(route('recruitment.academic.save'), { to_page: 2, application: this.application }, {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },
@@ -260,7 +260,7 @@ export default {
 };
 
 </script>
-<style>
+<style scoped>
 label.ant-checkbox-wrapper {
     margin-left: 8px;
 }

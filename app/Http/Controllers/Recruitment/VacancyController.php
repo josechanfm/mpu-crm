@@ -11,14 +11,8 @@ class VacancyController extends Controller
 {
     public function index(){
         return Inertia::render('Recruitment/Vacancies',[
-            'vacancies'=>RecVacancy::with('notices')->get()
-        ]);
-    }
-    public function form(Request $request){
-        $vacancy=RecVacancy::where($request->cod);
-        
-        return Inertia::render('Recruitment/Apply',[
-            'vacancy'=>$vacancy
+            'vacancies'=>RecVacancy::with('notices')->get(),
+            'masquerade'=>session('masquerade')
         ]);
     }
 }

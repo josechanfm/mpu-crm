@@ -33,7 +33,7 @@
                         <th colspan="4" style="text-align: left;">
                             {{ lang.personal_info }}
                             <a-button v-if="!application.submitted"
-                                :href="route('recruitment.application.form', { 'code': vacancy.code, 'page': 1 })"
+                                :href="route('recruitment.academic.apply', { 'code': vacancy.code, 'page': 1 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
                             <div class="float-right">{{ lang.part_aca_a }}</div>
                         </th>
@@ -95,7 +95,7 @@
                         <th colspan="8" style="text-align: left;">
                             {{ lang.educations }}
                             <a-button v-if="!application.submitted"
-                                :href="route('recruitment.application.form', { 'code': vacancy.code, 'page': 2 })"
+                                :href="route('recruitment.academic.apply', { 'code': vacancy.code, 'page': 2 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
                             <div class="float-right">{{ lang.part_aca_b }}</div>
                         </th>
@@ -130,7 +130,7 @@
                         <th colspan="6" style="text-align: left;">
                             {{ lang.professional }}
                             <a-button v-if="!application.submitted"
-                                :href="route('recruitment.application.form', { 'code': vacancy.code, 'page': 3 })"
+                                :href="route('recruitment.academic.apply', { 'code': vacancy.code, 'page': 3 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
                             <div class="float-right">{{ lang.part_aca_c }}</div>
                         </th>
@@ -164,7 +164,7 @@
                         <th colspan="7" style="text-align: left;">
                             {{ lang.experiences }}
                             <a-button v-if="!application.submitted"
-                                :href="route('recruitment.application.form', { 'code': vacancy.code, 'page': 4 })"
+                                :href="route('recruitment.academic.apply', { 'code': vacancy.code, 'page': 4 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
                             <div class="float-right">{{ lang.part_aca_d }}</div>
                         </th>
@@ -201,7 +201,7 @@
                         <th colspan="2" style="text-align: left;">
                             {{ lang.file_uploaded }}
                             <a-button v-if="!application.submitted"
-                                :href="route('recruitment.application.form', { 'code': vacancy.code, 'page': 5 })"
+                                :href="route('recruitment.academic.apply', { 'code': vacancy.code, 'page': 5 })"
                                 class="ant-btn ant-btn-primary float-right ml-5">{{ lang.edit }}</a-button>
                         </th>
                     </tr>
@@ -280,10 +280,10 @@
                     <a-form :model="application">
                         <a-form-item>
                             <template v-if="application.submitted">
-                                <inertia-link :href="route('recruitment.application.payment',{application_id:application.id,uuid:application.uuid})" class="ant-btn ant-btn-primary ant-btn-dangerous mt-5">{{lang.pay}}ss</inertia-link>
+                                <inertia-link :href="route('recruitment.academic.payment',{application_id:application.id,uuid:application.uuid})" class="ant-btn ant-btn-primary ant-btn-dangerous mt-5">{{lang.pay}}ss</inertia-link>
                             </template>
                             <template v-else>
-                                <a :href="route('recruitment.application.form', { code: vacancy.code, page: this.page.previours })" 
+                                <a :href="route('recruitment.academic.apply', { code: vacancy.code, page: this.page.previours })" 
                                     class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
                                 <a-popconfirm
                                     :title="lang.submit_confirmed"
@@ -306,15 +306,16 @@
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
-import recLang  from '/lang/recruitment_academic.json';
+import recLang  from '/lang/recruitment_admin.json';
 import { message, Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
+
 
 export default {
     components: {
         RecruitmentLayout,
         CaretRightOutlined,
-        CardBox
+        CardBox,
     },
     props: ['vacancy', 'application'],
     data() {
@@ -356,7 +357,7 @@ export default {
     },
     methods: {
         confirmSubmit(){
-            this.$inertia.post(route('recruitment.application.submit'), { to_page: 7, application: this.application }, {
+            this.$inertia.post(route('recruitment.academic.submit'), { to_page: 7, application: this.application }, {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },
@@ -383,7 +384,7 @@ export default {
 };
 
 </script>
-<style>
+<style scoped>
 label.ant-checkbox-wrapper {
     margin-left: 8px;
 }

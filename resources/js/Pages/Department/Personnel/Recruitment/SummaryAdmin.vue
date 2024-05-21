@@ -1,16 +1,12 @@
 <template>
-    <RecruitmentLayout title="Vacancies">
+    <BlankLayout title="Vacancies">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ vacancy.code }}
                 {{ vacancy['title_' + $page.props.lang] }}
             </h2>
         </template>
-        <div class="pb-5">
-            <a-steps  progress-dot :current="5">
-                <a-step v-for="item in lang.steps" :description="item.title"/>
-            </a-steps>
-        </div>
+
         <CardBox :title="lang.application_form">
             <template #content>
                 <table width="100%">
@@ -276,34 +272,13 @@
                         </td>
                     </tr>
                 </table>
-                <div class="text-center">
-                    <a-form :model="application">
-                        <a-form-item>
-                            <template v-if="application.submitted">
-                                <inertia-link :href="route('recruitment.admin.payment',{application_id:application.id,uuid:application.uuid})" class="ant-btn ant-btn-primary ant-btn-dangerous mt-5">{{lang.pay}}ss</inertia-link>
-                            </template>
-                            <template v-else>
-                                <a :href="route('recruitment.admin.apply', { code: vacancy.code, page: this.page.previours })" 
-                                    class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
-                                <a-popconfirm
-                                    :title="lang.submit_confirmed"
-                                    :ok-text="lang.confirmed"
-                                    :cancel-text="lang.cancel"
-                                    @confirm="confirmSubmit"
-                                >
-                                    <a-button type="primary" class="mt-5">{{ lang.submit }}</a-button>
-                                </a-popconfirm>
-                            </template>
-                        </a-form-item>
-                    </a-form>
-                </div>
             </template>
         </CardBox>
-    </RecruitmentLayout>
+    </BlankLayout>
 </template>
 
 <script>
-import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
+import BlankLayout from '@/Layouts/BlankLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
 import recLang  from '/lang/recruitment_admin.json';
@@ -313,7 +288,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
 export default {
     components: {
-        RecruitmentLayout,
+        BlankLayout,
         CaretRightOutlined,
         CardBox,
     },
@@ -357,7 +332,7 @@ export default {
     },
     methods: {
         confirmSubmit(){
-            this.$inertia.post(route('recruitment.admin.submit'), { to_page: 7, application: this.application }, {
+            this.$inertia.post(route('recruitment.application.submit'), { to_page: 7, application: this.application }, {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },

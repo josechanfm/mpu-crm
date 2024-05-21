@@ -1,6 +1,16 @@
 {
     "zh":{
         "steps":[{"title":"個人資料"},{"title":"學歷"},{"title":"專業資格"},{"title":"工作經驗"},{"title":"文件上載"},{"title":"總覽"},{"title":"支付"}],
+        "education_qualifications":          [
+            {"value":"1_PRM","label":"小學"},
+            {"value":"2_JHS","label":"初中畢業"},
+            {"value":"3_SHS","label":"高中畢業"},
+            {"value":"4_HDP","label":"高等課程"},
+            {"value":"5_BCH","label":"學士學位"},
+            {"value":"6_MAST","label":"碩士學位"},
+            {"value":"7_PHD","label":"博士學位"},
+            {"value":"8_PPD","label":"博士後"}
+          ],
         "operation":"操作",
         "delete_confirm":"是否確認刪除?",
         "confirmed":"確認",
@@ -20,14 +30,14 @@
         "add_item":"新增",
         "application_form":"申請表格",
         "apply_for":"應聘職位",
-        "part_aca_a":"A部份",
-        "part_aca_b":"B部份",
-        "part_aca_c":"C部份",
-        "part_aca_d":"D部分",
-        "part_adm_a":"第一部份 學歷資料及語言知識",
-        "part_adm_b":"第二部份 專業資格/職業培訓",
-        "part_adm_c":"第三部份 工作經驗",
-        "part_adm_d":"第三部分滙總",
+        "part_a":"A部份",
+        "part_b":"B部份",
+        "part_c":"C部份",
+        "part_d":"D部分",
+        "part_A":"第一部份 學歷資料及語言知識",
+        "part_B":"第二部份 專業資格/職業培訓",
+        "part_C":"第三部份 工作經驗",
+        "part_D":"第三部分滙總",
         "vacancies":"招聘職位",
         "academic":"教職人員",
         "admin":"非教職人員",
@@ -110,6 +120,16 @@
     },
     "en":{
         "steps":[{"title":"Personal Information"},{"title":"Education"},{"title":"Professional Qualifications"},{"title":"Work Experience"},{" title":"File Upload"},{"title":"Summary"},{"title":"Payment"}],
+        "education_qualifications":          [
+            {"value":"1_PRM","label":"Primary"},
+            {"value":"2_JHS","label":"Junior High School"},
+            {"value":"3_SHS","label":"Senior High School"},
+            {"value":"4_HDP","label":"Deploma"},
+            {"value":"5_BCH","label":"Bachalor"},
+            {"value":"6_MAST","label":"Master"},
+            {"value":"7_PHD","label":"PhD"},
+            {"value":"8_PPD","label":"Postdoctoral"}
+          ],
         "operation":"Operation",
         "delete_confirm":"Confirm to Delete?",
         "confirmed":"Confirm",
@@ -214,6 +234,16 @@
     },
     "pt":{
         "steps":[{"title":"Personal Information"},{"title":"Education"},{"title":"Professional Qualifications"},{"title":"Work Experience"},{" title":"File Upload"},{"title":"總覽"},{"title":"Payment"}],
+        "education_qualifications":          [
+            {"value":"1_PRM","label":"Primary"},
+            {"value":"2_JHS","label":"Junior High School"},
+            {"value":"3_SHS","label":"Senior High School"},
+            {"value":"4_HDP","label":"Deploma"},
+            {"value":"5_BCH","label":"Bachalor"},
+            {"value":"6_MAST","label":"Master"},
+            {"value":"7_PHD","label":"PhD"},
+            {"value":"8_PPD","label":"Postdoctoral"}
+          ],
         "operation":"Operation",
         "delete_confirm":"Confirm to Delete?",
         "confirmed":"Confirm",

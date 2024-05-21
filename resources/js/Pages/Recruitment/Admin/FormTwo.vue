@@ -14,7 +14,7 @@
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
-        <CardBox :title="lang.part_a">
+        <CardBox :title="lang.part_A">
             <template #content>
                 <div style="overflow:auto">
                     <table class="myTable w-full">
@@ -62,7 +62,7 @@
                     <a-row :gutter="10">
                         <a-col :span="8">
                             <a-form-item :label="lang.edu_qualification" name="qualification">
-                                <a-select v-model:value="education.qualification" :options="educationOptions"/>
+                                <a-select v-model:value="education.qualification" :options="lang.education_qualifications"/>
                             </a-form-item>
                         </a-col>
                         <a-col :span="8">
@@ -149,12 +149,12 @@ export default {
     },
     created() {
         this.lang = recLang[this.$page.props.lang]
-        axios.get(route('api.config.item',{key:'rec_educations'})).then(resp=>{
-            this.educationOptions=resp.data.value.map(item=> {return {
-                value:item.value,
-                label:item['label_'+this.$page.props.lang]
-            }})
-        })
+        // axios.get(route('api.config.item',{key:'rec_educations'})).then(resp=>{
+        //     this.educationOptions=resp.data.value.map(item=> {return {
+        //         value:item.value,
+        //         label:item['label_'+this.$page.props.lang]
+        //     }})
+        // })
     },
     mounted() {
         let urlParams = new URLSearchParams(window.location.search);

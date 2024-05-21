@@ -8,8 +8,8 @@
                 <a-table :dataSource="applications.data" :columns="columns" :pagination="pagination" @change="onPaginationChange" :expand-column-width="200">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <a :href="route('personnel.recruitment.applications.show',{vacancy:vacancy,application:record.id})" class="ant-btn" target="_blank">show</a>
-                            <inertia-link :href="route('personnel.recruitment.applications.edit',{vacancy:vacancy,application:record.id})" class="ant-btn">修改</inertia-link>
+                            <a :href="route('personnel.recruitment.applications.show',{vacancy:vacancy,application:record.id})" class="ant-btn" target="_blank">顯示表格</a>
+                            <a :href="route('personnel.recruitment.applications.edit',{vacancy:vacancy,application:record.id})" class="ant-btn" target="_blank">代表</a>
                             <a-popconfirm title="是否確定刪除?" ok-text="Yes" cancel-text="No"
                                 @confirm="deleteConfirmed(record)" :disabled="record.entries_count > 0">
                                 <a-button :disabled="record.entries_count > 0">刪除</a-button>
@@ -168,7 +168,7 @@ export default {
         deleteConfirmed(record) {
             console.log("delete");
             console.log(record);
-            this.$inertia.delete(route("personnel.recruitment.applications.destroy", record.id ), {
+            this.$inertia.delete(route("personnel.recruitment.applications.destroy", {vacancy:this.vacancy, application:record} ), {
                 onSuccess: (page) => {
                     console.log(page);
                 },

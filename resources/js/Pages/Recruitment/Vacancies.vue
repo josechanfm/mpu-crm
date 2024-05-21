@@ -22,7 +22,8 @@
                                         <ol>
                                             <li v-for="notice in vacancy.notices">
                                                 {{ notice.date_start }} {{ notice['title_'+$page.props.lang] }}
-                                                <inertia-link :href="route('recruitment.admin.apply',{code:vacancy.code})">{{ $t('rec.apply') }}</inertia-link>
+                                                ss
+                                                <inertia-link :href="route('recruitment.academic.apply',{code:vacancy.code})">{{ $t('rec.apply') }}</inertia-link>
                                             </li>
                                         </ol>
                                     </a-collapse-panel>

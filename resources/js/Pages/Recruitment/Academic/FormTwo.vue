@@ -62,7 +62,7 @@
                     <a-row :gutter="10">
                         <a-col :span="8">
                             <a-form-item :label="lang.edu_qualification" name="qualification">
-                                <a-select v-model:value="education.qualification" :options="educationOptions"/>
+                                <a-select v-model:value="education.qualification" :options="lang.education_qualifications"/>
                             </a-form-item>
                         </a-col>
                         <a-col :span="8">
@@ -103,7 +103,7 @@
         </CardBox>
 
         <div class="text-center pt-5">
-            <a :href="route('recruitment.application.form', { code: vacancy.code, page: this.page.previours })" 
+            <a :href="route('recruitment.academic.apply', { code: vacancy.code, page: this.page.previours })" 
                 class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
             <a-button type="primary" @click="saveToNext">{{ lang.save_next }}</a-button>
         </div>
@@ -149,12 +149,6 @@ export default {
     },
     created() {
         this.lang = recLang[this.$page.props.lang]
-        axios.get(route('api.config.item',{key:'rec_educations'})).then(resp=>{
-            this.educationOptions=resp.data.value.map(item=> {return {
-                value:item.value,
-                label:item['label_'+this.$page.props.lang]
-            }})
-        })
     },
     mounted() {
         let urlParams = new URLSearchParams(window.location.search);
@@ -180,7 +174,7 @@ export default {
                 message.error(this.lang.at_least_one_education);
                 return false;
             }
-            this.$inertia.post(route('recruitment.application.save'), { to_page: 3, application: this.application }, {
+            this.$inertia.post(route('recruitment.academic.save'), { to_page: 3, application: this.application }, {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },
@@ -201,7 +195,7 @@ export default {
 };
 
 </script>
-<style>
+<style scoped>
 label.ant-checkbox-wrapper {
     margin-left: 8px;
 }

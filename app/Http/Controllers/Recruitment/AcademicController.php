@@ -19,10 +19,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use LdapRecord\Query\Events\Read;
 
-class AdminController extends Controller
+class AcademicController extends Controller
 {
     public function apply(Request $request){
-        
         if(session('masquerade')){
             $user=session('masquerade');
         }else{
@@ -30,7 +29,7 @@ class AdminController extends Controller
         }
 
         if(!isset($user)){
-            session(['url_intended'=>'/recruitment/admin/apply?code='.$request->code]);
+            session(['url_intended'=>'/recruitment/academic/apply?code='.$request->code]);
             return to_route('login');
         }else{
             session()->forget('url_intended');
@@ -49,7 +48,7 @@ class AdminController extends Controller
             //$application->user=$user;
         }
         if($application->id==null){
-            return Inertia::render('Recruitment/Admin/FormOne',[
+            return Inertia::render('Recruitment/Academic/FormOne',[
                 'vacancy'=>$vacancy,
                 'application'=>$application,
                 'masquerade'=>session('masquerade')
@@ -60,7 +59,7 @@ class AdminController extends Controller
             $application->professionals;
             $application->experiences;
             $application->uploads;
-            return Inertia::render('Recruitment/Admin/FormSix',[
+            return Inertia::render('Recruitment/Academic/FormSix',[
                 'vacancy'=>$vacancy,
                 'application'=>$application,
                 'masquerade'=>session('masquerade')
@@ -69,7 +68,7 @@ class AdminController extends Controller
 
         if(empty($page)){
             $application->educations;
-            return Inertia::render('Recruitment/Admin/FormOne',[
+            return Inertia::render('Recruitment/Academic/FormOne',[
                 'vacancy'=>$vacancy,
                 'application'=>$application,
                 'masquerade'=>session('masquerade')
@@ -78,7 +77,7 @@ class AdminController extends Controller
 
         if($page==1 && $application->id){
             $application->educations;
-            return Inertia::render('Recruitment/Admin/FormOne',[
+            return Inertia::render('Recruitment/Academic/FormOne',[
                 'vacancy'=>$vacancy,
                 'application'=>$application,
                 'masquerade'=>session('masquerade')
@@ -87,7 +86,7 @@ class AdminController extends Controller
 
         if($page && $page==2 && $application->id){
             $application->educations;
-            return Inertia::render('Recruitment/Admin/FormTwo',[
+            return Inertia::render('Recruitment/Academic/FormTwo',[
                 'vacancy'=>$vacancy,
                 'application'=>$application,
                 'masquerade'=>session('masquerade')
@@ -95,7 +94,7 @@ class AdminController extends Controller
         }
         if($page && $page==3 && $application->id){
             $application->professionals;
-            return Inertia::render('Recruitment/Admin/FormThree',[
+            return Inertia::render('Recruitment/Academic/FormThree',[
                 'vacancy'=>$vacancy,
                 'application'=>$application,
                 'masquerade'=>session('masquerade')
@@ -103,7 +102,7 @@ class AdminController extends Controller
         }
         if($page && $page==4 && $application->id){
             $application->experiences;
-            return Inertia::render('Recruitment/Admin/FormFour',[
+            return Inertia::render('Recruitment/Academic/FormFour',[
                 'vacancy'=>$vacancy,
                 'application'=>$application,
                 'masquerade'=>session('masquerade')
@@ -111,7 +110,7 @@ class AdminController extends Controller
         }
         if($page && $page==5 && $application->id){
             $application->uploads;
-            return Inertia::render('Recruitment/Admin/FormFive',[
+            return Inertia::render('Recruitment/Academic/FormFive',[
                 'vacancy'=>$vacancy,
                 'application'=>$application,
                 'masquerade'=>session('masquerade')
@@ -168,7 +167,7 @@ class AdminController extends Controller
             }
         }
         // dd($toPage);
-        return redirect()->route('recruitment.admin.apply',[
+        return redirect()->route('recruitment.academic.apply',[
             'code'=>RecVacancy::find($application['rec_vacancy_id'])->code,
             'page'=>$toPage
         ]);
@@ -179,7 +178,7 @@ class AdminController extends Controller
         if($request->hasFile('file')){
             $file=$request->file('file');
             $data['file_name']=$data['rec_application_id'].'_'.Str::uuid();
-            $data['path']='/recruitment/admin/';
+            $data['path']='/recruitment/academic/';
             $data['full_path']=$data['path'].$data['file_name'];
             $data['original_name']=$file->getClientOriginalName();
             $file->move(public_path($data['path']), $data['file_name']);
@@ -199,7 +198,7 @@ class AdminController extends Controller
         $application=RecApplication::find($app['id']);
         $application->submitted=true;
         $application->save();
-         return redirect()->route('recruitment.admin.payment',array('application_id'=>$application->id,'uuid'=>$application->uuid));
+         return redirect()->route('recruitment.academic.payment',array('application_id'=>$application->id,'uuid'=>$application->uuid));
     }
 
     public function payment(Request $request){
@@ -253,7 +252,7 @@ class AdminController extends Controller
         RecPayment::create($data);
 
         $vacancy=RecVacancy::find($application->rec_vacancy_id);
-        return Inertia::render('Recruitment/Admin/Payment',[
+        return Inertia::render('Recruitment/Academic/Payment',[
             'vacancy'=>$vacancy,
             'application'=>$application,
             'payment'=>$payment
@@ -269,7 +268,7 @@ class AdminController extends Controller
     }
 
     public function testBocPayment(Request $request){
-        return Inertia::render('Recruitment/Admin/TestBocPayment',[
+        return Inertia::render('Recruitment/Academic/TestBocPayment',[
             'applications'=>RecApplication::all(),
             'payments'=>RecPayment::all(),
         ]);

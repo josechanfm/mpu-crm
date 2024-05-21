@@ -362,7 +362,7 @@ export default {
                     formData.append('document_type',fileType)
                     formData.append('file',file)
                     
-                    this.$inertia.post(route('recruitment.application.fileUpload'),formData, {
+                    this.$inertia.post(route('recruitment.admin.fileUpload'),formData, {
                         onSuccess: (page) => {
                             onSuccess(formData)
                         },
@@ -396,7 +396,7 @@ export default {
             return files;
         },
         deleteFileConfirmed(file){
-            this.$inertia.delete(route('recruitment.application.fileDelete',{rec_upload:file.id}), {
+            this.$inertia.delete(route('recruitment.admin.fileDelete',{rec_upload:file.id}), {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },

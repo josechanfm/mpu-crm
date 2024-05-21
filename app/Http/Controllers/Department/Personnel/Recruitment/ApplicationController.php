@@ -56,7 +56,7 @@ class ApplicationController extends Controller
         $application->professionals;
         $application->experiences;
         $application->uploads;
-        return Inertia::render('Recruitment/Admin/FormSix',[
+        return Inertia::render('Department/Personnel/Recruitment/SummaryAdmin',[
             'vacancy'=>$vacancy,
             'application'=>$application
         ]);
@@ -70,7 +70,9 @@ class ApplicationController extends Controller
      */
     public function edit(RecVacancy $vacancy, RecApplication $application)
     {
-        dd('admin modify application from');
+        session(['masquerade'=>$application->user]);
+        return to_route('recruitment.admin.apply',["code"=>$vacancy->code]);
+
     }
 
     /**
@@ -91,8 +93,14 @@ class ApplicationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(RecVacancy $vacancy, RecApplication $application)
     {
-        //
+        dd('not now!');
+
+    }
+
+    public function quitMasquerade(){
+        session()->forget('masquerade');
+        return redirect()->back();
     }
 }

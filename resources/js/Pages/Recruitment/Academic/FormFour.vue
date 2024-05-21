@@ -98,7 +98,7 @@
         </CardBox>
 
         <div class="text-center pt-5">
-            <a :href="route('recruitment.application.form', { code: vacancy.code, page: this.page.previours })" 
+            <a :href="route('recruitment.academic.apply', { code: vacancy.code, page: this.page.previours })" 
                 class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
             <a-button type="primary" @click="saveToNext">{{ lang.save_next }}</a-button>
         </div>
@@ -109,7 +109,7 @@
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
-import recLang  from '/lang/recruitment_academic.json';
+import recLang  from '/lang/recruitment_admin.json';
 import { message } from 'ant-design-vue';
 
 export default {
@@ -172,7 +172,7 @@ export default {
         },
         saveToNext() {
             console.log(this.currentPage);
-            this.$inertia.post(route('recruitment.application.save'), { to_page: this.page.next, application: this.application }, {
+            this.$inertia.post(route('recruitment.academic.save'), { to_page: this.page.next, application: this.application }, {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },
@@ -193,7 +193,7 @@ export default {
 };
 
 </script>
-<style>
+<style scoped>
 label.ant-checkbox-wrapper {
     margin-left: 8px;
 }

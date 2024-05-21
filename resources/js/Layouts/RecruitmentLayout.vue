@@ -23,6 +23,10 @@ loadLanguageAsync(page.props.value.lang);
 const logout = () => {
     Inertia.post(route("logout"));
 };
+const quitMasquerade = () => {
+    axios.get(route('personnel.recruitment.application.quitMasquerade'))
+    window.close();
+}
 
 </script>
 
@@ -57,14 +61,12 @@ const logout = () => {
                             </svg>
                         </button>
                     </div>
+                    <a-button v-if="$page.props.masquerade" @click="quitMasquerade">
+                        Quit Masquerade
+                    </a-button>
                     <div class="flex items-center">
                         <div class="sm:flex items-center hidden space-x-4 ml-8 lg:ml-12">
-                            <a href="https://www.mpu.edu.mo"
-                                class="text-gray-700 hover:text-indigo-600 text-md ">MPU</a>
-                            <a href="https://www.mpu.edu.mo/en/services.php" target="_blank"
-                                class="text-gray-700 hover:text-indigo-600 text-md ">Services</a>
                             <inertia-link :href="route('login')">登入</inertia-link>
-                            <inertia-link :href="route('staff.login')">教職員</inertia-link>
                             <Dropdown align="right" width="20">
                                 <template #trigger>
                                     <span class="inline-flex rounded-md">

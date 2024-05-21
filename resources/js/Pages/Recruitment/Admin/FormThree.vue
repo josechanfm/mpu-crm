@@ -14,7 +14,7 @@
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
-        <CardBox :title="lang.part_b">
+        <CardBox :title="lang.part_B">
             <template #content>
                 <table class="myTable" width="100%">
                     <tr>

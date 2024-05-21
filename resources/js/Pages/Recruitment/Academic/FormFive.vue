@@ -252,7 +252,7 @@
         </CardBox>
         <a-divider />
         <div class="text-center pt-5">
-            <a :href="route('recruitment.application.form', { code: vacancy.code, page: this.page.previours })" 
+            <a :href="route('recruitment.academic.apply', { code: vacancy.code, page: this.page.previours })" 
                 class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
             <a-button type="primary"  @click="saveToNext">{{ lang.save_next }}</a-button>
         </div>
@@ -264,7 +264,7 @@
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined,UploadOutlined, DeleteOutlined, ConsoleSqlOutlined } from '@ant-design/icons-vue';
-import recLang  from '/lang/recruitment_academic.json';
+import recLang  from '/lang/recruitment_admin.json';
 import { message } from 'ant-design-vue';
 import { Modal } from 'ant-design-vue';
 import { createVNode, defineComponent } from 'vue';
@@ -344,7 +344,7 @@ export default {
                 message.error('Document Id required!')
                 return false
             }
-            this.$inertia.post(route('recruitment.application.save'), { to_page: this.page.next, application: this.application }, {
+            this.$inertia.post(route('recruitment.academic.save'), { to_page: this.page.next, application: this.application }, {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },
@@ -362,7 +362,7 @@ export default {
                     formData.append('document_type',fileType)
                     formData.append('file',file)
                     
-                    this.$inertia.post(route('recruitment.application.fileUpload'),formData, {
+                    this.$inertia.post(route('recruitment.academic.fileUpload'),formData, {
                         onSuccess: (page) => {
                             onSuccess(formData)
                         },
@@ -396,7 +396,7 @@ export default {
             return files;
         },
         deleteFileConfirmed(file){
-            this.$inertia.delete(route('recruitment.application.fileDelete',{rec_upload:file.id}), {
+            this.$inertia.delete(route('recruitment.academic.fileDelete',{rec_upload:file.id}), {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },
@@ -409,7 +409,7 @@ export default {
 };
 
 </script>
-<style>
+<style scoped>
 label.ant-checkbox-wrapper {
     margin-left: 8px;
 }
