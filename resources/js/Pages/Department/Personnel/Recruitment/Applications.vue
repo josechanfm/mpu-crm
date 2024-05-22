@@ -27,7 +27,7 @@
                             {{ record.name_family_fn }}
                         </template>
 
-                        <template v-else-if="column.dataIndex=='paid'">
+                        <template v-else-if="column.dataIndex=='paid' && record.paid">
                             {{ record.paid.merc_order_no }}<br>
                             {{ record.paid.payment_date }}
                             {{ record.paid.payment_time }}

@@ -9,54 +9,53 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Files\LocalTemporaryFile;
+use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 
-
-class RecAcademicFormExport implements FromCollection, WithHeadings, WithEvents 
+class RecAcademicFormExport implements FromCollection, WithHeadings, WithEvents, WithCustomStartCell
 {
     protected $application;
     public function __construct($application)
     {
-        $this->application=$application;
+        $this->application = $application;
         $this->calledByEvent = false;
     }
-
+    public function startCell(): string
+    {
+        return 'A1';
+    }
     public function headings(): array
     {
-        $columnHeaders = ['key','value'];
+        $columnHeaders = ['key', 'value'];
         return $columnHeaders;
     }
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
-        $application=$this->application->toArray();
+        $application = $this->application->toArray();
         //$application['obtain_info']=json_encode($application['obtain_info']);
         //dd($application);
         //return $application;
-        $data=[];
-        foreach($application as $key=>$value){
-            $data[]=['key'=>$key,'value'=>$value];
+        $data = [];
+        foreach ($application as $key => $value) {
+            $data[] = ['key' => $key, 'value' => $value];
         }
+        // dd($data);
         return collect($data);
-
-
     }
 
     public function registerEvents(): array
     {
         return [
-            BeforeWriting::class => function(BeforeWriting $event) {
+            BeforeWriting::class => function (BeforeWriting $event) {
                 $templateFile = new LocalTemporaryFile(storage_path('template/recruitment/academic_form.xlsx'));
                 $event->writer->reopen($templateFile, Excel::XLSX);
                 $event->writer->getSheetByIndex(1);
                 $this->calledByEvent = true; // set the flag
                 $event->writer->getSheetByIndex(1)->export($event->getConcernable()); // call the export on the first sheet
-
-                return $event->getWriter()->getSheetByIndex(1);
-
+                return $event->getWriter()->getSheetByIndex(0);
             },
         ];
     }
-    
 }

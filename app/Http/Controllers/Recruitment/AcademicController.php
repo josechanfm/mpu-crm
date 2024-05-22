@@ -220,7 +220,7 @@ class AcademicController extends Controller
     }
     public function receipt(Request $request){
         $application=RecApplication::find($request->application_id);
-        return Excel::download(new RecAcademicFormExport($application), 'abc123.pdf');
+        return Excel::download(new RecAcademicFormExport($application), 'abc123.xlsx');
 
         $application=RecApplication::with('vacancy')->with('educations')->with('experiences')->with('professionals')->with('uploads')->find($request->application_id);
         $path=storage_path('../lang/recruitment_academic.json');
