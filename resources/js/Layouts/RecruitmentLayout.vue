@@ -66,7 +66,14 @@ const quitMasquerade = () => {
                     </a-button>
                     <div class="flex items-center">
                         <div class="sm:flex items-center hidden space-x-4 ml-8 lg:ml-12">
-                            <inertia-link :href="route('login')">登入</inertia-link>
+                            <template v-if="$page.props.user">
+                                <a :href="route('recruitment.logout')">{{ $t('logout')  }}</a>
+                            </template>
+                            <template v-else>
+                                <inertia-link :href="route('recruitment.userProfile')">{{ $t('login')}}</inertia-link>
+                            </template>
+                            
+                            
                             <Dropdown align="right" width="20">
                                 <template #trigger>
                                     <span class="inline-flex rounded-md">

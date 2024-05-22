@@ -67,34 +67,39 @@ Route::middleware([
 });
 
 
-Route::get('recruitment/vacancies',[\App\Http\Controllers\Recruitment\VacancyController::class,'index'])->name('recruitment.vacancies');
-Route::prefix('/recruitment/admin')->group(function(){
-    Route::get('apply',[\App\Http\Controllers\Recruitment\AdminController::class,'apply'])->name('recruitment.admin.apply');
-    Route::post('save',[\App\Http\Controllers\Recruitment\AdminController::class,'save'])->name('recruitment.admin.save');
-    Route::post('submit',[\App\Http\Controllers\Recruitment\AdminController::class,'submit'])->name('recruitment.admin.submit');
-    Route::post('file_upload',[\App\Http\Controllers\Recruitment\AdminController::class,'fileUpload'])->name('recruitment.admin.fileUpload');
-    Route::delete('file_delete/{rec_upload}',[\App\Http\Controllers\Recruitment\AdminController::class,'fileDelete'])->name('recruitment.admin.fileDelete');
-    Route::get('payment',[\App\Http\Controllers\Recruitment\AdminController::class,'payment'])->name('recruitment.admin.payment');
+Route::prefix('/recruitment')->group(function(){
+    Route::get('/',[\App\Http\Controllers\Recruitment\VacancyController::class,'index'])->name('recruitment');
+    Route::get('user/profile',[\App\Http\Controllers\Recruitment\UserController::class,'profile'])->name('recruitment.userProfile');
+    Route::get('login',[\App\Http\Controllers\Recruitment\UserController::class,'login'])->name('recruitment.login');
+    Route::get('logout',[\App\Http\Controllers\Recruitment\UserController::class,'logout'])->name('recruitment.logout');
+
+    Route::prefix('/admin')->group(function(){
+        Route::get('apply',[\App\Http\Controllers\Recruitment\AdminController::class,'apply'])->name('recruitment.admin.apply');
+        Route::post('save',[\App\Http\Controllers\Recruitment\AdminController::class,'save'])->name('recruitment.admin.save');
+        Route::post('submit',[\App\Http\Controllers\Recruitment\AdminController::class,'submit'])->name('recruitment.admin.submit');
+        Route::post('file_upload',[\App\Http\Controllers\Recruitment\AdminController::class,'fileUpload'])->name('recruitment.admin.fileUpload');
+        Route::delete('file_delete/{rec_upload}',[\App\Http\Controllers\Recruitment\AdminController::class,'fileDelete'])->name('recruitment.admin.fileDelete');
+        Route::get('payment',[\App\Http\Controllers\Recruitment\AdminController::class,'payment'])->name('recruitment.admin.payment');
+        
+        Route::post('boc_notify',[\App\Http\Controllers\Recruitment\AdminController::class,'bocNotify']);
+        Route::post('boc_result',[\App\Http\Controllers\Recruitment\AdminController::class,'bocResult']);
+        Route::get('test_boc_payment',[\App\Http\Controllers\Recruitment\AdminController::class,'testBocPayment'])->name('recruitment.admin.testBocPayment');
+        Route::post('test_boc_result',[\App\Http\Controllers\Recruitment\AdminController::class,'testBocResult'])->name('recruitment.admin.testBocResult');
+    });
     
-    Route::post('boc_notify',[\App\Http\Controllers\Recruitment\AdminController::class,'bocNotify']);
-    Route::post('boc_result',[\App\Http\Controllers\Recruitment\AdminController::class,'bocResult']);
-    Route::get('test_boc_payment',[\App\Http\Controllers\Recruitment\AdminController::class,'testBocPayment'])->name('recruitment.admin.testBocPayment');
-    Route::post('test_boc_result',[\App\Http\Controllers\Recruitment\AdminController::class,'testBocResult'])->name('recruitment.admin.testBocResult');
+    Route::prefix('/academic')->group(function(){
+        Route::get('apply',[\App\Http\Controllers\Recruitment\AcademicController::class,'apply'])->name('recruitment.academic.apply');
+        Route::post('save',[\App\Http\Controllers\Recruitment\AcademicController::class,'save'])->name('recruitment.academic.save');
+        Route::post('submit',[\App\Http\Controllers\Recruitment\AcademicController::class,'submit'])->name('recruitment.academic.submit');
+        Route::post('file_upload',[\App\Http\Controllers\Recruitment\AcademicController::class,'fileUpload'])->name('recruitment.academic.fileUpload');
+        Route::delete('file_delete/{rec_upload}',[\App\Http\Controllers\Recruitment\AcademicController::class,'fileDelete'])->name('recruitment.academic.fileDelete');
+        Route::get('success',[\App\Http\Controllers\Recruitment\AcademicController::class,'success'])->name('recruitment.academic.success');
+        Route::get('receipt',[\App\Http\Controllers\Recruitment\AcademicController::class,'receipt'])->name('recruitment.academic.receipt');
+    });
+    
+    
 });
 
-Route::prefix('/recruitment/academic')->group(function(){
-    Route::get('apply',[\App\Http\Controllers\Recruitment\AcademicController::class,'apply'])->name('recruitment.academic.apply');
-    Route::post('save',[\App\Http\Controllers\Recruitment\AcademicController::class,'save'])->name('recruitment.academic.save');
-    Route::post('submit',[\App\Http\Controllers\Recruitment\AcademicController::class,'submit'])->name('recruitment.academic.submit');
-    Route::post('file_upload',[\App\Http\Controllers\Recruitment\AcademicController::class,'fileUpload'])->name('recruitment.academic.fileUpload');
-    Route::delete('file_delete/{rec_upload}',[\App\Http\Controllers\Recruitment\AcademicController::class,'fileDelete'])->name('recruitment.academic.fileDelete');
-    Route::get('payment',[\App\Http\Controllers\Recruitment\AcademicController::class,'payment'])->name('recruitment.academic.payment');
-    
-    Route::post('boc_notify',[\App\Http\Controllers\Recruitment\AcademicController::class,'bocNotify']);
-    Route::post('boc_result',[\App\Http\Controllers\Recruitment\AcademicController::class,'bocResult']);
-    Route::get('test_boc_payment',[\App\Http\Controllers\Recruitment\AcademicController::class,'testBocPayment'])->name('recruitment.academic.testBocPayment');
-    Route::post('test_boc_result',[\App\Http\Controllers\Recruitment\AcademicController::class,'testBocResult'])->name('recruitment.academic.testBocResult');
-});
 
 
 

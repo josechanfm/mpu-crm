@@ -280,7 +280,8 @@
                     <a-form :model="application">
                         <a-form-item>
                             <template v-if="application.submitted">
-                                <inertia-link :href="route('recruitment.academic.payment',{application_id:application.id,uuid:application.uuid})" class="ant-btn ant-btn-primary ant-btn-dangerous mt-5">{{lang.pay}}ss</inertia-link>
+                                Already Submit
+                                <a :href="route('recruitment.academic.receipt',{application_id:application.id,uuid:application.uuid})" class="ant-btn ant-btn-primary ant-btn-primary mt-5" target="_blank">{{lang.receipt}} receipt</a>
                             </template>
                             <template v-else>
                                 <a :href="route('recruitment.academic.apply', { code: vacancy.code, page: this.page.previours })" 
@@ -306,7 +307,7 @@
 import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
-import recLang  from '/lang/recruitment_admin.json';
+import recLang  from '/lang/recruitment_academic.json';
 import { message, Modal } from 'ant-design-vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 

@@ -2,6 +2,8 @@
     "lang":"en",
     "chinese":"中文",
     "english":"English",
+    "logout":"Logout",
+    "login":"Login",
     "portuguese":"Português",
     "form_name":"Form name",
     "form_title":"Form title",

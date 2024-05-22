@@ -3,6 +3,8 @@
     "chinese":"中文",
     "english":"English",
     "portuguese":"Português",
+    "logout":"Logout",
+    "login":"Login",
     "form_name":"Form name",
     "form_title":"Form title",
     "form_entries":"Form reply",

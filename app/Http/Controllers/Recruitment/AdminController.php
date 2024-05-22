@@ -252,7 +252,6 @@ class AdminController extends Controller
         $data['rec_application_id']=$application->id;
         RecPayment::create($data);
 
-        $vacancy=RecVacancy::find($application->rec_vacancy_id);
         return Inertia::render('Recruitment/Admin/Payment',[
             'vacancy'=>$vacancy,
             'application'=>$application,

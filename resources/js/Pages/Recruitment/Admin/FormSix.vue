@@ -280,7 +280,12 @@
                     <a-form :model="application">
                         <a-form-item>
                             <template v-if="application.submitted">
+                                check payment record. if not yet pay show pay button
                                 <inertia-link :href="route('recruitment.admin.payment',{application_id:application.id,uuid:application.uuid})" class="ant-btn ant-btn-primary ant-btn-dangerous mt-5">{{lang.pay}}ss</inertia-link>
+
+                                if already paied show print pdf receipt button
+                                <inertia-link :href="route('recruitment.academic.receipt',{application_id:application.id,uuid:application.uuid})" class="ant-btn ant-btn-primary ant-btn-primary mt-5">{{lang.receipt}} receipt</inertia-link>
+
                             </template>
                             <template v-else>
                                 <a :href="route('recruitment.admin.apply', { code: vacancy.code, page: this.page.previours })" 

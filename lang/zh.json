@@ -2,6 +2,8 @@
     "lang":"zh",
     "chinese":"中文",
     "english":"English",
+    "logout":"登出",
+    "login":"登入",
     "portuguese":"Português",
     "form_name":"表格名稱",
     "form_title":"表格標題",

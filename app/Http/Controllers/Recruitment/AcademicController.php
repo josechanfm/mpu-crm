@@ -18,6 +18,9 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use LdapRecord\Query\Events\Read;
+use App\Exports\RecAcademicFormExport;
+use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class AcademicController extends Controller
 {
@@ -198,10 +201,10 @@ class AcademicController extends Controller
         $application=RecApplication::find($app['id']);
         $application->submitted=true;
         $application->save();
-         return redirect()->route('recruitment.academic.payment',array('application_id'=>$application->id,'uuid'=>$application->uuid));
+         return redirect()->route('recruitment.academic.success',array('application_id'=>$application->id,'uuid'=>$application->uuid));
     }
 
-    public function payment(Request $request){
+    public function success(Request $request){
         $application=RecApplication::find($request->application_id);
         if($application->user_id != auth()->user()->id || $application->uuid != $request->uuid){
             // https://epay.mpu.edu.mo/bocpaytest/api/boc/cashier
@@ -210,68 +213,29 @@ class AcademicController extends Controller
             ]);
         }
         $vacancy=RecVacancy::find($application->rec_vacancy_id);
-        if(empty($vacancy) && $vacancy->fee==0){
-            return Inertia::render('Error',[
-                'message'=>'Permission denied!'
-            ]);
-        }
-
-        $systemCode=env('BOC_SYSTEM_CODE','MPUCRM');
-        $mercOrderNo=$application->id.'-'.time().'-'.rand(1000,9999);
-        $amount=$vacancy->fee;
-        $salt=env('BOC_SALT','8Ier5T)1up]_S7)XHd(KcHwtM><cuF415P$=Dqb6}OtN_[bd');
-
-        $payment=[
-            'systemCode'=>$systemCode, //Required 授權後獲得
-            'ipAddress'=>$request->getClientIp(), 
-            'cashierLanguage'=>'zh_TW', //Required zh_TW或en_US
-            'amount'=>$amount, //Required 交易金額(折後，如無折扣，則和originalAmount一樣即可)
-            'originalAmount'=>$amount, //Required 交易原金額
-            'subject'=>'Admin', //Required 交易標題
-            'productDesc'=>'', //Optional 交易描述
-            'mercOrderNo'=>$mercOrderNo, //Required 訂單唯一編號
-            'requester'=>'Test User', //Optional 支付者名稱
-            'orderDate'=>'', //Optional 請求日期。如不填，則自動填寫系統即時日期
-            'orderTime'=>'', //Optional 請求時間。如不填，則自動填寫系統即時時間
-            'validNumber'=>'', //Optional 交易有效時間(單位:秒)，預設為300秒
-            'otherBusinessType'=>'Recruitment', //Required 交易類型
-            'paymentChannel'=>'boc', //boc, cep 當有多於一個交易渠道，使用|間隔，例如boc|cep，如不填或格式錯誤，則顯示所有可用交易渠道
-            'mcsSyncOrderNo'=>'', //
-            'email'=>'tester@mpu.edu.mo', //交易成功後同步MCS(如有)，搜尋並更新相同orderNo的MCS記錄。
-            //注1: 當你填寫了mcsSyncOrderNo，則不需要另外通過MCS paybill API做交易動作。
-            //注2: MCS的交易金額不會在此步驟中發生變化，若交易時與MCS記錄創建時的金額不相同，請及時通過MCS API更新記錄。
-            'signText'=>hash('sha256',$systemCode.$mercOrderNo.$amount.$salt)
-            //System Code + mercOrderNo + amount + Salt使用SHA256生成的不可逆的字串。用於識別是否為經授權的系統發出的交易。
-            //(2023-08-31 更新singText中加入amount以作檢查金額沒有被惡意修改)
-        ];
-        $data=[];
-        foreach($payment as $key=>$value){
-            $data[Str::snake($key)]=$value;
-        };
-        $data['rec_application_id']=$application->id;
-        RecPayment::create($data);
-
-        $vacancy=RecVacancy::find($application->rec_vacancy_id);
-        return Inertia::render('Recruitment/Academic/Payment',[
+        return Inertia::render('Recruitment/Academic/Success',[
             'vacancy'=>$vacancy,
             'application'=>$application,
-            'payment'=>$payment
         ]);
     }
+    public function receipt(Request $request){
+        $application=RecApplication::find($request->application_id);
+        return Excel::download(new RecAcademicFormExport($application), 'abc123.pdf');
 
-
-    public function bocOrderQuery(){
-        //https://epay.mpu.edu.mo/bocpaytest/api/boc/orderquery
-        //systemCode	必填	授權後獲得
-        //queryNo	可選*	交易編號(mercOrderNo)
-        //queryLogNo	可選*	交易查詢號碼(logNo)，與queryNo必須填一個，若兩個都不為空則只查詢queryNo
-    }
-
-    public function testBocPayment(Request $request){
-        return Inertia::render('Recruitment/Academic/TestBocPayment',[
-            'applications'=>RecApplication::all(),
-            'payments'=>RecPayment::all(),
+        $application=RecApplication::with('vacancy')->with('educations')->with('experiences')->with('professionals')->with('uploads')->find($request->application_id);
+        $path=storage_path('../lang/recruitment_academic.json');
+        $lang=json_decode(file_get_contents($path),true)[session('applocale')];
+        $application=RecApplication::with('vacancy')->with('educations')->with('experiences')->with('professionals')->with('uploads')->find($request->application_id);
+        // return view('recruitment.academicForm',[
+        //     'lang'=>(Object)$lang,
+        //     'application'=>$application
+        // ]);
+        $pdf=PDF::loadView('recruitment.academicForm',[
+            'lang'=>(Object)$lang,
+            'application'=>$application,
         ]);
+        $pdf->render();
+        return $pdf->stream('test.pdf',array('Attachment'=>false));
     }
 
 

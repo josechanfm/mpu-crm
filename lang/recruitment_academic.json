@@ -1,6 +1,6 @@
 {
     "zh":{
-        "steps":[{"title":"個人資料"},{"title":"學歷"},{"title":"專業資格"},{"title":"工作經驗"},{"title":"文件上載"},{"title":"總覽"},{"title":"支付"}],
+        "steps":[{"title":"個人資料"},{"title":"學歷"},{"title":"專業資格"},{"title":"工作經驗"},{"title":"文件上載"},{"title":"總覽"}],
         "education_qualifications":          [
             {"value":"5_BCH","label":"學士學位"},
             {"value":"6_MAST","label":"碩士學位"},
@@ -8,6 +8,9 @@
             {"value":"8_PPD","label":"博士後"}
           ],
         "operation":"操作",
+        "create":"新增",
+        "edit":"修改",
+        "delete":"刪除",
         "delete_confirm":"是否確認刪除?",
         "confirmed":"確認",
         "cancel":"放棄",
@@ -115,7 +118,7 @@
         "finish":"結束"
     },
     "en":{
-        "steps":[{"title":"Personal Information"},{"title":"Education"},{"title":"Professional Qualifications"},{"title":"Work Experience"},{" title":"File Upload"},{"title":"Summary"},{"title":"Payment"}],
+        "steps":[{"title":"Personal Information"},{"title":"Education"},{"title":"Professional Qualifications"},{"title":"Work Experience"},{" title":"File Upload"},{"title":"Summary"}],
         "education_qualifications":          [
             {"value":"5_BCH","label":"Bachalor"},
             {"value":"6_MAST","label":"Master"},
@@ -123,6 +126,9 @@
             {"value":"8_PPD","label":"Postdoctoral"}
           ],
         "operation":"Operation",
+        "create":"Create",
+        "edit":"Update",
+        "delete":"Delete",
         "delete_confirm":"Confirm to Delete?",
         "confirmed":"Confirm",
         "cancel":"Cancel",
@@ -225,7 +231,7 @@
         "finish":"finish"
     },
     "pt":{
-        "steps":[{"title":"Personal Information"},{"title":"Education"},{"title":"Professional Qualifications"},{"title":"Work Experience"},{" title":"File Upload"},{"title":"總覽"},{"title":"Payment"}],
+        "steps":[{"title":"Personal Information"},{"title":"Education"},{"title":"Professional Qualifications"},{"title":"Work Experience"},{" title":"File Upload"},{"title":"總覽"}],
         "education_qualifications":          [
             {"value":"5_BCH","label":"Bachalor"},
             {"value":"6_MAST","label":"Master"},
@@ -233,6 +239,9 @@
             {"value":"8_PPD","label":"Postdoctoral"}
           ],
         "operation":"Operation",
+        "create":"Create",
+        "edit":"Update",
+        "delete":"Delete",
         "delete_confirm":"Confirm to Delete?",
         "confirmed":"Confirm",
         "cancel":"Cancel",
