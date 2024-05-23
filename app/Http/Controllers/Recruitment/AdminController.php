@@ -13,7 +13,8 @@ use App\Models\RecExperience;
 use App\Models\RecProfessional;
 use App\Models\RecUpload;
 use App\Models\RecPayment;
-use App\Models\RecPaymentReturn;
+use App\Exports\RecAdminFormExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -39,7 +40,7 @@ class AdminController extends Controller
         $page=$request->page;
         $vacancy=RecVacancy::where('code',$vacancyCode)->first();
         if(empty($vacancy)){
-            return to_route('recruitment.vacancies');
+            return to_route('recruitment');
         }
         $application=RecApplication::whereBelongsTo($user)->where('rec_vacancy_id',$vacancy->id)->first();
         if(empty($application)){
@@ -60,6 +61,7 @@ class AdminController extends Controller
             $application->professionals;
             $application->experiences;
             $application->uploads;
+            $application->paid;
             return Inertia::render('Recruitment/Admin/FormSix',[
                 'vacancy'=>$vacancy,
                 'application'=>$application,
@@ -202,6 +204,41 @@ class AdminController extends Controller
          return redirect()->route('recruitment.admin.payment',array('application_id'=>$application->id,'uuid'=>$application->uuid));
     }
 
+    public function success(Request $request){
+        $application=RecApplication::find($request->application_id);
+        if($application->user_id != auth()->user()->id || $application->uuid != $request->uuid){
+            // https://epay.mpu.edu.mo/bocpaytest/api/boc/cashier
+            return Inertia::render('Error',[
+                'message'=>'Permission denied!'
+            ]);
+        }
+        $vacancy=RecVacancy::find($application->rec_vacancy_id);
+        return Inertia::render('Recruitment/Admin/Success',[
+            'vacancy'=>$vacancy,
+            'application'=>$application,
+        ]);
+    }
+    public function receipt(Request $request){
+        $application=RecApplication::find($request->application_id);
+        return Excel::download(new RecAdminFormExport($application), 'abc123.pdf');
+
+        $application=RecApplication::with('vacancy')->with('educations')->with('experiences')->with('professionals')->with('uploads')->find($request->application_id);
+        $path=storage_path('../lang/recruitment_admin.json');
+        $lang=json_decode(file_get_contents($path),true)[session('applocale')];
+        $application=RecApplication::with('vacancy')->with('educations')->with('experiences')->with('professionals')->with('uploads')->find($request->application_id);
+        // return view('recruitment.academicForm',[
+        //     'lang'=>(Object)$lang,
+        //     'application'=>$application
+        // ]);
+        $pdf=PDF::loadView('recruitment.academicForm',[
+            'lang'=>(Object)$lang,
+            'application'=>$application,
+        ]);
+        $pdf->render();
+        return $pdf->stream('test.pdf',array('Attachment'=>false));
+    }
+
+
     public function payment(Request $request){
         $application=RecApplication::find($request->application_id);
         if($application->user_id != auth()->user()->id || $application->uuid != $request->uuid){
@@ -250,6 +287,7 @@ class AdminController extends Controller
             $data[Str::snake($key)]=$value;
         };
         $data['rec_application_id']=$application->id;
+        dd($data);
         RecPayment::create($data);
 
         return Inertia::render('Recruitment/Admin/Payment',[

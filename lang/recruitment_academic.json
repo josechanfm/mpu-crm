@@ -1,6 +1,6 @@
 {
     "zh":{
-        "steps":[{"title":"個人資料"},{"title":"學歷"},{"title":"專業資格"},{"title":"工作經驗"},{"title":"文件上載"},{"title":"總覽"}],
+        "steps":[{"title":"個人資料"},{"title":"學歷"},{"title":"專業資格"},{"title":"工作經驗"},{"title":"文件上載"},{"title":"總覽"},{"title":"已遞交"}],
         "education_qualifications":          [
             {"value":"5_BCH","label":"學士學位"},
             {"value":"6_MAST","label":"碩士學位"},
@@ -231,7 +231,7 @@
         "finish":"finish"
     },
     "pt":{
-        "steps":[{"title":"Personal Information"},{"title":"Education"},{"title":"Professional Qualifications"},{"title":"Work Experience"},{" title":"File Upload"},{"title":"總覽"}],
+        "steps":[{"title":"Personal Information"},{"title":"Education"},{"title":"Professional Qualifications"},{"title":"Work Experience"},{" title":"File Upload"},{"title":"Summary"},{"title":"Submitted"}],
         "education_qualifications":          [
             {"value":"5_BCH","label":"Bachalor"},
             {"value":"6_MAST","label":"Master"},

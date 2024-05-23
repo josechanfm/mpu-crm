@@ -23,9 +23,9 @@
                 <input :name="field" :value="payment[field]" /><br>
             </div>
             <div class="text-center">
-                <a :href="route('recruitment.academic.apply', { code: vacancy.code, page: 6 })"
-                    class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
-                <a-button type="primary" html-type="submit" class="mt-5">{{ lang.pay_confirm }}</a-button>
+                <template v-if="application.submitted">
+                    <a :href="route('recruitment.academic.receipt',{application_id:application.id,uuid:application.uuid})" class="ant-btn ant-btn-primary ant-btn-primary mt-5" target="_blank">{{lang.receipt}} receipt</a>
+                </template>
             </div>
         </form>
     </RecruitmentLayout>

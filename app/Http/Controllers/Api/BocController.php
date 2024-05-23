@@ -23,6 +23,9 @@ class BocController extends Controller
             $payment=RecPayment::find($paymentReturn->rec_payment_id);
             if(!empty($payment)){
                 $application=RecApplication::find($payment->rec_application_id);
+                if(empty($application)){
+                    return 'Error! Invalide operation.';
+                }
                 if($application->rec_payment_id==null){
                     $application->rec_payment_id=$payment->id;
                     $application->save();

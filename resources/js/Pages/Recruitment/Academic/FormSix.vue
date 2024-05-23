@@ -7,7 +7,9 @@
             </h2>
         </template>
         <div class="pb-5">
-            <a-steps  progress-dot :current="5">
+            {{ this.application.submitted }}
+            {{ this.page.current }}
+            <a-steps ref="refSteps" progress-dot :current="this.page.current-1">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
@@ -280,7 +282,6 @@
                     <a-form :model="application">
                         <a-form-item>
                             <template v-if="application.submitted">
-                                Already Submit
                                 <a :href="route('recruitment.academic.receipt',{application_id:application.id,uuid:application.uuid})" class="ant-btn ant-btn-primary ant-btn-primary mt-5" target="_blank">{{lang.receipt}} receipt</a>
                             </template>
                             <template v-else>
@@ -354,6 +355,9 @@ export default {
             this.page.current = parseInt(urlParams.get('page'))
             this.page.previours = this.page.current - 1
             this.page.next = this.page.current + 1
+        }
+        if(this.application.submitted){
+            this.page.current=this.lang.steps.length
         }
     },
     methods: {

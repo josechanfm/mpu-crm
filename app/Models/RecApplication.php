@@ -22,7 +22,7 @@ class RecApplication extends Model
     }
 
     public function vacancy(){
-        return $this->belongsTo(RecVacancy::class,'rec_vacancy_id');
+        return $this->belongsTo(RecVacancy::class,'rec_vacancy_id')->with('notices');
     }
     public function educations(){
         return $this->hasMany(RecEducation::class);

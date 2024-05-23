@@ -10,7 +10,7 @@
             <a-button @click="sampleData">Sample Data</a-button>
         </template>
         <div class="pb-5">
-            <a-steps  progress-dot :current="4">
+            <a-steps  progress-dot :current="this.page.current-1">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>

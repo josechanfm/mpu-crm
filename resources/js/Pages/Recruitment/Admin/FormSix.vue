@@ -7,7 +7,7 @@
             </h2>
         </template>
         <div class="pb-5">
-            <a-steps  progress-dot :current="5">
+            <a-steps  progress-dot :current="this.page.current-1">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
@@ -280,12 +280,20 @@
                     <a-form :model="application">
                         <a-form-item>
                             <template v-if="application.submitted">
-                                check payment record. if not yet pay show pay button
-                                <inertia-link :href="route('recruitment.admin.payment',{application_id:application.id,uuid:application.uuid})" class="ant-btn ant-btn-primary ant-btn-dangerous mt-5">{{lang.pay}}ss</inertia-link>
-
-                                if already paied show print pdf receipt button
-                                <inertia-link :href="route('recruitment.academic.receipt',{application_id:application.id,uuid:application.uuid})" class="ant-btn ant-btn-primary ant-btn-primary mt-5">{{lang.receipt}} receipt</inertia-link>
-
+                                <inertia-link 
+                                    v-if="application.paid"
+                                    :href="route('recruitment.admin.receipt',{application_id:application.id,uuid:application.uuid})" 
+                                    class="ant-btn ant-btn-primary ant-btn-primary mt-5"
+                                >
+                                    {{ lang.receipt }}
+                                </inertia-link>
+                                <inertia-link 
+                                    v-else
+                                    :href="route('recruitment.admin.payment',{application_id:application.id,uuid:application.uuid})" 
+                                    class="ant-btn ant-btn-primary ant-btn-dangerous mt-5"
+                                >
+                                    {{lang.pay}}
+                                </inertia-link>
                             </template>
                             <template v-else>
                                 <a :href="route('recruitment.admin.apply', { code: vacancy.code, page: this.page.previours })" 
@@ -358,6 +366,12 @@ export default {
             this.page.current = parseInt(urlParams.get('page'))
             this.page.previours = this.page.current - 1
             this.page.next = this.page.current + 1
+        }
+        
+        if(this.application.paid){
+            this.page.current=this.lang.steps.length
+        }else if(this.application.submitted){
+            this.page.current=this.lang.steps.length-1
         }
     },
     methods: {

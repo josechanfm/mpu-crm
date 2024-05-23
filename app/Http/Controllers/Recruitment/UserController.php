@@ -26,7 +26,7 @@ class UserController extends Controller
 
         return Inertia::render('Recruitment/UserProfile',[
             'user'=>auth()->user(),
-            'applications'=>RecApplication::whereBelongsTo(auth()->user())->get()
+            'applications'=>RecApplication::with('vacancy')->whereBelongsTo(auth()->user())->get()
         ]);
     }
 
