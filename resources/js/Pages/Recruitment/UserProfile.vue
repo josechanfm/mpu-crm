@@ -50,10 +50,8 @@
                                             </p>
                                             <h5 class="mb-2 font-bold dark:text-white">{{ applications.length }}</h5>
                                             <p class="mb-0 dark:text-white dark:opacity-60">
-                                                Last application: {{
-                    formatDate(applications[applications.length - 1].created_at)
-                }}
-
+                                                Last application: 
+                                                <span v-if="applications.length>0">{{ formatDate(applications[applications.length - 1].created_at) }}</span>
                                             </p>
                                         </div>
                                     </div>

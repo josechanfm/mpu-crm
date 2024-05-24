@@ -33,8 +33,9 @@
                     <div class="container mx-auto pt-5">
                         <div class="bg-white relative shadow rounded-lg">
                             <div class="p-5">
-                                <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt=""
-                                    class="rounded-full mx-auto absolute w-24 h-24 shadow-md border-4 border-white transition duration-200 transform hover:scale-110">
+                                <a-avatar :size="64">
+                                    <template #icon><UserOutlined /></template>
+                                </a-avatar>
                             </div>
 
                             <div class="mt-16">
@@ -119,6 +120,7 @@
 
 <script setup>
 import MemberLayout from '@/Layouts/MemberLayout.vue';
+import { UserOutlined } from '@ant-design/icons-vue'
 
 const data = [{
         title: 'Ant Design Title 1',
