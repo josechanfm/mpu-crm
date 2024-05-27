@@ -66,7 +66,6 @@
             :wrapper-col="{ span: 16 }"
             autocomplete="off"
         >
-        {{ modal.data }}
             <a-form-item :label="fields.origin.short">
                 {{ optionFind(fields.origin.options,modal.data.enquiry.origin) }}
             </a-form-item>
@@ -203,13 +202,8 @@ export default {
             ],
         }
     },
-    created(){
-        
+    created(){       
         this.fields=this.configFields
-        console.log(this.fields)
-        // this.fields.origin.options.forEach(o => o.text = o.label)
-        // this.fields.degree.options.forEach(o => o.text = o.label)
-        // this.fields.admission.options.forEach(o => o.text = o.label)
     },
     mounted(){
         loadLanguageAsync(this.$page.props.lang)
@@ -233,7 +227,7 @@ export default {
         viewRecord(record){
             this.modal.data={...record};
             this.modal.mode="EDIT";
-            this.modal.title="View";
+            this.modal.title=this.$t('view');
             this.modal.isOpen=true;
         },
         storeRecord(){

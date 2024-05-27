@@ -80,7 +80,6 @@
                     <ol>
                         <li v-for="subject in modal.data.subjects">
                             {{ getOptionItem(configFields.subjects.options, subject) }}
-                            ...
                         </li>
                     </ol>
                     
@@ -220,21 +219,21 @@ export default {
         },
         optionFind(options, item) {
             const option =options.find(o=>o.value==item)
-            return option?option['label_zh']:'--'
+            return option?option['label_'+this.$t('lang')]:'--'
         },
         getOptionItem(options, item) {
             if(options){
                 var items = options.filter(option => {
                     return item.includes(option['value']);
                 });
-                return items;
+                return items[0]['label_'+this.$t('lang')];
             }
             return null
         },
         viewRecord(record) {
             this.modal.data = { ...record };
             this.modal.mode = "EDIT";
-            this.modal.title = "View";
+            this.modal.title = this.$t('view');
             this.modal.isOpen = true;
         },
         storeRecord() {
