@@ -1,267 +1,269 @@
 <template>
-    <RecruitmentLayout title="Vacancies">
+    <MemberLayout title="Vacancies">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ vacancy.code }}
                 {{ vacancy['title_' + $page.props.lang] }}
             </h2>
         </template>
-        <template v-if="$page.props.env == 'local'">
-            <a-button @click="sampleData">Sample Data</a-button>
-        </template>
-        <div class="pb-5">
+        <div class="p-5">
             <a-steps  progress-dot :current="this.page.current-1">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
-        <CardBox :title="lang.file_uploaded">
-            <template #content>
-                
-                    <table width="100%">
-                        <tr>
-                            <th width="150px"><span class="text-red-500">*</span> {{ lang.doc_id }}</th>
-                            <td width="50%">
-                                <div v-if="getFileList('doc_id').length<=0" class="text-red-500">{{ lang.id_required_copy }}</div>
-                                <ol>
-                                    <li v-for="file in getFileList('doc_id')">
-                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
-                                        <a-popconfirm
-                                            title="Are you sure delete this task?"
-                                            :ok-text="lang.confirmed"
-                                            :cancel-text="lang.no"
-                                            :okButtonProps="{danger:true}"
-                                            @confirm="deleteFileConfirmed(file)"
-                                        >
-                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
-                                        </a-popconfirm>
-                                    </li>
-                                </ol>
-                            </td>
-                            <td>
-                                <a-upload 
-                                    :showUploadList="false"
-                                    name="doc_id"
-                                    :multiple="true"
-                                    :customRequest="customeFileUpload('doc_id')"
-                                >
-                                    <a-button>
-                                    <upload-outlined></upload-outlined>
-                                    {{ lang.upload }}
-                                    </a-button>
-                                </a-upload>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>{{ lang.doc_education }}</th>
-                            <td>
-                                <ol>
-                                    <li v-for="file in getFileList('doc_education')">
-                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
-                                        <a-popconfirm
-                                            title="Are you sure delete this task?"
-                                            :ok-text="lang.confirmed"
-                                            :cancel-text="lang.no"
-                                            :okButtonProps="{danger:true}"
-                                            @confirm="deleteFileConfirmed(file)"
-                                        >
-                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
-                                        </a-popconfirm>
-                                    </li>
-                                </ol>
-                            </td>
-                            <td>
-                                <a-upload ref="asd"
-                                    :showUploadList="false"
-                                    name="doc_education"
-                                    :multiple="true"
-                                    :customRequest="customeFileUpload('doc_education')"
-                                >
-                                    <a-button>
-                                    <upload-outlined></upload-outlined>
-                                    {{ lang.upload }}
-                                    </a-button>
-                                </a-upload>
+        <template v-if="$page.props.env == 'local'">
+            <a-button @click="sampleData">Sample Data</a-button>
+        </template>
+        <div class="container bg-white rounded mx-auto p-5">
+            <CardBox :title="lang.file_uploaded">
+                <template #content>
+                    
+                        <table width="100%">
+                            <tr>
+                                <th width="150px"><span class="text-red-500">*</span> {{ lang.doc_id }}</th>
+                                <td width="50%">
+                                    <div v-if="getFileList('doc_id').length<=0" class="text-red-500">{{ lang.id_required_copy }}</div>
+                                    <ol>
+                                        <li v-for="file in getFileList('doc_id')">
+                                            <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                            <a-popconfirm
+                                                title="Are you sure delete this task?"
+                                                :ok-text="lang.confirmed"
+                                                :cancel-text="lang.no"
+                                                :okButtonProps="{danger:true}"
+                                                @confirm="deleteFileConfirmed(file)"
+                                            >
+                                                <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                            </a-popconfirm>
+                                        </li>
+                                    </ol>
+                                </td>
+                                <td>
+                                    <a-upload 
+                                        :showUploadList="false"
+                                        name="doc_id"
+                                        :multiple="true"
+                                        :customRequest="customeFileUpload('doc_id')"
+                                    >
+                                        <a-button>
+                                        <upload-outlined></upload-outlined>
+                                        {{ lang.upload }}
+                                        </a-button>
+                                    </a-upload>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ lang.doc_education }}</th>
+                                <td>
+                                    <ol>
+                                        <li v-for="file in getFileList('doc_education')">
+                                            <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                            <a-popconfirm
+                                                title="Are you sure delete this task?"
+                                                :ok-text="lang.confirmed"
+                                                :cancel-text="lang.no"
+                                                :okButtonProps="{danger:true}"
+                                                @confirm="deleteFileConfirmed(file)"
+                                            >
+                                                <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                            </a-popconfirm>
+                                        </li>
+                                    </ol>
+                                </td>
+                                <td>
+                                    <a-upload ref="asd"
+                                        :showUploadList="false"
+                                        name="doc_education"
+                                        :multiple="true"
+                                        :customRequest="customeFileUpload('doc_education')"
+                                    >
+                                        <a-button>
+                                        <upload-outlined></upload-outlined>
+                                        {{ lang.upload }}
+                                        </a-button>
+                                    </a-upload>
+                                    
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ lang.doc_resume }}</th>
+                                <td>
+                                    <ol>
+                                        <li v-for="file in getFileList('doc_resume')">
+                                            <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                            <a-popconfirm
+                                                title="Are you sure delete this task?"
+                                                :ok-text="lang.confirmed"
+                                                :cancel-text="lang.no"
+                                                :okButtonProps="{danger:true}"
+                                                @confirm="deleteFileConfirmed(file)"
+                                            >
+                                                <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                            </a-popconfirm>
+                                        </li>
+                                    </ol>
+                                </td>
+                                <td>
+                                    <a-upload
+                                        :showUploadList="false"
+                                        name="doc_resume"
+                                        :multiple="true"
+                                        :customRequest="customeFileUpload('doc_resume')"
+                                    >
+                                        <a-button>
+                                        <upload-outlined></upload-outlined>
+                                        {{ lang.upload }}
+                                        </a-button>
+                                    </a-upload>
                                 
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>{{ lang.doc_resume }}</th>
-                            <td>
-                                <ol>
-                                    <li v-for="file in getFileList('doc_resume')">
-                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
-                                        <a-popconfirm
-                                            title="Are you sure delete this task?"
-                                            :ok-text="lang.confirmed"
-                                            :cancel-text="lang.no"
-                                            :okButtonProps="{danger:true}"
-                                            @confirm="deleteFileConfirmed(file)"
-                                        >
-                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
-                                        </a-popconfirm>
-                                    </li>
-                                </ol>
-                            </td>
-                            <td>
-                                <a-upload
-                                    :showUploadList="false"
-                                    name="doc_resume"
-                                    :multiple="true"
-                                    :customRequest="customeFileUpload('doc_resume')"
-                                >
-                                    <a-button>
-                                    <upload-outlined></upload-outlined>
-                                    {{ lang.upload }}
-                                    </a-button>
-                                </a-upload>
-                               
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>{{ lang.doc_employment }}</th>
-                            <td>
-                                <ol>
-                                    <li v-for="file in getFileList('doc_employment')">
-                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
-                                        <a-popconfirm
-                                            title="Are you sure delete this task?"
-                                            :ok-text="lang.confirmed"
-                                            :cancel-text="lang.no"
-                                            :okButtonProps="{danger:true}"
-                                            @confirm="deleteFileConfirmed(file)"
-                                        >
-                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
-                                        </a-popconfirm>
-                                    </li>
-                                </ol>
-                            </td>
-                            <td>
-                                <a-upload
-                                    :showUploadList="false"
-                                    name="doc_employment"
-                                    :multiple="true"
-                                    :customRequest="customeFileUpload('doc_employment')"
-                                >
-                                    <a-button>
-                                    <upload-outlined></upload-outlined>
-                                    {{ lang.upload }}
-                                    </a-button>
-                                </a-upload>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>{{ lang.doc_training }}</th>
-                            <td>
-                                <ol>
-                                    <li v-for="file in getFileList('doc_training')">
-                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
-                                        <a-popconfirm
-                                            title="Are you sure delete this task?"
-                                            :ok-text="lang.confirmed"
-                                            :cancel-text="lang.no"
-                                            :okButtonProps="{danger:true}"
-                                            @confirm="deleteFileConfirmed(file)"
-                                        >
-                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
-                                        </a-popconfirm>
-                                    </li>
-                                </ol>
-                            </td>
-                            <td>
-                                <a-upload
-                                    :showUploadList="false"
-                                    name="doc_training"
-                                    :multiple="true"
-                                    :customRequest="customeFileUpload('doc_training')"
-                                >
-                                    <a-button>
-                                    <upload-outlined></upload-outlined>
-                                    {{ lang.upload }}
-                                    </a-button>
-                                </a-upload>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ lang.doc_employment }}</th>
+                                <td>
+                                    <ol>
+                                        <li v-for="file in getFileList('doc_employment')">
+                                            <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                            <a-popconfirm
+                                                title="Are you sure delete this task?"
+                                                :ok-text="lang.confirmed"
+                                                :cancel-text="lang.no"
+                                                :okButtonProps="{danger:true}"
+                                                @confirm="deleteFileConfirmed(file)"
+                                            >
+                                                <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                            </a-popconfirm>
+                                        </li>
+                                    </ol>
+                                </td>
+                                <td>
+                                    <a-upload
+                                        :showUploadList="false"
+                                        name="doc_employment"
+                                        :multiple="true"
+                                        :customRequest="customeFileUpload('doc_employment')"
+                                    >
+                                        <a-button>
+                                        <upload-outlined></upload-outlined>
+                                        {{ lang.upload }}
+                                        </a-button>
+                                    </a-upload>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ lang.doc_training }}</th>
+                                <td>
+                                    <ol>
+                                        <li v-for="file in getFileList('doc_training')">
+                                            <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                            <a-popconfirm
+                                                title="Are you sure delete this task?"
+                                                :ok-text="lang.confirmed"
+                                                :cancel-text="lang.no"
+                                                :okButtonProps="{danger:true}"
+                                                @confirm="deleteFileConfirmed(file)"
+                                            >
+                                                <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                            </a-popconfirm>
+                                        </li>
+                                    </ol>
+                                </td>
+                                <td>
+                                    <a-upload
+                                        :showUploadList="false"
+                                        name="doc_training"
+                                        :multiple="true"
+                                        :customRequest="customeFileUpload('doc_training')"
+                                    >
+                                        <a-button>
+                                        <upload-outlined></upload-outlined>
+                                        {{ lang.upload }}
+                                        </a-button>
+                                    </a-upload>
 
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>{{ lang.doc_academic }}</th>
-                            <td>
-                                <ol>
-                                    <li v-for="file in getFileList('doc_academic')">
-                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
-                                        <a-popconfirm
-                                            title="Are you sure delete this task?"
-                                            :ok-text="lang.confirmed"
-                                            :cancel-text="lang.no"
-                                            :okButtonProps="{danger:true}"
-                                            @confirm="deleteFileConfirmed(file)"
-                                        >
-                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
-                                        </a-popconfirm>
-                                    </li>
-                                </ol>
-                            </td>
-                            <td>
-                                <a-upload
-                                    :showUploadList="false"
-                                    name="doc_academic"
-                                    :multiple="true"
-                                    :customRequest="customeFileUpload('doc_academic')"
-                                >
-                                    <a-button>
-                                    <upload-outlined></upload-outlined>
-                                    {{ lang.upload }}
-                                    </a-button>
-                                </a-upload>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>{{ lang.doc_other }}</th>
-                            <td>
-                                <ol>
-                                    <li v-for="file in getFileList('doc_other')">
-                                        <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
-                                        <a-popconfirm
-                                            title="Are you sure delete this task?"
-                                            :ok-text="lang.confirmed"
-                                            :cancel-text="lang.no"
-                                            :okButtonProps="{danger:true}"
-                                            @confirm="deleteFileConfirmed(file)"
-                                        >
-                                            <a class="pl-5 text-red-500"><delete-outlined /></a>
-                                        </a-popconfirm>
-                                    </li>
-                                </ol>
-                            </td>
-                            <td>
-                                <a-upload
-                                    :showUploadList="false"
-                                    name="doc_other"
-                                    :multiple="true"
-                                    :customRequest="customeFileUpload('doc_other')"
-                                >
-                                    <a-button>
-                                    <upload-outlined></upload-outlined>
-                                    {{ lang.upload }}
-                                    </a-button>
-                                </a-upload>
-                            </td>
-                        </tr>
-                    </table>
-                {{ lang.doc_type_notes }}
-            </template>
-        </CardBox>
-        <a-divider />
-        <div class="text-center pt-5">
-            <a :href="route('recruitment.academic.apply', { code: vacancy.code, page: this.page.previours })" 
-                class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
-            <a-button type="primary"  @click="saveToNext">{{ lang.save_next }}</a-button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ lang.doc_academic }}</th>
+                                <td>
+                                    <ol>
+                                        <li v-for="file in getFileList('doc_academic')">
+                                            <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                            <a-popconfirm
+                                                title="Are you sure delete this task?"
+                                                :ok-text="lang.confirmed"
+                                                :cancel-text="lang.no"
+                                                :okButtonProps="{danger:true}"
+                                                @confirm="deleteFileConfirmed(file)"
+                                            >
+                                                <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                            </a-popconfirm>
+                                        </li>
+                                    </ol>
+                                </td>
+                                <td>
+                                    <a-upload
+                                        :showUploadList="false"
+                                        name="doc_academic"
+                                        :multiple="true"
+                                        :customRequest="customeFileUpload('doc_academic')"
+                                    >
+                                        <a-button>
+                                        <upload-outlined></upload-outlined>
+                                        {{ lang.upload }}
+                                        </a-button>
+                                    </a-upload>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ lang.doc_other }}</th>
+                                <td>
+                                    <ol>
+                                        <li v-for="file in getFileList('doc_other')">
+                                            <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
+                                            <a-popconfirm
+                                                title="Are you sure delete this task?"
+                                                :ok-text="lang.confirmed"
+                                                :cancel-text="lang.no"
+                                                :okButtonProps="{danger:true}"
+                                                @confirm="deleteFileConfirmed(file)"
+                                            >
+                                                <a class="pl-5 text-red-500"><delete-outlined /></a>
+                                            </a-popconfirm>
+                                        </li>
+                                    </ol>
+                                </td>
+                                <td>
+                                    <a-upload
+                                        :showUploadList="false"
+                                        name="doc_other"
+                                        :multiple="true"
+                                        :customRequest="customeFileUpload('doc_other')"
+                                    >
+                                        <a-button>
+                                        <upload-outlined></upload-outlined>
+                                        {{ lang.upload }}
+                                        </a-button>
+                                    </a-upload>
+                                </td>
+                            </tr>
+                        </table>
+                    {{ lang.doc_type_notes }}
+                </template>
+            </CardBox>
+            <a-divider />
+            <div class="text-center pt-5">
+                <a :href="route('recruitment.academic.apply', { code: vacancy.code, page: this.page.previours })" 
+                    class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
+                <a-button type="primary"  @click="saveToNext">{{ lang.save_next }}</a-button>
+            </div>
         </div>
 
-    </RecruitmentLayout>
+    </MemberLayout>
 </template>
 
 <script>
-import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
+import MemberLayout from '@/Layouts/MemberLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined,UploadOutlined, DeleteOutlined, ConsoleSqlOutlined } from '@ant-design/icons-vue';
 import recLang  from '/lang/recruitment_academic.json';
@@ -275,7 +277,7 @@ import { modalProps } from 'ant-design-vue/lib/modal/Modal';
 
 export default {
     components: {
-        RecruitmentLayout,
+        MemberLayout,
         CaretRightOutlined,
         CardBox,
         UploadOutlined,

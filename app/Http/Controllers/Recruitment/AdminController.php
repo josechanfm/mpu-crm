@@ -287,7 +287,6 @@ class AdminController extends Controller
             $data[Str::snake($key)]=$value;
         };
         $data['rec_application_id']=$application->id;
-        dd($data);
         RecPayment::create($data);
 
         return Inertia::render('Recruitment/Admin/Payment',[

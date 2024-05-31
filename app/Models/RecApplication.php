@@ -36,14 +36,14 @@ class RecApplication extends Model
     public function uploads(){
         return $this->hasMany(RecUpload::class);
     }
-    public function user(){
-        return $this->belongsTo(User::class);
-    }
     public function payments(){
         return $this->hasMany(RecPayment::class);
     }
     public function paid(){
         return $this->hasOneThrough(RecPaymentReturn::class,RecPayment::class)->where('status','SUCCESS');
+    }
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 
 }

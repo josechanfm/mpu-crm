@@ -1,21 +1,25 @@
 <template>
-    <RecruitmentLayout title="Vacancies">
+    <MemberLayout title="Vacancies">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ lang.vacancies }}
             </h2>
         </template>
-        
-        <div class=" flex justify-center">
-            <div>
+        <div class="p-5">
+            <a-steps progress-dot :current="6">
+                <a-step v-for="item in lang.steps" :description="item.title" />
+            </a-steps>
+        </div>
+
+        <div class="container bg-white rounded mx-auto p-5">
+            <div class=" flex justify-center">
+                <div>
                     <a-typography-title :level="3">success</a-typography-title>
-                <div><span class="font-bold text-lg pr-3">{{ lang.vacancies }}:</span>{{ vacancy.code }}{{
-                    vacancy['title_' + $page.props.lang] }}</div>
-                <div><span class="font-bold text-lg pr-3">{{ lang.name_full_zh }}:</span>{{ application.name_full_zh }}
+                    <div><span class="font-bold text-lg pr-3">{{ lang.vacancies }}:</span>{{ vacancy.code }} {{ vacancy['title_' + $page.props.lang] }}</div>
+                    <div><span class="font-bold text-lg pr-3">{{ lang.name_full_zh }}:</span>{{ application.name_full_zh }}</div>
+                    <div><span class="font-bold text-lg pr-3">{{ lang.name_family_fn }}:</span>{{ application.name_family_fn }}</div>
+                    <div><span class="font-bold text-lg pr-3">{{ lang.name_given_fn }}:</span>{{ application.name_given_fn }}</div>
                 </div>
-                <div><span class="font-bold text-lg pr-3">{{ lang.name_family_fn }}:</span>{{ application.name_family_fn }}
-                </div>
-                <div><span class="font-bold text-lg pr-3">{{ lang.name_given_fn }}:</span>{{ application.name_given_fn }}</div>
             </div>
         </div>
         <form method="post" action="https://epay.mpu.edu.mo/bocpaytest/ipm/cashier">
@@ -24,22 +28,24 @@
             </div>
             <div class="text-center">
                 <template v-if="application.submitted">
-                    <a :href="route('recruitment.academic.receipt',{application_id:application.id,uuid:application.uuid})" class="ant-btn ant-btn-primary ant-btn-primary mt-5" target="_blank">{{lang.receipt}} receipt</a>
+                    <a :href="route('recruitment.academic.receipt', { application_id: application.id, uuid:application.uuid})"
+                        class="ant-btn ant-btn-primary ant-btn-primary mt-5" target="_blank">{{lang.receipt}}
+                        receipt</a>
                 </template>
             </div>
         </form>
-    </RecruitmentLayout>
+    </MemberLayout>
 </template>
 
 <script>
-import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
+import MemberLayout from '@/Layouts/MemberLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
 import recLang from '/lang/recruitment_academic.json';
 
 export default {
     components: {
-        RecruitmentLayout,
+        MemberLayout,
         CaretRightOutlined,
         CardBox
     },

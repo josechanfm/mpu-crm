@@ -55,7 +55,8 @@ Route::middleware([
     })->name('dashboard');
     Route::prefix('/member')->group(function(){
         Route::get('/', [\App\Http\Controllers\Member\DashboardController::class,'index'])->name('member');
-        Route::get('member/recruitment/notifications',[App\Http\Controllers\Member\RecruitmentController::class,'notifications'])->name('member.recruitment.notifications');
+        Route::get('recruitment/notifications',[App\Http\Controllers\Member\RecruitmentController::class,'notifications'])->name('member.recruitment.notifications');
+        Route::get('profile',[App\Http\Controllers\Member\ProfileController::class,'index'])->name('member.profile');
     });
 
     Route::get('membership',[App\Http\Controllers\Member\MembershipController::class,'index'])->name('membership');

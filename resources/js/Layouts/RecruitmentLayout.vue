@@ -67,7 +67,7 @@ const quitMasquerade = () => {
                     <div class="flex items-center">
                         <div class="sm:flex items-center hidden space-x-4 ml-8 lg:ml-12">
                             <template v-if="$page.props.user">
-                                <inertia-link :href="route('recruitment.userProfile')">{{ $t('rec.profile') }}</inertia-link>
+                                <inertia-link :href="route('member')">{{ $t('member_dashboard') }}</inertia-link>
                                 <a :href="route('recruitment.logout')">{{ $t('logout')  }}</a>
                             </template>
                             <template v-else>

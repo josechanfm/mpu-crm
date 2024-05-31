@@ -4,7 +4,8 @@
         <template #icon>
           <component :is="item.icon" />
         </template>
-        <inertia-link :href="route(item.route)" :target="item.target">{{ item.title }}</inertia-link>
+        
+        <inertia-link :href="route(item.route)" :target="item.target">{{ $t(item.key) }}</inertia-link>
       </a-menu-item>
     </a-menu>
 </template>
@@ -25,20 +26,20 @@
       const current = ref(['member']);
       const menuItems=ref([
         {
-            key:'member',
+            key:'member_dashboard',
             icon:'home-outlined',
             title:'主頁',
             route:'member',
-        // },{
-        //     key:'professionals.index',
-        //     icon:'verified-outlined',
-        //     title:'專業認證',
-        //     route:'professionals.index',
-        // },{
-        //     key:'membership',
-        //     icon:'idcard-outlined',
-        //     title:'會籍',
-        //     route:'membership',
+        },{
+            key:'rec.recruitment',
+            icon:'verified-outlined',
+            title:'職位招聘',
+            route:'recruitment',
+        },{
+            key:'member_profile',
+            icon:'idcard-outlined',
+            title:'帳號信息',
+            route:'member.profile',
         // },{
         //     key:'courses',
         //     icon:'bank-outlined',

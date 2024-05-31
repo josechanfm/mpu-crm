@@ -1,53 +1,56 @@
 <template>
-    <RecruitmentLayout title="Vacancies">
+    <MemberLayout title="Vacancies">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ lang.vacancies }}
             </h2>
         </template>
-        <div class="pb-5">
-            <a-steps progress-dot :current="this.page.current-1">
+        <div class="p-5">
+            <a-steps progress-dot :current="6">
                 <a-step v-for="item in lang.steps" :description="item.title" />
             </a-steps>
         </div>
 
-        <div class=" flex justify-center">
-            <div>
-                <div><span class="font-bold text-lg pr-3">{{ lang.vacancies }}:</span>{{ vacancy.code }}{{
-                    vacancy['title_' + $page.props.lang] }}</div>
-                <div><span class="font-bold text-lg pr-3">{{ lang.name_full_zh }}:</span>{{ application.name_full_zh }}
+        <div class="container bg-white rounded mx-auto p-5">
+            <div class=" flex justify-center">
+                <div>
+                    <div><span class="font-bold text-lg pr-3">{{ lang.vacancies }}:</span>{{ vacancy.code }}{{
+                        vacancy['title_' + $page.props.lang] }}</div>
+                    <div><span class="font-bold text-lg pr-3">{{ lang.name_full_zh }}:</span>{{ application.name_full_zh }}
+                    </div>
+                    <div><span class="font-bold text-lg pr-3">{{ lang.name_family_fn }}:</span>{{ application.name_family_fn
+                        }}
+                    </div>
+                    <div><span class="font-bold text-lg pr-3">{{ lang.name_given_fn }}:</span>{{ application.name_given_fn
+                        }}</div>
+                    <div><span class="font-bold text-lg pr-3">{{ lang.payment_amount }}:</span>{{ payment.amount }}</div>
+                    <div><span class="font-bold text-lg pr-3">{{ lang.email }}:</span>{{ payment.email }}</div>
                 </div>
-                <div><span class="font-bold text-lg pr-3">{{ lang.name_family_fn }}:</span>{{ application.name_family_fn
-                    }}
-                </div>
-                <div><span class="font-bold text-lg pr-3">{{ lang.name_given_fn }}:</span>{{ application.name_given_fn
-                    }}</div>
-                <div><span class="font-bold text-lg pr-3">{{ lang.payment_amount }}:</span>{{ payment.amount }}</div>
-                <div><span class="font-bold text-lg pr-3">{{ lang.email }}:</span>{{ payment.email }}</div>
             </div>
+            <form method="post" action="https://epay.mpu.edu.mo/bocpaytest/ipm/cashier">
+                <div v-for="(value, field) in payment" hidden>
+                    <input :name="field" :value="payment[field]" /><br>
+                </div>
+                <div class="text-center">
+                    <a :href="route('recruitment.admin.apply', { code: vacancy.code, page: 6 })"
+                        class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
+                    <a-button type="primary" html-type="submit" class="mt-5">{{ lang.pay_confirm }}</a-button>
+                </div>
+            </form>
         </div>
-        <form method="post" action="https://epay.mpu.edu.mo/bocpaytest/ipm/cashier">
-            <div v-for="(value, field) in payment" hidden>
-                <input :name="field" :value="payment[field]" /><br>
-            </div>
-            <div class="text-center">
-                <a :href="route('recruitment.admin.apply', { code: vacancy.code, page: 6 })"
-                    class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
-                <a-button type="primary" html-type="submit" class="mt-5">{{ lang.pay_confirm }}</a-button>
-            </div>
-        </form>
-    </RecruitmentLayout>
+
+    </MemberLayout>
 </template>
 
 <script>
-import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
+import MemberLayout from '@/Layouts/MemberLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
 import recLang from '/lang/recruitment_admin.json';
 
 export default {
     components: {
-        RecruitmentLayout,
+        MemberLayout,
         CaretRightOutlined,
         CardBox
     },
@@ -79,6 +82,12 @@ export default {
         this.lang = recLang[this.$page.props.lang]
     },
     mounted() {
+        let urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('page')) {
+            this.page.current = parseInt(urlParams.get('page'))
+            this.page.previours = this.page.current - 1
+            this.page.next = this.page.current + 1
+        }
     },
     methods: {
         confirmPayment() {
