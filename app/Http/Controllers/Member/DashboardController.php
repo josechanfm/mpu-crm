@@ -19,6 +19,7 @@ class DashboardController extends Controller
             return redirect(session('url_intended'));
         }
         return Inertia::render('Member/Dashboard',[
+            'member'=>auth()->user()->member,
             'applications'=>RecApplication::whereBelongsto(auth()->user())->with('vacancy')->get(),
             'entries'=>Entry::whereBelongsTo(auth()->user())->get(),
             'messages'=>Message::whereBelongsTo(auth()->user())->get()

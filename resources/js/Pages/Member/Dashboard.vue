@@ -48,8 +48,6 @@
                             </a-list>
                         </div>
                     </div>
-
-
                     <div class="container mx-auto pt-5" v-if="enquiries">
                         <div class="bg-white relative shadow rounded-lg pl-5">
                             ssssssssssss
@@ -64,9 +62,8 @@
                                     <template #icon><UserOutlined /></template>
                                 </a-avatar>
                             </div>
-
                             <div class="mt-2">
-                                <h1 class="font-bold text-center text-3xl text-gray-900">Macao Polytechnic University</h1>
+                                <h1 class="font-bold text-center text-3xl text-gray-900">{{ member.first_name }} {{ member.last_name }}</h1>
                                 <p class="text-center text-sm text-gray-400 font-medium"> {{$page.props.user.name}} </p>
                                 <div class="my-5 px-6">
                                     <a href="#"
@@ -89,7 +86,7 @@
                                             <a href="#"
                                                 class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
                                                     <MessageOutlined class="mr-2"/>
-                                                {{ message.title }}
+                                                    {{ message.title }}
                                                 <span class="text-gray-500 text-xs"> {{ message.created_at }}</span>
                                             </a>
                                         </template>
@@ -121,6 +118,7 @@ const data = [{
 }];
 
 defineProps({
+    member:Object,
     applications:Object,
     entries:Object,
     messages:Object,

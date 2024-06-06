@@ -24,6 +24,8 @@ Route::get('config/item', [\App\Http\Controllers\Api\ConfigController::class,'It
 Route::post('boc/notify',[\App\Http\Controllers\Api\BocController::class,'notify']);
 Route::post('boc/result',[\App\Http\Controllers\Api\BocController::class,'result']);
 
+Route::get('calendar/sync',[\App\Http\Controllers\Api\CalendarController::class,'sync'])->name('calendar.sync');
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
