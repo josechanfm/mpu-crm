@@ -5,7 +5,7 @@
                 <inertia-link :href="route('personnel.recruitment.workflows.create')" class="ant-btn ant-btn-primary">Create</inertia-link>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                <a-table :dataSource="workflows" :columns="columns" :expand-column-width="200">
+                <a-table :dataSource="workflows.data" :columns="columns" :expand-column-width="200">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
                             <inertia-link :href="route('personnel.recruitment.activities.index',record.id)" class="ant-btn">Activities</inertia-link>

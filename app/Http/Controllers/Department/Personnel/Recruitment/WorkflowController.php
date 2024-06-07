@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Config;
 use App\Models\Department;
+use App\Models\RecActivity;
 use App\Models\RecTask;
 use App\Models\RecWorkflow;
 use Illuminate\Queue\Worker;
@@ -22,7 +23,7 @@ class WorkflowController extends Controller
     {
         return Inertia::render('Department/Personnel/Recruitment/Workflows',[
             'departments'=>Department::all(),
-            'workflows'=>RecWorkflow::all()
+            'workflows'=>RecWorkflow::orderBy('date_start','DESC')->paginate()
         ]);
 
     }
@@ -50,20 +51,32 @@ class WorkflowController extends Controller
      */
     public function store(Request $request)
     {
-        //$workflow=RecWorkflow::create($request->all());
-        //dd($workflow);
-        $workflow=RecWorkflow::find(305);
-        dd($workflow);
-        $tasks=RecTask::select('name','sequence','department_id','days','email')->where('procedure_code','ACA')->get();
-        foreach($tasks as $task){
-            $task['active']=true;
-            dd($task);
-            $workflow->activities()->create($tasks);
+        $workflow=RecWorkflow::create($request->all());
+        $tasks=RecTask::select('name','sequence','department_id','days','email','remark')->where('procedure_code',$workflow->procedure_code)->orderBy('sequence')->get()->toArray();
+        foreach($tasks as $i=>$task){
+            $activities[$i]['rec_workflow_id']=$workflow->id;
+            $activities[$i]['sequence']=$task['sequence'];
+            $activities[$i]['department_id']=$task['department_id'];
+            $activities[$i]['vacancy_code']=$request->vacancy_code;
+            $activities[$i]['name']=$task['name'];
+            $activities[$i]['days']=$task['days'];
+            $activities[$i]['remark']=$task['remark'];
+            if($i==0){
+                $activities[$i]['date_start']=$request->date_start;
+                $activities[$i]['date_end']=date('Y-m-d',strtotime($request->date_start.' +'.$task['days'].' days'));
+            }else{
+                $activities[$i]['date_start']=date('Y-m-d',strtotime($activities[$i-1]['date_end'].' +1 days'));
+                $activities[$i]['date_end']=date('Y-m-d',strtotime($activities[$i]['date_start'].' +'.$task['days'].' days'));
+            }
+            $activities[$i]['target_start']=$activities[$i]['date_start'];
+            $activities[$i]['target_end']=$activities[$i]['date_end'];
+            $activities[$i]['active']=true;
         }
-        //dd($tasks);
-        
-
-        dd($tasks);
+        RecActivity::upsert(
+            $activities,
+            ['rec_workflow_id','sequence'],
+            ['department_id','sequence','name','days','date_start','date_end','target_start','target_end','remark']
+        );
         return redirect()->back();
     }
 
@@ -101,9 +114,10 @@ class WorkflowController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, RecWorkflow $workflow)
     {
-        //
+        $workflow->update($request->all());
+        return redirect()->back();
     }
 
     /**

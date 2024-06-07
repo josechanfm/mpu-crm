@@ -61,6 +61,10 @@ defineProps({
                                     <a href="https://www.mpu.edu.mo" target="_blank"
                                         class="list-none  hover:text-indigo-600">Official Website</a>
                                 </li>
+                                <li class="py-3 border-b-2">
+                                    <inertia-link :href="route('api.services')">Api Services</inertia-link>
+                                </li>
+                                
                             </div>
                         </div>
                     </div>

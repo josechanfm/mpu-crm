@@ -15,7 +15,6 @@
                 </template>
             </li>
         </ul>
-        
     </DepartmentLayout>
 </template>
 

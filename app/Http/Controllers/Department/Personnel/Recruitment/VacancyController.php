@@ -19,7 +19,7 @@ class VacancyController extends Controller
     public function index()
     {
         return Inertia::render('Department/Personnel/Recruitment/Vacancies',[
-            'vacancies'=>RecVacancy::paginate()
+            'vacancies'=>RecVacancy::orderBy('date_start','DESC')->paginate()
         ]);
     }
 
