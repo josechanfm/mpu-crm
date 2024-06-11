@@ -5,10 +5,10 @@
                 <a-form ref="formRef" :model="vacancy" name="formVacancy" :label-col="{ style:{width:'150px'}  }" :wrapper-col="{ span: 20 }"
                 autocomplete="off" :rules="rules" :validate-messages="validateMessages" @finish="onFormSubmit">
                     <a-form-item label="招聘類別" name="type">
-                        <a-select v-model:value="vacancy.type" :options="recruitmentTypes"/>
+                        <a-select v-model:value="vacancy.type" :options="recruitmentTypes" />
                     </a-form-item>
                     <a-form-item label="招聘職位" name="code">
-                        <a-select v-model:value="vacancy.code" show-search :options="workflows.map(w=>({value:w.code,label:w.code+' : '+w.title_c}))" @change="onVacancyCodeChange"/>
+                        <a-select v-model:value="vacancy.code" show-search :options="workflowOptions.map(w=>({value:w.vacancy_code,label:w.vacancy_code+' : '+w.title_zh}))" @change="onChangeVacancyCode"/>
                     </a-form-item>
                     <a-form-item label="職位名稱(中文)" name="title_zh">
                         <a-input v-model:value="vacancy.title_zh"/>
@@ -77,6 +77,7 @@ import {
     LoadingOutlined,
     PlusOutlined,
     InfoCircleFilled,
+ConsoleSqlOutlined,
 } from "@ant-design/icons-vue";
 import Icon, { RestFilled } from "@ant-design/icons-vue";
 import { quillEditor, Quill } from "vue3-quill";
@@ -199,19 +200,26 @@ export default {
                 });
             }
         },
-        onVacancyCodeChange(value){
-            const workflow=this.workflows.find(w=>w.code==value)
+        onChangeVacancyCode(value){
+            console.log(value)
+            const workflow=this.workflows.find(w=>w.vacancy_code==value)
+
             if(!this.vacancy.title_zh){
-                this.vacancy.title_zh=workflow.title_c
+                 this.vacancy.title_zh=workflow.title_zh
             }
             if(!this.vacancy.title_en){
-                this.vacancy.title_en=workflow.title_e
+                this.vacancy.title_en=workflow.title_en
             }
             if(!this.vacancy.title_pt){
-                this.vacancy.title_pt=workflow.title_p
+                this.vacancy.title_pt=workflow.title_pt
             }
             console.log(workflow);
         }
     },
+    computed:{
+        workflowOptions: function(){
+            return this.workflows.filter(w=>w.procedure_code==this.vacancy.type);
+        }
+    }
 };
 </script>

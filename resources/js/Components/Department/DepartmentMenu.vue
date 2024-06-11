@@ -52,6 +52,28 @@
           </inertia-link>
         </span>
       </a-menu-item>
+      <a-sub-menu key="recruitment" v-if="is('PES| admin | master')">
+        <template #icon>
+          <MailOutlined />
+        </template>
+        <template #title>職位招聘</template>
+        <a-menu-item key="recruitment_1">
+          <inertia-link :href="route('personnel.recruitment.tasks.index')">
+            標準流程
+          </inertia-link>
+        </a-menu-item>
+        <a-menu-item key="recruitment_2">
+          <inertia-link :href="route('personnel.recruitment.workflows.index')">
+            招聘流程
+          </inertia-link>
+        </a-menu-item>
+        <a-menu-item key="recruitment_2">
+          <inertia-link :href="route('personnel.recruitment.vacancies.index')">
+            職位空缺
+          </inertia-link>
+        </a-menu-item>
+      </a-sub-menu>
+        
       <a-menu-item key="forms">
         <template #icon>
           <InboxOutlined />

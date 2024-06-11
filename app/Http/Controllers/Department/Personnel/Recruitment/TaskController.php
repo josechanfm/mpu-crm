@@ -19,15 +19,15 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->procedure){
+        if($request->vacancy_type){
             return Inertia::render('Department/Personnel/Recruitment/Tasks',[
                 'departments'=>Department::all(),
-                'tasks'=>RecTask::with('department')->where('procedure_code',$request->procedure)->orderBy('procedure_code')->orderBy('sequence')->get()
+                'tasks'=>RecTask::with('department')->where('vacancy_type',$request->vacancy_type)->orderBy('vacancy_type')->orderBy('sequence')->get()
             ]);
         }else{
             return Inertia::render('Department/Personnel/Recruitment/TaskCategories',[
                 'departments'=>Department::all(),
-                'taskCategories'=>Config::item('procedure_categories')->value
+                'vacancyTypes'=>Config::item('vacancy_types')->value
             ]);
     
         }

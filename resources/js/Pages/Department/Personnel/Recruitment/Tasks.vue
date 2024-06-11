@@ -113,11 +113,8 @@ export default {
             // },
             columns: [
                 {
-                    title: "Id",
-                    dataIndex: "id",
-                }, {
-                    title: "Procedure",
-                    dataIndex: "procedure_code",
+                    title: "Type",
+                    dataIndex: "vacancy_type",
                 }, {
                     title: "Sequence",
                     dataIndex: "sequence",
@@ -166,7 +163,7 @@ export default {
     methods: {
         createRecord() {
             this.modal.data = {};
-                this.modal.mode = "CREATE";
+            this.modal.mode = "CREATE";
             this.modal.title = "新增";
             this.modal.isOpen = true;
         },

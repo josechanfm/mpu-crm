@@ -125,6 +125,8 @@ Route::middleware([
         Route::resource('/recruitment/{vacancy}/applications',App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class)->names('personnel.recruitment.applications');
         Route::get('/recruitment/application/quit_masquerade',[App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class,'quitMasquerade'])->name('personnel.recruitment.application.quitMasquerade');
 
+        Route::get('/recruitment/application/check_id_num',[App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class,'checkIdNum'])->name('personnel.recruitment.application.checkIdNum');
+        Route::get('/recruitment/application/check_email',[App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class,'checkEmail'])->name('personnel.recruitment.application.checkEmail');
     });
 });
 

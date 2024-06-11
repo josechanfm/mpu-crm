@@ -92,7 +92,7 @@ export default {
                     minWidth:200,
                 }, {
                     title: "Title",
-                    dataIndex: "title_c",
+                    dataIndex: "title_zh",
                     minWidth:200,
                 }, {
                     title: "Start Date",

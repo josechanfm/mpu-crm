@@ -38,7 +38,7 @@ class WorkflowController extends Controller
         return Inertia::render('Department/Personnel/Recruitment/Workflow',[
             'departments'=>Department::all(),
             'workflowCategories'=>Config::item('workflow_categories')->value,
-            'procedureCategories'=>Config::item('procedure_categories')->value,
+            'vacancyTypes'=>Config::item('vacancy_types')->value,
             'workflow'=>RecWorkflow::make(['status'=>'ARCHIVE']),
         ]);
     }
@@ -52,7 +52,7 @@ class WorkflowController extends Controller
     public function store(Request $request)
     {
         $workflow=RecWorkflow::create($request->all());
-        $tasks=RecTask::select('name','sequence','department_id','days','email','remark')->where('procedure_code',$workflow->procedure_code)->orderBy('sequence')->get()->toArray();
+        $tasks=RecTask::select('name','sequence','department_id','days','email','remark')->where('vacancy_type',$workflow->vacancy_type)->orderBy('sequence')->get()->toArray();
         foreach($tasks as $i=>$task){
             $activities[$i]['rec_workflow_id']=$workflow->id;
             $activities[$i]['sequence']=$task['sequence'];
@@ -102,7 +102,7 @@ class WorkflowController extends Controller
         return Inertia::render('Department/Personnel/Recruitment/Workflow',[
             'departments'=>Department::all(),
             'workflowCategories'=>Config::item('workflow_categories')->value,
-            'procedureCategories'=>Config::item('procedure_categories')->value,
+            'vacancyTypes'=>Config::item('vacancy_types')->value,
             'workflow'=>$workflow,
         ]);
     }
@@ -117,7 +117,7 @@ class WorkflowController extends Controller
     public function update(Request $request, RecWorkflow $workflow)
     {
         $workflow->update($request->all());
-        return redirect()->back();
+        return to_route('personnel.recruitment.workflows.index');
     }
 
     /**

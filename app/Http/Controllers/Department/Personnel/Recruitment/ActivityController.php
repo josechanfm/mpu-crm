@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\RecWorkflow;
 use App\Models\RecActivity;
+use LdapRecord\Query\Events\Read;
 
 class ActivityController extends Controller
 {
@@ -52,9 +53,10 @@ class ActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(RecWorkflow $workflow, Request $request)
     {
-        //
+        RecActivity::create($request->all());
+        return redirect()->back();
     }
 
     /**
@@ -75,9 +77,10 @@ class ActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RecWorkflow $workflow, RecActivity $activity, Request $request )
     {
-        //
+        $activity->update($request->all());
+        return redirect()->back();
     }
 
     /**

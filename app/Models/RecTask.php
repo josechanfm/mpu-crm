@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class RecTask extends Model
 {
     use HasFactory;
-    protected $fillable=['procedure_code','sequence','name','department_id','days','email','remark'];
+    protected $fillable=['vacancy_type','sequence','name','department_id','days','email','remark'];
 
     public function department(){
         return $this->belongsto(Department::class);

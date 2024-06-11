@@ -26,6 +26,10 @@ loadLanguageAsync(page.props.value.lang);
 //         preserveState: false,
 //     });
 // };
+const quitMasquerade = () => {
+    axios.get(route('personnel.recruitment.application.quitMasquerade'))
+    window.close();
+}
 
 const logout = () => {
     Inertia.post(route('logout'));
@@ -150,7 +154,7 @@ const logout = () => {
                             </Dropdown>
 
                             <!-- Settings Dropdown -->
-                            <div class="ml-3 relative">
+                            <div class="ml-3 relative" v-if="$page.props.user">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
                                         <button v-if="$page.props.jetstream.managesProfilePhotos" class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
@@ -234,7 +238,11 @@ const logout = () => {
             <!-- Page Heading -->
             <header v-if="$slots.header" class="bg-white shadow">
                 <div class="mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <a-button v-if="$page.props.masquerade" @click="quitMasquerade" class="float-right" danger>
+                        Quit Masquerade
+                    </a-button>
                     <slot name="header" />
+
                 </div>
             </header>
 

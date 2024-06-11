@@ -9,8 +9,8 @@
                         <a-select v-model:value="workflow.department_id"
                             :options="departments.map(d => ({ value: d.id, label: d.abbr + '-' + d.name_zh }))" />
                     </a-form-item>
-                    <a-form-item label="Procedure Code" name="procedure_code">
-                        <a-select v-model:value="workflow.procedure_code" :options="procedureCategories"/>
+                    <a-form-item label="Vacancy Type" name="vacancy_type">
+                        <a-select v-model:value="workflow.vacancy_type" :options="vacancyTypes"/>
                     </a-form-item>
                     <a-form-item label="Category Code" name="category_code">
                         <a-select v-model:value="workflow.category_code" :options="workflowCategories"/>
@@ -18,14 +18,14 @@
                     <a-form-item label="Vacancy Code" name="vacancy_code">
                         <a-input v-model:value="workflow.vacancy_code" />
                     </a-form-item>
-                    <a-form-item label="Title (Chinese)" name="title_c">
-                        <a-input v-model:value="workflow.title_c" />
+                    <a-form-item label="Title (Chinese)" name="title_zh">
+                        <a-input v-model:value="workflow.title_zh" />
                     </a-form-item>
-                    <a-form-item label="Title (English)" name="title_e">
-                        <a-input v-model:value="workflow.title_e" />
+                    <a-form-item label="Title (English)" name="title_en">
+                        <a-input v-model:value="workflow.title_en" />
                     </a-form-item>
-                    <a-form-item label="Title (Portugues)" name="title_p">
-                        <a-input v-model:value="workflow.title_p" />
+                    <a-form-item label="Title (Portugues)" name="title_pt">
+                        <a-input v-model:value="workflow.title_pt" />
                     </a-form-item>
                     <a-form-item label="Description" name="description">
                         <a-textarea v-model:value="workflow.description" />
@@ -95,7 +95,7 @@ export default {
         message,
         dayjs
     },
-    props: ["departments", "workflowCategories","procedureCategories","workflow"],
+    props: ["departments", "workflowCategories","vacancyTypes","workflow"],
     data() {
         return {
             breadcrumb:[
@@ -106,12 +106,12 @@ export default {
             dateFormat: "YYYY-MM-DD",
             rules:{
                 department_id: { required: true },
-                procedure_code: { required: true },
+                vacancy_type: { required: true },
                 category_code: { required: true },
                 vacancy_code: { required: true },
-                title_c: { required: true },
-                title_e: { required: true },
-                title_p: { required: true },
+                title_zh: { required: true },
+                title_en: { required: true },
+                title_pt: { required: true },
                 status: { required: true },
                 email_notice: {type:'email'},
                 handler_email: { type: 'email' },

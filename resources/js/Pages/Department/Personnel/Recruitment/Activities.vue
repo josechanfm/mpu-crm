@@ -31,13 +31,14 @@
     <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
       <a-form
         :model="modal.data"
-        ref="formRef"
+        ref="modalRef"
         name="default"
         layout="horizontal"
+        :rules="rules"
         :validate-messages="validateMessages"
         :label-col="{ style:{width:'120px'}  }" :wrapper-col="{ span: 20 }"
       >
-          <a-form-item label="name" name="name" >
+          <a-form-item label="Name" name="name" >
             <a-input v-model:value="modal.data.name" />
           </a-form-item>
           <a-form-item label="Department" name="department_id" >
@@ -51,7 +52,7 @@
                 <a-form-item label="Target Start" name="target_start" >
                     <a-date-picker v-model:value="modal.data.target_start" :valueFormat="dateFormat" :format="dateFormat"/>
                 </a-form-item>
-                <a-form-item label="days" name="days" >
+                <a-form-item label="Days" name="days" >
                     <a-input-number v-model:value="modal.data.days" />
                 </a-form-item>
             </a-col>
@@ -63,11 +64,11 @@
                     <a-date-picker v-model:value="modal.data.target_end" :valueFormat="dateFormat" :format="dateFormat"/>
                 </a-form-item>
                 <a-form-item label="Active" name="active" >
-                    <a-switch v-model:value="modal.data.active" />
+                    
                 </a-form-item>
             </a-col>
           </a-row>
-          <a-form-item label="email" name="email" >
+          <a-form-item label="Email" name="email" >
             <a-input v-model:value="modal.data.email" />
           </a-form-item>
           <a-form-item label="Remark" name="remark" >
@@ -181,10 +182,9 @@ export default {
                 },
             ],
             rules:{
-                email: { required: true, type:'email' },
                 date_start: { required: true },
-                date_remind: { required: true },
-                date_due: { required: true },
+                date_end: { required: true },
+                email: { type:'email' },
             },
             validateMessages: {
                 required: '${label} is required!',
@@ -219,7 +219,7 @@ export default {
         },
         storeRecord() {
             this.$refs.modalRef.validateFields().then(() => {
-                this.$inertia.post(route('registry.faqs.store'), this.modal.data, {
+                this.$inertia.post(route('personnel.recruitment.activities.store',{workflow:this.workflow.id}), this.modal.data, {
                     onSuccess: (page) => {
                         this.modal.data = {};
                         this.modal.isOpen = false;
@@ -234,7 +234,10 @@ export default {
         },
         updateRecord() {
             this.$refs.modalRef.validateFields().then(() => {
-                this.$inertia.patch(route('registry.faqs.update', { faq: this.modal.data.id }), this.modal.data, {
+                this.$inertia.patch(route('personnel.recruitment.activities.update', {
+                     workflow: this.workflow.id,
+                     activity: this.modal.data.id
+                }), this.modal.data, {
                     onSuccess: (page) => {
                         this.modal.data = {};
                         this.modal.isOpen = false;

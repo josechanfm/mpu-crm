@@ -3,8 +3,8 @@
         <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <ol>
-                    <li v-for="cat in taskCategories">
-                        <inertia-link :href="route('personnel.recruitment.tasks.index',{procedure:cat.value})">{{ cat.label }}</inertia-link>
+                    <li v-for="t in vacancyTypes">
+                        <inertia-link :href="route('personnel.recruitment.tasks.index',{vacancy_type:t.value})">{{ t.label }}</inertia-link>
                     </li>
                 </ol>
             </div>
@@ -39,7 +39,7 @@ export default {
         message,
         dayjs
     },
-    props: ["departments","taskCategories"],
+    props: ["departments","vacancyTypes"],
     data() {
         return {
             breadcrumb:[

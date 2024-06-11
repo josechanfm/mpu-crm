@@ -15,12 +15,14 @@ return new class extends Migration
     {
         Schema::create('rec_tasks', function (Blueprint $table) {
             $table->id();
-            $table->char('category_code',3); //ACA,ADM,ACP
+            $table->char('procedure_code',3); //ACA,ADM,ACP
             $table->integer('sequence')->nullable();
             $table->string('name');
             $table->string('department_id');
+            $table->string('department_abbr');
             $table->integer('days');
-            $table->string('email');
+            $table->string('email')->nullable();
+            $table->text('remark')->nullable();
             $table->timestamps();
         });
     }
