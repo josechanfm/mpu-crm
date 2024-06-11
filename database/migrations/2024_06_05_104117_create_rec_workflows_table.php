@@ -15,22 +15,23 @@ return new class extends Migration
     {
         Schema::create('rec_workflows', function (Blueprint $table) {
             $table->id();
+            $table->string('procedure_code')->nullable();
             $table->string('vacancy_code');
             $table->string('category_code');
-            $table->string('title_c');
-            $table->string('title_e');
-            $table->string('title_p');
-            $table->text('description');
-            $table->string('procedure_code');
-            $table->string('proposal_num');
-            $table->string('Chairman');
-            $table->string('department_id');
-            $table->date('date_start');
-            $table->date('date_end');
-            $table->string('email_notice');
-            $table->string('handler');
-            $table->string('handler_email');
-            $table->char('status',3);
+            $table->string('title_zh');
+            $table->string('title_en')->nullable();
+            $table->string('title_pt')->nullable();
+            $table->text('description')->nullable();
+            $table->string('proposal_num')->nullable();
+            $table->string('chairman')->nullable();
+            $table->foreignId('department_id')->nullable();
+            $table->string('department_abbr')->nullable();
+            $table->date('date_start')->nullable();
+            $table->date('date_end')->nullable();
+            $table->string('email_notice')->nullable();
+            $table->string('handler')->nullable();
+            $table->string('handler_email')->nullable();
+            $table->char('status',10);
             $table->timestamps();
         });
     }
