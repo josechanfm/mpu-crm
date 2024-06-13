@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,10 +32,20 @@ Route::get('/language/{language}', function ($language) {
     return Redirect::back();
 })->name('language');
 
+Route::get('/help', function (Request $request) {
+    $help=App\Models\Help::where('route',$request->route)->first();
+    if(empty($help)){
+        $help=App\Models\Help::where('route','default')->first();
+    }else if($help->reroute){
+        $help=App\Models\Help::where('route',$help->reroute)->first();
+    }
+    return Inertia::render('Help', [
+        'help' => $help,
+    ]);
+})->name('help');
 
-
+Route::resource('enquiry',App\Http\Controllers\EnquiryController::class)->names('enquiry');
 Route::prefix('enquiry')->group(function(){
-    Route::resource('/',App\Http\Controllers\EnquiryController::class)->names('enquiry');
     Route::get('faqs',[\App\Http\Controllers\EnquiryController::class,'faqs'])->name('enquiry.faqs');
     Route::get('answer_question/{enquiry}/{token}',[\App\Http\Controllers\EnquiryController::class,'answerQuestion'])->name('enquiry.answerQuestion');
     Route::post('submit_question/{enquiry}',[\App\Http\Controllers\EnquiryController::class,'submitQuestion'])->name('enquiry.submitQuestion');
@@ -55,7 +66,8 @@ Route::middleware([
     })->name('dashboard');
     Route::prefix('/member')->group(function(){
         Route::get('/', [\App\Http\Controllers\Member\DashboardController::class,'index'])->name('member');
-        Route::get('member/recruitment/notifications',[App\Http\Controllers\Member\RecruitmentController::class,'notifications'])->name('member.recruitment.notifications');
+        Route::get('recruitment/notifications',[App\Http\Controllers\Member\RecruitmentController::class,'notifications'])->name('member.recruitment.notifications');
+        Route::get('profile',[App\Http\Controllers\Member\ProfileController::class,'index'])->name('member.profile');
     });
 
     Route::get('membership',[App\Http\Controllers\Member\MembershipController::class,'index'])->name('membership');
@@ -80,7 +92,9 @@ Route::prefix('/recruitment')->group(function(){
         Route::post('file_upload',[\App\Http\Controllers\Recruitment\AdminController::class,'fileUpload'])->name('recruitment.admin.fileUpload');
         Route::delete('file_delete/{rec_upload}',[\App\Http\Controllers\Recruitment\AdminController::class,'fileDelete'])->name('recruitment.admin.fileDelete');
         Route::get('payment',[\App\Http\Controllers\Recruitment\AdminController::class,'payment'])->name('recruitment.admin.payment');
-        
+        Route::get('success',[\App\Http\Controllers\Recruitment\AdminController::class,'success'])->name('recruitment.admin.success');
+        Route::get('receipt',[\App\Http\Controllers\Recruitment\AdminController::class,'receipt'])->name('recruitment.admin.receipt');
+
         Route::post('boc_notify',[\App\Http\Controllers\Recruitment\AdminController::class,'bocNotify']);
         Route::post('boc_result',[\App\Http\Controllers\Recruitment\AdminController::class,'bocResult']);
         Route::get('test_boc_payment',[\App\Http\Controllers\Recruitment\AdminController::class,'testBocPayment'])->name('recruitment.admin.testBocPayment');

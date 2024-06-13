@@ -1,6 +1,6 @@
 {
     "zh":{
-        "steps":[{"title":"個人資料"},{"title":"學歷"},{"title":"專業資格"},{"title":"工作經驗"},{"title":"文件上載"},{"title":"總覽"},{"title":"支付"}],
+        "steps":[{"title":"個人資料"},{"title":"學歷"},{"title":"專業資格"},{"title":"工作經驗"},{"title":"文件上載"},{"title":"總覽"},{"title":"支付"},{"title":"已遞交"}],
         "education_qualifications":          [
             {"value":"1_PRM","label":"小學"},
             {"value":"2_JHS","label":"初中畢業"},
@@ -11,6 +11,7 @@
             {"value":"7_PHD","label":"博士學位"},
             {"value":"8_PPD","label":"博士後"}
           ],
+        "receipt":"回執",
         "operation":"操作",
         "delete_confirm":"是否確認刪除?",
         "confirmed":"確認",
@@ -130,6 +131,7 @@
             {"value":"7_PHD","label":"PhD"},
             {"value":"8_PPD","label":"Postdoctoral"}
           ],
+        "receipt":"Receipt",
         "operation":"Operation",
         "delete_confirm":"Confirm to Delete?",
         "confirmed":"Confirm",
@@ -233,7 +235,7 @@
         "finish":"finish"
     },
     "pt":{
-        "steps":[{"title":"Personal Information"},{"title":"Education"},{"title":"Professional Qualifications"},{"title":"Work Experience"},{" title":"File Upload"},{"title":"總覽"},{"title":"Payment"}],
+        "steps":[{"title":"Personal Information"},{"title":"Education"},{"title":"Professional Qualifications"},{"title":"Work Experience"},{" title":"File Upload"},{"title":"總覽"},{"title":"Payment"},{"title":"Submitted"},{"title":"Submitted"}],
         "education_qualifications":          [
             {"value":"1_PRM","label":"Primary"},
             {"value":"2_JHS","label":"Junior High School"},
@@ -244,6 +246,7 @@
             {"value":"7_PHD","label":"PhD"},
             {"value":"8_PPD","label":"Postdoctoral"}
           ],
+        "receipt":"Receipt",
         "operation":"Operation",
         "delete_confirm":"Confirm to Delete?",
         "confirmed":"Confirm",

@@ -1,117 +1,118 @@
 <template>
-    <RecruitmentLayout title="Vacancies">
+    <MemberLayout title="Vacancies">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ vacancy.code }}
                 {{ vacancy['title_' + $page.props.lang] }}
             </h2>
         </template>
-        <template v-if="$page.props.env == 'local'">
-            <a-button @click="sampleData">Sample Data</a-button>
-        </template>
-        <div class="pb-5">
-            <a-steps  progress-dot :current="1">
+        <div class="p-5">
+            <a-steps  progress-dot :current="this.page.current-1">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
-        <CardBox :title="lang.part_a">
-            <template #content>
-                <div style="overflow:auto">
-                    <table class="myTable w-full">
-                    <tr>
-                        <th colspan="2">{{ lang.edu_institute }}</th>
-                        <th rowspan="2">{{ lang.edu_degree }}</th>
-                        <th rowspan="2">{{ lang.edu_subject }}</th>
-                        <th rowspan="2">{{ lang.edu_language }}</th>
-                        <th colspan="2">{{ lang.edu_date }}</th>
-                        <th rowspan="2">{{ lang.operation }}</th>
-                    </tr>
-                    <tr>
-                        <th>{{ lang.edu_school_name }}</th>
-                        <th>{{ lang.edu_region }}</th>
-                        <th>{{ lang.edu_date_start }}</th>
-                        <th>{{ lang.edu_date_finish }}</th>
-                    </tr>
-                    <template v-for="education in application.educations">
+        <template v-if="$page.props.env == 'local'">
+            <a-button @click="sampleData">Sample Data</a-button>
+        </template>
+        <div class="container bg-white rounded mx-auto p-5">
+            <CardBox :title="lang.part_a">
+                <template #content>
+                    <div style="overflow:auto">
+                        <table class="myTable w-full">
                         <tr>
-                            <td>{{ education.school_name }}</td>
-                            <td>{{ education.region }}</td>
-                            <td>{{ education.degree }}</td>
-                            <td>{{ education.subject }}</td>
-                            <td>{{ education.language }}</td>
-                            <td>{{ education.date_start }}</td>
-                            <td>{{ education.date_finish }}</td>
+                            <th colspan="2">{{ lang.edu_institute }}</th>
+                            <th rowspan="2">{{ lang.edu_degree }}</th>
+                            <th rowspan="2">{{ lang.edu_subject }}</th>
+                            <th rowspan="2">{{ lang.edu_language }}</th>
+                            <th colspan="2">{{ lang.edu_date }}</th>
+                            <th rowspan="2">{{ lang.operation }}</th>
                         </tr>
-                    </template>
-                </table>
+                        <tr>
+                            <th>{{ lang.edu_school_name }}</th>
+                            <th>{{ lang.edu_region }}</th>
+                            <th>{{ lang.edu_date_start }}</th>
+                            <th>{{ lang.edu_date_finish }}</th>
+                        </tr>
+                        <template v-for="education in application.educations">
+                            <tr>
+                                <td>{{ education.school_name }}</td>
+                                <td>{{ education.region }}</td>
+                                <td>{{ education.degree }}</td>
+                                <td>{{ education.subject }}</td>
+                                <td>{{ education.language }}</td>
+                                <td>{{ education.date_start }}</td>
+                                <td>{{ education.date_finish }}</td>
+                            </tr>
+                        </template>
+                    </table>
+                </div>
+                    <a-divider />
+                    <a-form :model="education" layout="vertical" :rules="rules" @finish="onFinish" @finishFailed="onFinishFailed">
+                        <a-row :gutter="10">
+                            <a-col :span="16">
+                                <a-form-item :label="lang.edu_school_name" name="school_name">
+                                    <a-input v-model:value="education.school_name" />
+                                </a-form-item>
+                            </a-col>
+                            <a-col :span="8">
+                                <a-form-item :label="lang.edu_region" name="region">
+                                    <a-input v-model:value="education.region" />
+                                </a-form-item>
+                            </a-col>
+                        </a-row>
+                        <a-row :gutter="10">
+                            <a-col :span="8">
+                                <a-form-item :label="lang.edu_qualification" name="qualification">
+                                    <a-select v-model:value="education.qualification" :options="lang.education_qualifications"/>
+                                </a-form-item>
+                            </a-col>
+                            <a-col :span="8">
+                                <a-form-item :label="lang.edu_degree" name="degree">
+                                    <a-input v-model:value="education.degree" />
+                                </a-form-item>
+                            </a-col>
+                            <a-col :span="8">
+                                <a-form-item :label="lang.edu_subject" name="subject">
+                                    <a-input v-model:value="education.subject" />
+                                </a-form-item>
+                            </a-col>
+                        </a-row>
+                        <a-row :gutter="10">
+                            <a-col :span="8">
+                                <a-form-item :label="lang.edu_language" name="language">
+                                    <a-input v-model:value="education.language"/>
+                                </a-form-item>
+                            </a-col>
+                            <a-col :span="8">
+                                <a-form-item :label="lang.edu_date_start" name="date_start">
+                                    <a-date-picker v-model:value="education.date_start" :format="dateFormat"
+                                        :valueFormat="dateFormat" />
+                                </a-form-item>
+                            </a-col>
+                            <a-col :span="8">
+                                <a-form-item :label="lang.edu_date_finish" name="date_finsih">
+                                    <a-date-picker v-model:value="education.date_finish" :format="dateFormat"
+                                        :valueFormat="dateFormat" />
+                                </a-form-item>
+                            </a-col>
+                        </a-row>
+                        <a-form-item :wrapper-col="{ span: 24, offset: 11, }">
+                            <a-button type="primary" html-type="submit">{{ lang.add_item }}</a-button>
+                        </a-form-item>
+                    </a-form>
+                </template>
+            </CardBox>
+            <div class="text-center pt-5">
+                <a :href="route('recruitment.academic.apply', { code: vacancy.code, page: this.page.previours })" 
+                    class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
+                <a-button type="primary" @click="saveToNext">{{ lang.save_next }}</a-button>
             </div>
-                <a-divider />
-                <a-form :model="education" layout="vertical" :rules="rules" @finish="onFinish" @finishFailed="onFinishFailed">
-                    <a-row :gutter="10">
-                        <a-col :span="16">
-                            <a-form-item :label="lang.edu_school_name" name="school_name">
-                                <a-input v-model:value="education.school_name" />
-                            </a-form-item>
-                        </a-col>
-                        <a-col :span="8">
-                            <a-form-item :label="lang.edu_region" name="region">
-                                <a-input v-model:value="education.region" />
-                            </a-form-item>
-                        </a-col>
-                    </a-row>
-                    <a-row :gutter="10">
-                        <a-col :span="8">
-                            <a-form-item :label="lang.edu_qualification" name="qualification">
-                                <a-select v-model:value="education.qualification" :options="lang.education_qualifications"/>
-                            </a-form-item>
-                        </a-col>
-                        <a-col :span="8">
-                            <a-form-item :label="lang.edu_degree" name="degree">
-                                <a-input v-model:value="education.degree" />
-                            </a-form-item>
-                        </a-col>
-                        <a-col :span="8">
-                            <a-form-item :label="lang.edu_subject" name="subject">
-                                <a-input v-model:value="education.subject" />
-                            </a-form-item>
-                        </a-col>
-                    </a-row>
-                    <a-row :gutter="10">
-                        <a-col :span="8">
-                            <a-form-item :label="lang.edu_language" name="language">
-                                <a-input v-model:value="education.language"/>
-                            </a-form-item>
-                        </a-col>
-                        <a-col :span="8">
-                            <a-form-item :label="lang.edu_date_start" name="date_start">
-                                <a-date-picker v-model:value="education.date_start" :format="dateFormat"
-                                    :valueFormat="dateFormat" />
-                            </a-form-item>
-                        </a-col>
-                        <a-col :span="8">
-                            <a-form-item :label="lang.edu_date_finish" name="date_finsih">
-                                <a-date-picker v-model:value="education.date_finish" :format="dateFormat"
-                                    :valueFormat="dateFormat" />
-                            </a-form-item>
-                        </a-col>
-                    </a-row>
-                    <a-form-item :wrapper-col="{ span: 24, offset: 11, }">
-                        <a-button type="primary" html-type="submit">{{ lang.add_item }}</a-button>
-                    </a-form-item>
-                </a-form>
-            </template>
-        </CardBox>
-
-        <div class="text-center pt-5">
-            <a :href="route('recruitment.academic.apply', { code: vacancy.code, page: this.page.previours })" 
-                class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
-            <a-button type="primary" @click="saveToNext">{{ lang.save_next }}</a-button>
         </div>
-    </RecruitmentLayout>
+    </MemberLayout>
 </template>
 
 <script>
-import RecruitmentLayout from '@/Layouts/RecruitmentLayout.vue';
+import MemberLayout from '@/Layouts/MemberLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
 import recLang  from '/lang/recruitment_academic.json';
@@ -121,7 +122,7 @@ import { Modal } from 'ant-design-vue';
 
 export default {
     components: {
-        RecruitmentLayout,
+        MemberLayout,
         CaretRightOutlined,
         CardBox
     },

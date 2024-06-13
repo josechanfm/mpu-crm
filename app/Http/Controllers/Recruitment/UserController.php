@@ -23,10 +23,9 @@ class UserController extends Controller
         }else{
             session()->forget('url_intended');
         }
-
         return Inertia::render('Recruitment/UserProfile',[
             'user'=>auth()->user(),
-            'applications'=>RecApplication::whereBelongsTo(auth()->user())->get()
+            'applications'=>RecApplication::with('vacancy')->whereBelongsTo(auth()->user())->get()
         ]);
     }
 

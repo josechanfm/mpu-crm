@@ -26,9 +26,9 @@ return new class extends Migration
             $table->string('apply_title')->nullable();
             $table->text('description')->nullable();
             $table->date('date_start')->nullable();
-            $table->date('date_end')->nullable();
+            $table->datetime('date_end')->nullable();
             $table->date('supplement_start')->nullable();
-            $table->date('supplement_end')->nullable();
+            $table->datetime('supplement_end')->nullable();
             $table->string('date_publish')->nullable();
             $table->string('attach_zh')->nullable();
             $table->string('attach_en')->nullable();

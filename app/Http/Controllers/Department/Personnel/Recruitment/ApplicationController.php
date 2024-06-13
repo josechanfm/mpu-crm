@@ -7,6 +7,8 @@ use App\Models\RecApplication;
 use App\Models\RecVacancy;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Member;
+use App\Models\User;
 
 class ApplicationController extends Controller
 {
@@ -39,9 +41,9 @@ class ApplicationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RecVacancy $vacancy, Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
@@ -102,5 +104,26 @@ class ApplicationController extends Controller
     public function quitMasquerade(){
         session()->forget('masquerade');
         return redirect()->back();
+    }
+
+    public function checkIdNum(Request $request){
+        $this->validate($request,[
+            'vacancy_code'=>'required',
+            'id_num' => 'required',
+        ]);
+        $vacancy=RecVacancy::where('code',$request->vacancy_code)->first();
+        return RecApplication::where('rec_vacancy_id',$vacancy->id)->where('id_num',$request->id_num)->get();
+    }
+    public function checkEmail(Request $request){
+        $this->validate($request,[
+            'vacancy_code'=>'required',
+            'email' => 'required',
+        ]);
+        $vacancy=RecVacancy::where('code',$request->vacancy_code)->first();
+        return [
+            'application'=>RecApplication::where('rec_vacancy_id',$vacancy->id)->where('email',$request->email)->first(),
+            'member'=>Member::where('email',$request->email)->first(),
+            'user'=>User::where('email',$request->email)->first(),
+        ];
     }
 }

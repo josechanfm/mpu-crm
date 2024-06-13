@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Department\Personnel\Recruitment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Config;
+use App\Models\RecWorkflow;
 use App\Models\RecVacancy;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Http;
@@ -19,7 +20,7 @@ class VacancyController extends Controller
     public function index()
     {
         return Inertia::render('Department/Personnel/Recruitment/Vacancies',[
-            'vacancies'=>RecVacancy::paginate()
+            'vacancies'=>RecVacancy::orderBy('date_start','DESC')->paginate()
         ]);
     }
 
@@ -30,8 +31,11 @@ class VacancyController extends Controller
      */
     public function create()
     {
+        //dd(RecWorkflow::selectRaw('vacancy_code as value,concat(vacancy_code," ",title_zh) as label')->where('status','ACTIVE')->get());
         return Inertia::render('Department/Personnel/Recruitment/Vacancy',[
-            'workflows'=> Http::post('172.25.5.26/wms/api/recruitment/workflows')->json(),
+            //'workflows'=> Http::post('172.25.5.26/wms/api/recruitment/workflows')->json(),
+            'vacancyTypes'=>Config::item('vacancy_types')->value,
+            'workflows'=>RecWorkflow::where('status','ACTIVE')->get(),
             'vacancy'=>RecVacancy::make(),
             'educations'=>Config::item('rec_educations'),
             'vehicles'=>Config::item('rec_vehicles')
@@ -69,7 +73,9 @@ class VacancyController extends Controller
     public function edit(RecVacancy $vacancy)
     {
         return Inertia::render('Department/Personnel/Recruitment/Vacancy',[
-            'workflows'=> Http::post('172.25.5.26/wms/api/recruitment/workflows')->json(),
+            //'workflows'=> Http::post('172.25.5.26/wms/api/recruitment/workflows')->json(),
+            'vacancyTypes'=>Config::item('vacancy_types')->value,
+            'workflows'=>RecWorkflow::where('status','ACTIVE')->get(),
             'vacancy'=>$vacancy,
             'educations'=>Config::item('rec_educations'),
             'vehicles'=>Config::item('rec_vehicles')

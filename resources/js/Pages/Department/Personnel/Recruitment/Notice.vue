@@ -19,8 +19,8 @@
                         (yyyy-mm-dd)
                     </a-form-item>
                     <a-form-item label="截止日" name="date_end">
-                        <a-date-picker v-model:value="notice.date_end" :format="dateFormat" :valueFormat="dateFormat" />
-                        (yyyy-mm-dd) hh:mm:ss
+                        <a-date-picker v-model:value="notice.date_end" :show-time="{ format: 'HH:mm' }" :format="dateTimeFormat" :valueFormat="dateTimeFormat" />
+                        (yyyy-mm-dd) hh:mm
                     </a-form-item>
                     
                     <a-form-item label="附件文檔(中文)" name="file_zh" extra="Document in Chinese, PDF file only">
@@ -123,8 +123,8 @@
                         </a-radio-group>
                     </a-form-item>
                     <a-form-item :wrapper-col="{ span: 14, offset: 10 }">
+                        <inertia-link :href="route('personnel.recruitment.vacancy.notices.index',vacancy.id)" class="ant-btn">退出並返回</inertia-link>
                         <a-button type="primary" html-type="submit" class="mr-5">保存</a-button>
-                        <inertia-link :href="route('personnel.recruitment.vacancies.index')" class="ant-btn">退出並返回</inertia-link>
                     </a-form-item>
                 </a-form>
             </div>
@@ -167,8 +167,14 @@ export default {
                 {label:this.notice.id?"修改":"新增" ,url:null},
             ],
             dateFormat: "YYYY-MM-DD",
+            dateTimeFormat: "YYYY-MM-DD HH:mm",
             rules:{
                 title_zh: { required: true },
+                title_en: { required: true },
+                title_pt: { required: true },
+                file_zh: { required: true },
+                file_en: { required: true },
+                file_pt: { required: true },
                 date_start: { required: true },
                 date_end: { required: true },
                 can_download: { required: true },

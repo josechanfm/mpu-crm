@@ -53,6 +53,7 @@ Route::middleware([
         Route::resource('/departments',App\Http\Controllers\Master\DepartmentController::class)->names('master.departments');
         Route::resource('/articles',App\Http\Controllers\Master\ArticleController::class)->names('master.articles');
         Route::resource('/medias',App\Http\Controllers\Master\MediaController::class)->names('master.medias');
+        Route::resource('/helps',App\Http\Controllers\Master\HelpController::class)->names('master.helps');
     });
 });
 
@@ -115,11 +116,18 @@ Route::middleware([
         Route::get('/gpdps/emails',[App\Http\Controllers\Department\Personnel\GpdpController::class,'listEmails'])->name('personnel.gpdps.emails');
         Route::resource('/gpdps',App\Http\Controllers\Department\Personnel\GpdpController::class)->names('personnel.gpdps');
         Route::post('/gpdp/{gpdp}/sendEmailReminder',[App\Http\Controllers\Department\Personnel\GpdpController::class,'sendEmailReminder'])->name('personnel.gpdp.sendEmailReminder');
+        Route::resource('/recruitment/workflows',App\Http\Controllers\Department\Personnel\Recruitment\WorkflowController::class)->names('personnel.recruitment.workflows');
+        Route::resource('/recruitment/tasks',App\Http\Controllers\Department\Personnel\Recruitment\TaskController::class)->names('personnel.recruitment.tasks');
+        Route::resource('/recruitment/{workflow}/activities',App\Http\Controllers\Department\Personnel\Recruitment\ActivityController::class)->names('personnel.recruitment.activities');
+
         Route::resource('/recruitment/vacancies',App\Http\Controllers\Department\Personnel\Recruitment\VacancyController::class)->names('personnel.recruitment.vacancies');
         Route::resource('/recruitment/vacancy/{vacancy}/notices',App\Http\Controllers\Department\Personnel\Recruitment\NoticeController::class)->names('personnel.recruitment.vacancy.notices');
         Route::get('/recruitment/notice/delete_media/{media}',[App\Http\Controllers\Department\Personnel\Recruitment\NoticeController::class,'deleteMedia'])->name('personnel.recruitment.notice.deleteMedia');
         Route::resource('/recruitment/{vacancy}/applications',App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class)->names('personnel.recruitment.applications');
         Route::get('/recruitment/application/quit_masquerade',[App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class,'quitMasquerade'])->name('personnel.recruitment.application.quitMasquerade');
+
+        Route::get('/recruitment/application/check_id_num',[App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class,'checkIdNum'])->name('personnel.recruitment.application.checkIdNum');
+        Route::get('/recruitment/application/check_email',[App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class,'checkEmail'])->name('personnel.recruitment.application.checkEmail');
     });
 });
 

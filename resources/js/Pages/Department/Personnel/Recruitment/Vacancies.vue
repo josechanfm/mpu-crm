@@ -10,17 +10,17 @@
                         <template v-if="column.dataIndex == 'operation'">
                             <div class="flex flex-row gap-2">
                                 <a-tooltip placement="topRight" title="Applications">
-                                    <inertia-link :href="route('personnel.recruitment.applications.index',{vacancy:record.id})"><team-outlined /></inertia-link>
+                                    <inertia-link :href="route('personnel.recruitment.applications.index',{vacancy:record.id})" class="ant-btn"><team-outlined />應徵者</inertia-link>
                                 </a-tooltip>
                                 <a-tooltip placement="topRight" title="Notices">
-                                    <inertia-link :href="route('personnel.recruitment.vacancy.notices.index',{vacancy:record.id})"><bell-outlined /></inertia-link>
+                                    <inertia-link :href="route('personnel.recruitment.vacancy.notices.index',{vacancy:record.id})" class="ant-btn"><bell-outlined />通告</inertia-link>
                                 </a-tooltip>
                                 <a-tooltip placement="topRight" title="Edit Vacancy">
-                                    <inertia-link :href="route('personnel.recruitment.vacancies.edit',record.id)"><form-outlined /></inertia-link>
+                                    <inertia-link :href="route('personnel.recruitment.vacancies.edit',record.id)" class="ant-btn"><form-outlined/>修改</inertia-link>
                                 </a-tooltip>
                                 <a-popconfirm title="是否確定刪除?" ok-text="Yes" cancel-text="No"
                                     @confirm="deleteConfirmed(record)" :disabled="record.entries_count > 0">
-                                    <a :disabled="record.entries_count > 0"><delete-outlined /></a>
+                                    <a :disabled="record.entries_count > 0" class="ant-btn"><delete-outlined/>刪除</a>
                                 </a-popconfirm>
                             </div>
                         </template>

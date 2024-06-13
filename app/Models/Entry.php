@@ -29,4 +29,8 @@ class Entry extends Model
     public function adminUser(){
         return $this->belongsTo(AdminUser::class);
     }
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
 }

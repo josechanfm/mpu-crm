@@ -3,7 +3,6 @@
         <div class="mx-auto pt-5">
             <a-typography-title :level="3">{{ vacancy.code }} - {{ vacancy.title_zh }}</a-typography-title>
             <div class="flex-auto pb-3 text-right">
-                <inertia-link :href="route('personnel.recruitment.vacancies.index')" class="ant-btn mr-5">返回職位招聘</inertia-link>
                 <inertia-link :href="route('personnel.recruitment.vacancy.notices.create',{vacancy:vacancy.id})" class="ant-btn ant-btn-primary">新關通告</inertia-link>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
@@ -114,7 +113,7 @@ export default {
                 }, {
                     title: "發佈",
                     dataIndex: "published",
-                    width: 150,
+                    width: 100,
                 }, {
                     title: "操作",
                     dataIndex: "operation",

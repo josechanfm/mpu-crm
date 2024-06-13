@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('title_en')->nullable();
             $table->string('title_pt')->nullable();
             $table->date('date_start')->nullable();
-            $table->date('date_end')->nullable();
+            $table->datetime('date_end')->nullable();
             $table->string('file_zh')->nullable();
             $table->string('file_en')->nullable();
             $table->string('file_pt')->nullable();

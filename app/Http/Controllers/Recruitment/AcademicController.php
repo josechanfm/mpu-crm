@@ -41,7 +41,7 @@ class AcademicController extends Controller
         $page=$request->page;
         $vacancy=RecVacancy::where('code',$vacancyCode)->first();
         if(empty($vacancy)){
-            return to_route('recruitment.vacancies');
+            return to_route('recruitment');
         }
         $application=RecApplication::whereBelongsTo($user)->where('rec_vacancy_id',$vacancy->id)->first();
         if(empty($application)){

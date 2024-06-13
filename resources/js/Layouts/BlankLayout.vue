@@ -38,61 +38,10 @@ const logout = () => {
                     <ApplicationMark class="block h-14 w-auto" />
                     </Link>
                 </div>
-
-                <div>
-                    <!-- Hamburger -->
-                    <div class="-mr-2 flex items-center sm:hidden">
-                        <button
-                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 bg-white hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition"
-                            @click="showingNavigationDropdown = !showingNavigationDropdown">
-                            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                <path :class="{
-                        hidden: showingNavigationDropdown,
-                        'inline-flex': !showingNavigationDropdown,
-                    }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                                <path :class="{
-                        hidden: !showingNavigationDropdown,
-                        'inline-flex': showingNavigationDropdown,
-                    }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Responsive Navigation Menu -->
-            <div :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
-                class="sm:hidden bg-white">
-                <div class="pt-2 pb-3 space-y-1">
-                    <ResponsiveNavLink href="#">
-                        Main
-                    </ResponsiveNavLink>
-                </div>
-
-                <!-- Responsive Settings Options -->
-                <div class="pt-4 pb-1 border-t border-gray-200">
-                    <div class="mt-3 space-y-1">
-                        <ul class="pl-5">
-                            <li>
-                                <a href="https://www.mpu.edu.mo" target="_blank"
-                                    class="text-gray-700 hover:text-indigo-600 text-md ">
-                                    MPU
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.mpu.edu.mo" target="_blank"
-                                    class="text-gray-700 hover:text-indigo-600 text-md ">
-                                    Services
-                                </a>
-                            </li>
-                            <li>
-                                <inertia-link :href="route('login')">登入</inertia-link>
-                            </li>
-                            <li>
-                                <inertia-link :href="route('staff.login')">教職員</inertia-link>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="space-x-5">
+                    <inertia-link :href="route('help',{route:'default'})">Home</inertia-link>
+                    <inertia-link :href="route('help',{route:'tutorial'})">Tutorial</inertia-link>
+                    <inertia-link :href="route('help',{route:'faq'})">Faq</inertia-link>
                 </div>
             </div>
         </nav>
