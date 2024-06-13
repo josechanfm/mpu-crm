@@ -1,5 +1,5 @@
 <template>
-    <DepartmentLayout title="招聘通告" :breadcrumb="breadcrumb">
+    <DepartmentLayout title="標準流程" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <ol>
@@ -45,7 +45,7 @@ export default {
             breadcrumb:[
                 {label:"人事處首頁" ,url:route('personnel.dashboard')},
                 {label:"職位招聘" ,url:route('personnel.recruitment.vacancies.index')},
-                {label:"招聘通告" ,url:null},
+                {label:"標準流程" ,url:null},
             ],
 
         };

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,10 +32,20 @@ Route::get('/language/{language}', function ($language) {
     return Redirect::back();
 })->name('language');
 
+Route::get('/help', function (Request $request) {
+    $help=App\Models\Help::where('route',$request->route)->first();
+    if(empty($help)){
+        $help=App\Models\Help::where('route','default')->first();
+    }else if($help->reroute){
+        $help=App\Models\Help::where('route',$help->reroute)->first();
+    }
+    return Inertia::render('Help', [
+        'help' => $help,
+    ]);
+})->name('help');
 
-
+Route::resource('enquiry',App\Http\Controllers\EnquiryController::class)->names('enquiry');
 Route::prefix('enquiry')->group(function(){
-    Route::resource('/',App\Http\Controllers\EnquiryController::class)->names('enquiry');
     Route::get('faqs',[\App\Http\Controllers\EnquiryController::class,'faqs'])->name('enquiry.faqs');
     Route::get('answer_question/{enquiry}/{token}',[\App\Http\Controllers\EnquiryController::class,'answerQuestion'])->name('enquiry.answerQuestion');
     Route::post('submit_question/{enquiry}',[\App\Http\Controllers\EnquiryController::class,'submitQuestion'])->name('enquiry.submitQuestion');

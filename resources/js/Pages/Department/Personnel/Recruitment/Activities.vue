@@ -1,23 +1,23 @@
 <template>
-    <DepartmentLayout title="Workflows" :breadcrumb="breadcrumb">
+    <DepartmentLayout title="工作項目" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
             <div class="flex-auto pb-3 text-right">
-                <a-button @click="createRecord" class="ant-btn ant-btn-primary">Create</a-button>
+                <a-button @click="createRecord" class="ant-btn ant-btn-primary">{{ $t('create') }}</a-button>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <a-table :dataSource="workflow.activities" :columns="columns" :expand-column-width="200">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <a-button @click="editRecord(record)">Edit</a-button>
+                            <a-button @click="editRecord(record)">{{ $t('edit') }}</a-button>
                         </template>
-                        <template v-else-if="column.dataIndex=='can_download'">
-                            <span :class="text?'':'text-orange-600'">{{ text?'可下載':'有條件下載' }}</span>
+                        <template v-else-if="column.dataIndex=='plan_date'">
+                            {{ record['date_start'] }} : {{ record['date_end'] }}
                         </template>
-                        <template v-else-if="column.dataIndex=='can_apply'">
-                            <span :class="text?'':'text-orange-600'">{{ text?'可報名':'不可報名' }}</span>
+                        <template v-else-if="column.dataIndex=='days_count'">
+                            <div v-html="dayCount(record)"></div>
                         </template>
-                        <template v-else-if="column.dataIndex=='published'">
-                            <span :class="text?'':'text-orange-600'">{{ text?'已發報':'未發報' }}</span>
+                        <template v-else-if="column.dataIndex=='active'">
+                            {{ record[column.dataIndex]?'Yes':'No' }}
                         </template>
                         <template v-else>
                             {{ record[column.dataIndex] }}
@@ -38,47 +38,47 @@
         :validate-messages="validateMessages"
         :label-col="{ style:{width:'120px'}  }" :wrapper-col="{ span: 20 }"
       >
-          <a-form-item label="Name" name="name" >
+          <a-form-item label="工作項目名稱" name="name" >
             <a-input v-model:value="modal.data.name" />
           </a-form-item>
-          <a-form-item label="Department" name="department_id" >
+          <a-form-item label="部門/單位" name="department_id" >
             <a-select v-model:value="modal.data.department_id" :options="departments.map(d=>({value:d.id,label:d.abbr+'-'+d.name_zh}))"/>
           </a-form-item>
           <a-row>
             <a-col :span="12">
-                <a-form-item label="Plan Start" name="date_start" >
+                <a-form-item label="計劃開始日" name="date_start" >
                     <a-date-picker v-model:value="modal.data.date_start" :valueFormat="dateFormat" :format="dateFormat"/>
                 </a-form-item>
-                <a-form-item label="Target Start" name="target_start" >
+                <a-form-item label="實制開始日" name="target_start" >
                     <a-date-picker v-model:value="modal.data.target_start" :valueFormat="dateFormat" :format="dateFormat"/>
                 </a-form-item>
-                <a-form-item label="Days" name="days" >
+                <a-form-item label="計劃日數" name="days" >
                     <a-input-number v-model:value="modal.data.days" />
                 </a-form-item>
             </a-col>
             <a-col :span="12">
-                <a-form-item label="Plan End" name="date_end" >
+                <a-form-item label="計劃結束日" name="date_end" >
                     <a-date-picker v-model:value="modal.data.date_end" :valueFormat="dateFormat" :format="dateFormat"/>
                 </a-form-item>
-                <a-form-item label="Target End" name="target_end" >
+                <a-form-item label="實制結束日" name="target_end" >
                     <a-date-picker v-model:value="modal.data.target_end" :valueFormat="dateFormat" :format="dateFormat"/>
                 </a-form-item>
-                <a-form-item label="Active" name="active" >
-                    
+                <a-form-item label="狀能" name="active" >
+                    <a-switch v-model:checked="modal.data.active"/>
                 </a-form-item>
             </a-col>
           </a-row>
-          <a-form-item label="Email" name="email" >
+          <a-form-item label="電郵" name="email" >
             <a-input v-model:value="modal.data.email" />
           </a-form-item>
-          <a-form-item label="Remark" name="remark" >
+          <a-form-item label="備註" name="remark" >
             <a-textarea v-model:value="modal.data.remark" />
           </a-form-item>
       </a-form>
       <template #footer>
-        <a-button key="back" @click="modal.isOpen = false">cancel</a-button>
-        <a-button key="submit" type="primary" @click="updateRecord">
-          update</a-button>
+        <a-button key="back" @click="modal.isOpen = false">{{ $t('close')}}</a-button>
+        <a-button v-if="modal.mode=='EDIT'" key="submit" type="primary" @click="updateRecord">{{  $t('update') }}</a-button>
+        <a-button v-if="modal.mode=='CREATE'" key="submit" type="primary" @click="storeRecord">{{  $t('save') }}</a-button>
       </template>
     </a-modal>
     <!-- Modal End-->
@@ -143,35 +143,35 @@ export default {
             // },
             columns: [
                 {
-                    title: "Sequence",
+                    title: "排序",
                     dataIndex: "sequence",
                     minWidth:200,
                 }, {
-                    title: "Name",
+                    title: "工作項目名稱",
                     dataIndex: "name",
                     minWidth:200,
                 }, {
-                    title: "Plan Start",
-                    dataIndex: "date_start",
-                    width: 120,
+                    title: "計劃時期",
+                    dataIndex: "plan_date",
+                    width: 200,
                 }, {
-                    title: "Plan End",
-                    dataIndex: "date_end",
-                    width: 120,
-                }, {
-                    title: "Target start",
-                    dataIndex: "target_start",
-                    width: 120,
-                }, {
-                    title: "Target end",
-                    dataIndex: "target_end",
-                    width: 120,
-                }, {
-                    title: "Days",
+                    title: "計劃日數",
                     dataIndex: "days",
                     width: 100,
                 }, {
-                    title: "Active",
+                    title: "實制開始日",
+                    dataIndex: "target_start",
+                    width: 120,
+                }, {
+                    title: "實制結束日",
+                    dataIndex: "target_end",
+                    width: 120,
+                }, {
+                    title: "質制日數",
+                    dataIndex: "days_count",
+                    width: 100,
+                }, {
+                    title: "狀能",
                     dataIndex: "active",
                     width: 100,
                 }, {
@@ -281,6 +281,21 @@ export default {
                 }
             );
         },
+        dayCount(record){
+            const start = dayjs(record.target_start)
+            const end = dayjs(record.target_end)
+            const days=end.diff(start,'days')
+            const diff=record.days-days
+
+            if(diff==0){
+                return  "<font color='black'>"+days+"</font>"
+            }else if(diff<0){
+                return  "<font color='red'>"+days+ "("+(diff)+")</font>"
+            }else{
+                return  "<font color='green'>"+days+ "("+(diff)+")</font>"
+            }
+            
+        }
     },
 };
 </script>

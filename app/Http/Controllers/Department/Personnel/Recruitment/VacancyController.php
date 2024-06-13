@@ -34,6 +34,7 @@ class VacancyController extends Controller
         //dd(RecWorkflow::selectRaw('vacancy_code as value,concat(vacancy_code," ",title_zh) as label')->where('status','ACTIVE')->get());
         return Inertia::render('Department/Personnel/Recruitment/Vacancy',[
             //'workflows'=> Http::post('172.25.5.26/wms/api/recruitment/workflows')->json(),
+            'vacancyTypes'=>Config::item('vacancy_types')->value,
             'workflows'=>RecWorkflow::where('status','ACTIVE')->get(),
             'vacancy'=>RecVacancy::make(),
             'educations'=>Config::item('rec_educations'),
@@ -73,6 +74,7 @@ class VacancyController extends Controller
     {
         return Inertia::render('Department/Personnel/Recruitment/Vacancy',[
             //'workflows'=> Http::post('172.25.5.26/wms/api/recruitment/workflows')->json(),
+            'vacancyTypes'=>Config::item('vacancy_types')->value,
             'workflows'=>RecWorkflow::where('status','ACTIVE')->get(),
             'vacancy'=>$vacancy,
             'educations'=>Config::item('rec_educations'),

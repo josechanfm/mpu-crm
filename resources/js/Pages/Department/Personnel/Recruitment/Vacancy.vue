@@ -4,11 +4,13 @@
             <div class="bg-white relative shadow rounded-lg overflow-x-auto p-5">
                 <a-form ref="formRef" :model="vacancy" name="formVacancy" :label-col="{ style:{width:'150px'}  }" :wrapper-col="{ span: 20 }"
                 autocomplete="off" :rules="rules" :validate-messages="validateMessages" @finish="onFormSubmit">
-                    <a-form-item label="招聘類別" name="type">
-                        <a-select v-model:value="vacancy.type" :options="recruitmentTypes" />
+                    <a-form-item label="招聘類別" name="type" >
+                        <div v-if="vacancy.id">{{ vacancyTypes.find(v=>v.value==vacancy.type).label }}</div>
+                        <a-select v-else v-model:value="vacancy.type" :options="vacancyTypes"/>
                     </a-form-item>
-                    <a-form-item label="招聘職位" name="code">
-                        <a-select v-model:value="vacancy.code" show-search :options="workflowOptions.map(w=>({value:w.vacancy_code,label:w.vacancy_code+' : '+w.title_zh}))" @change="onChangeVacancyCode"/>
+                    <a-form-item label="招聘流程" name="code">
+                        <div v-if="vacancy.id">{{ workflowOptions.find(w=>w.vacancy_type==vacancy.type).vacancy_code }} {{ workflowOptions.find(w=>w.vacancy_type==vacancy.type).title_zh }}</div>
+                        <a-select v-else v-model:value="vacancy.code" show-search :options="workflowOptions.map(w=>({value:w.vacancy_code,label:w.vacancy_code+' : '+w.title_zh}))" @change="onChangeVacancyCode"/>
                     </a-form-item>
                     <a-form-item label="職位名稱(中文)" name="title_zh">
                         <a-input v-model:value="vacancy.title_zh"/>
@@ -28,6 +30,10 @@
                     <a-form-item label="簡介" name="description">
                         <a-textarea v-model:value="vacancy.description" />
                     </a-form-item>
+                    <a-form-item label="發佈日期" name="date_publish">
+                        <a-date-picker v-model:value="vacancy.date_publish" :format="dateFormat" :valueFormat="dateFormat" />
+                        (yyyy-mm-dd)
+                    </a-form-item>
                     <a-form-item label="開始日" name="date_start">
                         <a-date-picker v-model:value="vacancy.date_start" :format="dateFormat" :valueFormat="dateFormat" />
                         (yyyy-mm-dd)
@@ -44,10 +50,6 @@
                         <a-date-picker v-model:value="vacancy.supplement_end" :show-time="{ format: 'HH:mm' }" :format="dateTimeFormat" :valueFormat="dateTimeFormat" />
                         (yyyy-mm-dd) hh:mm:ss
                     </a-form-item>
-                    <a-form-item label="發報日期" name="date_publish">
-                        <a-date-picker v-model:value="vacancy.date_publish" :format="dateFormat" :valueFormat="dateFormat" />
-                        (yyyy-mm-dd)
-                    </a-form-item>
                    <a-form-item label="程序狀態" name="progress">
                         <a-radio-group v-model:value="vacancy.progress" button-style="solid">
                             <a-radio-button :value="true">程序進行中</a-radio-button>
@@ -61,8 +63,8 @@
                         </a-radio-group>
                     </a-form-item>
                     <a-form-item :wrapper-col="{ span: 14, offset: 10 }">
-                        <a-button type="primary" html-type="submit" class="mr-5">保存</a-button>
                         <inertia-link :href="route('personnel.recruitment.vacancies.index')" class="ant-btn">退出並返回</inertia-link>
+                        <a-button type="primary" html-type="submit" class="mr-5">保存</a-button>
                     </a-form-item>
                 </a-form>
             </div>
@@ -96,7 +98,7 @@ export default {
         message,
         dayjs
     },
-    props: ['workflows','vacancy','educations','vehicles'],
+    props: ['vacancyTypes','workflows','vacancy','educations','vehicles'],
     data() {
         return {
             breadcrumb:[
@@ -105,10 +107,10 @@ export default {
             ],
             dateFormat: "YYYY-MM-DD",
             dateTimeFormat: "YYYY-MM-DD HH:mm",
-            recruitmentTypes:[
-                {value:"ACA",label:"教職人員"},
-                {value:"ADM",label:"非教職人員"}
-            ],
+            // VacancyTypes:[
+            //     {value:"ACA",label:"教職人員"},
+            //     {value:"ADM",label:"非教職人員"}
+            // ],
             columns: [
                 {
                     title: "員工編號",
@@ -153,8 +155,14 @@ export default {
             rules:{
                 type: { required: true },
                 code: { required: true },
+                title_zh: { required: true },
+                title_en: { required: true },
+                title_pt: { required: true },
+                education: { required: true },
+                vehicle: { required: true },
                 date_start: { required: true },
                 date_end: { required: true },
+                date_publish: { required: true },
                 progress: { required: true },
                 active: { required: true },
             },
@@ -179,7 +187,6 @@ export default {
     methods: {
         onFormSubmit(){
             if(this.vacancy.id){
-                console.log('update');
                 this.$inertia.patch(route('personnel.recruitment.vacancies.update',this.vacancy.id), this.vacancy, {
                     onSuccess: (page) => {
                         console.log(page.data);
@@ -189,7 +196,6 @@ export default {
                     }
                 });
             }else{
-                console.log('create');
                 this.$inertia.post(route("personnel.recruitment.vacancies.store"), Object.assign({},this.vacancy), {
                     onSuccess: (page) => {
                         console.log(page);
@@ -201,9 +207,7 @@ export default {
             }
         },
         onChangeVacancyCode(value){
-            console.log(value)
             const workflow=this.workflows.find(w=>w.vacancy_code==value)
-
             if(!this.vacancy.title_zh){
                  this.vacancy.title_zh=workflow.title_zh
             }
@@ -213,12 +217,11 @@ export default {
             if(!this.vacancy.title_pt){
                 this.vacancy.title_pt=workflow.title_pt
             }
-            console.log(workflow);
         }
     },
     computed:{
         workflowOptions: function(){
-            return this.workflows.filter(w=>w.procedure_code==this.vacancy.type);
+            return this.workflows.filter(w=>w.vacancy_type==this.vacancy.type);
         }
     }
 };

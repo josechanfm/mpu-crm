@@ -35,15 +35,11 @@ const logout = () => {
             <div class="flex justify-between items-center py-6 px-10 container mx-auto">
                 <div class="shrink-0 flex items-center">
                     <Link :href="route('home')">
-                    <ApplicationMark class="block h-14 w-auto" />
+                        <ApplicationMark class="block h-14 w-auto" />
                     </Link>
                 </div>
-                <div class="space-x-5">
-                    <inertia-link :href="route('help',{route:'default'})">Home</inertia-link>
-                    <inertia-link :href="route('help',{route:'tutorial'})">Tutorial</inertia-link>
-                    <inertia-link :href="route('help',{route:'faq'})">Faq</inertia-link>
-                </div>
             </div>
+            1
         </nav>
     </header>
     <!-- Page Heading -->

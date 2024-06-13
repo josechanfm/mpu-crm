@@ -1,37 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Department\Personnel\Recruitment;
+namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Config;
-use App\Models\Department;
-use App\Models\RecTask;
+use App\Models\Help;
 
-
-class TaskController extends Controller
+class HelpController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        if($request->vacancy_type){
-            return Inertia::render('Department/Personnel/Recruitment/Tasks',[
-                'departments'=>Department::all(),
-                'tasks'=>RecTask::with('department')->where('vacancy_type',$request->vacancy_type)->orderBy('vacancy_type')->orderBy('sequence')->get(),
-                'vacancyType'=>array_column(Config::item('vacancy_types')->value,null,'value')[$request->vacancy_type]
-            ]);
-        }else{
-            return Inertia::render('Department/Personnel/Recruitment/TaskCategories',[
-                'departments'=>Department::all(),
-                'vacancyTypes'=>Config::item('vacancy_types')->value
-            ]);
-    
-        }
+        return Inertia::render('Master/Helps',[
+            'helps'=>Help::all()
+        ]);
     }
 
     /**
@@ -52,7 +39,7 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Help::create($request->all());
     }
 
     /**
@@ -84,9 +71,10 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Help $help)
     {
-        //
+        $help->update($request->all());
+        return redirect()->back();
     }
 
     /**

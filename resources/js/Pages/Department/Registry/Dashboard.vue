@@ -1,5 +1,5 @@
 <template>
-    <DepartmentLayout :title="department.name_zh" :department="department">
+    <DepartmentLayout :title="department.name_zh" :department="department" :breadcrumb="breadcrumb">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Department
@@ -20,7 +20,9 @@ export default {
     props: ['department'],
     data() {
         return {
-
+            breadcrumb:[
+                {label:"招生注冊處" ,url:null},
+            ],
         }
     },
     methods: {

@@ -25,7 +25,6 @@ class WorkflowController extends Controller
             'departments'=>Department::all(),
             'workflows'=>RecWorkflow::orderBy('date_start','DESC')->paginate()
         ]);
-
     }
 
     /**

@@ -41,9 +41,9 @@ class ApplicationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RecVacancy $vacancy, Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
@@ -122,8 +122,8 @@ class ApplicationController extends Controller
         $vacancy=RecVacancy::where('code',$request->vacancy_code)->first();
         return [
             'application'=>RecApplication::where('rec_vacancy_id',$vacancy->id)->where('email',$request->email)->first(),
-            'member'=>Member::where('email',$request->email)->get(),
-            'user'=>User::where('email',$request->email)->get(),
+            'member'=>Member::where('email',$request->email)->first(),
+            'user'=>User::where('email',$request->email)->first(),
         ];
     }
 }

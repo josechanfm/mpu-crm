@@ -1,15 +1,15 @@
 <template>
-    <DepartmentLayout title="Workflows" :breadcrumb="breadcrumb">
+    <DepartmentLayout title="招聘流程" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
             <div class="flex-auto pb-3 text-right">
-                <inertia-link :href="route('personnel.recruitment.workflows.create')" class="ant-btn ant-btn-primary">Create</inertia-link>
+                <inertia-link :href="route('personnel.recruitment.workflows.create')" class="ant-btn ant-btn-primary">{{ $t('create') }}</inertia-link>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <a-table :dataSource="workflows.data" :columns="columns" :expand-column-width="200">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <inertia-link :href="route('personnel.recruitment.activities.index',record.id)" class="ant-btn">Activities</inertia-link>
-                            <inertia-link :href="route('personnel.recruitment.workflows.edit',record.id)" class="ant-btn">Edit</inertia-link>
+                            <inertia-link :href="route('personnel.recruitment.activities.index',record.id)" class="ant-btn">{{ $t('rec.activities') }}</inertia-link>
+                            <inertia-link :href="route('personnel.recruitment.workflows.edit',record.id)" class="ant-btn">{{ $t('edit') }}</inertia-link>
                         </template>
                         <template v-else-if="column.dataIndex=='can_download'">
                             <span :class="text?'':'text-orange-600'">{{ text?'可下載':'有條件下載' }}</span>
@@ -87,23 +87,23 @@ export default {
             // },
             columns: [
                 {
-                    title: "Vacancy Code",
+                    title: "招聘編號",
                     dataIndex: "vacancy_code",
                     minWidth:200,
                 }, {
-                    title: "Title",
+                    title: "職位名稱",
                     dataIndex: "title_zh",
                     minWidth:200,
                 }, {
-                    title: "Start Date",
+                    title: "開始日期",
                     dataIndex: "date_start",
                     width: 150,
                 }, {
-                    title: "End Date",
+                    title: "結束日期",
                     dataIndex: "date_end",
                     width: 150,
                 }, {
-                    title: "Status",
+                    title: "狀態",
                     dataIndex: "status",
                     width: 100,
                 }, {

@@ -615,6 +615,7 @@ class ConfigSeeder extends Seeder
           'label'=>'Recuitment Educations',
           'value'=>'
           [
+            {"value":"0_NON","label_zh":"見開考通告","label_en":"refer to recruitment notices"},
             {"value":"1_PRM","label_zh":"小學","label_en":"Primary"},
             {"value":"2_JHS","label_zh":"初中畢業","label_en":"Junior High School"},
             {"value":"3_SHS","label_zh":"高中畢業","label_en":"Senior High School"},

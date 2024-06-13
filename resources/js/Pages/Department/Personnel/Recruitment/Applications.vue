@@ -2,8 +2,7 @@
     <DepartmentLayout title="職位招聘" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
             <div class="flex-auto pb-3 text-right">
-                <a-button @click="createRecord">Apply</a-button>
-                <inertia-link :href="route('personnel.recruitment.applications.create',{vacancy:vacancy})" class="ant-btn ant-btn-primary">add applicaiton</inertia-link>
+                <a-button @click="createRecord" type="primary">{{ $t('rec.apply') }}</a-button>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <a-table :dataSource="applications.data" :columns="columns" :pagination="pagination" @change="onPaginationChange" :expand-column-width="200">
@@ -45,35 +44,37 @@
         </div>
 
     <!-- Modal Start-->
-    <a-modal v-model:visible="modal.isOpen" title="View Only" width="60%">
+    <a-modal v-model:visible="modal.isOpen" :title="$t('rec.apply')" width="60%">
+        <a-typography-title :level="5" class="text-center pb-5">{{vacancy.code}} {{vacancy.title_zh}}</a-typography-title>
       <a-form
         :model="modal.data"
-        ref="formRef"
+        ref="modalRef"
         name="default"
         layout="horizontal"
+        :rules="rules"
         :validate-messages="validateMessages"
         :label-col="{ style:{width:'180px'}  }" :wrapper-col="{ span: 20 }"
       >
-          <a-form-item label="Id Type" name="id_type" >
+          <a-form-item label="證件類別" name="id_type" >
             <a-select v-model:value="modal.data.id_type">
                 <template v-for="(item, key) in lang.id_type_options">
                     <a-select-option :value="key">{{ item }}</a-select-option>
                 </template>
             </a-select>
           </a-form-item>
-          <a-form-item label="Id Num" name="id_num" >
+          <a-form-item label="證件編號" name="id_num" >
             <a-input v-model:value="modal.data.id_num" @blur="onBlurIdNum"/>
           </a-form-item>
-          <a-form-item label="Email" name="email" >
+          <a-form-item label="電郵" name="email" >
             <a-input v-model:value="modal.data.email" @blur="onBlurEmail"/>
           </a-form-item>
-          <a-form-item label="Full Name (Chinese)" name="name_full_zh" >
+          <a-form-item label="中文全名" name="name_full_zh" >
             <a-input v-model:value="modal.data.name_full_zh" />
           </a-form-item>
-          <a-form-item label="Family Name (Foreign)" name="name_family_fn" >
+          <a-form-item label="外文姓" name="name_family_fn" >
             <a-input v-model:value="modal.data.name_family_fn" />
           </a-form-item>
-          <a-form-item label="Given Name (Foreign)" name="name_given_fn" >
+          <a-form-item label="外文名" name="name_given_fn" >
             <a-input v-model:value="modal.data.name_given_fn" />
           </a-form-item>
           <div v-if="errorMessages">
@@ -82,9 +83,8 @@
           
       </a-form>
       <template #footer>
-        <a-button key="back" @click="modal.isOpen = false">cancel</a-button>
-        <a-button key="submit" type="primary" @click="updateRecord">
-          update</a-button>
+        <a-button key="back" @click="modal.isOpen = false">{{ $t('close') }}</a-button>
+        <a-button key="submit" type="primary" @click="storeRecord" :disabled="errorMessages">{{ $t('rec.apply') }}</a-button>
       </template>
     </a-modal>
     <!-- Modal End-->
@@ -123,7 +123,8 @@ export default {
         return {
             breadcrumb:[
                 {label:"人事處首頁" ,url:route('personnel.dashboard')},
-                {label:"職位招聘" ,url:null},
+                {label:"職位招聘" ,url:route('personnel.recruitment.vacancies.index')},
+                {label:"求職人士" ,url:null},
             ],
             lang: '',
             errorMessages:'',
@@ -161,11 +162,11 @@ export default {
                     title: "名稱",
                     dataIndex: "name_full",
                 }, {
-                    title: "Gender",
+                    title: "性別",
                     dataIndex: "gender",
-                    width: 40,
+                    width: 60,
                 }, {
-                    title: "Phone",
+                    title: "電話",
                     dataIndex: "phone",
                     width: 80,
                 }, {
@@ -173,11 +174,11 @@ export default {
                     dataIndex: "created_at",
                     width: 120,
                 }, {
-                    title: "Submit",
+                    title: "遞交",
                     dataIndex: "submitted",
-                    width: 40,
+                    width: 60,
                 }, {
-                    title: "Paid",
+                    title: "支付",
                     dataIndex: "paid",
                     width: 180,
                 }, {
@@ -187,10 +188,11 @@ export default {
                 },
             ],
             rules:{
+                id_type: { required: true },
+                id_num: { required: true },
                 email: { required: true, type:'email' },
-                date_start: { required: true },
-                date_remind: { required: true },
-                date_due: { required: true },
+                name_family_fn: { required: true },
+                name_given_fn: { required: true },
             },
             validateMessages: {
                 required: '${label} is required!',
@@ -212,25 +214,41 @@ export default {
     }, 
     methods: {
         createRecord(){
-            this.modal.data = {};
-            this.modal.mode = "CREATE";
-            this.modal.title = "新增";
-            this.modal.isOpen = true;
+            this.modal.data = {}
+            this.modal.mode = "CREATE"
+            this.modal.title = "新增"
+            this.modal.isOpen = true
+            this.errorMessages=null
         },
-        updateRecord(){
-            console.log(this.modal.data)
+        storeRecord(){
+            if(this.errorMessages!=null){
+                console.log('still have error');
+                return false;
+            }
+            this.$refs.modalRef.validateFields().then(() => {
+                this.$inertia.post(route("personnel.recruitment.applications.store", this.vacancy), this.modal.data, {
+                    onSuccess: (page) => {
+                        console.log(page);
+                    },
+                    onError: (error) => {
+                        alert(error.message);
+                    },
+                });
+            }).catch(err => {
+                console.log(err);
+            })
+
+            
         },
         deleteConfirmed(record) {
-            console.log("delete");
-            console.log(record);
-            this.$inertia.delete(route("personnel.recruitment.applications.destroy", {vacancy:this.vacancy, application:record} ), {
-                onSuccess: (page) => {
-                    console.log(page);
-                },
-                onError: (error) => {
-                    alert(error.message);
-                },
-            });
+                this.$inertia.delete(route("personnel.recruitment.applications.destroy", {vacancy:this.vacancy, application:record} ), {
+                    onSuccess: (page) => {
+                        console.log(page);
+                    },
+                    onError: (error) => {
+                        alert(error.message);
+                    },
+                });
         },
         onPaginationChange(page, filters, sorter) {
             this.$inertia.get(
@@ -255,9 +273,10 @@ export default {
                 vacancy_code:this.vacancy.code,
                 id_num:event.target.value
             })).then(resp => {
-                this.errorMessages=''
+                this.errorMessages=null
                 if(resp.data.length>0){
-                    this.errorMessages='id existed'
+                    this.errorMessages="此證件編號已報考該職位："+this.modal.data.id_num
+                    this.modal.data.id_num=null
                 }
                 
             })
@@ -268,15 +287,16 @@ export default {
                 vacancy_code:this.vacancy.code,
                 email:event.target.value
             })).then(resp => {
-                this.errorMessages=''
+                //this.errorMessages='此電郵已使用於：<br>'
+                this.errorMessages=null
                 if(resp.data.application!=null){
-                    this.errorMessages+='Application Duplicated<br>'
+                    this.errorMessages+='報名表編號：'+resp.data.application.id +'/' +resp.data.application.name_full_zh+"</br>"
                 }
-                if(resp.data.member!=null>0){
-                    this.errorMessages+='Member Duplicated<br>'
+                if(resp.data.member!=null){
+                    this.errorMessages+='用戶帳號：'+resp.data.member.first_name + " "+resp.data.member.last_name+"</br>"
                 }
-                if(resp.data.user!=null>0){
-                    this.errorMessages+='User Duplicated'
+                if(resp.data.user!=null){
+                    this.errorMessages+='登入帳號：'+resp.data.user.first_name + " "+resp.data.user.last_name+"</br>"
                 }
             })
         }

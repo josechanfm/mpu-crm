@@ -1,15 +1,18 @@
 <template>
-    <DepartmentLayout title="招聘通告" :breadcrumb="breadcrumb">
+    <DepartmentLayout title="標準流程" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
-            <div class="flex-auto pb-3 text-right">
-                <a-button @click="createRecord">Create</a-button>
+            <div>
                 
+            </div>
+            <div class="flex-auto pb-5">
+                <a-button @click="createRecord" class="float-right">{{ $t('create') }}</a-button>
+                <a-typography-title :level="5">{{ vacancyType.label }}</a-typography-title>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <a-table :dataSource="tasks" :columns="columns" :expand-column-width="200">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <a-button @click="editRecord(record)">Edit</a-button>
+                            <a-button @click="editRecord(record)">{{ $t('edit') }}</a-button>
                         </template>
                         <template v-else-if="column.dataIndex=='department_id'">
                             {{ record.department.abbr }} - {{ record.department.name_zh }}
@@ -32,24 +35,20 @@
         layout="vertical"
         :validate-messages="validateMessages"
       >
-          <a-form-item label="name" name="name" >
+          <a-form-item label="名稱" name="name" >
             <a-input v-model:value="modal.data.name" />
           </a-form-item>
-          <a-form-item label="Department" name="department_id" >
+          <a-form-item label="部門/單位" name="department_id" >
             <a-select v-model:value="modal.data.department_id" :options="departments.map(d=>({value:d.id,label:d.abbr+'-'+d.name_zh}))"/>
           </a-form-item>
-          <a-form-item label="days" name="days" >
+          <a-form-item label="工作日數" name="days" >
             <a-input v-model:value="modal.data.days" />
           </a-form-item>
-          <a-form-item label="email" name="email" >
-            <a-input v-model:value="modal.data.email" />
-          </a-form-item>
-
       </a-form>
       <template #footer>
-        <a-button key="back" @click="modal.isOpen = false">cancel</a-button>
-        <a-button key="submit" type="primary" @click="updateRecord">
-          update</a-button>
+        <a-button key="back" @click="modal.isOpen = false">{{ $t('close') }}</a-button>
+        <a-button key="submit" type="primary" @click="updateRecord" v-if="modal.mode=='EDIT'">{{$t('update')}}</a-button>
+        <a-button key="submit" type="primary" @click="storeRecord" v-if="modal.mode=='CREATE'">{{ $t('create') }}</a-button>
       </template>
     </a-modal>
     <!-- Modal End-->
@@ -81,13 +80,14 @@ export default {
         message,
         dayjs
     },
-    props: ["departments","tasks"],
+    props: ["departments","tasks","vacancyType"],
     data() {
         return {
             breadcrumb:[
                 {label:"人事處首頁" ,url:route('personnel.dashboard')},
                 {label:"職位招聘" ,url:route('personnel.recruitment.vacancies.index')},
-                {label:"招聘通告" ,url:null},
+                {label:"標準流程" ,url:route('personnel.recruitment.tasks.index')},
+                {label:"標準分類" ,url:null},
             ],
             loading: false,
             imageUrl: null,
@@ -113,23 +113,20 @@ export default {
             // },
             columns: [
                 {
-                    title: "Type",
+                    title: "分類",
                     dataIndex: "vacancy_type",
                 }, {
-                    title: "Sequence",
+                    title: "排序",
                     dataIndex: "sequence",
                 }, {
-                    title: "Name",
+                    title: "名稱",
                     dataIndex: "name",
                 }, {
-                    title: "Department",
+                    title: "部門/單位",
                     dataIndex: "department_id",
                 }, {
-                    title: "Days",
+                    title: "工作日數",
                     dataIndex: "days",
-                }, {
-                    title: "Email",
-                    dataIndex: "email",
                 }, {
                     title: "操作",
                     dataIndex: "operation",
