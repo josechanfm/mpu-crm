@@ -18,11 +18,11 @@ class CheckIneternalIP
     {
         // Check if the client's IP address is an internal IP
         if($this->isIneternalIP($this->getRealClientIP($request->ip()))){
-            dd('false');
+            //dd('false');
             return $next($request);
         }
         // If the IP is not inertinal, return a 403 Forbidden response
-        dd('true');
+        //dd('true');
         return response()->json(['error'=>'Forbidden'],403);
     }
 
