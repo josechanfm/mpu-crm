@@ -19,14 +19,11 @@ class CheckIneternalIP
     {
         // Check if the client's IP address is an internal IP
         if($this->isIneternalIP($this->getRealClientIP($request->ip()))){
-            //dd('false');
             $rip=$this->getRealClientIP($request->ip());
             
             return $next($request);
         }
         // If the IP is not inertinal, return a 403 Forbidden response
-        $rip=$this->getRealClientIP($request->ip());
-        dd($this->isIneternalIP($this->getRealClientIP($request->ip())));
         return Inertia::render('Error',[
             'message'=>'Forbidden'
         ]);
