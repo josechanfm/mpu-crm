@@ -72,7 +72,7 @@ class CheckIneternalIP
             // '202.175.24.0/24',
             // '202.175.25.0/24',
         ];
-        //dd($realIP);
+        dd($realIP);
         foreach($privateIPBlocks as $block){
             if(strpos($block, $realIP) === 0){
                 return true;
