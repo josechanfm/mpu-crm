@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CheckIneternalIP
 {
@@ -23,7 +24,10 @@ class CheckIneternalIP
         }
         // If the IP is not inertinal, return a 403 Forbidden response
         //dd('true');
-        return response()->json(['error'=>'Forbidden'],403);
+        return Inertia::render('Error',[
+            'message'=>'Forbidden'
+        ]);
+        //return response()->json(['error'=>'Forbidden'],403);
     }
 
     /**
