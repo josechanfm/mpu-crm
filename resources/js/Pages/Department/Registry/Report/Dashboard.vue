@@ -14,7 +14,7 @@
         <table class="border-collapse border border-slate-400 bg-white w-full max-w-96">
             <tr>
                 <th class="border border-slate-300">年/ 月份</th>
-                <th class="border border-slate-300"><3日</th>
+                <th class="border border-slate-300">&lt;3日</th>
                 <th class="border border-slate-300">3-5日</th>
                 <th class="border border-slate-300">>5日</th>
             </tr>
