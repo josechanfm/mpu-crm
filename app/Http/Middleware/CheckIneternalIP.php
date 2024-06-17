@@ -18,9 +18,11 @@ class CheckIneternalIP
     {
         // Check if the client's IP address is an internal IP
         if($this->isIneternalIP($this->getRealClientIP($request->ip()))){
+            dd('false');
             return $next($request);
         }
         // If the IP is not inertinal, return a 403 Forbidden response
+        dd('true');
         return response()->json(['error'=>'Forbidden'],403);
     }
 
@@ -41,9 +43,9 @@ class CheckIneternalIP
             '202.175.24.0/24',
             '202.175.25.0/24',
         ];
-        dd($realIP);
+        //dd($realIP);
         foreach($privateIPBlocks as $block){
-            if(strpos($realIP, $block) == 0){
+            if(strpos($realIP, $block) === 0){
                 return true;
             }
         }
