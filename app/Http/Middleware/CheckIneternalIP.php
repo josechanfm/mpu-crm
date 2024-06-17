@@ -25,7 +25,8 @@ class CheckIneternalIP
             return $next($request);
         }
         // If the IP is not inertinal, return a 403 Forbidden response
-        dd($this->getRealClientIP($request->ip()));
+        $rip=$this->getRealClientIP($request->ip());
+        dd(strpos($rip,'172.26.'));
         return Inertia::render('Error',[
             'message'=>'Forbidden'
         ]);
