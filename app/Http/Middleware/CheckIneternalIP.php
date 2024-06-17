@@ -53,7 +53,8 @@ class CheckIneternalIP
     protected function getRealClientIP($ip){
         $realIP=$ip;
         if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR']){
-            $realIP= $_SERVER['HTTP_X_FORWARDED_FOR'];
+            $http_x_headers=explode(',',$_SERVER['HTTP_X_FORWARDED_FOR']);
+            $realIP= $http_x_headers[0];
         }
         return $realIP;
     }
