@@ -14,10 +14,10 @@ class HelpController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return Inertia::render('Master/Helps',[
-            'helps'=>Help::all()
+            'helps'=>Help::paginate($request->per_page)
         ]);
     }
 

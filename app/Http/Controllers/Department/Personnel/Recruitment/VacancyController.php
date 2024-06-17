@@ -32,9 +32,10 @@ class VacancyController extends Controller
     public function create()
     {
         //dd(RecWorkflow::selectRaw('vacancy_code as value,concat(vacancy_code," ",title_zh) as label')->where('status','ACTIVE')->get());
+        //dd(Http::post('172.25.5.26/wms/api/recruitment/workflows')->json());
         return Inertia::render('Department/Personnel/Recruitment/Vacancy',[
-            //'workflows'=> Http::post('172.25.5.26/wms/api/recruitment/workflows')->json(),
             'vacancyTypes'=>Config::item('vacancy_types')->value,
+            //'workflows'=> Http::post('172.25.5.26/wms/api/recruitment/workflows')->json(),
             'workflows'=>RecWorkflow::where('status','ACTIVE')->get(),
             'vacancy'=>RecVacancy::make(),
             'educations'=>Config::item('rec_educations'),

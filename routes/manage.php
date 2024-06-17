@@ -13,7 +13,6 @@ use Inertia\Inertia;
 
 Route::resource('/accountcharts',App\Http\Controllers\AccountchartController::class)->names('accountcharts');
 
-
 Route::group(['middleware' => config('fortify.middleware', ['admin_web'])], function () {
     $limiter = config('fortify.limiters.login');
     Route::get('/staff/login', function () {
@@ -31,6 +30,7 @@ Route::group(['middleware' => config('fortify.middleware', ['admin_web'])], func
 Route::middleware([
     'auth:admin_web',
     config('jetstream.auth_session'),
+    'checkIneternalIP'
 ])->group(function() {
     Route::prefix('/staff')->group(function(){
         Route::get('/',[App\Http\Controllers\Staff\DashboardController::class,'index'])->name('staff');
@@ -45,7 +45,8 @@ Route::middleware([
 Route::middleware([
     'auth:admin_web',
     config('jetstream.auth_session'),
-    'role:master'
+    'role:master',
+    'checkIneternalIP'
 ])->group(function () {
     Route::prefix('/master')->group(function(){
         Route::get('/',[App\Http\Controllers\Master\DashboardController::class,'index'])->name('master');
@@ -60,6 +61,7 @@ Route::middleware([
 Route::middleware([
     'auth:admin_web',
     config('jetstream.auth_session'),
+    'checkIneternalIP'
 ])->group(function () {
     Route::prefix('/manage')->group(function(){
         Route::get('/',[App\Http\Controllers\Department\DashboardController::class,'index'])->name('manage');
@@ -90,7 +92,8 @@ Route::middleware([
 Route::middleware([
     'auth:admin_web',
     config('jetstream.auth_session'),
-    'role:DAMIA|admin|master'
+    'role:DAMIA|admin|master',
+    'checkIneternalIP'
 ])->group(function () {
     Route::prefix('/registry')->group(function(){
         Route::get('/',[App\Http\Controllers\Department\Registry\DashboardController::class,'index'])->name('registry.dashboard');
@@ -107,7 +110,8 @@ Route::middleware([
 Route::middleware([
     'auth:admin_web',
     config('jetstream.auth_session'),
-    'role:PES|admin|master'
+    'role:PES|admin|master',
+    'checkIneternalIP'
 ])->group(function () {
     Route::prefix('/personnel')->group(function(){
         Route::get('/',[App\Http\Controllers\Department\Personnel\DashboardController::class,'index'])->name('personnel.dashboard');
