@@ -42,7 +42,6 @@ class PublicationController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->file);
         $data=$request->all();
         $data['department_id']=session('department')->id;
         Publication::create($data);
