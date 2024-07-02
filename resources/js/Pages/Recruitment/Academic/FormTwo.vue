@@ -7,15 +7,15 @@
             </h2>
         </template>
         <div class="p-5">
-            <a-steps  progress-dot :current="this.page.current-1">
-                <a-step v-for="item in lang.steps" :description="item.title"/>
+            <a-steps  progress-dot :current="this.page.current-1" @change="onChangeStep">
+                <a-step v-for="item in lang.steps" :description="item.title" :key="item.title"/>
             </a-steps>
         </div>
         <template v-if="$page.props.env == 'local'">
             <a-button @click="sampleData">Sample Data</a-button>
         </template>
         <div class="container bg-white rounded mx-auto p-5">
-            <CardBox :title="lang.part_a">
+            <CardBox :title="lang.part_A" :subtitle="lang.part_a">
                 <template #content>
                     <div style="overflow:auto">
                         <table class="myTable w-full">
@@ -33,21 +33,43 @@
                             <th>{{ lang.edu_date_start }}</th>
                             <th>{{ lang.edu_date_finish }}</th>
                         </tr>
-                        <template v-for="education in application.educations">
+                        <template v-for="(edu, i) in application.educations">
                             <tr>
-                                <td>{{ education.school_name }}</td>
-                                <td>{{ education.region }}</td>
-                                <td>{{ education.degree }}</td>
-                                <td>{{ education.subject }}</td>
-                                <td>{{ education.language }}</td>
-                                <td>{{ education.date_start }}</td>
-                                <td>{{ education.date_finish }}</td>
+                                <td>{{ edu.school_name }}</td>
+                                <td>{{ edu.region }}</td>
+                                <td>{{ edu.degree }}</td>
+                                <td>{{ edu.subject }}</td>
+                                <td>{{ edu.language }}</td>
+                                <td>{{ edu.date_start }}</td>
+                                <td>{{ edu.date_finish }}</td>
+                                <td>
+                                    <a-popconfirm
+                                        :title="lang.delete_confirm"
+                                        :ok-text="lang.yes"
+                                        :cancel-text="lang.no"
+                                        @confirm="deleteItem(i)"
+                                    >
+                                        <span class="text-red-500">
+                                        <CloseSquareOutlined />
+                                        </span>
+                                    </a-popconfirm>
+                                    <span class="text-green-500 pl-2" @click="editItem(i)">
+                                        <FormOutlined />
+                                    </span>
+                                </td>
                             </tr>
                         </template>
                     </table>
                 </div>
                     <a-divider />
-                    <a-form :model="education" layout="vertical" :rules="rules" @finish="onFinish" @finishFailed="onFinishFailed">
+                    <a-form 
+                        :model="education" 
+                        layout="vertical" 
+                        :rules="rules" 
+                        :validate-messages="validateMessages"
+                        @finish="onFinish" 
+                        @finishFailed="onFinishFailed"
+                    >
                         <a-row :gutter="10">
                             <a-col :span="16">
                                 <a-form-item :label="lang.edu_school_name" name="school_name">
@@ -85,14 +107,22 @@
                             </a-col>
                             <a-col :span="8">
                                 <a-form-item :label="lang.edu_date_start" name="date_start">
-                                    <a-date-picker v-model:value="education.date_start" :format="dateFormat"
-                                        :valueFormat="dateFormat" />
+                                    <a-date-picker 
+                                        v-model:value="education.date_start" 
+                                        :format="dateFormat"
+                                        :valueFormat="dateFormat" 
+                                         picker="month"
+                                    />
                                 </a-form-item>
                             </a-col>
                             <a-col :span="8">
                                 <a-form-item :label="lang.edu_date_finish" name="date_finsih">
-                                    <a-date-picker v-model:value="education.date_finish" :format="dateFormat"
-                                        :valueFormat="dateFormat" />
+                                    <a-date-picker 
+                                        v-model:value="education.date_finish" 
+                                        :format="dateFormat"
+                                        :valueFormat="dateFormat" 
+                                         picker="month"
+                                    />
                                 </a-form-item>
                             </a-col>
                         </a-row>
@@ -117,21 +147,21 @@ import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
 import recLang  from '/lang/recruitment_academic.json';
 import { message } from 'ant-design-vue';
-import axios from 'axios';
-import { Modal } from 'ant-design-vue';
+import { CloseSquareOutlined,FormOutlined } from '@ant-design/icons-vue';
 
 export default {
     components: {
         MemberLayout,
         CaretRightOutlined,
-        CardBox
+        CardBox,
+        CloseSquareOutlined,FormOutlined
     },
     props: ['vacancy', 'application'],
     data() {
         return {
             page: {},
             education: {},
-            dateFormat: 'YYYY-MM-DD',
+            dateFormat: 'YYYY-MM',
             languageOptions: [],
             educationOptions: [],
             rules: {
@@ -170,12 +200,18 @@ export default {
             this.education.date_start = '2000-01-01'
             this.education.date_finish = '2005-01-01'
         },
+        onChangeStep(stepId){
+            if((stepId+1)<this.page.current){
+                this.page.next=stepId+1
+                this.saveToNext();
+            }
+        },
         saveToNext() {
             if(this.application.educations.length==0){
                 message.error(this.lang.at_least_one_education);
                 return false;
             }
-            this.$inertia.post(route('recruitment.academic.save'), { to_page: 3, application: this.application }, {
+            this.$inertia.post(route('recruitment.academic.save'), { to_page: this.page.next, application: this.application }, {
                 onSuccess: (page) => {
                     console.log(page.data)
                 },
@@ -191,8 +227,40 @@ export default {
         },
         onFinishFailed(){
             message.error(this.lang.error_required_fields);
+        },
+        deleteItem(i){
+            this.$inertia.delete(route('recruitment.academic.delete',{
+                model:'education',
+                recordId:this.application.educations[i].id
+            }),{
+                onSuccess: (page) => {
+                    console.log(page.data)
+                },
+                onError: (err) => {
+                    console.log(err)
+                }
+            });
+        },
+        editItem(i){
+            this.education=this.application.educations[i]
+            this.application.educations.splice(i,1)
         }
     },
+    computed:{
+        validateMessages() {
+            return {
+                required: '${label}' + this.$t('is_required'),
+                types: {
+                    email: this.$t('is_not_email'),
+                    number: '${label} ' + this.$t('is_no_number'),
+                },
+                number: {
+                    //range: '${label} must be between ${min} and ${max}',
+                    range: '${label} ' + this.$t('must_between') + ' ${min} - ${max}',
+                },
+            }
+        },
+    }
 };
 
 </script>

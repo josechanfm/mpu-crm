@@ -175,7 +175,25 @@ class AcademicController extends Controller
             'page'=>$toPage
         ]);
     }
+    public function delete(Request $request){
+        $this->validate($request,[
+            'model' => 'required',
+            'recordId'=>'required',
+        ]);
 
+        switch ($request->model){
+            case 'education': 
+                RecEducation::where('id',$request->recordId)->delete();
+                break;
+            case 'experience' :
+                RecExperience::where('id',$request->recordId)->delete();
+                break;
+            case 'professional' :
+                RecProfessional::where('id',$request->recordId)->delete();
+                break;
+        }
+        return redirect()->back();
+    }
     public function fileUpload(Request $request){
         $data=$request->all();
         if($request->hasFile('file')){

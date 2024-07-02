@@ -1,6 +1,6 @@
 {
     "zh":{
-        "steps":[{"title":"個人資料"},{"title":"學歷"},{"title":"專業資格"},{"title":"工作經驗"},{"title":"文件上載"},{"title":"總覽"},{"title":"支付"},{"title":"已遞交"}],
+        "steps":[{"title":"個人資料"},{"title":"學歷"},{"title":"專業資格"},{"title":"工作經驗"},{"title":"文件上載"},{"title":"總覽"},{"title":"已遞交"},{"title":"支付"}],
         "education_qualifications":          [
             {"value":"1_PRM","label":"小學"},
             {"value":"2_JHS","label":"初中畢業"},
@@ -120,7 +120,7 @@
         "finish":"結束"
     },
     "en":{
-        "steps":[{"title":"Personal Information"},{"title":"Education"},{"title":"Professional Qualifications"},{"title":"Work Experience"},{" title":"File Upload"},{"title":"Summary"},{"title":"Payment"}],
+        "steps":[{"title":"Personal Information"},{"title":"Education"},{"title":"Professional Qualifications"},{"title":"Work Experience"},{"title":"File Upload"},{"title":"Summary"},{"title":"Submitted"},{"title":"Payment"}],
         "education_qualifications":          [
             {"value":"1_PRM","label":"Primary"},
             {"value":"2_JHS","label":"Junior High School"},
@@ -235,7 +235,7 @@
         "finish":"finish"
     },
     "pt":{
-        "steps":[{"title":"Personal Information"},{"title":"Education"},{"title":"Professional Qualifications"},{"title":"Work Experience"},{" title":"File Upload"},{"title":"總覽"},{"title":"Payment"},{"title":"Submitted"},{"title":"Submitted"}],
+        "steps":[{"title":"Personal Information"},{"title":"Education"},{"title":"Professional Qualifications"},{"title":"Work Experience"},{"title":"File Upload"},{"title":"Summary"},{"title":"Submitted"},{"title":"Payment"}],
         "education_qualifications":          [
             {"value":"1_PRM","label":"Primary"},
             {"value":"2_JHS","label":"Junior High School"},

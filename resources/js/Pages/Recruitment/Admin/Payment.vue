@@ -6,7 +6,7 @@
             </h2>
         </template>
         <div class="p-5">
-            <a-steps progress-dot :current="6">
+            <a-steps progress-dot :current="page.current">
                 <a-step v-for="item in lang.steps" :description="item.title" />
             </a-steps>
         </div>
@@ -87,7 +87,12 @@ export default {
             this.page.current = parseInt(urlParams.get('page'))
             this.page.previours = this.page.current - 1
             this.page.next = this.page.current + 1
+        }else{
+            this.page.current=this.lang.steps.length
+            this.page.previours=this.page.current
+            this.page.next=this.page.current
         }
+        console.log(this.page)
     },
     methods: {
         confirmPayment() {

@@ -7,7 +7,7 @@
             </h2>
         </template>
         <div class="p-5">
-            <a-steps  progress-dot :current="this.page.current-1">
+            <a-steps  progress-dot :current="this.page.current-1" @change="onChangeStep">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
@@ -15,7 +15,7 @@
             <a-button @click="sampleData">Sample Data</a-button>
         </template>
         <div class="container bg-white rounded mx-auto p-5">
-            <CardBox :title="lang.file_uploaded">
+            <CardBox :title="lang.part_D">
                 <template #content>
                     
                         <table width="100%">
@@ -339,6 +339,12 @@ export default {
                 this.application.phone = '66778899',
                 this.application.email = 'chantaiman@example.com',
                 this.application.address = 'Somewhere near by..'
+        },
+        onChangeStep(stepId){
+            if((stepId+1)<this.page.current){
+                this.page.next=stepId+1
+                this.saveToNext();
+            }
         },
         saveToNext() {
             const file=this.application.uploads.find((f)=>f.document_type=='doc_id')

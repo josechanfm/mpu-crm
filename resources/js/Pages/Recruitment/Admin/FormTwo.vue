@@ -7,7 +7,7 @@
             </h2>
         </template>
         <div class="p-5">
-            <a-steps  progress-dot :current="this.page.current-1">
+            <a-steps  progress-dot :current="page.current-1" @change="onChangeStep">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
@@ -15,7 +15,7 @@
             <a-button @click="sampleData">Sample Data</a-button>
         </template>
         <div class="container bg-white rounded mx-auto p-5">
-            <CardBox :title="lang.part_A">
+            <CardBox :title="lang.part_A" :subtitle="lang.part_a">
                 <template #content>
                     <div style="overflow:auto">
                         <table class="myTable w-full">
@@ -33,21 +33,43 @@
                             <th>{{ lang.edu_date_start }}</th>
                             <th>{{ lang.edu_date_finish }}</th>
                         </tr>
-                        <template v-for="education in application.educations">
+                        <template v-for="(edu, i) in application.educations">
                             <tr>
-                                <td>{{ education.school_name }}</td>
-                                <td>{{ education.region }}</td>
-                                <td>{{ education.degree }}</td>
-                                <td>{{ education.subject }}</td>
-                                <td>{{ education.language }}</td>
-                                <td>{{ education.date_start }}</td>
-                                <td>{{ education.date_finish }}</td>
+                                <td>{{ edu.school_name }}</td>
+                                <td>{{ edu.region }}</td>
+                                <td>{{ edu.degree }}</td>
+                                <td>{{ edu.subject }}</td>
+                                <td>{{ edu.language }}</td>
+                                <td>{{ edu.date_start }}</td>
+                                <td>{{ edu.date_finish }}</td>
+                                <td>
+                                    <a-popconfirm
+                                        :title="lang.delete_confirm"
+                                        :ok-text="lang.yes"
+                                        :cancel-text="lang.no"
+                                        @confirm="deleteItem(i)"
+                                    >
+                                        <span class="text-red-500">
+                                        <CloseSquareOutlined />
+                                        </span>
+                                    </a-popconfirm>
+                                    <span class="text-green-500 pl-2" @click="editItem(i)">
+                                        <FormOutlined />
+                                    </span>
+                                </td>
                             </tr>
                         </template>
                     </table>
                 </div>
                     <a-divider />
-                    <a-form :model="education" layout="vertical" :rules="rules" @finish="onFinish" @finishFailed="onFinishFailed">
+                    <a-form 
+                        :model="education" 
+                        layout="vertical" 
+                        :rules="rules" 
+                        :validate-messages="validateMessages"
+                        @finish="onFinish" 
+                        @finishFailed="onFinishFailed"
+                    >
                         <a-row :gutter="10">
                             <a-col :span="16">
                                 <a-form-item :label="lang.edu_school_name" name="school_name">
@@ -117,14 +139,14 @@ import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
 import recLang  from '/lang/recruitment_admin.json';
 import { message } from 'ant-design-vue';
-import axios from 'axios';
-import { Modal } from 'ant-design-vue';
+import { CloseSquareOutlined,FormOutlined } from '@ant-design/icons-vue';
 
 export default {
     components: {
         MemberLayout,
         CaretRightOutlined,
-        CardBox
+        CardBox,
+        CloseSquareOutlined,FormOutlined
     },
     props: ['vacancy', 'application'],
     data() {
@@ -150,12 +172,6 @@ export default {
     },
     created() {
         this.lang = recLang[this.$page.props.lang]
-        // axios.get(route('api.config.item',{key:'rec_educations'})).then(resp=>{
-        //     this.educationOptions=resp.data.value.map(item=> {return {
-        //         value:item.value,
-        //         label:item['label_'+this.$page.props.lang]
-        //     }})
-        // })
     },
     mounted() {
         let urlParams = new URLSearchParams(window.location.search);
@@ -175,6 +191,12 @@ export default {
             this.education.language = 'CAN'
             this.education.date_start = '2000-01-01'
             this.education.date_finish = '2005-01-01'
+        },
+        onChangeStep(stepId){
+            if((stepId+1)<this.page.current){
+                this.page.next=stepId+1
+                this.saveToNext();
+            }
         },
         saveToNext() {
             if(this.application.educations.length==0){
@@ -197,8 +219,30 @@ export default {
         },
         onFinishFailed(){
             message.error(this.lang.error_required_fields);
+        },
+        deleteItem(i){
+            this.application.educations.splice(i,1)
+        },
+        editItem(i){
+            this.education=this.application.educations[i]
+            this.application.educations.splice(i,1)
         }
     },
+    computed:{
+        validateMessages() {
+            return {
+                required: '${label}' + this.$t('is_required'),
+                types: {
+                    email: this.$t('is_not_email'),
+                    number: '${label} ' + this.$t('is_no_number'),
+                },
+                number: {
+                    //range: '${label} must be between ${min} and ${max}',
+                    range: '${label} ' + this.$t('must_between') + ' ${min} - ${max}',
+                },
+            }
+        },
+    }
 };
 
 </script>

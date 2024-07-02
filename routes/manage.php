@@ -120,6 +120,7 @@ Route::middleware([
         Route::get('/gpdps/emails',[App\Http\Controllers\Department\Personnel\GpdpController::class,'listEmails'])->name('personnel.gpdps.emails');
         Route::resource('/gpdps',App\Http\Controllers\Department\Personnel\GpdpController::class)->names('personnel.gpdps');
         Route::post('/gpdp/{gpdp}/sendEmailReminder',[App\Http\Controllers\Department\Personnel\GpdpController::class,'sendEmailReminder'])->name('personnel.gpdp.sendEmailReminder');
+        Route::get('/recruitment',[App\Http\Controllers\Department\Personnel\Recruitment\DashboardController::class,'index'])->name('personnel.recruitment.dashboard');
         Route::resource('/recruitment/workflows',App\Http\Controllers\Department\Personnel\Recruitment\WorkflowController::class)->names('personnel.recruitment.workflows');
         Route::resource('/recruitment/tasks',App\Http\Controllers\Department\Personnel\Recruitment\TaskController::class)->names('personnel.recruitment.tasks');
         Route::resource('/recruitment/{workflow}/activities',App\Http\Controllers\Department\Personnel\Recruitment\ActivityController::class)->names('personnel.recruitment.activities');
@@ -134,4 +135,18 @@ Route::middleware([
         Route::get('/recruitment/application/check_email',[App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class,'checkEmail'])->name('personnel.recruitment.application.checkEmail');
     });
 });
+
+
+Route::middleware([
+    'auth:admin_web',
+    config('jetstream.auth_session'),
+    'role:FLT',
+    'checkIneternalIP'
+])->group(function () {
+    Route::prefix('/flt')->group(function(){
+        Route::resource('/publications',App\Http\Controllers\Department\Flt\PublicationController::class)->names('flt.publications'); 
+    });
+});
+
+
 

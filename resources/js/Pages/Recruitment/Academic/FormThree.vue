@@ -7,7 +7,7 @@
             </h2>
         </template>
         <div class="p-5">
-            <a-steps  progress-dot :current="this.page.current-1">
+            <a-steps  progress-dot :current="this.page.current-1" @change="onChangeStep">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
@@ -15,7 +15,7 @@
             <a-button @click="sampleData">Sample Data</a-button>
         </template>
         <div class="container bg-white rounded mx-auto p-5">
-            <CardBox :title="lang.part_b">
+            <CardBox :title="lang.part_B" :subtitle="lang.part_b">
                 <template #content>
                     <table class="myTable" width="100%">
                         <tr>
@@ -31,7 +31,7 @@
                             <th>{{ lang.prof_date_valid }}</th>
                             <th>{{ lang.prof_date_expire }}</th>
                         </tr>
-                        <template v-for="professional in application.professionals">
+                        <template v-for="(professional,i) in application.professionals">
                             <tr>
                                 <td>{{ professional.organization_name }}</td>
                                 <td>{{ professional.region }}</td>
@@ -39,13 +39,34 @@
                                 <td>{{ professional.area }}</td>
                                 <td>{{ professional.date_valid }}</td>
                                 <td>{{ professional.date_expire }}</td>
-                                <td>a</td>
+                                <td>
+                                    <a-popconfirm
+                                        :title="lang.delete_confirm"
+                                        :ok-text="lang.yes"
+                                        :cancel-text="lang.no"
+                                        @confirm="deleteItem(i)"
+                                    >
+                                        <span class="text-red-500">
+                                            <CloseSquareOutlined />
+                                        </span>
+                                    </a-popconfirm>
+                                    <span class="text-green-500 pl-2" @click="editItem(i)">
+                                        <FormOutlined />
+                                    </span>
+                                </td>
                             </tr>
                         </template>
 
                     </table>
                     <a-divider />
-                    <a-form :model="professional" layout="vertical" :rules="rules" @finish="onFinish" @finishFailed="onFinishFailed">
+                    <a-form 
+                        :model="professional" 
+                        layout="vertical" 
+                        :rules="rules" 
+                        :validate-messages="validateMessages"
+                        @finish="onFinish" 
+                        @finishFailed="onFinishFailed"
+                    >
                         <a-row :gutter="10">
                             <a-col :span="16">
                                 <a-form-item :label="lang.prof_organization_name" name="organization_name">
@@ -73,14 +94,22 @@
                         <a-row :gutter="10">
                             <a-col :span="12">
                                 <a-form-item :label="lang.prof_date_valid" name="date_valid">
-                                    <a-date-picker v-model:value="professional.date_valid" :format="dateFormat"
-                                        :valueFormat="dateFormat" />
+                                    <a-date-picker 
+                                        v-model:value="professional.date_valid" 
+                                        :format="dateFormat"
+                                        :valueFormat="dateFormat" 
+                                         picker="month"
+                                    />
                                 </a-form-item>
                             </a-col>
                             <a-col :span="12">
                                 <a-form-item :label="lang.prof_date_expire">
-                                    <a-date-picker v-model:value="professional.date_expire" :format="dateFormat"
-                                        :valueFormat="dateFormat" />
+                                    <a-date-picker 
+                                        v-model:value="professional.date_expire" 
+                                        :format="dateFormat"
+                                        :valueFormat="dateFormat" 
+                                         picker="month"
+                                    />
                                 </a-form-item>
                             </a-col>
                         </a-row>
@@ -105,19 +134,21 @@ import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
 import recLang  from '/lang/recruitment_academic.json';
 import { message } from 'ant-design-vue';
+import { CloseSquareOutlined,FormOutlined } from '@ant-design/icons-vue';
 
 export default {
     components: {
         MemberLayout,
         CaretRightOutlined,
-        CardBox
+        CardBox,
+        CloseSquareOutlined,FormOutlined
     },
     props: ['vacancy', 'application'],
     data() {
         return {
             page: {},
             professional: {},
-            dateFormat: 'YYYY-MM-DD',
+            dateFormat: 'YYYY-MM',
             rules: {
                 organization_name: { required: true },
                 region: { required: true },
@@ -149,8 +180,11 @@ export default {
             this.professional.date_valid = '2020-01-01'
             this.professional.date_expire = '2022-01-01'
         },
-        saveToNext() {
-            this.onFinish();
+        onChangeStep(stepId){
+            if((stepId+1)<this.page.current){
+                this.page.next=stepId+1
+                this.saveToNext();
+            }
         },
         saveToNext() {
             console.log(this.currentPage);
@@ -170,8 +204,40 @@ export default {
         },
         onFinishFailed(){
             message.error(this.lang.error_required_fields);
+        },
+        deleteItem(i){
+            this.$inertia.delete(route('recruitment.academic.delete',{
+                model:'professional',
+                recordId:this.application.professionals[i].id
+            }),{
+                onSuccess: (page) => {
+                    console.log(page.data)
+                },
+                onError: (err) => {
+                    console.log(err)
+                }
+            });
+        },
+        editItem(i){
+            this.professional=this.application.professionals[i]
+            this.application.professionals.splice(i,1)
         }
     },
+    computed:{
+        validateMessages() {
+            return {
+                required: '${label}' + this.$t('is_required'),
+                types: {
+                    email: this.$t('is_not_email'),
+                    number: '${label} ' + this.$t('is_no_number'),
+                },
+                number: {
+                    //range: '${label} must be between ${min} and ${max}',
+                    range: '${label} ' + this.$t('must_between') + ' ${min} - ${max}',
+                },
+            }
+        },
+    }
 };
 
 </script>

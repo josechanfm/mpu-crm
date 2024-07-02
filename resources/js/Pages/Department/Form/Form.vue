@@ -93,9 +93,9 @@
                 >
             </a-form-item>
             <a-form-item label="Banner Image" name="banner_image">
-                <div v-if="form.media.length">
+                <div v-if="moda.data.cover">
                     <inertia-link
-                    :href="route('manage.form.deleteMedia', form.media[0].id)"
+                    :href="route('manage.form.deleteMedia', modal.data.id)"
                     class="float-right text-red-500"
                     >
                     <svg
@@ -113,7 +113,7 @@
                         ></path>
                     </svg>
                     </inertia-link>
-                    <img :src="form.media[0].preview_url" width="100" />
+                    <img :src="modal.data.cover" width="100" />
                 </div>
                 <div v-else>
                     <a-upload

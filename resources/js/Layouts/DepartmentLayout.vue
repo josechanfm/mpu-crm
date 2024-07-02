@@ -99,7 +99,6 @@ import {
     MenuFoldOutlined,
 } from '@ant-design/icons-vue';
 
-
 defineProps({
     title: String,
     department: Object,
@@ -114,6 +113,7 @@ const menuKeys = reactive({
 const showingNavigationDropdown = ref(false);
 const selectedKeys = ref(['1']);
 const collapsed = ref(false);
+
 
 const switchToTeam = (team) => {
     Inertia.put(route('current-team.update'), {

@@ -7,7 +7,7 @@
             </h2>
         </template>
         <div class="p-5">
-            <a-steps  progress-dot :current="this.page.current-1">
+            <a-steps ref="refSteps" progress-dot :current="page.current-1" @change="onChangeStep">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
@@ -35,7 +35,7 @@
                                 {{ lang.personal_info }}
                                 <a-button v-if="!application.submitted"
                                     :href="route('recruitment.admin.apply', { 'code': vacancy.code, 'page': 1 })"
-                                    class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
+                                    class="ant-btn ant-btn-primary float-right ml-5">{{ lang.edit }}</a-button>
                                 <div class="float-right">{{ lang.part_aca_a }}</div>
                             </th>
                         </tr>
@@ -97,7 +97,7 @@
                                 {{ lang.educations }}
                                 <a-button v-if="!application.submitted"
                                     :href="route('recruitment.admin.apply', { 'code': vacancy.code, 'page': 2 })"
-                                    class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
+                                    class="ant-btn ant-btn-primary float-right ml-5">{{ lang.edit }}</a-button>
                                 <div class="float-right">{{ lang.part_aca_b }}</div>
                             </th>
                         </tr>
@@ -132,7 +132,7 @@
                                 {{ lang.professional }}
                                 <a-button v-if="!application.submitted"
                                     :href="route('recruitment.admin.apply', { 'code': vacancy.code, 'page': 3 })"
-                                    class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
+                                    class="ant-btn ant-btn-primary float-right ml-5">{{ lang.edit }}</a-button>
                                 <div class="float-right">{{ lang.part_aca_c }}</div>
                             </th>
                         </tr>
@@ -146,7 +146,7 @@
                             <th>{{ lang.prof_organization_name }}</th>
                             <th>{{ lang.prof_region }}</th>
                             <th>{{ lang.prof_date_valid }}</th>
-                            <th>{{ lang.prof_date_expired }}</th>
+                            <th>{{ lang.prof_date_expire }}</th>
                         </tr>
                         <template v-for="professional in application.professionals">
                             <tr>
@@ -155,7 +155,7 @@
                                 <td>{{ professional.qualification }}</td>
                                 <td>{{ professional.area }}</td>
                                 <td>{{ professional.date_valid }}</td>
-                                <td>{{ professional.date_expired }}</td>
+                                <td>{{ professional.date_expire }}</td>
                             </tr>
                         </template>
                     </table>
@@ -166,7 +166,7 @@
                                 {{ lang.experiences }}
                                 <a-button v-if="!application.submitted"
                                     :href="route('recruitment.admin.apply', { 'code': vacancy.code, 'page': 4 })"
-                                    class="ant-btn ant-btn-primary float-right ml-5">Edit</a-button>
+                                    class="ant-btn ant-btn-primary float-right ml-5">{{ lang.edit }}</a-button>
                                 <div class="float-right">{{ lang.part_aca_d }}</div>
                             </th>
                         </tr>
@@ -277,32 +277,22 @@
                             </td>
                         </tr>
                     </table>
-                    <div class="text-center">
+                    <div class="text-center pt-5">
                         <a-form :model="application">
                             <a-form-item>
-                                <template v-if="application.submitted">
-                                    <inertia-link 
-                                        v-if="application.paid"
-                                        :href="route('recruitment.admin.receipt',{application_id:application.id,uuid:application.uuid})" 
-                                        class="ant-btn ant-btn-primary ant-btn-primary mt-5"
-                                    >
-                                        {{ lang.receipt }}
-                                    </inertia-link>
-                                    <inertia-link 
-                                        v-else
-                                        :href="route('recruitment.admin.payment',{application_id:application.id,uuid:application.uuid})" 
-                                        class="ant-btn ant-btn-primary ant-btn-dangerous mt-5"
-                                    >
-                                        {{lang.pay}}
-                                    </inertia-link>
+                                <template v-if="application.rec_payment_id">
+                                    <a :href="route('recruitment.admin.receipt',{application_id:application.id,uuid:application.uuid})" class="ant-btn ant-btn-primary ant-btn-primary mt-5" target="_blank">{{lang.receipt}}</a>
+                                </template>
+                                <template v-else-if="application.submitted">
+                                    <inertia-link :href="route('recruitment.admin.payment',{application_id:application.id,uuid:application.uuid})" class="ant-btn ant-btn-danger">{{ lang.pay }}</inertia-link>
                                 </template>
                                 <template v-else>
                                     <a :href="route('recruitment.admin.apply', { code: vacancy.code, page: this.page.previours })" 
                                         class="bg-amber-500 text-white p-2 rounded-sm m-5">{{ lang.back_no_save }}</a>
                                     <a-popconfirm
                                         :title="lang.submit_confirmed"
-                                        :ok-text="lang.confirmed"
-                                        :cancel-text="lang.cancel"
+                                        :ok-text="lang.yes"
+                                        :cancel-text="lang.no"
                                         @confirm="confirmSubmit"
                                     >
                                         <a-button type="primary" class="mt-5">{{ lang.submit }}</a-button>
@@ -369,14 +359,27 @@ export default {
             this.page.previours = this.page.current - 1
             this.page.next = this.page.current + 1
         }
-        
-        if(this.application.paid){
-            this.page.current=this.lang.steps.length
-        }else if(this.application.submitted){
+        if(this.application.submitted){
             this.page.current=this.lang.steps.length-1
+        }
+        if(this.application.rec_payment_id!=null){
+            this.page.current=this.lang.steps.length
         }
     },
     methods: {
+        onChangeStep(stepId){
+            if((stepId+1)<this.page.current && this.application.submitted!=true){
+                this.page.next=stepId+1
+                this.$inertia.get(route('recruitment.admin.apply',{ code:this.vacancy.code, page: this.page.next }), {
+                    onSuccess: (page) => {
+                        console.log(page.data)
+                    },
+                    onError: (err) => {
+                        console.log(err)
+                    }
+                });
+            }
+        },
         confirmSubmit(){
             this.$inertia.post(route('recruitment.admin.submit'), { to_page: 7, application: this.application }, {
                 onSuccess: (page) => {
@@ -388,12 +391,13 @@ export default {
             });
         },
         optionItem(options, value){
-            let option=options.find(o=>o.value==value)
-            if(option){
-                return option.label
-            }else{
-                return null;
-            }
+            console.log(options);
+                let option=options.find(o=>o.value==value)
+                if(option){
+                    return option.label
+                }else{
+                    return null;
+                }
         },
         getFileList(documentType){
             let files=this.application.uploads.filter(f=>f.document_type==documentType)

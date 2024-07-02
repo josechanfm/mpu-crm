@@ -40,6 +40,7 @@ class CheckIneternalIP
         $realIP=$this->getRealClientIP($ip);
 
         $privateIPBlocks=[
+            '127.0.0.1',
             '172.16.',
             '172.13.',
             '172.14.',
