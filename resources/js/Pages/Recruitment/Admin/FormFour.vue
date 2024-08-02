@@ -7,7 +7,7 @@
             </h2>
         </template>
         <div class="p-5">
-            <a-steps  progress-dot :current="this.page.current-1">
+            <a-steps  progress-dot :current="page.current-1" @change="onChangeStep">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
@@ -15,7 +15,7 @@
             <a-button @click="sampleData">Sample Data</a-button>
         </template>
         <div class="container bg-white rounded mx-auto p-5">
-            <CardBox :title="lang.experiences">
+            <CardBox :title="lang.part_C" :subtitle="lang.part_c">
                 <template #content>
                     <table width="100%">
                         <tr>
@@ -32,22 +32,43 @@
                             <th>{{ lang.exp_date_join }}</th>
                             <th>{{ lang.exp_date_leave }}</th>
                         </tr>
-                        <template v-for="experience in application.experiences">
+                        <template v-for="(exp, i) in application.experiences">
                             <tr>
-                                <td>{{ experience.company_name }}</td>
-                                <td>{{ experience.region }}</td>
-                                <td>{{ experience.position }}</td>
-                                <td>{{ experience.salary }}</td>
-                                <td>{{ experience.employment }}</td>
-                                <td>{{ experience.date_join }}</td>
-                                <td>{{ experience.date_leave }}</td>
-                                <td>a</td>
+                                <td>{{ exp.company_name }}</td>
+                                <td>{{ exp.region }}</td>
+                                <td>{{ exp.position }}</td>
+                                <td>{{ exp.salary }}</td>
+                                <td>{{ exp.employment }}</td>
+                                <td>{{ exp.date_join }}</td>
+                                <td>{{ exp.date_leave }}</td>
+                                <td>
+                                    <a-popconfirm
+                                        :title="lang.delete_confirm"
+                                        :ok-text="lang.yes"
+                                        :cancel-text="lang.no"
+                                        @confirm="deleteItem(i)"
+                                    >
+                                        <span class="text-red-500">
+                                            <CloseSquareOutlined />
+                                        </span>
+                                    </a-popconfirm>
+                                    <span class="text-green-500 pl-2" @click="editItem(i)">
+                                        <FormOutlined />
+                                    </span>
+                                </td>
                             </tr>
 
                         </template>
                     </table>
                     <a-divider />
-                    <a-form :model="experience" layout="vertical" :rules="rules" @finish="onFinish" @finishFailed="onFinishFailed">
+                    <a-form 
+                        :model="experience" 
+                        layout="vertical" 
+                        :rules="rules" 
+                        :validate-messages="validateMessages"
+                        @finish="onFinish" 
+                        @finishFailed="onFinishFailed"
+                    >
                         <a-row :gutter="10">
                             <a-col :span="16">
                                 <a-form-item :label="lang.exp_company_name" name="company_name">
@@ -112,12 +133,14 @@ import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
 import recLang  from '/lang/recruitment_admin.json';
 import { message } from 'ant-design-vue';
+import { CloseSquareOutlined,FormOutlined } from '@ant-design/icons-vue';
 
 export default {
     components: {
         MemberLayout,
         CaretRightOutlined,
-        CardBox
+        CardBox,
+        CloseSquareOutlined,FormOutlined
     },
     props: ['vacancy', 'application'],
     data() {
@@ -168,8 +191,11 @@ export default {
             this.experience.date_join = '2020-01-01'
             this.experience.date_leave = '2022-01-01'
         },
-        saveToNext() {
-            this.onFinish();
+        onChangeStep(stepId){
+            if((stepId+1)<this.page.current){
+                this.page.next=stepId+1
+                this.saveToNext();
+            }
         },
         saveToNext() {
             console.log(this.currentPage);
@@ -189,8 +215,31 @@ export default {
         },
         onFinishFailed(){
             message.error(this.lang.error_required_fields);
+        },
+        deleteItem(i){
+            this.application.experiences.splice(i,1)
+        },
+        editItem(i){
+            this.experience=this.application.experiences[i]
+            this.application.experiences.splice(i,1)
         }
     },
+    computed:{
+        validateMessages() {
+            return {
+                required: '${label}' + this.$t('is_required'),
+                types: {
+                    email: this.$t('is_not_email'),
+                    number: '${label} ' + this.$t('is_no_number'),
+                },
+                number: {
+                    //range: '${label} must be between ${min} and ${max}',
+                    range: '${label} ' + this.$t('must_between') + ' ${min} - ${max}',
+                },
+            }
+        },
+    }
+
 };
 
 </script>

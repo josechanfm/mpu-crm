@@ -14,9 +14,14 @@
         <template v-if="$page.props.env == 'local'">
             <a-button @click="sampleData">Sample Data</a-button>
         </template>
-
         <div class="container bg-white rounded mx-auto p-5">
-            <a-form :model="application" layout="vertical" :rules="rules" @finish="onFinish" @finishFailed="onFinishFailed">
+            <a-form 
+                :model="application" layout="vertical" 
+                :rules="rules" 
+                :validate-messages="validateMessages"
+                @finish="onFinish" 
+                @finishFailed="onFinishFailed"
+            >
                 <CardBox :title="$t('rec.position_info')">
                     <template #content>
                         <a-row>
@@ -52,7 +57,6 @@
                         </a-row>
                     </template>
                 </CardBox>
-
                 <CardBox :title="lang.notice_title" themeColor="amber-500">
                     <template #content>
                         <div class="pl-5 pr-3">
@@ -98,7 +102,9 @@
                                             <a-radio :value="key">{{ item }}</a-radio>
                                         </template>
                                     </a-radio-group>
+                                    <a-input v-if="application.pob=='OT'" v-model:value="application.pob_oth" style="width:200px"/>
                                 </a-form-item>
+                                
                             </a-col>
                             <a-col :span="8">
                                 <a-form-item :label="lang.dob" name="dob">
@@ -110,7 +116,7 @@
                             <a-col :span="12">
                                 <a-form-item :label="lang.id_type" name="id_type">
                                     <a-select v-model:value="application.id_type">
-                                        <template v-for="(item, key) in $t('rec.id_type_options')">
+                                        <template v-for="(item, key) in lang.id_type_options">
                                             <a-select-option :value="key">{{ item }}</a-select-option>
                                         </template>
                                     </a-select>
@@ -125,10 +131,11 @@
                         <a-row :gutter="12">
                             <a-col :span="12">
                                 <a-form-item :label="lang.id_num" name="id_num">
+                                    <a-input v-model:value="application.id_num" />
                                     <div class="custom-label float-right">
                                         {{ lang.id_required_copy }}
                                     </div>
-                                    <a-input v-model:value="application.id_num" />
+
                                 </a-form-item>
                             </a-col>
                             <a-col :span="12">
@@ -137,8 +144,8 @@
                                         <template v-for="(item, key) in lang.nationality_options">
                                             <a-radio :value="key">{{ item }}</a-radio>
                                         </template>
+                                        <a-input v-if="application.nationality=='OT'" v-model:value="application.nationality_oth" style="width:200px"/>
                                     </a-radio-group>
-
                                 </a-form-item>
                             </a-col>
                         </a-row>
@@ -172,18 +179,17 @@
                     <a-button type="primary" html-type="submit">{{ lang.save_next }}</a-button>
                 </a-form-item>
             </a-form>
-        </div>  
+        </div>
     </MemberLayout>
 </template>
 
 <script>
 import MemberLayout from '@/Layouts/MemberLayout.vue';
 import CardBox from '@/Components/CardBox.vue';
-import { CaretRightOutlined } from '@ant-design/icons-vue';
+import { CaretRightOutlined, TranslationOutlined } from '@ant-design/icons-vue';
 import recLang  from '/lang/recruitment_admin.json';
 import { message,Modal} from 'ant-design-vue';
-import { ref, createVNode } from 'vue';
-import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
+import { computed } from 'vue';
 
 export default {
     components: {
@@ -196,19 +202,53 @@ export default {
         return {
             page: {},
             rules: {
-                name_full_zh: { required: true },
+                name_full_zh: { 
+                    required: true,
+                    validator: ((_rule, value)=>{
+                        return new Promise((resolve,reject)=>{
+                            const chineseRegex = /^[\u4e00-\u9fa5]+$/;
+                            if (value!=null && value!='' && !chineseRegex.test(value)) {
+                                reject(this.lang.is_required);
+                            } else {
+                                resolve();
+                            }
+                        })
+                    })
+                },
                 name_family_fn: { required: true },
                 name_given_fn: { required: true },
                 gender: { required: true },
-                pob: { required: true },
+                pob: { 
+                    required: true, 
+                    validator: ((_rule, value) => {
+                        return new Promise((resolve, reject)=>{
+                            if (value==='OT' && (this.application.pob_oth===null || this.application.pob_oth==='')) {
+                                reject(this.lang.pob+this.$t('is_required'));
+                            }else{
+                                resolve();
+                            } 
+                        })
+                    }),
+                },
                 pob_oth: { required: true },
                 dob: { required: true },
                 id_type: { required: true },
                 id_type_name: { required: true },
                 id_num: { required: true },
-                nationality: { required: true },
+                nationality: { 
+                    required: true,
+                    validator: ((_rule, value) => {
+                        return new Promise((resolve, reject)=>{
+                            if (value==='OT' && (this.application.nationality_oth===null || this.application.nationality_oth==='')) {
+                                reject(this.lang.nationality+this.$t('is_required'));
+                            }else{
+                                resolve();
+                            } 
+                        })
+                    }),
+                },
                 phone: { required: true },
-                email: { required: true },
+                email: { required: true, type:'email' },
             },
             activeTag: '1',
             activeCollapse: null,
@@ -246,6 +286,10 @@ export default {
                 this.application.email = 'chantaiman@example.com',
                 this.application.address = 'Somewhere near by..'
         },
+        handlePobValidate(rule, value, callback){
+            console.log(rule)
+            console.log(value)
+        },
         onFinish() {
             this.$inertia.post(route('recruitment.admin.save'), { to_page: 2, application: this.application }, {
                 onSuccess: (page) => {
@@ -260,6 +304,21 @@ export default {
             message.error(this.lang.error_required_fields);
         },
     },
+    computed:{
+        validateMessages() {
+            return {
+                required: '${label}' + this.$t('is_required'),
+                types: {
+                    email: this.$t('is_not_email'),
+                    number: '${label} ' + this.$t('is_no_number'),
+                },
+                number: {
+                    //range: '${label} must be between ${min} and ${max}',
+                    range: '${label} ' + this.$t('must_between') + ' ${min} - ${max}',
+                },
+            }
+        },
+    }
 };
 
 </script>

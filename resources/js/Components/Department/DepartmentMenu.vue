@@ -57,6 +57,11 @@
           <MailOutlined />
         </template>
         <template #title>職位招聘</template>
+        <!-- <a-menu-item key="recruitment_0">
+          <a href="https://jupiter.ipm.edu.mo/wms/personnel/workflows">
+            標準流程
+          </a>
+        </a-menu-item> -->
         <a-menu-item key="recruitment_1">
           <inertia-link :href="route('personnel.recruitment.tasks.index')">
             標準流程

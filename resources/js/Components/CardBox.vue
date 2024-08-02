@@ -2,6 +2,7 @@
 <div :class="`border border-${color} rounded-lg mt-5`">
     <h1 :class="`bg-${color} text-white p-4 rounded-t-lg text-lg`">
         {{title}}
+        <div class="float-right">{{ subtitle }}</div>
     </h1>
     <div class="p-4">
         <slot name="content" />
@@ -13,6 +14,7 @@
 export default {
     props:[
         'title',
+        'subtitle',
         'themeColor'
     ],
     data() {

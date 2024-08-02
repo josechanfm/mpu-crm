@@ -105,6 +105,7 @@ Route::prefix('/recruitment')->group(function(){
         Route::get('apply',[\App\Http\Controllers\Recruitment\AcademicController::class,'apply'])->name('recruitment.academic.apply');
         Route::post('save',[\App\Http\Controllers\Recruitment\AcademicController::class,'save'])->name('recruitment.academic.save');
         Route::post('submit',[\App\Http\Controllers\Recruitment\AcademicController::class,'submit'])->name('recruitment.academic.submit');
+        Route::delete('delete',[\App\Http\Controllers\Recruitment\AcademicController::class,'delete'])->name('recruitment.academic.delete');
         Route::post('file_upload',[\App\Http\Controllers\Recruitment\AcademicController::class,'fileUpload'])->name('recruitment.academic.fileUpload');
         Route::delete('file_delete/{rec_upload}',[\App\Http\Controllers\Recruitment\AcademicController::class,'fileDelete'])->name('recruitment.academic.fileDelete');
         Route::get('success',[\App\Http\Controllers\Recruitment\AcademicController::class,'success'])->name('recruitment.academic.success');

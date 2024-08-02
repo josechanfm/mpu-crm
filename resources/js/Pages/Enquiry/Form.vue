@@ -22,7 +22,6 @@
                 </div>
                 <a-form ref="refEnquiry" name="enquiry" 
                     :model="enquiry" 
-                    
                     layout="vertical"
                     @finish="onFinish">
                     <a-typography-title :level="3" class="pb-0">{{ $t('enquiry.welcome_title') }}</a-typography-title>

@@ -23,14 +23,10 @@
             </div>
         </div>
         <form method="post" action="https://epay.mpu.edu.mo/bocpaytest/ipm/cashier">
-            <div v-for="(value, field) in payment" hidden>
-                <input :name="field" :value="payment[field]" /><br>
-            </div>
             <div class="text-center">
                 <template v-if="application.submitted">
                     <a :href="route('recruitment.academic.receipt', { application_id: application.id, uuid:application.uuid})"
-                        class="ant-btn ant-btn-primary ant-btn-primary mt-5" target="_blank">{{lang.receipt}}
-                        receipt</a>
+                        class="ant-btn ant-btn-primary ant-btn-primary mt-5" target="_blank">{{lang.receipt}}</a>
                 </template>
             </div>
         </form>

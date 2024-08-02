@@ -6,7 +6,7 @@
             </h2>
         </template>
         <a-button @click="createRecord" type="primary">Create</a-button>
-        <a-table :dataSource="helps" :columns="columns">
+        <a-table :dataSource="helps.data" :columns="columns" :pagination="pagination" @change="onPaginationChange">
             <template #bodyCell="{column, text, record, index}">
                 <template v-if="column.dataIndex == 'operation'">
                     <a-button @click="editRecord(record)">Edit</a-button>
@@ -14,7 +14,6 @@
                 <template v-else>
                     {{record[column.dataIndex]}}
                 </template>
-                
             </template>
         </a-table>
 
@@ -31,7 +30,10 @@
                     <a-input v-model:value="modal.data.title"/>
                 </a-form-item>
                 <a-form-item label="Content" name="content" :rules="[{required:true}]">
-                    <a-textarea v-model:value="modal.data.content" :rows="20" placeholder="textarea with clear icon" allow-clear />
+                    <quill-editor
+                        v-model:value="modal.data.content"
+                        style="min-height: 200px"
+                    />
                 </a-form-item>
             </a-form>
             <!-- <template #footer>
@@ -61,6 +63,14 @@ export default {
     data() {
         return {
             dateFormat:'YYYY-MM-DD',
+            pagination: {
+                total: this.helps.total,
+                current: this.helps.current_page,
+                pageSize: this.helps.per_page,
+                defaultPageSize:40,
+                showSizeChanger:true,
+                pageSizeOptions:['10','20','30','40','50']
+            },
             modal: {
                 mode: null,
                 isOpen: false,
@@ -87,6 +97,24 @@ export default {
     },
 
     methods: {
+        onPaginationChange(page, filters, sorter) {
+            console.log(page)
+            this.$inertia.get(
+                route("master.helps.index"),
+                {
+                    page: page.current,
+                    per_page: page.pageSize,
+                },
+                {
+                onSuccess: (page) => {
+                    console.log(page);
+                },
+                onError: (error) => {
+                    console.log(error);
+                },
+                }
+            );
+        },
         closeModal() {
             this.isOpen = false;
             this.reset();

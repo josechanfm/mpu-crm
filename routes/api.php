@@ -43,5 +43,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('publications',[\App\Http\Controllers\Api\PublicationController::class,'get'])->name('publication.get');
+
 
 

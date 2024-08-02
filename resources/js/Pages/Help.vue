@@ -25,7 +25,8 @@ const markdown = (content) => {
 
         <div>
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <div id="pure-html" v-html="markdown(help.content)"/>
+                <div id="pure-html" v-html="help.content"/>
+                <!-- <div id="pure-html" v-html="markdown(help.content)"/> -->
             </div>
         </div>
     </BlankLayout>
