@@ -93,51 +93,49 @@
                 >
             </a-form-item>
             <a-form-item label="Banner Image" name="banner_image">
-                <div v-if="moda.data.cover">
-                    <inertia-link
-                    :href="route('manage.form.deleteMedia', modal.data.id)"
-                    class="float-right text-red-500"
-                    >
-                    <svg
-                        focusable="false"
-                        class=""
-                        data-icon="delete"
-                        width="1em"
-                        height="1em"
-                        fill="currentColor"
-                        aria-hidden="true"
-                        viewBox="64 64 896 896"
-                    >
-                        <path
-                        d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z"
-                        ></path>
-                    </svg>
-                    </inertia-link>
-                    <img :src="modal.data.cover" width="100" />
-                </div>
-                <div v-else>
-                    <a-upload
-                    v-model:file-list="form.image"
+              <div class="flex gap-5">
+                  <div>
+                    <img :src="form.banner_url" width="100"/>
+                  </div>
+                  <a-upload
+                    v-model:file-list="form.banner_image"
                     :multiple="false"
                     :max-count="1"
+                    :accept="'image/*'"
                     list-type="picture-card"
-                    :beforeUpload="
-                        () => {
-                        return false;
-                        }
-                    "
-                    :show-upload-list="false"
-                    @change="uploadChange"
+                    @change="handleBannerUpload"
                     >
-                    <img v-if="imageUrl" :src="imageUrl" alt="banner" />
-                    <div v-else>
-                        <loading-outlined v-if="loading"></loading-outlined>
-                        <plus-outlined v-else></plus-outlined>
+                    <!--before upload preview-->
+                    <div v-if="!form.banner_image">
+                        <plus-outlined></plus-outlined>
                         <div class="ant-upload-text">Upload</div>
                     </div>
-                    </a-upload>
-                </div>
+                  </a-upload>
+              </div>
             </a-form-item>
+
+            <a-form-item label="Thumb Image" name="thumb_image">
+              <div class="flex gap-5">
+                  <div>
+                    <img :src="form.thumb_url" width="100"/>
+                  </div>
+                  <a-upload
+                    v-model:file-list="form.thumb_image"
+                    :multiple="false"
+                    :max-count="1"
+                    :accept="'image/*'"
+                    list-type="picture-card"
+                    @change="handleThumbUpload"
+                    >
+                    <!--before upload preview-->
+                    <div v-if="!form.thumb_image">
+                        <plus-outlined></plus-outlined>
+                        <div class="ant-upload-text">Upload</div>
+                    </div>
+                  </a-upload>
+              </div>
+            </a-form-item>
+
             <a-form-item :wrapper-col="{ offset: 12, span: 10 }">
                 <a-button type="primary" html-type="submit">Submit</a-button>
             </a-form-item>
@@ -154,6 +152,7 @@ import {
   UploadOutlined,
   LoadingOutlined,
   PlusOutlined,
+  DeleteOutlined,
   InfoCircleFilled,
 } from "@ant-design/icons-vue";
 import Icon, { RestFilled } from "@ant-design/icons-vue";
@@ -166,6 +165,7 @@ export default {
     UploadOutlined,
     LoadingOutlined,
     PlusOutlined,
+    DeleteOutlined,
     RestFilled,
     quillEditor,
     message,
@@ -235,34 +235,44 @@ export default {
             }
         );
     },
-    uploadChange(info) {
-      console.log(info);
-      const isJpgOrPng =
-        info.file.type === "image/jpeg" || info.file.type === "image/png";
-      if (!isJpgOrPng) {
-        console.log("image format!");
-        message.error("You can only upload JPG/PNG file!");
+    checkFileSize(file) {
+      const isLessThan200KB = file.size / 1024 / 1024 < 2;
+      if (!isLessThan200KB) {
+        this.$message.error('Image must be smaller than 200KB!');
+        return false;
       }
-      const isLt2M = info.file.size / 1024 / 1024 < 0.2;
-      if (!isLt2M) {
-        console.log("image size");
-        message.error("Image must smaller than 2MB!");
+      return true;
+    },
+    handleBannerUpload(info) {
+      if(!this.checkFileSize(info.file)){
+        this.form.banner_image = null;
+        return false
       }
+      if (info.file.status === 'uploading') {
+        this.loading = true;
+      }
+      if (info.file.status === 'done' ) {
+        // Reset the form.banner_image to only include the valid file
+        this.form.banner_image = [info.file.originFileObj];
+        this.loading = false;
+      }
+    },
 
-      if (isJpgOrPng && isLt2M) {
-        this.getBase64(info.file, (base64Url) => {
-          this.imageUrl = base64Url;
-          this.loading = true;
-        });
-      } else {
-        this.form.image = [];
+    handleThumbUpload(info) {
+      if(!this.checkFileSize(info.file)){
+        this.form.thumb_image = null;
+        return false
       }
-    },
-    getBase64(img, callback) {
-      const reader = new FileReader();
-      reader.addEventListener("load", () => callback(reader.result));
-      reader.readAsDataURL(img);
-    },
+      if (info.file.status === 'uploading') {
+        this.loading = true;
+      }
+      if (info.file.status === 'done' ) {
+        // Reset the form.banner_image to only include the valid file
+        this.form.thumb_image = [info.file.originFileObj];
+        this.loading = false;
+      }
+    },    
   },
 };
+
 </script>

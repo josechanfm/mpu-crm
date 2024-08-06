@@ -15,18 +15,25 @@ class Form extends Model implements HasMedia
     use InteractsWithMedia;
     protected $fillable = ['department_id', 'name', 'title', 'welcome', 'description', 'thanks', 'require_login', 'for_staff', 'published','layout','remark'];
     protected $cast=['require_login'=>'boolean','for_staff'=>'boolean','published'=>'boolean'];
+    protected $appends=['entry_count'];
+
+    public function getEntryCountAttribute(){
+        return $this->entries->count();
+    }
 
     public function registerMediaConversions(Media $media = null): void
     {
-        $this
-            ->addMediaConversion('preview')
-            ->fit(Manipulations::FIT_CROP, 300, 300)
-            ->nonQueued();
+        // $this
+        //     ->addMediaConversion('preview')
+        //     ->fit(Manipulations::FIT_CROP, 300, 300)
+        //     ->nonQueued();
     }
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('form_content');
+        $this->addMediaCollection('banner')->singleFile()->useDisk('media');
+        $this->addMediaCollection('thumb')->singleFile()->useDisk('media');
+        // $this->addMediaCollection('form_content');
     }
 
     public function organization()

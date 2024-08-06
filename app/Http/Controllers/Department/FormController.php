@@ -108,7 +108,9 @@ class FormController extends Controller
     public function edit(Form $form)
     {
         $this->authorize('view',$form);
-        $form->media;
+        //$form->media;
+        $form->banner_url=$form->getFirstMediaUrl('banner');
+        $form->thumb_url=$form->getFirstMediaUrl('thumb');
         return Inertia::render('Department/Form/Form',[
             'departments'=>Department::orderBy('abbr')->get(),
             'form'=>$form
@@ -131,9 +133,12 @@ class FormController extends Controller
             'title'=>'required',
         ]);
         $form->update($request->all());
-        if($request->file('image')){
-                $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('form_banner');
-            
+
+        if($request->file('banner_image')){
+            $form->addMedia($request->file('banner_image')[0]['originFileObj'])->toMediaCollection('banner');
+        }
+        if($request->file('thumb_image')){
+            $form->addMedia($request->file('thumb_image')[0]['originFileObj'])->toMediaCollection('thumb');
         }
         return redirect()->route('manage.forms.index');
     }
