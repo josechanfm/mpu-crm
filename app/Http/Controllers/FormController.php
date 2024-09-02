@@ -19,11 +19,6 @@ class FormController extends Controller
 
     public function index()
     {
-        // if(Auth()->user()){
-        //     $forms=Form::where('published',1)->get();
-        // }else{
-        //     $forms=Form::where('published',1)->where('for_staff',0)->get();
-        // }
         $forms=Form::where('published',1)->where('for_staff',0)->get();
         return Inertia::render('Form/Forms',[
             'forms'=>$forms
@@ -66,7 +61,17 @@ class FormController extends Controller
                 $form=Form::find($entry->form_id);
                 return Inertia::render('Form/Thanks',[
                     'form'=>$form,
+                    'entry'=>$entry
                 ]);
+    }
+
+    public function thankYou(Entry $entry){
+        $form=Form::find($entry->form_id);
+        return Inertia::render('Form/Thanks',[
+            'form'=>$form,
+            'entry'=>$entry
+        ]);
+
     }
 
     /**
@@ -86,6 +91,7 @@ class FormController extends Controller
             return redirect('forms');
         }
         if($form->layout){
+            $form->entry_groups=$form->entries_group_count('course_code');
             return Inertia::render('Form/'.$form->layout,[
                 'form'=>$form,
             ]);
@@ -94,7 +100,6 @@ class FormController extends Controller
                 'form'=>$form,
             ]);
         }
-        
     }
 
     /**

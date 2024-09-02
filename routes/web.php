@@ -55,6 +55,7 @@ Route::prefix('enquiry')->group(function(){
     Route::post('ticket',[\App\Http\Controllers\EnquiryTicketController::class,'store'])->name('enquiry.ticket.store');
 });
 Route::resource('forms',\App\Http\Controllers\FormController::class)->names('forms');
+Route::get('form/entry/{entry}/thank_you',[\App\Http\Controllers\FormController::class,'thankYou'])->name('form.entry.thankYou');
 
 Route::middleware([
     'auth:sanctum',

@@ -5,7 +5,6 @@
                 問卷調查 Questionnaire
             </h2>
         </template>
-        
         <div class="bg-teal-50 p-5 dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
             <div id="pure-html">
                 <div v-html="form.description" style="text-align: center"/>

@@ -8,6 +8,8 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Support\Facades\DB;
+
 
 class Form extends Model implements HasMedia
 {
@@ -73,6 +75,12 @@ class Form extends Model implements HasMedia
     {
         return $this->hasMany(Entry::class)->with('records');
     }
+    public function entries_group_count($groupName=''){
+        $fieldId=array_column($this->fields->toArray(),null,'field_name')[$groupName]['id'];
+        $records=$this->entryRecords()->select('field_value',DB::raw('count(*) as count'))->where('entry_records.form_field_id',$fieldId)->groupBy('form_id','field_value')->get();
+        return $records;
+    }
+
     //entries for frontend table view and export to excel
     public function tableEntries()
     {
@@ -111,6 +119,9 @@ class Form extends Model implements HasMedia
             }
         }
         return $entries;
+    }
+    public function entryRecords(){
+        return $this->hasManyThrough(EntryRecord::class, Entry::class);
     }
     public function records()
     {
