@@ -122,15 +122,17 @@ class FormFieldController extends Controller
         $field->delete();        
     }
 
-    public function fieldsSequence(Form $form, Request $request){
-        foreach($request->all() as $record){
-            $field=FormField::find($record['id']);
-            if($field->form_id==$record['form_id']){
-                $field->sequence=$record['sequence'];
+    public function fieldsSequence(Form $form, Request $request)
+    {
+        foreach ($request->all() as $record) {
+            $field = FormField::find($record['id']);
+            if ($field->form_id == $record['form_id']) {
+                $field->sequence = $record['sequence'];
                 $field->save();
             }
         }
         return redirect()->back();
     }
+
    
 }

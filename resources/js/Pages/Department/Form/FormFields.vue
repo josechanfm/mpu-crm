@@ -1,39 +1,40 @@
 <template>
     <DepartmentLayout title="Dashboard" :department="department">
-        <button @click="createRecord()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Field</button>
-        <div class="ant-table">
-            <div class="ant-table-container">
-                <table style="table-layout: auto;">
-                    <thead class="ant-table-thead">
-                        <tr>
-                            <th v-for="column in columns">{{ column.title }}</th>
-                            <th>Operation</th>                                                                          
-                        </tr>
-                    </thead>                                                    
-                    <draggable tag="tbody" class="dragArea list-group ant-table-tbody" :list="fields" @change="rowChange">
-                        <transition-group v-for="(record, idx) in fields">
-                            <tr class="ant-table-row ant-table-row-level-0" :key="record.id">
-                                <td v-for="column in columns" class="ant-table-cell">
-                                    {{ record[column.dataIndex] }}
-                                </td>
-                                <td>    
-                                    <a-button @click="editRecord(record)">Edit</a-button>
-                                    <a-popconfirm
-                                        title="Are you sure delete this task?"
-                                        ok-text="Yes"
-                                        cancel-text="No"
-                                        @confirm="deleteRecord(record)"
-                                    >
-                                    <a-button :disabled="form.published==1">Delete</a-button>
-                                    </a-popconfirm>
-                               </td>
-                            </tr>
-                        </transition-group>
-                    </draggable>
-                </table>
-            </div>
+        <div class="flex-auto pb-3 text-right">
+            <a-button v-if="isDraggable" type="primary" ghost @click="reloadFormFields">Finish</a-button>
+            <a-button v-else type="primary" ghost @click="isDraggable = !isDraggable">Drag sort</a-button>
+            <a-button @click="createRecord()" type="primary" class="ml-2">Create Field</a-button>
         </div>
-        <p></p>
+
+        <a-table
+                    :dataSource="dataModel"
+                    :columns="columns"
+                    :customRow="customRow"
+                >
+                <template #bodyCell="{ column, record, index }">
+                  <template v-if="column.dataIndex === 'operation'">
+                    <a-button @click="editRecord(record)">Edit</a-button>
+                    <a-popconfirm
+                        title="Are you sure delete this task?"
+                        ok-text="Yes"
+                        cancel-text="No"
+                        @confirm="deleteRecord(record)"
+                    >
+                    <a-button :disabled="form.published==1">Delete</a-button>
+                    </a-popconfirm>
+                  </template>
+                  <template v-else-if="column.dataIndex=='dragger' && isDraggable">
+                    <HolderOutlined/>
+                  </template>
+                  <template v-else-if="column.dataIndex == 'required'">
+                    {{record.required}}
+                  </template>
+                  <template v-else-if="column.dataIndex == 'in_column'">
+                    {{record.in_column}}
+                  </template>
+                </template>
+
+                </a-table>
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.mode == 'CREATE' ? 'Create' : 'Update'" width="60%">
@@ -101,11 +102,15 @@
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
 import { defineComponent, reactive } from 'vue';
 import { VueDraggableNext } from 'vue-draggable-next'
+import { HolderOutlined } from "@ant-design/icons-vue";
+import Sortable from "sortablejs";
 
 export default {
     components: {
         DepartmentLayout,
         draggable: VueDraggableNext,
+        Sortable,
+        HolderOutlined,
     },
     props: ['departments','department','form', 'fields'],
     data() {
@@ -116,6 +121,7 @@ export default {
                 title: "Modal",
                 mode: ""
             },
+            dataModel:null,
             fieldTypes: [
                 { value: "input", label: "單行文字" },
                 { value: "textarea", label: "多行文字" },
@@ -131,20 +137,33 @@ export default {
                 { value: "number", label: "數值欄位" },
                 { value: "html", label:"HMTL text" }
             ],
+            isDraggable: false,
             columns: [
                 {
-                    title: 'Field Label',
+                    title: '拖拉',
+                    width: '60px',
+                    dataIndex: 'dragger',
+                },{
+                    title: '欄位名稱',
+                    i18n: 'field_label',
                     dataIndex: 'field_label',
                 }, {
-                    title: 'Field Type',
+                    title: '欄位格式',
+                    i18n: 'field_type',
                     dataIndex: 'type',
                 }, {
-                    title: 'Compulsory',
+                    title: '必填欄',
+                    i18n: 'compulsory',
                     dataIndex: 'required',
                 }, {
-                    title: 'Column Data',
+                    title: '顯示於輸出表格',
+                    i18n: 'in_column',
                     dataIndex: 'in_column',
-                },
+                },{
+                    title: '操作',
+                    i18n: 'operation',
+                    dataIndex: 'operation'
+                }
             ],
             rules: {
                 field_label: { required: true },
@@ -189,6 +208,7 @@ export default {
         }
     },
     created() {
+        this.dataModel=this.fields
         //console.log(this.departments);
         //$d=this.departments.map(d=>({value:d.id,label:d.abbr}));
         //console.log($d);
@@ -301,6 +321,92 @@ export default {
             });
 
         },
+        reloadFormFields() {
+            this.$inertia.reload({
+                only: ["fields"],
+                onSuccess: (page) => {
+                this.isDraggable = false;
+                },
+            });
+        },
+        customRow(record, index){
+            return {
+                domProps:{
+                draggable:this.isDraggable
+                },
+                style:{
+                cursor: this.isDraggable?'move':'default'
+                },
+                // mouse move
+                onMouseenter: event =>{
+                if(this.isDraggable){
+                    var ev = event || window.event // for competible with IE
+                    ev.target.draggable = true
+                }
+                },
+                // start drag
+                onDragstart: event => {
+                if(this.isDraggable){
+                    var ev = event || window.event
+                    ev.stopPropagation() // block popup
+                    this.sourceObj = record // get sourceObject with record id
+                }
+                },
+                // drag crossing elements
+                onDragover: event => {
+                if(this.isDraggable){
+                    var ev = event || window.event
+                    ev.preventDefault()
+                }
+                },
+                // mouse up
+                onDrop: event => {
+                    console.log(event)
+                    console.log(this.dataModel)
+                    if(this.isDraggable){
+                        var ev = event || window.event
+                        ev.stopPropagation()
+                        this.targetObj=record // get target Object
+                        // swap record position
+                        let sourceIndex = ''
+                        let targetIndex = ''
+                        this.dataModel.map((item,idx) => {
+                        if(this.sourceObj == item){
+                            console.log(idx)
+                            sourceIndex = idx
+                        }
+                        if(this.targetObj == item){
+                            targetIndex = idx
+                        }
+                        })
+                        // show swap data
+                        let arr=[]
+                        this.dataModel.map((item,idx) => {
+                        if(sourceIndex == idx){
+                            arr.push(this.targetObj)
+                        }else if(targetIndex == idx){
+                            arr.push(this.sourceObj)
+                        }else{
+                            arr.push(item)
+                        }
+                        })
+                        arr.map((item,idx) => {
+                        arr[idx].sequence=idx
+                        console.log(item);
+                        })
+                        this.dataModel=arr
+                        this.$inertia.post(route("manage.form.fieldsSequence", this.form.id), this.dataModel, {
+                        onSuccess: (page) => {
+                            console.log(page);
+                        },
+                        onError: (error) => {
+                            console.log(error);
+                        },
+                        });
+                    }
+                },
+            }
+        }
 
     },
     watch: {

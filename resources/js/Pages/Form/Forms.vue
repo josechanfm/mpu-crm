@@ -43,15 +43,6 @@ export default {
                     title: 'Title',
                     dataIndex: 'title',
                 },{
-                    title: 'Login',
-                    dataIndex: 'require_login',
-                },{
-                    title: 'For staff',
-                    dataIndex: 'for_staff',
-                },{
-                    title: 'Published',
-                    dataIndex: 'published',
-                },{
                     title: 'Action',
                     dataIndex: 'operation',
                     key: 'operation',

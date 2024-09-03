@@ -245,7 +245,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .ant-form-vertical .ant-form-item-label {
     padding: 0px !important;
 }

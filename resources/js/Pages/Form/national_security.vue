@@ -5,7 +5,7 @@
                 國家安全 National Security
             </h2>
         </template>
-        <div class="bg-teal-50 p-5 dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
+        <div class="bg-gray-100 p-5 dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
             <div id="pure-html">
                 <div v-html="form.description" style="text-align: center"/>
             </div>
@@ -17,7 +17,7 @@
                     :rules="[{ required: formFields['department'].required, message:'為必填欄位 is Required'}]"
                 >
                     <a-select 
-                        v-model:value="formData[formFields['department'].id]" :options="formFields['department'].options"
+                        v-model:value="formData[formFields['department'].id]" :options="formFields['department'].options" show-search
                     />
                 </a-form-item>
                 <a-form-item

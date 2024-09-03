@@ -59,7 +59,7 @@ const logout = () => {
             <!-- Page Content -->
             <main>
                 <div class="py-4">
-                    <div class="mx-auto sm:px-6 lg:px-4">
+                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-4">
                         <slot />
                     </div>
                 </div>

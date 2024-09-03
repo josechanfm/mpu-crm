@@ -91,7 +91,11 @@ class FormController extends Controller
             return redirect('forms');
         }
         if($form->layout){
-            $form->entry_groups=$form->entries_group_count('course_code');
+            /* Groupping for only one field, required setup manually from databases*/
+            $grouping=$form->fields()->where('grouping',true)->first();
+            if($grouping){
+                $form->entry_groups=$form->entries_group_count($grouping->field_name);
+            }
             return Inertia::render('Form/'.$form->layout,[
                 'form'=>$form,
             ]);
