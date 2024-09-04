@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('field_label');
             $table->string('type')->default('input');
             $table->text('options')->nullable();
+            $table->text('options')->nullable();
+            $table->char('direction',1)->nullable();
             $table->boolean('required')->default(false);
             $table->boolean('in_column')->default(false);
             $table->string('rule')->nullable();

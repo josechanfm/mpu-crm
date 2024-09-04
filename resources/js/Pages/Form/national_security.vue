@@ -71,22 +71,19 @@
                 <div>
             <table>
                 <tr>
-                    <td>Course Code</td>
-                    <td>Date</td>
-                    <td>Time</td>
-                    <td>Quota</td>
+                    <template v-for="(course, fieldName) in JSON.parse(formFields['course_code']['extra'])[0]">
+                        <td>{{ fieldName[0].toUpperCase() }}{{ fieldName.slice(1) }}</td>
+                    </template>
                 </tr>
                 <template v-for="course in JSON.parse(formFields['course_code']['extra'])">
                     <tr>
-                        <td>{{ course.code }}</td>
-                        <td>{{ course.date }}</td>
-                        <td>{{ course.time }}</td>
-                        <td>{{ course.quota }}</td>
+                        <template v-for="field in course">
+                            <td>{{ field }}</td>
+                        </template>
                     </tr>
                 </template>
             </table>
         </div>
-
                 <div class="text-center pt-10">
                     <a-button @click="storeRecord" type="primary">遞交 Submit</a-button>
                 </div>
@@ -223,8 +220,8 @@ export default {
         },
         vacancy(courseCode){
             const courses=JSON.parse(this.formFields['course_code']['extra']);
-            
             const quota=courses.find(c=>c.code==courseCode)['quota'];
+            console.log(quota)
             const group= this.form.entry_groups.find(g=>g.field_value==courseCode);
             if(group){
                 return  quota-group.count;

@@ -244,7 +244,7 @@ export default {
             });
         },
         updateRecord() {
-            console.log(this.modal.data);
+            console.log('update record',this.modal.data);
             this.$refs.modalRef.validateFields().then(() => {
                 this.$inertia.patch(route('manage.form.fields.update', {
                     form: this.form.id,
