@@ -12,11 +12,6 @@
             <a-divider />
             <a-form :model="formData" ref="formRef" name="default" layout="vertical"
                 :validate-messages="validateMessages">
-                <a-form-item :label="formFields['department'].field_label" :name="formFields['department'].id"
-                    :rules="[{ required: formFields['department'].required, message: '為必填欄位 is Required' }]">
-                    <a-select v-model:value="formData[formFields['department'].id]"
-                        :options="formFields['department'].options" show-search />
-                </a-form-item>
                 <a-form-item :label="formFields['staff_no'].field_label" :name="formFields['staff_no'].id"
                     :rules="[{ required: formFields['staff_no'].required, message: '為必填欄位 is Required' }]">
                     <a-input v-model:value="formData[formFields['staff_no'].id]" />
@@ -28,6 +23,11 @@
                 <a-form-item :label="formFields['name_fn'].field_label" :name="formFields['name_fn'].id"
                     :rules="[{ required: formFields['name_fn'].required, message: '為必填欄位 is Required' }]">
                     <a-input v-model:value="formData[formFields['name_fn'].id]" />
+                </a-form-item>
+                <a-form-item :label="formFields['department'].field_label" :name="formFields['department'].id"
+                    :rules="[{ required: formFields['department'].required, message: '為必填欄位 is Required' }]">
+                    <a-select v-model:value="formData[formFields['department'].id]"
+                        :options="formFields['department'].options" show-search />
                 </a-form-item>
                 <a-form-item :label="formFields['email'].field_label" :name="formFields['email'].id"
                     :rules="[{ required: formFields['email'].required, type: 'email', message: '為必電郵格式填欄位 is Required with Email format' }]">
@@ -155,7 +155,6 @@ export default {
         })
         this.questionCount = Object.keys(this.formFields).filter(f => f.includes('question_')).length / 2
         this.suggestCount = Math.ceil(Object.keys(this.formFields).filter(f => f.includes('suggest_')).length / 4)
-        console.log(this.suggestCount);
     },
     methods: {
         storeRecord() {
@@ -200,7 +199,6 @@ export default {
         vacancy(courseCode) {
             const courses = JSON.parse(this.formFields['course_code']['extra']);
             const quota = courses.find(c => c.code == courseCode)['quota'];
-            console.log(quota)
             const group = this.form.entry_groups.find(g => g.field_value == courseCode);
             if (group) {
                 return quota - group.count;
