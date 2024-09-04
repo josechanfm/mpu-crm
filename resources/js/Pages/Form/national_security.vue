@@ -7,8 +7,9 @@
         </template>
         <div class="bg-gray-100 p-5 dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
             <div id="pure-html">
-                <div v-html="form.description" style="text-align: center"/>
+                <div v-html="form.description"/>
             </div>
+            <a-divider/>
             <a-form :model="formData" ref="formRef" name="default" layout="vertical"
                 :validate-messages="validateMessages">
                 <a-form-item
@@ -259,4 +260,12 @@ table tr th, table tr td{
   max-width: 100px;
   width: 100%; /* To ensure it takes the full width up to the max */
 }
+
+#pure-html {
+  all: initial;
+}
+#pure-html * {
+  all: revert;
+}
+
 </style>
