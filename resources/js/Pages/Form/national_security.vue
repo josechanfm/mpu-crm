@@ -126,7 +126,7 @@ export default {
             richText: '<p>Jose</p>',
             dateFormat: 'YYYY-MM-DD',
             monthOptions:[...Array(12)].map((_, i) => ({
-                value: (i + 1),g
+                value: (i + 1)
             })),
             radioStyle:{
                 display: 'flex',
