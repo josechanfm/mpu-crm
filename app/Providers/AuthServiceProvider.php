@@ -33,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         Fortify::authenticateUsing(function ($request) {
-            // dd($request->local);
+            //dd($request->local,config('fortify.guard'),config('fortify.username'),$request->all());
             // dd(config('fortify.guard'));
             // dd(config('fortify.username'));
             // dd($request->all());

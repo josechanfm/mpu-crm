@@ -25,7 +25,7 @@ return new class extends Migration
             $table->boolean('in_column')->default(false);
             $table->string('rule')->nullable();
             $table->string('validate')->nullable();
-            $table->boolean('groupping');
+            $table->boolean('grouping')->default(false);
             $table->text('remark')->nullable();
             $table->timestamps();
         });
