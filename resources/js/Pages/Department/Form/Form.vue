@@ -95,7 +95,6 @@
             <a-form-item label="Banner Image" name="banner_image">
               <div class="flex gap-5">
                   <div>
-                    {{ form.banner_url }}
                     <img :src="form.banner_url" width="100"/>
                   </div>
                   <a-upload
