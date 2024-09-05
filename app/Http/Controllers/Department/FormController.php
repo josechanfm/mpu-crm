@@ -80,7 +80,14 @@ class FormController extends Controller
             'name'=>'required',
             'title'=>'required',
         ]);
-        Form::create($request->all());
+        $form=Form::create($request->all());
+        if($request->file('banner_image')){
+            $form->addMedia($request->file('banner_image')[0]['originFileObj'])->toMediaCollection('banner');
+        }
+        if($request->file('thumb_image')){
+            $form->addMedia($request->file('thumb_image')[0]['originFileObj'])->toMediaCollection('thumb');
+        }
+
         return to_route('manage.forms.index');
         return redirect()->route('manage.forms.index');
     }
