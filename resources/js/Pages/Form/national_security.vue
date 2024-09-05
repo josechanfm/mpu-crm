@@ -41,7 +41,7 @@
                     :rules="[{ required: formFields['course_code'].required, message: '為必填欄位 is Required' }]">
                     <a-radio-group v-model:value="formData[formFields['course_code'].id]">
                         <template v-for="course in JSON.parse(formFields['course_code']['extra'])">
-                            <a-radio :style="radioStyle" :value="course.code" :disabled="vacancy(course.code) <= 0">
+                            <a-radio :style="radioStyle" :value="course.code" :disabled="vacancy(course.code) == 0">
                                 {{ course.code }} ( {{ vacancy(course.code) }} Availables )
                             </a-radio>
                         </template>
@@ -201,7 +201,8 @@ export default {
             const quota = courses.find(c => c.code == courseCode)['quota'];
             const group = this.form.entry_groups.find(g => g.field_value == courseCode);
             if (group) {
-                return quota - group.count;
+                const cnt=quota - group.count
+                return cnt<=0?0:cnt;
             } else {
                 return quota;
             }
