@@ -87,7 +87,6 @@ class FormController extends Controller
         if($request->file('thumb_image')){
             $form->addMedia($request->file('thumb_image')[0]['originFileObj'])->toMediaCollection('thumb');
         }
-
         return to_route('manage.forms.index');
         return redirect()->route('manage.forms.index');
     }
@@ -116,8 +115,8 @@ class FormController extends Controller
     {
         $this->authorize('view',$form);
         //$form->media;
-        $form->banner_url=$form->getFirstMediaUrl('banner');
-        $form->thumb_url=$form->getFirstMediaUrl('thumb');
+        $form->banner_url=url($form->getFirstMediaUrl('banner'));
+        $form->thumb_url=url($form->getFirstMediaUrl('thumb'));
         return Inertia::render('Department/Form/Form',[
             'departments'=>Department::orderBy('abbr')->get(),
             'form'=>$form
