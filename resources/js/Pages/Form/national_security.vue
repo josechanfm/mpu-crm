@@ -42,7 +42,7 @@
                     <a-radio-group v-model:value="formData[formFields['course_code'].id]">
                         <template v-for="course in JSON.parse(formFields['course_code']['extra'])">
                             <a-radio :style="radioStyle" :value="course.code" :disabled="vacancy(course.code) == 0">
-                                {{ course.code }} ( {{ vacancy(course.code) }} Availables )
+                                {{ course.code }} ( {{ vacancy(course.code) }} 餘額 )
                             </a-radio>
                         </template>
                     </a-radio-group>
@@ -50,13 +50,13 @@
                 <div>
                     <table>
                         <tr>
-                            <template v-for="(course, fieldName) in JSON.parse(formFields['course_code']['extra'])[0]">
-                                <td>{{ fieldName[0].toUpperCase() }}{{ fieldName.slice(1) }}</td>
+                            <template v-for="header in tableHeader">
+                                <td >{{ header }}</td>
                             </template>
                         </tr>
                         <template v-for="course in JSON.parse(formFields['course_code']['extra'])">
                             <tr>
-                                <template v-for="field in course">
+                                <template v-for="(field, fieldName) in course">
                                     <td>{{ field }}</td>
                                 </template>
                             </tr>
@@ -109,6 +109,7 @@ export default {
                 height: '30px',
                 lineHeight: '30px',
             },
+            tableHeader:["班別","日期","時間","課室","名額"],
             columns: [
                 {
                     title: 'Name',
