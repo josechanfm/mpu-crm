@@ -636,6 +636,46 @@ class ConfigSeeder extends Seeder
             {"value":"IRN","label_zh":"見開考通告","label_en":"refer to recruitment notices"}
           ]'
         ]);
+        DB::table('configs')->insert([
+          'key'=>'workflow_categories',
+          'label'=>'Workflow Categories',
+          'value'=>'
+            [
+              {"value":"T11","label":"第一職階二等技術員"},
+              {"value":"T12","label":"第一職階二等高級技術員"},
+              {"value":"T13","label":"第一職階二等技術輔導員"},
+              {"value":"A10","label":"第一職階行政技術助理員"},
+              {"value":"P10","label":"講師"},
+              {"value":"P20","label":"副教授"},
+              {"value":"P30","label":"教授"},
+              {"value":"I00","label":"實習講師"},
+              {"value":"I10","label":"專業培訓指導員"},
+              {"value":"I20","label":"職業培訓指導員"},
+              {"value":"D10","label":"輕型車輛司機"},
+              {"value":"D20","label":"重型車輛司機"},
+              {"value":"T90","label":"技術工人"},
+              {"value":"S00","label":"勤雜人員"}
+            ]'
+        ]);
+        DB::table('configs')->insert([
+          'key'=>'vacancy_types',
+          'label'=>'Vacancy type',
+          'value'=>'
+            [
+              {"value":"ACA","label":"教學人員招聘"},
+              {"value":"ADM","label":"非教職人員開考"},
+              {"value":"ACP","label":"教學人員內部晉升/開考"}
+            ]'
+        ]);
+        DB::table('configs')->insert([
+          'key'=>'publication_categories',
+          'label'=>'Publication Categories',
+          'value'=>'
+            [
+              {"value":"material","label":"Teaching Material"},
+              {"value":"book","label":"Book"}
+            ]'
+        ]);
 
 
     }

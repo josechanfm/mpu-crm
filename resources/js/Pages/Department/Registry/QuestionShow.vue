@@ -59,7 +59,7 @@
                     </li>
                     <li>
                         <p class="font-bold">{{ fields.subjects.question }}</p>
-                        <p v-for="item in optionFilter(enquiry.subjects, fields.subjects.options)">{{ item['label_'+$t('lang')] }}</p>
+                        <p v-for="item in optionFilter(enquiry.subjects, fields.subjects.options)">{{ item['label_'+lang.lang] }}</p>
                     </li>
                 </ol>
             </a-collapse-panel>
@@ -186,6 +186,7 @@ import EnquiryBox from '@/Components/Department/EnquiryBox.vue';
 import { quillEditor } from 'vue3-quill';
 import { ConsoleSqlOutlined, UploadOutlined } from '@ant-design/icons-vue';
 import dayjs from 'dayjs';
+import enquiryLang  from '/lang/enquiry.json';
 
 export default {
     components: {
@@ -203,6 +204,7 @@ export default {
                 {label:"招生注冊處" ,url:route('registry.dashboard')},
                 {label:"回應問題" ,url:null},
             ],
+            lang:{},
             myResponse: {
                 enquiry_question_id: null,
                 title: null,
@@ -225,6 +227,7 @@ export default {
     },
     created() {
         this.activeKey.push(this.active_question)
+        this.lang=enquiryLang[document.documentElement.lang];
     },
     methods: {
         toResponse(question) {

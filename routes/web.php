@@ -44,7 +44,6 @@ Route::get('/help', function (Request $request) {
     ]);
 })->name('help');
 
-Route::resource('enquiry',App\Http\Controllers\EnquiryController::class)->names('enquiry');
 Route::prefix('enquiry')->group(function(){
     Route::get('faqs',[\App\Http\Controllers\EnquiryController::class,'faqs'])->name('enquiry.faqs');
     Route::get('answer_question/{enquiry}/{token}',[\App\Http\Controllers\EnquiryController::class,'answerQuestion'])->name('enquiry.answerQuestion');
@@ -54,6 +53,7 @@ Route::prefix('enquiry')->group(function(){
     Route::get('ticket/{response}/{token}',[\App\Http\Controllers\EnquiryTicketController::class,'ticket'])->name('enquiry.ticket');
     Route::post('ticket',[\App\Http\Controllers\EnquiryTicketController::class,'store'])->name('enquiry.ticket.store');
 });
+Route::resource('enquiry',App\Http\Controllers\EnquiryController::class)->names('enquiry');
 Route::resource('forms',\App\Http\Controllers\FormController::class)->names('forms');
 Route::get('form/entry/{entry}/thank_you',[\App\Http\Controllers\FormController::class,'thankYou'])->name('form.entry.thankYou');
 
