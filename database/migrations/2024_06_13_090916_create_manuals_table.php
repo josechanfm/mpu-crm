@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('helps', function (Blueprint $table) {
+        Schema::create('manuals', function (Blueprint $table) {
             $table->id();
-            $table->string('parent')->default(0);
+            $table->foreignId('parent_id')->default(0);
             $table->string('route');
             $table->string('reroute')->nullable();
             $table->string('title');
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('helps');
+        Schema::dropIfExists('manuals');
     }
 };

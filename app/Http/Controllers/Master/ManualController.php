@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Master;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Help;
+use App\Models\Manual;
 
-class HelpController extends Controller
+class ManualController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +16,8 @@ class HelpController extends Controller
      */
     public function index(Request $request)
     {
-        return Inertia::render('Master/Helps',[
-            'helps'=>Help::paginate($request->per_page)
+        return Inertia::render('Master/Manuals',[
+            'manuals'=>Manual::paginate($request->per_page)
         ]);
     }
 
@@ -39,7 +39,7 @@ class HelpController extends Controller
      */
     public function store(Request $request)
     {
-        Help::create($request->all());
+        Manual::create($request->all());
     }
 
     /**
@@ -71,9 +71,9 @@ class HelpController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Help $help)
+    public function update(Request $request, Manual $manual)
     {
-        $help->update($request->all());
+        $manual->update($request->all());
         return redirect()->back();
     }
 

@@ -38,13 +38,6 @@ const logout = () => {
                     <ApplicationMark class="block h-14 w-auto" />
                     </Link>
                 </div>
-                <!--
-                <div class="space-x-5">
-                    <inertia-link :href="route('help',{route:'default'})">Home</inertia-link>
-                    <inertia-link :href="route('help',{route:'tutorial'})">Tutorial</inertia-link>
-                    <inertia-link :href="route('help',{route:'faq'})">Faq</inertia-link>
-                </div>
-                -->
             </div>
         </nav>
     </header>

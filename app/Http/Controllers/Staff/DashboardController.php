@@ -7,6 +7,7 @@ use App\Models\Department;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Form;
+use App\Models\AdminUser;
 
 class DashboardController extends Controller
 {

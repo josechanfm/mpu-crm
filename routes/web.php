@@ -32,17 +32,17 @@ Route::get('/language/{language}', function ($language) {
     return Redirect::back();
 })->name('language');
 
-Route::get('/help', function (Request $request) {
-    $help=App\Models\Help::where('route',$request->route)->first();
-    if(empty($help)){
-        $help=App\Models\Help::where('route','default')->first();
-    }else if($help->reroute){
-        $help=App\Models\Help::where('route',$help->reroute)->first();
+Route::get('/manual', function (Request $request) {
+    $manual=App\Models\Manual::where('route',$request->route)->first();
+    if(empty($manual)){
+        $manual=App\Models\Manual::where('route','default')->first();
+    }else if($manual->reroute){
+        $manual=App\Models\Manual::where('route',$manual->reroute)->first();
     }
-    return Inertia::render('Help', [
-        'help' => $help,
+    return Inertia::render('Manual', [
+        'manual' => $manual,
     ]);
-})->name('help');
+})->name('manual');
 
 Route::prefix('enquiry')->group(function(){
     Route::get('faqs',[\App\Http\Controllers\EnquiryController::class,'faqs'])->name('enquiry.faqs');
