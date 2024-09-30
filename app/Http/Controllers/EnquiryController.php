@@ -159,7 +159,6 @@ class EnquiryController extends Controller
                 'message'=>'The enquiry question already submit!'
             ]);
         }
-        //  dd($request->file());
         $enquiry->has_question=true;
         $enquiry->save();
         $data=$request->all();
@@ -171,12 +170,11 @@ class EnquiryController extends Controller
                 $enquiryQuestion->addMedia($file['originFileObj'])->toMediaCollection('enquiryQuestionAttachments');
             }
         };
-        //return $this->thankQuestion($enquiryQuestion);
         return to_route('enquiry.thankQuestion',['eq'=>$enquiryQuestion->id,'t'=>$enquiry->token]);
+        
     }
     public function thankQuestion(Request $request){
-        //dd($request->enquiry_id);
-        if($request->eq){
+            if($request->eq){
             $enquiryQuestion=EnquiryQuestion::find($request->eq);
             if($enquiryQuestion->enquiry->token!==$request->t){
                 return Inertia::render('Error',[

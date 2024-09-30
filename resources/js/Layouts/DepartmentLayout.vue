@@ -68,7 +68,7 @@
                                 <a href="javascript:history.back();" class="inline">{{ $t('back') }}</a>
                             </li>
                             <li>
-                                <a :href="route('help',{route:route().current()})" target="_blank">
+                                <a :href="route('manual',{route:route().current()})" target="_blank">
                                 <div class="flex items-center pl-1 pt-0.5"><QuestionCircleOutlined /></div></a>
                             </li>
 

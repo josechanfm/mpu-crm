@@ -21,10 +21,13 @@ return new class extends Migration
             $table->string('field_label');
             $table->string('type')->default('input');
             $table->text('options')->nullable();
+            $table->text('extra')->nullable();
+            $table->char('direction',1)->nullable();
             $table->boolean('required')->default(false);
             $table->boolean('in_column')->default(false);
             $table->string('rule')->nullable();
             $table->string('validate')->nullable();
+            $table->boolean('grouping')->default(false);
             $table->text('remark')->nullable();
             $table->timestamps();
         });

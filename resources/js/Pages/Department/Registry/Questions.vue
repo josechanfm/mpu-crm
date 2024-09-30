@@ -5,8 +5,8 @@
                 <a-table :dataSource="department.enquiry_questions_open" :columns="columns" :row-key="record => record.root_id">
                     <template #bodyCell="{column, text, record, index}" >
                         <template v-if="column.dataIndex=='operation'">
-                            <a-button @click="viewRecord(record)">{{ $t('view')}}</a-button>
-                            <inertia-link :href="route('registry.enquiry.questions.show', { question:record.id})" class="ant-btn">{{ $t('response') }}</inertia-link>
+                            <a-button @click="viewRecord(record)">瀏覽</a-button>
+                            <inertia-link :href="route('registry.enquiry.questions.show', { question:record.id})" class="ant-btn">回應</inertia-link>
                         </template>
                         <template v-else-if="column.dataIndex=='enquiry_id'">
                             {{ text }}
@@ -227,7 +227,7 @@ export default {
         viewRecord(record){
             this.modal.data={...record};
             this.modal.mode="EDIT";
-            this.modal.title=this.$t('view');
+            this.modal.title="瀏 覽";
             this.modal.isOpen=true;
         },
         storeRecord(){

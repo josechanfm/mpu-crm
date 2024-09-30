@@ -16,11 +16,10 @@
                                 d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        {{ faq['question_'+$t('lang')] }}
+                        {{ faq['question_'+lang.lang] }}
                     </h3>
-                    <p class="text-gray-500 dark:text-gray-400" v-html="faq['answer_'+$t('lang')]"></p>
+                    <p class="text-gray-500 dark:text-gray-400" v-html="faq['answer_'+lang.lang]"></p>
                 </div>
-                
                 <a-form
                     ref="refQuestion"
                     :model="followup"
@@ -33,17 +32,17 @@
                         <!-- dummy row, show the question box directly -->
                     </template>
                     <template v-else>
-                        <p>{{this.configFields.still_have_question['question_'+$t('lang')]}} </p>
+                        <p>{{this.configFields.still_have_question['question_'+lang.lang]}} </p>
                         <a-form-item>
                             <a-radio-group v-model:value="followup.has_question">
-                                <a-radio :value='true'>{{ $t('yes') }}</a-radio>
-                                <a-radio :value='false'>{{ $t('no') }}</a-radio>
+                                <a-radio :value='true'>{{ lang.yes }}</a-radio>
+                                <a-radio :value='false'>{{ lang.no }}</a-radio>
                             </a-radio-group>
                         </a-form-item>
                     </template>
 
                     <template v-if="followup.has_question">
-                        <label>{{this.configFields.write_question['question_'+$t('lang')]}}</label>
+                        <label>{{this.configFields.write_question['question_'+lang.lang]}}</label>
                         <a-form-item>
                             <a-textarea v-model:value="followup.content" :rows="10"></a-textarea>
                         </a-form-item>
@@ -52,14 +51,14 @@
                                 <a-upload v-model:file-list="followup.fileList" list-type="picture" :beforeUpload="beforeUpload" :max-count="5">
                                     <a-button>
                                         <upload-outlined></upload-outlined>
-                                        {{ $t('upload') }}
+                                        {{ lang.upload }}
                                     </a-button>
                                 </a-upload>
                             </a-form-item>
                         </div>
                     </template>
                     <a-form-item class="text-center">
-                        <a-button type="primary" class="self-end" @click="onSubmits">{{ $t('submit')}}</a-button>
+                        <a-button type="primary" class="self-end" @click="onSubmits">{{ lang.submit}}</a-button>
                     </a-form-item>
                 </a-form>
                 
@@ -69,18 +68,19 @@
 </template>
 
 <script>
-import { loadLanguageAsync } from "laravel-vue-i18n";
 import { UploadOutlined } from '@ant-design/icons-vue';
 import { message, Upload } from 'ant-design-vue';
+import enquiryLang  from '/lang/enquiry.json';
+
 export default {
     components: {
-        loadLanguageAsync,
         UploadOutlined,
         message
     },
     props: ['configFields','enquiry', 'faqs'],
     data() {
         return {
+            lang:{},
             uploadValidator:{
                 fileSize:5, //Magabyte
                 validFormat:['image/jpeg','image/png','application/pdf','application/zip'],
@@ -94,8 +94,10 @@ export default {
             }
         }
     },
+    created(){
+        this.lang=enquiryLang[document.documentElement.lang];
+    },
     mounted(){
-        loadLanguageAsync(this.$page.props.lang);
         this.followup.has_question=this.enquiry.subjects.includes('OTH')
     },
     methods: {

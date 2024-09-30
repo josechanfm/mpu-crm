@@ -54,7 +54,7 @@ Route::middleware([
         Route::resource('/departments',App\Http\Controllers\Master\DepartmentController::class)->names('master.departments');
         Route::resource('/articles',App\Http\Controllers\Master\ArticleController::class)->names('master.articles');
         Route::resource('/medias',App\Http\Controllers\Master\MediaController::class)->names('master.medias');
-        Route::resource('/helps',App\Http\Controllers\Master\HelpController::class)->names('master.helps');
+        Route::resource('/manuals',App\Http\Controllers\Master\ManualController::class)->names('master.manuals');
     });
 });
 

@@ -2,7 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .color1{
     background-color: red;
+}
+
+.ant-btn-secondary{
+    @apply bg-green-300 w-7
+
 }

@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class FormField extends Model
 {
     use HasFactory;
-    protected $fillable=['form_id','sequence','field_name','field_label','type','options','extra','direction','required','in_column','rule','validate','remark'];
+    protected $fillable=['form_id','sequence','field_name','field_label','type','options','extra','direction','required','in_column','rule','validate','grouping','remark'];
     protected $casts=['options'=>'json','required'=>'boolean','in_column'=>'boolean'];
 }

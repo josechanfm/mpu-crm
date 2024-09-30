@@ -41,8 +41,8 @@
               <span v-if="record[column.dataIndex] == 1">Yes</span>
               <span v-else>No</span>
             </template>
-            <template v-else-if="column.dataIndex == 'entries'">
-              {{ record.entries_count }}
+            <template v-else-if="column.dataIndex == 'entry_count'">
+              {{ record.entry_count }}
             </template>
             <template v-else>
               {{ record[column.dataIndex] }}
@@ -110,8 +110,8 @@ export default {
         },{
           title: "Entries",
           i18n: "form_entries",
-          dataIndex: "entries",
-          key: "entries",
+          dataIndex: "entry_count",
+          key: "entry_count",
         },{
           title: "Operation",
           i18n: "operation",

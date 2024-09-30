@@ -12,7 +12,7 @@
                 </div>
                 <div v-else>
                     <p>Thanks your very much!</p>
-                    <p>Your application reference is: {{ filled.uid }}</p>
+                    <p>Your application reference is: {{ entry.uid }}</p>
                 </div>
             </div>
         </div>
@@ -27,7 +27,7 @@ export default {
     components: {
         BlankLayout,
     },
-    props: ['form','filled'],
+    props: ['form','entry'],
     data() {
         return {
         }

@@ -32,19 +32,18 @@ Route::get('/language/{language}', function ($language) {
     return Redirect::back();
 })->name('language');
 
-Route::get('/help', function (Request $request) {
-    $help=App\Models\Help::where('route',$request->route)->first();
-    if(empty($help)){
-        $help=App\Models\Help::where('route','default')->first();
-    }else if($help->reroute){
-        $help=App\Models\Help::where('route',$help->reroute)->first();
+Route::get('/manual', function (Request $request) {
+    $manual=App\Models\Manual::where('route',$request->route)->first();
+    if(empty($manual)){
+        $manual=App\Models\Manual::where('route','default')->first();
+    }else if($manual->reroute){
+        $manual=App\Models\Manual::where('route',$manual->reroute)->first();
     }
-    return Inertia::render('Help', [
-        'help' => $help,
+    return Inertia::render('Manual', [
+        'manual' => $manual,
     ]);
-})->name('help');
+})->name('manual');
 
-Route::resource('enquiry',App\Http\Controllers\EnquiryController::class)->names('enquiry');
 Route::prefix('enquiry')->group(function(){
     Route::get('faqs',[\App\Http\Controllers\EnquiryController::class,'faqs'])->name('enquiry.faqs');
     Route::get('answer_question/{enquiry}/{token}',[\App\Http\Controllers\EnquiryController::class,'answerQuestion'])->name('enquiry.answerQuestion');
@@ -54,7 +53,9 @@ Route::prefix('enquiry')->group(function(){
     Route::get('ticket/{response}/{token}',[\App\Http\Controllers\EnquiryTicketController::class,'ticket'])->name('enquiry.ticket');
     Route::post('ticket',[\App\Http\Controllers\EnquiryTicketController::class,'store'])->name('enquiry.ticket.store');
 });
+Route::resource('enquiry',App\Http\Controllers\EnquiryController::class)->names('enquiry');
 Route::resource('forms',\App\Http\Controllers\FormController::class)->names('forms');
+Route::get('form/entry/{entry}/thank_you',[\App\Http\Controllers\FormController::class,'thankYou'])->name('form.entry.thankYou');
 
 Route::middleware([
     'auth:sanctum',

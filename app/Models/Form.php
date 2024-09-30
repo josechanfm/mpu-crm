@@ -8,6 +8,8 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Support\Facades\DB;
+
 
 class Form extends Model implements HasMedia
 {
@@ -15,18 +17,25 @@ class Form extends Model implements HasMedia
     use InteractsWithMedia;
     protected $fillable = ['department_id', 'name', 'title', 'welcome', 'description', 'thanks', 'require_login', 'for_staff', 'published','layout','remark'];
     protected $cast=['require_login'=>'boolean','for_staff'=>'boolean','published'=>'boolean'];
+    protected $appends=['entry_count'];
+
+    public function getEntryCountAttribute(){
+        return $this->entries->count();
+    }
 
     public function registerMediaConversions(Media $media = null): void
     {
-        $this
-            ->addMediaConversion('preview')
-            ->fit(Manipulations::FIT_CROP, 300, 300)
-            ->nonQueued();
+        // $this
+        //     ->addMediaConversion('preview')
+        //     ->fit(Manipulations::FIT_CROP, 300, 300)
+        //     ->nonQueued();
     }
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('form_content');
+        $this->addMediaCollection('banner')->singleFile()->useDisk('media');
+        $this->addMediaCollection('thumb')->singleFile()->useDisk('media');
+        // $this->addMediaCollection('form_content');
     }
 
     public function organization()
@@ -66,6 +75,12 @@ class Form extends Model implements HasMedia
     {
         return $this->hasMany(Entry::class)->with('records');
     }
+    public function entries_group_count($groupName=''){
+        $fieldId=array_column($this->fields->toArray(),null,'field_name')[$groupName]['id'];
+        $records=$this->entryRecords()->select('field_value',DB::raw('count(*) as count'))->where('entry_records.form_field_id',$fieldId)->groupBy('form_id','field_value')->get();
+        return $records;
+    }
+
     //entries for frontend table view and export to excel
     public function tableEntries()
     {
@@ -104,6 +119,9 @@ class Form extends Model implements HasMedia
             }
         }
         return $entries;
+    }
+    public function entryRecords(){
+        return $this->hasManyThrough(EntryRecord::class, Entry::class);
     }
     public function records()
     {

@@ -8,7 +8,6 @@ import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import { loadLanguageAsync } from "laravel-vue-i18n";
-import { getActiveLanguage } from "laravel-vue-i18n";
 
 defineProps({
     canLogin: Boolean,

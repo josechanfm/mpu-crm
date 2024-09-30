@@ -2,11 +2,11 @@
     <MasterLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Helps
+                Manuals
             </h2>
         </template>
         <a-button @click="createRecord" type="primary">Create</a-button>
-        <a-table :dataSource="helps.data" :columns="columns" :pagination="pagination" @change="onPaginationChange">
+        <a-table :dataSource="manuals.data" :columns="columns" :pagination="pagination" @change="onPaginationChange">
             <template #bodyCell="{column, text, record, index}">
                 <template v-if="column.dataIndex == 'operation'">
                     <a-button @click="editRecord(record)">Edit</a-button>
@@ -59,14 +59,14 @@ export default {
         quillEditor,
         dayjs,
     },
-    props: ['helps'],
+    props: ['manuals'],
     data() {
         return {
             dateFormat:'YYYY-MM-DD',
             pagination: {
-                total: this.helps.total,
-                current: this.helps.current_page,
-                pageSize: this.helps.per_page,
+                total: this.manuals.total,
+                current: this.manuals.current_page,
+                pageSize: this.manuals.per_page,
                 defaultPageSize:40,
                 showSizeChanger:true,
                 pageSizeOptions:['10','20','30','40','50']
@@ -74,7 +74,7 @@ export default {
             modal: {
                 mode: null,
                 isOpen: false,
-                title: 'Help Item',
+                title: 'Menual Item',
                 data: {}
             },
             columns:[
@@ -100,7 +100,7 @@ export default {
         onPaginationChange(page, filters, sorter) {
             console.log(page)
             this.$inertia.get(
-                route("master.helps.index"),
+                route("master.manuals.index"),
                 {
                     page: page.current,
                     per_page: page.pageSize,
@@ -135,7 +135,7 @@ export default {
         onFinish(values){
             this.$refs.modalRef.validateFields().then(()=>{
                 if(this.modal.mode=='EDIT'){
-                    this.$inertia.put(route('master.helps.update',this.modal.data.id),this.modal.data, {
+                    this.$inertia.put(route('master.manuals.update',this.modal.data.id),this.modal.data, {
                         onSuccess: (page) => {
                             this.modal.isOpen = false;
                         },
@@ -145,7 +145,7 @@ export default {
                     });
                 }
                 if(this.modal.mode=='CREATE'){
-                    this.$inertia.post(route('master.helps.store'),this.modal.data, {
+                    this.$inertia.post(route('master.manuals.store'),this.modal.data, {
                         onSuccess: (page) => {
                             this.modal.isOpen = false;
                         },
