@@ -54,7 +54,6 @@
 
                     <a-form-item name="admission" v-if="enquiry.degree == 'B'">
                         <div class="ant-col ant-form-item-label">
-
                             <label for="enquiry_admission" class="ant-form-item-required">
                                 {{ fields.admission['question_' + lang.lang] }}
                             </label>
@@ -91,9 +90,9 @@
                                 <a-radio :value="fields.admission.options[5].value" :style="radioStyle">
                                     {{ fields.admission.options[5]['label_' + lang.lang] }}
                                 </a-radio>
-                                <a-radio :value="fields.admission.options[6].value">
+                                <!-- <a-radio :value="fields.admission.options[6].value">
                                     {{ fields.admission.options[6]['label_' + lang.lang] }}
-                                </a-radio>
+                                </a-radio> -->
                             </template>
                             <template v-else>
                                 <a-radio :value="fields.admission.options[7].value" :style="radioStyle">
