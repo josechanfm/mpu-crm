@@ -21,7 +21,7 @@ class EbookController extends Controller
     protected $destinationPath;
 
     public function __construct() {
-        $this->templatePath=public_path('flipbooks/template/book1/');
+        $this->templatePath=storage_path('flipbooks/template/book1/');
         $this->destinationPath=public_path('flipbooks/');
     
     }
