@@ -14,7 +14,7 @@
                             {{ record['date_start'] }} : {{ record['date_end'] }}
                         </template>
                         <template v-else-if="column.dataIndex=='uid'">
-                            <a :href="'flipbooks/'+record['uid']" target="_blank">Link</a>
+                            <a :href="'/flipbooks/'+record['uid']" target="_blank">Link</a>
                         </template>
                         <template v-else-if="column.dataIndex=='qrcode'">
                             <img :src="'/flipbooks/'+record['uid']+'/qrcode.png'" 
@@ -242,7 +242,7 @@ export default {
             return;
             }
             // Use Inertia for the API call
-            this.$inertia.post(this.route('ebooks.store'), this.pdfFile, {
+            this.$inertia.post(this.route('staff.ebooks.store'), this.pdfFile, {
                 onSuccess: () => {
                     this.loading=false
                     this.successMessage = 'File uploaded successfully.';
@@ -259,7 +259,7 @@ export default {
         storeRecord() {
             this.$refs.modalRef.validateFields().then(() => {
                 this.loading=true
-                this.$inertia.post(route('flt.publications.store'), this.modal.data, {
+                this.$inertia.post(route('staff.ebooks.store'), this.modal.data, {
                     onSuccess: (page) => {
                         this.modal.data = {};
                         this.modal.isOpen = false;
@@ -278,7 +278,7 @@ export default {
             this.$refs.modalRef.validateFields().then(() => {
                 this.loading=true
                 this.modal.data._method = "PATCH";
-                this.$inertia.post(route('ebooks.update', {
+                this.$inertia.post(route('staff.ebooks.update', {
                      ebook: this.modal.data,
                 }), this.modal.data, {
                     onSuccess: (page) => {
@@ -298,7 +298,7 @@ export default {
         },
 
         deleteConfirmed(record) {
-            this.$inertia.delete(route("flt.publications.destroy", {publication:record.id,type:'cover'} ), {
+            this.$inertia.delete(route("staff.ebooks.destroy", {publication:record.id,type:'cover'} ), {
                 onSuccess: (page) => {
                     this.modal.data.cover=null
                 },
@@ -313,7 +313,7 @@ export default {
         },
         onPaginationChange(page, filters, sorter) {
             this.$inertia.get(
-                route("flt.publications.index"),
+                route("staff.ebooks.index"),
                 {
                     page: page.current,
                     per_page: page.pageSize,

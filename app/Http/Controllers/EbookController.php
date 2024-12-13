@@ -34,7 +34,7 @@ class EbookController extends Controller
     public function index()
     {
         $ebook=Ebook::find(1);
-       return Inertia::render('Ebook/List',[
+       return Inertia::render('Staff/Ebook/List',[
         'ebooks'=>Ebook::all()
        ]);
     }
@@ -47,7 +47,7 @@ class EbookController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Ebook/Create',[
+        return Inertia::render('Staff/Ebook/Create',[
 
         ]);
     }
@@ -60,9 +60,8 @@ class EbookController extends Controller
      */
     public function store(Request $request)
     {
-        $file = $request->file('file')[0];
         $data=[
-            'original_filename'=>$file->getClientOriginalName(),
+            'original_filename'=>'MPU eBook',
             'title'=>$request->title,
             'description'=>$request->description,
             'date_start'=>$request->date_start??date('y-m-d'),
@@ -71,9 +70,15 @@ class EbookController extends Controller
         ];
         // //dd($file,$filename);
         $ebook=Ebook::create($data);
-        $this->cloneTemplate($this->templatePath, $this->destinationPath, $ebook, $file);
 
-        return redirect()->route('ebooks.index');
+        if($request->file('file')){
+            $file = $request->file('file')[0];
+            $ebook->original_filename=$file->getClientOriginalName();
+            $ebook->save();
+            $this->cloneTemplate($this->templatePath, $this->destinationPath, $ebook, $file);
+        }
+
+        return redirect()->route('staff.ebooks.index');
         //return redirect()->route('upload')->with('success', 'File uploaded and converted successfully.');
     }
 
@@ -125,7 +130,7 @@ class EbookController extends Controller
             $ebook->save();
             $this->cloneTemplate($this->templatePath, $this->destinationPath, $ebook, $file);
         }
-        return redirect()->route('ebooks.index');
+        return redirect()->route('staff.ebooks.index');
 
     }
 

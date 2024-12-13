@@ -35,6 +35,8 @@ Route::middleware([
     Route::prefix('/staff')->group(function(){
         Route::get('/',[App\Http\Controllers\Staff\DashboardController::class,'index'])->name('staff');
         Route::resource('forms',\App\Http\Controllers\Staff\FormController::class)->names('staff.forms');
+        Route::resource('ebooks',App\Http\Controllers\EbookController::class)->names('staff.ebooks');
+        Route::get('ebook/clone_template',[App\Http\Controllers\EbookController::class,'staff.cloneTemplate']);
     });
     Route::get('/get-permissions', function () {
         return auth()->check()?auth()->user()->jsPermissions():0;
