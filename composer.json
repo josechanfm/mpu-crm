@@ -9,6 +9,7 @@
         "ahmedsaoud31/laravel-permission-to-vuejs": "dev-master",
         "barryvdh/laravel-dompdf": "^2.0",
         "directorytree/ldaprecord-laravel": "^2.7",
+        "endroid/qr-code": "^5.0",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.6.8",
         "johngrogg/ics-parser": "^3.4",

@@ -1,0 +1,4 @@
+RewriteEngine On
+
+# Simple test redirect
+RewriteRule ^flipbooks$ /index.html [L,R=302]

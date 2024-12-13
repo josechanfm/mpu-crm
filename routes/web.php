@@ -26,6 +26,8 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 })->name('home');
+Route::resource('ebooks',App\Http\Controllers\EbookController::class)->names('ebooks');
+Route::get('ebook/clone_template',[App\Http\Controllers\EbookController::class,'cloneTemplate']);
 
 Route::get('/language/{language}', function ($language) {
     Session::put('applocale', $language);
@@ -100,6 +102,7 @@ Route::prefix('/recruitment')->group(function(){
         Route::post('boc_result',[\App\Http\Controllers\Recruitment\AdminController::class,'bocResult']);
         Route::get('test_boc_payment',[\App\Http\Controllers\Recruitment\AdminController::class,'testBocPayment'])->name('recruitment.admin.testBocPayment');
         Route::post('test_boc_result',[\App\Http\Controllers\Recruitment\AdminController::class,'testBocResult'])->name('recruitment.admin.testBocResult');
+
     });
     
     Route::prefix('/academic')->group(function(){

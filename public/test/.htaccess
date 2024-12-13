@@ -1,0 +1,4 @@
+RewriteEngine On
+
+# Simple test redirect
+RewriteRule ^test$ /index.html [L,R=302]
