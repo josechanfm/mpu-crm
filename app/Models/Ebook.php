@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Ebook extends Model
 {
     use HasFactory;
-    protected $fillable=['uid','original_filename','title','description','date_start','date_end','remark'];
+    protected $fillable=['uid','original_filename','title','description','date_start','date_end','remark','published'];
+    protected $casts=['published'=>'boolean'];
 
     protected static function boot()
     {

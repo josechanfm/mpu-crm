@@ -26,8 +26,6 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 })->name('home');
-Route::resource('ebooks',App\Http\Controllers\EbookController::class)->names('ebooks');
-Route::get('ebook/clone_template',[App\Http\Controllers\EbookController::class,'cloneTemplate']);
 
 Route::get('/language/{language}', function ($language) {
     Session::put('applocale', $language);

@@ -67,6 +67,7 @@ class EbookController extends Controller
             'date_start'=>$request->date_start??date('y-m-d'),
             'data_end'=>$request->date_end,
             'remark'=>$request->remark,
+            'published'=>$request->published,
         ];
         // //dd($file,$filename);
         $ebook=Ebook::create($data);
@@ -121,6 +122,7 @@ class EbookController extends Controller
             'date_start'=>$request->date_start??date('y-m-d'),
             'data_end'=>$request->date_end,
             'remark'=>$request->remark,
+            'published'=>$request->published,
         ];
         // //dd($file,$filename);
         $ebook->update($data);

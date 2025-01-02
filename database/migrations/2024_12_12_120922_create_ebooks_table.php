@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('date_start');
             $table->date('date_end')->nullable();
             $table->text('remark')->nullable();
+            $table->boolean('published')->default(false);
             $table->timestamps();
         });
     }

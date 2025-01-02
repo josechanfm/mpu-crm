@@ -77,6 +77,10 @@
             </a-upload>
             <a-spin v-if="loading" />
            </a-form-item>
+           <a-form-item label="Date End" name="date_end" >
+            {{ modal.data.published }}
+            <a-switch v-model:checked="modal.data.published"/>
+           </a-form-item>
 
       </a-form>
       <template #footer>
