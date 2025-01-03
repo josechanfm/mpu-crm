@@ -61,6 +61,9 @@ class EbookController extends Controller
      */
     public function store(Request $request)
     {
+        $time=ini_get('max_execution_time');
+        ini_set('max_execution_time',3600);
+
         $data=[
             'original_filename'=>'MPU eBook',
             'title'=>$request->title,
@@ -79,7 +82,7 @@ class EbookController extends Controller
             $ebook->save();
             $this->cloneTemplate($this->templatePath, $this->destinationPath, $ebook, $file);
         }
-
+        ini_set('max_execution_time',$time);
         return redirect()->route('staff.ebooks.index');
         //return redirect()->route('upload')->with('success', 'File uploaded and converted successfully.');
     }
@@ -116,8 +119,8 @@ class EbookController extends Controller
     public function update(Request $request, Ebook $ebook)
     {
         // dd($request->all(), $request->file(), $ebook);
-        //$time=ini_get('max_execution_time');
-        //ini_set('max_execution_time',3600);
+        $time=ini_get('max_execution_time');
+        ini_set('max_execution_time',3600);
 
         $data=[
             // 'original_filename'=>$file->getClientOriginalName(),
@@ -136,7 +139,7 @@ class EbookController extends Controller
             $ebook->save();
             $this->cloneTemplate($this->templatePath, $this->destinationPath, $ebook, $file);
         }
-        //ini_set('max_execution_time',$time);
+        ini_set('max_execution_time',$time);
         return redirect()->route('staff.ebooks.index');
 
     }
