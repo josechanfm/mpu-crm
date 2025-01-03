@@ -223,7 +223,7 @@ export default {
         },
         beforeUpload(file) {
             const isPdf = file.type === 'application/pdf';
-            const isUnder2MB = file.size / 1024 / 1024 < 5; // Check if file size is less than 2MB
+            const isUnder2MB = file.size / 1024 / 1024 < 20; // Check if file size is less than 20MB
     
             if (!isPdf) {
             message.error('You can only upload PDF files!');
