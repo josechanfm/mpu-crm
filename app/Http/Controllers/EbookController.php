@@ -33,6 +33,7 @@ class EbookController extends Controller
      */
     public function index()
     {
+    
         $ebook=Ebook::find(1);
        return Inertia::render('Staff/Ebook/List',[
         'ebooks'=>Ebook::all()
@@ -115,6 +116,9 @@ class EbookController extends Controller
     public function update(Request $request, Ebook $ebook)
     {
         // dd($request->all(), $request->file(), $ebook);
+        $time=ini_get('max_execution_time');
+        ini_set('max_execution_time',3600);
+
         $data=[
             // 'original_filename'=>$file->getClientOriginalName(),
             'title'=>$request->title,
@@ -132,6 +136,7 @@ class EbookController extends Controller
             $ebook->save();
             $this->cloneTemplate($this->templatePath, $this->destinationPath, $ebook, $file);
         }
+        ini_set('max_execution_time',$time);
         return redirect()->route('staff.ebooks.index');
 
     }
@@ -167,6 +172,10 @@ class EbookController extends Controller
         $imagick = new Imagick();
         $imagick->setResolution(300, 300); // Set resolution for better quality
         $imagick->readImage($pdfPath);
+        //$imagick->setBackgroundColor('rgb(255,255,255)');
+        //$imagick->flattenImages();
+
+        //dd($imagick->getNumberImages(),count($imagick));
 
         foreach ($imagick as $i => $image) {
             $image->setImageFormat('jpeg');
@@ -175,7 +184,8 @@ class EbookController extends Controller
         }
 
         $filePath=$toPath.'/mobile/javascript/pages.js';
-        $newContent="var total_page=".$imagick->getNumberImages()."; \n var book_title='".$ebook->title."'";
+        //$newContent="var total_page=".$imagick->getNumberImages()."; \n var book_title='".$ebook->title."';";
+        $newContent="var total_page=".($i+1)."; \n var book_title='".$ebook->title."';";
         if (file_put_contents($filePath, $newContent) === false) {
             die("Error writing to the file.");
         }

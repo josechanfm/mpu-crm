@@ -200,7 +200,9 @@ export default {
             this.imageSrc=record.uid
         },
         createRecord() {
-            this.modal.data = {};
+            this.modal.data = {
+                published:false  
+            };
             this.modal.mode = "CREATE";
             this.modal.title = "新增";
             this.modal.isOpen = true;

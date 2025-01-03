@@ -1,2 +1,2 @@
-var total_page=2; 
- var book_title='22'
+var total_page=18; 
+ var book_title='22';
