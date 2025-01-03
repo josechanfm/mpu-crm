@@ -169,6 +169,60 @@ class EbookController extends Controller
             File::cleanDirectory($toPath.'/files/mobile/');
             File::cleanDirectory($toPath.'/files/thumb/');
         }
+
+        //dd($toPath,is_dir($toPath));
+        $pdfPath = $file->move($toPath,$ebook->original_filename);
+        $pdf = new \Spatie\PdfToImage\Pdf($toPath.'/'.$ebook->original_filename);
+        //dd($pdf);
+        foreach (range(1, $pdf->getNumberOfPages()) as $pageNumber) {
+            $pdf->setPage($pageNumber)
+                ->saveImage($toPath.'/files/mobile/'.$pageNumber.'.jpg');
+         }
+        $filePath=$toPath.'/mobile/javascript/pages.js';
+        $newContent="var total_page=".$pdf->getNumberOfpages()."; \n var book_title='".$ebook->title."';";
+        if (file_put_contents($filePath, $newContent) === false) {
+            die("Error writing to the file.");
+        }
+        
+        //dd($pdfPath, $toPath, $ebook->original_filename);
+
+        // $imagick = new Imagick();
+        // $imagick->setResolution(300, 300); // Set resolution for better quality
+        // $imagick->readImage($pdfPath);
+        // //$imagick->setBackgroundColor('rgb(255,255,255)');
+        // //$imagick->flattenImages();
+
+        // //dd($imagick->getNumberImages(),count($imagick));
+
+        // foreach ($imagick as $i => $image) {
+        //     $image->setImageFormat('jpeg');
+        //     $image->writeImage($toPath.'/files/mobile/'.($i+1).".jpg");
+        //     $image->writeImage($toPath.'/files/thumb/'.($i+1).".jpg");
+        // }
+
+        // $filePath=$toPath.'/mobile/javascript/pages.js';
+        // //$newContent="var total_page=".$imagick->getNumberImages()."; \n var book_title='".$ebook->title."';";
+        // $newContent="var total_page=".($i+1)."; \n var book_title='".$ebook->title."';";
+        // if (file_put_contents($filePath, $newContent) === false) {
+        //     die("Error writing to the file.");
+        // }
+        $this->_generateQrCode($ebook);
+        return true;
+    }
+    public function cloneTemplate2($fromPath, $toPath, $ebook, $file){
+        $toPath=$toPath.$ebook->uid;
+        if(!is_dir($toPath)){
+            try {
+                File::copyDirectory($fromPath, $toPath);
+                echo "Directory copy successfully";
+
+            } catch (Exception $e) {
+                echo "Error copying directory: " . $e->getMessage();
+            }
+        }else{
+            File::cleanDirectory($toPath.'/files/mobile/');
+            File::cleanDirectory($toPath.'/files/thumb/');
+        }
         //dd($toPath,is_dir($toPath));
         $pdfPath = $file->move($toPath,$ebook->original_filename);
        
