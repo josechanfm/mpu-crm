@@ -229,7 +229,7 @@ export default {
                     title: '姓, 名',
                     dataIndex: 'surname',
                     //sorter: (a, b) => a.surname.localeCompare(b.surname),
-                    sorter: (a, b) => safeStringCompare(a.degree, b.degree),
+                    sorter: (a, b) => this.safeStringCompare(a.degree, b.degree),
                     sortOrder: this.sorter.field=='surname'?this.sorter.order:null,
                 }, {
                     title: '電話',
@@ -251,6 +251,12 @@ export default {
         }
     },
     methods: {
+        safeStringCompare(a, b, nullsFirst = false) {
+                if (a == null && b == null) return 0;
+                if (a == null) return nullsFirst ? -1 : 1;
+                if (b == null) return nullsFirst ? 1 : -1;
+            return String(a).localeCompare(String(b));
+        },
         onPaginationChange(page, filters, sorter) {
 
             this.filters = {
