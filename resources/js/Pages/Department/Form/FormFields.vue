@@ -1,9 +1,10 @@
 <template>
     <DepartmentLayout title="Dashboard" :department="department">
-        <div class="flex-auto pb-3 text-right">
+        <div class="flex pb-3 justify-end gap-2">
+            <a-button :href="route('staff.forms.index')">Back</a-button>
             <a-button v-if="isDraggable" type="primary" ghost @click="reloadFormFields">Finish</a-button>
             <a-button v-else type="primary" ghost @click="isDraggable = !isDraggable">Drag sort</a-button>
-            <a-button @click="createRecord()" type="primary" class="ml-2">Create Field</a-button>
+            <a-button @click="createRecord()" type="primary">Create Field</a-button>
         </div>
         <a-table :dataSource="dataModel" :columns="columns" :customRow="customRow">
             <template #bodyCell="{ column, record, index }">
@@ -132,33 +133,6 @@ export default {
                 { value: "html", label: "HMTL text" }
             ],
             isDraggable: false,
-            columns: [
-                {
-                    title: '拖拉',
-                    width: '60px',
-                    dataIndex: 'dragger',
-                }, {
-                    title: '欄位名稱',
-                    i18n: 'field_label',
-                    dataIndex: 'field_label',
-                }, {
-                    title: '欄位格式',
-                    i18n: 'field_type',
-                    dataIndex: 'type',
-                }, {
-                    title: '必填欄',
-                    i18n: 'compulsory',
-                    dataIndex: 'required',
-                }, {
-                    title: '顯示於輸出表格',
-                    i18n: 'in_column',
-                    dataIndex: 'in_column',
-                }, {
-                    title: '操作',
-                    i18n: 'operation',
-                    dataIndex: 'operation'
-                }
-            ],
             rules: {
                 field_label: { required: true },
                 type: { required: true },
@@ -206,6 +180,38 @@ export default {
         //console.log(this.departments);
         //$d=this.departments.map(d=>({value:d.id,label:d.abbr}));
         //console.log($d);
+    },
+    computed:{
+        columns() {
+            return [
+                {
+                    title: '拖拉',
+                    width: '60px',
+                    dataIndex: 'dragger',
+                }, {
+                    title: '欄位名稱',
+                    i18n: 'field_label',
+                    dataIndex: 'field_label',
+                }, {
+                    title: '欄位格式',
+                    i18n: 'field_type',
+                    dataIndex: 'type',
+                }, {
+                    title: '必填欄',
+                    i18n: 'compulsory',
+                    dataIndex: 'required',
+                }, {
+                    title: '顯示於輸出表格',
+                    i18n: 'in_column',
+                    dataIndex: 'in_column',
+                }, {
+                    title: '操作',
+                    i18n: 'operation',
+                    dataIndex: 'operation'
+                }
+            ]
+        }
+
     },
     methods: {
         createRecord() {
@@ -421,3 +427,5 @@ export default {
     }
 }
 </script>
+<style scoped>
+</style>

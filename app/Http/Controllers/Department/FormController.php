@@ -189,6 +189,16 @@ class FormController extends Controller
     public function deleteMedia(Media $media){
         $media->delete();
     }
+    public function clone(Form $form){
+        //$fields=$form->fields;
+        $formData=$form->toArray();
+        $formData['name']=$formData['name'].' (new)';
+        $formData['title']=$formData['title'].' (new)';
+        $formData['published']=false;
+        $newForm=Form::create($formData);
+        $newForm->fields()->createMany($form->fields->toArray());
+        return to_route('manage.forms.index');
+    }
 
 
 }

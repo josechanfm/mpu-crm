@@ -25,7 +25,6 @@
               <inertia-link 
                 :href="route('manage.forms.edit',record.id)"
                 class="ant-btn">{{ $t('edit') }}</inertia-link>
-
               <a-popconfirm
                 title="Confirm Delete"
                 ok-text="Yes"
@@ -35,6 +34,7 @@
               >
                 <a-button :disabled="record.entries_count > 0">{{ $t('delete') }}</a-button>
               </a-popconfirm>
+              <a-button @click="cloneForm(record)">Clone</a-button>
               <a-button @click="backupRecords(record)" v-if="record.entries_count > 0">Backup</a-button>
             </template>
             <template v-else-if="column.type == 'yesno'">
@@ -50,7 +50,7 @@
           </template>
         </a-table>
       </div>
-      <p>From CAN NOT be delete, if Response is not empty.</p>
+      <p>From CAN NOT be delete, if form FIELD created.</p>
     </div>
   </DepartmentLayout>
 </template>
@@ -124,8 +124,6 @@ export default {
   created() {},
   methods: {
     deleteConfirmed(record) {
-      console.log("delete");
-      console.log(record);
       this.$inertia.delete(route("manage.forms.destroy", { form: record.id }), {
         onSuccess: (page) => {
           console.log(page);
@@ -146,6 +144,17 @@ export default {
         },
       });
     },
+    cloneForm(form){
+      console.log(form)
+      this.$inertia.post(route("manage.form.clone", form), {
+        onSuccess: (page) => {
+          console.log(page);
+        },
+        onError: (error) => {
+          alert(error.message);
+        },
+      });
+    }
   },
 };
 </script>
