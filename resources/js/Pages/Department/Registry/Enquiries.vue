@@ -228,7 +228,8 @@ export default {
                 }, {
                     title: '姓, 名',
                     dataIndex: 'surname',
-                    sorter: (a, b) => a.surname.localeCompare(b.surname),
+                    //sorter: (a, b) => a.surname.localeCompare(b.surname),
+                    sorter: (a, b) => safeStringCompare(a.degree, b.degree),
                     sortOrder: this.sorter.field=='surname'?this.sorter.order:null,
                 }, {
                     title: '電話',
