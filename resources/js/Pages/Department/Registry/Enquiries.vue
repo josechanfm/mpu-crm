@@ -229,12 +229,13 @@ export default {
                     title: '姓, 名',
                     dataIndex: 'surname',
                     //sorter: (a, b) => a.surname.localeCompare(b.surname),
-                    sorter: (a, b) => this.safeStringCompare(a.degree, b.degree),
+                    sorter: (a, b) => this.safeStringCompare(a.surname, b.surname),
                     sortOrder: this.sorter.field=='surname'?this.sorter.order:null,
                 }, {
                     title: '電話',
                     dataIndex: 'phone',
-                    sorter: (a, b) => a.phone.localeCompare(b.phone),
+                    //sorter: (a, b) => a.phone.localeCompare(b.phone),
+                    sorter: (a, b) => this.safeStringCompare(a.phone, b.phone),
                     sortOrder: this.sorter.field=='phone'?this.sorter.order:null,
                 }, {
                     title: '最後回應',
