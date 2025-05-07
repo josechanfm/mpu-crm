@@ -190,7 +190,8 @@ export default {
                 }, {
                     title: '證件類別(持有證件)',
                     dataIndex: 'origin',
-                    sorter: (a, b) => a.origin.localeCompare(b.origin),
+                    //sorter: (a, b) => a.origin.localeCompare(b.origin),
+                    sorter: (a, b) => this.safeStringCompare(a.origin, b.origin),
                     // sorter:this.sorter.field=='origin'?true:false,
                     sortOrder: this.sorter.field=='origin'?this.sorter.order:null,
                     filters: this.configFields.origin.options.map(option=>({
@@ -204,7 +205,8 @@ export default {
                 }, {
                     title: '課程類別(入讀課程)',
                     dataIndex: 'degree',
-                    sorter: (a, b) => a.degree.localeCompare(b.degree),
+                    //sorter: (a, b) => a.degree.localeCompare(b.degree),
+                    sorter: (a, b) => this.safeStringCompare(a.degree, b.degree),
                     sortOrder: this.sorter.field=='degree'?this.sorter.order:null,
                     filters: this.configFields.degree.options.map(option=>({
                         text:option['label_'+this.$t('lang')] + option.value,
@@ -216,7 +218,8 @@ export default {
                 }, {
                     title: '入學途徑',
                     dataIndex: 'admission',
-                    sorter: (a, b) => a.admission.localeCompare(b.admission),
+                    // sorter: (a, b) => a.admission.localeCompare(b.admission),
+                    sorter: (a, b) => this.safeStringCompare(a.admission, b.admission),
                     sortOrder: this.sorter.field=='admission'?this.sorter.order:null,
                     filters: this.configFields.admission.options.map(option=>({
                         text:option['label_'+this.$t('lang')],
