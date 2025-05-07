@@ -244,7 +244,7 @@
             {"value":"7_PHD","label":"PhD"},
             {"value":"8_PPD","label":"Postdoctoral"}
           ],
-        "operation":"Operation",
+        "operation":"Ações",
         "create":"Create",
         "edit":"Edit",
         "delete":"Delete",

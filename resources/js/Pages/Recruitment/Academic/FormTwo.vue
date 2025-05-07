@@ -7,7 +7,7 @@
             </h2>
         </template>
         <div class="p-5">
-            <a-steps  progress-dot :current="this.page.current-1" @change="onChangeStep">
+            <a-steps  progress-dot :current="this.page.current-1">
                 <a-step v-for="item in lang.steps" :description="item.title" :key="item.title"/>
             </a-steps>
         </div>
@@ -200,12 +200,6 @@ export default {
             this.education.date_start = '2000-01-01'
             this.education.date_finish = '2005-01-01'
         },
-        onChangeStep(stepId){
-            if((stepId+1)<this.page.current){
-                this.page.next=stepId+1
-                this.saveToNext();
-            }
-        },
         saveToNext() {
             if(this.application.educations.length==0){
                 message.error(this.lang.at_least_one_education);
@@ -213,7 +207,7 @@ export default {
             }
             this.$inertia.post(route('recruitment.academic.save'), { to_page: this.page.next, application: this.application }, {
                 onSuccess: (page) => {
-                    console.log(page.data)
+                    console.log('save & update success')
                 },
                 onError: (err) => {
                     console.log(err)
@@ -234,7 +228,7 @@ export default {
                 recordId:this.application.educations[i].id
             }),{
                 onSuccess: (page) => {
-                    console.log(page.data)
+                    console.log('save & update success')
                 },
                 onError: (err) => {
                     console.log(err)

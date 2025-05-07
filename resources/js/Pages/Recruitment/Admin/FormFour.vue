@@ -7,7 +7,7 @@
             </h2>
         </template>
         <div class="p-5">
-            <a-steps  progress-dot :current="page.current-1" @change="onChangeStep">
+            <a-steps  progress-dot :current="page.current-1">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
@@ -15,32 +15,34 @@
             <a-button @click="sampleData">Sample Data</a-button>
         </template>
         <div class="container bg-white rounded mx-auto p-5">
-            <CardBox :title="lang.part_C" :subtitle="lang.part_c">
+            <CardBox :title="lang.part_C">
                 <template #content>
+                    {{ lang.listed_in_sequence }}
                     <table width="100%">
                         <tr>
-                            <th colspan="2">{{ lang.exp_company }}</th>
                             <th rowspan="2">{{ lang.exp_position }}</th>
+                            <th rowspan="2">{{ lang.exp_company_name }}</th>
+                            <th colspan="4">{{ lang.exp_employment }}</th>
                             <th rowspan="2">{{ lang.exp_salary }}</th>
-                            <th rowspan="2">{{ lang.exp_employment }}</th>
-                            <th colspan="2">{{ lang.exp_date }}</th>
+                            <th rowspan="2">{{ lang.exp_description }}</th>
                             <th rowspan="2">{{ lang.operation }}</th>
                         </tr>
                         <tr>
-                            <th>{{ lang.exp_company_name }}</th>
-                            <th>{{ lang.exp_region }}</th>
                             <th>{{ lang.exp_date_join }}</th>
                             <th>{{ lang.exp_date_leave }}</th>
+                            <th>{{ employmentOptionLabel('FULL') }}</th>
+                            <th>{{ employmentOptionLabel('PART') }}</th>
                         </tr>
                         <template v-for="(exp, i) in application.experiences">
                             <tr>
-                                <td>{{ exp.company_name }}</td>
-                                <td>{{ exp.region }}</td>
                                 <td>{{ exp.position }}</td>
-                                <td>{{ exp.salary }}</td>
-                                <td>{{ exp.employment }}</td>
-                                <td>{{ exp.date_join }}</td>
-                                <td>{{ exp.date_leave }}</td>
+                                <td>{{ exp.company_name }}</td>
+                                <td class="text-center">{{ exp.date_join }}</td>
+                                <td class="text-center">{{ exp.date_leave }}</td>
+                                <td class="text-center"><span v-if="exp.employment=='FULL'"><CheckOutlined /></span></td>
+                                <td class="text-center"><span v-if="exp.employment=='PART'"><CheckOutlined /></span></td>
+                                <td class="text-center">{{ exp.salary }}</td>
+                                <td>{{ exp.description }}</td>
                                 <td>
                                     <a-popconfirm
                                         :title="lang.delete_confirm"
@@ -71,47 +73,42 @@
                     >
                         <a-row :gutter="10">
                             <a-col :span="16">
-                                <a-form-item :label="lang.exp_company_name" name="company_name">
-                                    <a-input v-model:value="experience.company_name" />
-                                </a-form-item>
-                            </a-col>
-                            <a-col :span="8">
-                                <a-form-item :label="lang.exp_region" name="region">
-                                    <a-input v-model:value="experience.region" />
-                                </a-form-item>
-                            </a-col>
-                        </a-row>
-                        <a-row :gutter="10">
-                            <a-col :span="8">
                                 <a-form-item :label="lang.exp_position" name="position">
                                     <a-input v-model:value="experience.position" />
                                 </a-form-item>
-                            </a-col>
-                            <a-col :span="8">
-                                <a-form-item :label="lang.exp_salary">
-                                    <a-input v-model:value="experience.salary" />
+                                <a-form-item :label="lang.exp_company_name" name="company_name">
+                                    <a-input v-model:value="experience.company_name" />
                                 </a-form-item>
                             </a-col>
                             <a-col :span="8">
                                 <a-form-item :label="lang.exp_employment" name="employment">
                                     <a-radio-group v-model:value="experience.employment" :options="lang.exp_employmentOptions" />
                                 </a-form-item>
+                                <a-form-item :label="lang.exp_salary" name="salary">
+                                    <a-input v-model:value="experience.salary" />
+                                </a-form-item>
                             </a-col>
                         </a-row>
                         <a-row :gutter="10">
-                            <a-col :span="12">
+                            <a-col :span="16">
+                                <a-form-item :label="lang.exp_description" name="description">
+                                    <a-textarea v-model:value="experience.description"  :rows="5"/>
+                                </a-form-item>
+                            </a-col>
+                            <a-col :span="8">
                                 <a-form-item :label="lang.exp_date_join" name="date_join">
                                     <a-date-picker v-model:value="experience.date_join" :format="dateFormat"
                                         :valueFormat="dateFormat" />
                                 </a-form-item>
-                            </a-col>
-                            <a-col :span="12">
+
                                 <a-form-item :label="lang.exp_date_leave">
                                     <a-date-picker v-model:value="experience.date_leave" :format="dateFormat"
                                         :valueFormat="dateFormat" />
                                 </a-form-item>
                             </a-col>
                         </a-row>
+                        <a-col :span="16">
+                        </a-col>
                         <a-form-item :wrapper-col="{ span: 24, offset: 11, }">
                             <a-button type="primary" html-type="submit">{{ lang.add_item }}</a-button>
                         </a-form-item>
@@ -133,14 +130,14 @@ import CardBox from '@/Components/CardBox.vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
 import recLang  from '/lang/recruitment_admin.json';
 import { message } from 'ant-design-vue';
-import { CloseSquareOutlined,FormOutlined } from '@ant-design/icons-vue';
+import { CloseSquareOutlined, FormOutlined, CheckOutlined } from '@ant-design/icons-vue';
 
 export default {
     components: {
         MemberLayout,
         CaretRightOutlined,
         CardBox,
-        CloseSquareOutlined,FormOutlined
+        CloseSquareOutlined, FormOutlined, CheckOutlined
     },
     props: ['vacancy', 'application'],
     data() {
@@ -163,15 +160,6 @@ export default {
     },
     created() {
         this.lang = recLang[this.$page.props.lang]
-        // axios.get(route('api.config.item', { key: 'rec_employment_types' }))
-        //     .then(res => {
-        //         this.employmentOptions = res.data[this.$page.props.lang].value
-        //         this.experience.employment = this.employmentOptions[0].value
-        //     })
-        //     .then(err => {
-        //         console.log(err)
-        //     })
-
     },
     mounted() {
         let urlParams = new URLSearchParams(window.location.search);
@@ -191,17 +179,10 @@ export default {
             this.experience.date_join = '2020-01-01'
             this.experience.date_leave = '2022-01-01'
         },
-        onChangeStep(stepId){
-            if((stepId+1)<this.page.current){
-                this.page.next=stepId+1
-                this.saveToNext();
-            }
-        },
         saveToNext() {
-            console.log(this.currentPage);
             this.$inertia.post(route('recruitment.admin.save'), { to_page: this.page.next, application: this.application }, {
                 onSuccess: (page) => {
-                    console.log(page.data)
+                    console.log('save & update success')
                 },
                 onError: (err) => {
                     console.log(err)
@@ -211,7 +192,6 @@ export default {
         onFinish() {
             this.application.experiences.push({ ...this.experience })
             this.experience = {};
-            console.log(this.application);
         },
         onFinishFailed(){
             message.error(this.lang.error_required_fields);
@@ -222,6 +202,10 @@ export default {
         editItem(i){
             this.experience=this.application.experiences[i]
             this.application.experiences.splice(i,1)
+        },
+        employmentOptionLabel(value){
+            let item=this.lang.exp_employmentOptions.find(o=>o.value==value);
+            return item?item.label:null
         }
     },
     computed:{

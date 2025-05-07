@@ -9,9 +9,9 @@ use Illuminate\Support\Str;
 class RecApplication extends Model
 {
     use HasFactory;
-    protected $fillable=['user_id','rec_vacancy_id','obtain_info','name_full_zh','name_family_zh','name_given_zh','name_full_fn','name_family_fn','name_given_fn','gender','pob','pob_oth','dob','id_type','id_type_name','id_num','id_issue',
+    protected $fillable=['user_id','rec_vacancy_id','obtain_info','exam_lang','name_full_zh','name_family_zh','name_given_zh','name_full_fn','name_family_fn','name_given_fn','gender','pob','pob_oth','dob','id_type','id_type_name','id_num','id_issue',
     'nationality','nationality_oth','language','address','phone','email','supplement','status','submitted','admin_id','payment','quick_pay'];
-    protected $casts=['obtain_info'=>'array','submitted'=>'boolean'];
+    protected $casts=['obtain_info'=>'array','submitted'=>'boolean','language'=>'json'];
 
 
     public static function boot(){

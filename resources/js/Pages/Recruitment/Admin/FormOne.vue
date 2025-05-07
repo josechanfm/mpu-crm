@@ -26,33 +26,19 @@
                     <template #content>
                         <a-row>
                             <a-col :span="16">
-                                <p>{{ lang.unit }}: {{ vacancy.apply_in }}</p>
-                                <p>{{ lang.code }}:{{ vacancy.code }}</p>
-                                <p>{{ lang.title }}: {{ vacancy['title_' + $page.props.lang] }}</p>
+                                <p><span class="font-black">{{ lang.code }}：</span>{{ vacancy.code }}</p>
+                                <p><span class="font-black">{{ lang.title }}：</span>{{ vacancy['title_' + $page.props.lang] }}</p>
+                                <p><span class="font-black">{{ lang.exam_lang }}：</span>
+                                       <a-radio-group v-model:value="application.exam_lang" button-style="solid">
+                                        <a-radio-button value="zh">{{ lang.lang_options['zh'] }}</a-radio-button>
+                                        <a-radio-button value="pt">{{ lang.lang_options['pt'] }}</a-radio-button>
+                                    </a-radio-group>
+
+                                </p>
                             </a-col>
                             <a-col>
-                                <p>{{ lang.obtain_info }}</p>
-                                <a-checkbox-group v-model:value="application.obtain_info"
-                                    style="display: flex; flex-direction: column;margin-left:8">
-                                    <a-checkbox value="WEB">{{ lang.obtain_info_web }}</a-checkbox>
-                                    <a-row>
-                                        <a-col>
-                                            <a-checkbox value="NEW">{{ lang.obtain_info_new }}</a-checkbox>
-                                        </a-col>
-                                        <a-col>
-                                            <a-input v-model:value="application.obtain_info_new" />
-                                        </a-col>
-                                    </a-row>
-                                    <a-row>
-                                        <a-col>
-                                            <a-checkbox value="OTH">{{ lang.obtain_info_oth }}</a-checkbox>
-                                        </a-col>
-                                        <a-col>
-                                            <a-input v-model:value="application.obtain_info_oth" />
-                                        </a-col>
-                                    </a-row>
-
-                                </a-checkbox-group>
+                                <p><span class="font-black">{{ lang.required_edu }}：</span>{{ getConfigLabel(educations,vacancy.education) }}</p>
+                                <p><span class="font-black">{{ lang.required_doc }}：</span>{{ getConfigLabel(vehicles,vacancy.vehicle) }}</p>
                             </a-col>
                         </a-row>
                     </template>
@@ -88,46 +74,9 @@
                                 </a-form-item>
                             </a-col>
                         </a-row>
-                        <a-form-item :label="lang.name_given_fn" name="name_given_fn">
-                            <a-input v-model:value="application.name_given_fn" />
+                        <a-form-item :label="lang.name_full_fn" name="name_full_fn">
+                            <a-input v-model:value="application.name_full_fn" />
                         </a-form-item>
-                        <a-form-item :label="lang.name_family_fn" name="name_family_fn">
-                            <a-input v-model:value="application.name_family_fn" />
-                        </a-form-item>
-                        <a-row :gutter="12">
-                            <a-col :span="16">
-                                <a-form-item :label="lang.pob" name="pob">
-                                    <a-radio-group v-model:value="application.pob">
-                                        <template v-for="(item, key) in lang.pob_options">
-                                            <a-radio :value="key">{{ item }}</a-radio>
-                                        </template>
-                                    </a-radio-group>
-                                    <a-input v-if="application.pob=='OT'" v-model:value="application.pob_oth" style="width:200px"/>
-                                </a-form-item>
-                                
-                            </a-col>
-                            <a-col :span="8">
-                                <a-form-item :label="lang.dob" name="dob">
-                                    <a-input v-model:value="application.dob" />
-                                </a-form-item>
-                            </a-col>
-                        </a-row>
-                        <a-row :gutter="12">
-                            <a-col :span="12">
-                                <a-form-item :label="lang.id_type" name="id_type">
-                                    <a-select v-model:value="application.id_type">
-                                        <template v-for="(item, key) in lang.id_type_options">
-                                            <a-select-option :value="key">{{ item }}</a-select-option>
-                                        </template>
-                                    </a-select>
-                                </a-form-item>
-                            </a-col>
-                            <a-col :span="12" v-if="application.id_type=='OTH'">
-                                <a-form-item :label="lang.id_type_name" name="id_type_name">
-                                    <a-input v-model:value="application.id_type_name" />
-                                </a-form-item>
-                            </a-col>
-                        </a-row>
                         <a-row :gutter="12">
                             <a-col :span="12">
                                 <a-form-item :label="lang.id_num" name="id_num">
@@ -139,31 +88,27 @@
                                 </a-form-item>
                             </a-col>
                             <a-col :span="12">
-                                <a-form-item :label="lang.nationality" name="nationality">
-                                    <a-radio-group v-model:value="application.nationality">
-                                        <template v-for="(item, key) in lang.nationality_options">
-                                            <a-radio :value="key">{{ item }}</a-radio>
-                                        </template>
-                                        <a-input v-if="application.nationality=='OT'" v-model:value="application.nationality_oth" style="width:200px"/>
-                                    </a-radio-group>
+                                <a-form-item :label="lang.dob" name="dob">
+                                    <a-input v-model:value="application.dob" />
+                                </a-form-item>
+                            </a-col>
+                        </a-row>
+                        <a-row :gutter="12">
+                            <a-col :span="12">
+                                <a-form-item :label="lang.email" name="email">
+                                    <a-input v-model:value="application.email" />
+                                </a-form-item>
+                            </a-col>
+                            <a-col :span="12">
+                                <a-form-item :label="lang.phone" name="phone">
+                                    <a-input v-model:value="application.phone" />
                                 </a-form-item>
                             </a-col>
                         </a-row>
                         <a-form-item :label="lang.address" name="address">
                             <a-input v-model:value="application.address" />
                         </a-form-item>
-                        <a-row :gutter="12">
-                            <a-col :span="12">
-                                <a-form-item :label="lang.phone" name="phone">
-                                    <a-input v-model:value="application.phone" />
-                                </a-form-item>
-                            </a-col>
-                            <a-col :span="12">
-                                <a-form-item :label="lang.email" name="email">
-                                    <a-input v-model:value="application.email" />
-                                </a-form-item>
-                            </a-col>
-                        </a-row>
+
                     </template>
                 </CardBox>
                 <!-- <div class="border border-sky-500 rounded-lg mt-5">
@@ -197,7 +142,7 @@ export default {
         CaretRightOutlined,
         CardBox,
     },
-    props: ['vacancy', 'application'],
+    props: ['educations','vehicles','vacancy', 'application'],
     data() {
         return {
             page: {},
@@ -286,14 +231,10 @@ export default {
                 this.application.email = 'chantaiman@example.com',
                 this.application.address = 'Somewhere near by..'
         },
-        handlePobValidate(rule, value, callback){
-            console.log(rule)
-            console.log(value)
-        },
         onFinish() {
             this.$inertia.post(route('recruitment.admin.save'), { to_page: 2, application: this.application }, {
                 onSuccess: (page) => {
-                    console.log(page.data)
+                    console.log('save & update success')
                 },
                 onError: (err) => {
                     console.log(err)
@@ -303,6 +244,10 @@ export default {
         onFinishFailed(){
             message.error(this.lang.error_required_fields);
         },
+        getConfigLabel(config, value){
+            let item=config.find(i=>i.value==value)
+            return item?item['label_'+this.$page.props.lang]:null;
+        }
     },
     computed:{
         validateMessages() {

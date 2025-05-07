@@ -7,7 +7,7 @@
             </h2>
         </template>
         <div class="p-5">
-            <a-steps ref="refSteps" progress-dot :current="page.current-1" @change="onChangeStep">
+            <a-steps ref="refSteps" progress-dot :current="page.current-1">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
@@ -16,22 +16,20 @@
                 <template #content>
                     <table width="100%">
                         <tr>
+                            <th class="text-left bg-gray-300">{{ lang.position_info }}</th>
+                        </tr>
+                        <tr>
                             <td class="p-2">
-                                <div>{{ lang.unit }}: {{ vacancy.apply_in }}</div>
                                 <div>{{ lang.code }}: {{ vacancy.code }}</div>
                                 <div>{{ lang.title }}: {{ vacancy['title_' + $page.props.lang] }}</div>
-                            </td>
-                            <td class="p-2">
-                                <div>{{ lang.obtain_info }}</div>
-                                <div>{{ lang.obtain_info_web }}</div>
-                                <div>{{ lang.obtain_info_new }}</div>
-                                <div>{{ lang.obtain_info_oth }}</div>
+                                <div>{{ lang.required_edu }}: {{ optionItem(educations,vacancy.education) }}</div>
+                                <div>{{ lang.required_doc }}:  {{ optionItem(vehicles, vacancy.vehicle) }}</div>
                             </td>
                         </tr>
                     </table>
                     <table class="mt-5" width="100%">
                         <tr>
-                            <th colspan="4" style="text-align: left;">
+                            <th colspan="4" class="text-left bg-gray-300">
                                 {{ lang.personal_info }}
                                 <a-button v-if="!application.submitted"
                                     :href="route('recruitment.admin.apply', { 'code': vacancy.code, 'page': 1 })"
@@ -47,15 +45,11 @@
                         </tr>
                         <tr>
                             <th>{{ lang.name_family_fn }}</th>
-                            <td colspan="3">{{ application.name_family_fn }}</td>
+                            <td colspan="3">{{ application.name_family_fn }}, {{ application.name_given_fn }}</td>
                         </tr>
                         <tr>
-                            <th>{{ lang.name_given_fn }}</th>
-                            <td colspan="3">{{ application.name_given_fn }}</td>
-                        </tr>
-                        <tr>
-                            <th>{{ lang.pob }}</th>
-                            <td>{{ application.pob }}</td>
+                            <th></th>
+                            <td></td>
                             <th>{{ lang.dob }}</th>
                             <td>{{ application.dob }}</td>
                         </tr>
@@ -322,7 +316,7 @@ export default {
         CaretRightOutlined,
         CardBox,
     },
-    props: ['vacancy', 'application'],
+    props: ['educations','vehicles','vacancy', 'application'],
     data() {
         return {
             page: {},
@@ -367,23 +361,10 @@ export default {
         }
     },
     methods: {
-        onChangeStep(stepId){
-            if((stepId+1)<this.page.current && this.application.submitted!=true){
-                this.page.next=stepId+1
-                this.$inertia.get(route('recruitment.admin.apply',{ code:this.vacancy.code, page: this.page.next }), {
-                    onSuccess: (page) => {
-                        console.log(page.data)
-                    },
-                    onError: (err) => {
-                        console.log(err)
-                    }
-                });
-            }
-        },
         confirmSubmit(){
             this.$inertia.post(route('recruitment.admin.submit'), { to_page: 7, application: this.application }, {
                 onSuccess: (page) => {
-                    console.log(page.data)
+                    console.log('save & update success')
                 },
                 onError: (err) => {
                     console.log(err)
@@ -391,13 +372,12 @@ export default {
             });
         },
         optionItem(options, value){
-            console.log(options);
-                let option=options.find(o=>o.value==value)
-                if(option){
-                    return option.label
-                }else{
-                    return null;
-                }
+            let option=options.find(o=>o.value==value)
+            if(option){
+                return option['label_'+this.$page.props.lang]
+            }else{
+                return null;
+            }
         },
         getFileList(documentType){
             let files=this.application.uploads.filter(f=>f.document_type==documentType)

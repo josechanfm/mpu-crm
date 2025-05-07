@@ -78,10 +78,8 @@ Route::middleware([
     })->name('student');
 
 });
-
-
-Route::prefix('/recruitment')->group(function(){
-    Route::get('/',[\App\Http\Controllers\Recruitment\VacancyController::class,'index'])->name('recruitment');
+Route::prefix('/recruitment')->group(function() {
+    Route::get('/', [\App\Http\Controllers\Recruitment\VacancyController::class, 'index'])->name('recruitment');
     Route::get('user/profile',[\App\Http\Controllers\Recruitment\UserController::class,'profile'])->name('recruitment.userProfile');
     Route::get('login',[\App\Http\Controllers\Recruitment\UserController::class,'login'])->name('recruitment.login');
     Route::get('logout',[\App\Http\Controllers\Recruitment\UserController::class,'logout'])->name('recruitment.logout');

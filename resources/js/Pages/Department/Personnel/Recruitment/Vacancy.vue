@@ -98,7 +98,7 @@ export default {
         message,
         dayjs
     },
-    props: ['vacancyTypes','workflows','vacancy','educations','vehicles'],
+    props: ['educations','vehicles','vacancyTypes','workflows','vacancy'],
     data() {
         return {
             breadcrumb:[

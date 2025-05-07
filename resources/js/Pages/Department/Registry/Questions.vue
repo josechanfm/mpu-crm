@@ -140,8 +140,17 @@ export default {
                 title:"Modal",
                 mode:""
             },
-            teacherStateLabels:{},
-            columns:[
+        }
+    },
+    created(){       
+        this.fields=this.configFields
+    },
+    mounted(){
+        //loadLanguageAsync(this.$page.props.lang)
+    },
+    computed:{
+        columns(){
+            return [
                 {
                     title: '日期',
                     dataIndex: 'created_at',
@@ -156,7 +165,10 @@ export default {
                     title: '證件類別('+this.configFields.origin.short+')',
                     dataIndex: 'origin',
                     sorter: (a, b) => a.enquiry.origin.localeCompare(b.enquiry.origin),
-                    filters: this.configFields.origin.options,
+                    filters: this.configFields.origin.options.map(option=>({
+                        text:option['label_'+this.$t('lang')],
+                        value: option.value
+                    })),
                     filterMultiple: false,
                     onFilter: (value, record) => record.enquiry.origin == value
 
@@ -199,14 +211,8 @@ export default {
                     dataIndex: 'operation',
                     key: 'operation',
                 },
-            ],
+            ]
         }
-    },
-    created(){       
-        this.fields=this.configFields
-    },
-    mounted(){
-        loadLanguageAsync(this.$page.props.lang)
     },
     methods: {
         optionFind(options,item){

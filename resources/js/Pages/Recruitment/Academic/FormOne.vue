@@ -166,14 +166,6 @@
                         </a-row>
                     </template>
                 </CardBox>
-                <!-- <div class="border border-sky-500 rounded-lg mt-5">
-                        <h2 class="bg-sky-500 text-white p-4 rounded-t-lg">{{ lang.personal_info }}</h2>
-                        <div class="p-4">
-                            <p>Card content</p>
-                        <p>Card content</p>
-                        <p>Card content</p>
-                        </div>
-                    </div> -->
                 <a-divider />
                 <a-form-item :wrapper-col="{ span: 24, offset: 11, }">
                     <a-button type="primary" html-type="submit">{{ lang.save_next }}</a-button>
@@ -290,15 +282,10 @@ export default {
                 this.application.email = 'chantaiman@example.com',
                 this.application.address = 'Somewhere near by..'
         },
-        handlePobValidate(rule, value, callback){
-            console.log(rule)
-            console.log(value)
-        },
         onFinish() {
-            console.log(this.page);
             this.$inertia.post(route('recruitment.academic.save'), { to_page: this.page.next, application: this.application }, {
                 onSuccess: (page) => {
-                    console.log(page.data)
+                    console.log('save & update success')
                 },
                 onError: (err) => {
                     console.log(err)

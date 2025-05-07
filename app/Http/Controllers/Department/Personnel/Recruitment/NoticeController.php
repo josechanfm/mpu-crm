@@ -107,6 +107,7 @@ class NoticeController extends Controller
         if($request->file('upload_file_zh')){
             foreach($request->file('upload_file_zh') as $file){
                 $notice->addMedia($file['originFileObj'])->toMediaCollection('noticeFileZh');
+                //dd($file['originFileObj'],$notice);
             }
         };
         if($request->file('upload_file_en')){
@@ -120,7 +121,6 @@ class NoticeController extends Controller
             }
         };
 
-        $notice->save();
         return redirect()->back();
         dd($request->file());
 

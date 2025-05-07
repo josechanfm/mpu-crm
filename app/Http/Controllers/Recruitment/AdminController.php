@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Config;
 use App\Models\RecVacancy;
 use App\Models\RecApplication;
 use App\Models\RecEducation;
@@ -23,7 +24,6 @@ use LdapRecord\Query\Events\Read;
 class AdminController extends Controller
 {
     public function apply(Request $request){
-        
         if(session('masquerade')){
             $user=session('masquerade');
         }else{
@@ -44,18 +44,52 @@ class AdminController extends Controller
         }
         $application=RecApplication::whereBelongsTo($user)->where('rec_vacancy_id',$vacancy->id)->first();
         if(empty($application)){
-            $application=RecApplication::make();
+            $application=RecApplication::make(
+                [
+                    'language'=>(Object)[
+                        "MONTHER"=>'can',
+                        "CAN"=>["WRITE"=>"non", "SPEAK"=>"non", "LEVEL"=>null],
+                        "MAN"=>["WRITE"=>"non", "SPEAK"=>"non", "LEVEL"=>null],
+                        "POR"=>["WRITE"=>"non", "SPEAK"=>"non", "LEVEL"=>null],
+                        "ENG"=>["WRITE"=>"non", "SPEAK"=>"non", "LEVEL"=>null],
+                        "OTH"=>["WRITE"=>"non", "SPEAK"=>"non", "LEVEL"=>null]
+                    ]
+                ]
+            );
             $application->rec_vacancy_id=$vacancy->id;
             $application->user_id=$user->id;
             //$application->user=$user;
+        }
+        if(empty($page)){
+            $application->educations;
+            return Inertia::render('Recruitment/Admin/FormOne',[
+                'vacancy'=>$vacancy,
+                'application'=>$application,
+                'educations'=>Config::item('rec_educations')->value,
+                'vehicles'=>Config::item('rec_vehicles')->value,
+                'masquerade'=>session('masquerade')
+            ]);
         }
         if($application->id==null){
             return Inertia::render('Recruitment/Admin/FormOne',[
                 'vacancy'=>$vacancy,
                 'application'=>$application,
+                'educations'=>Config::item('rec_educations')->value,
+                'vehicles'=>Config::item('rec_vehicles')->value,
                 'masquerade'=>session('masquerade')
             ]);
         }
+        if($page==1 && $application->id){
+            $application->educations;
+            return Inertia::render('Recruitment/Admin/FormOne',[
+                'vacancy'=>$vacancy,
+                'application'=>$application,
+                'educations'=>Config::item('rec_educations')->value,
+                'vehicles'=>Config::item('rec_vehicles')->value,
+                'masquerade'=>session('masquerade')
+            ]);
+        }
+
         if(($page && $page==6 && $application->id ) || $application->submitted){
             $application->educations;
             $application->professionals;
@@ -63,24 +97,8 @@ class AdminController extends Controller
             $application->uploads;
             $application->paid;
             return Inertia::render('Recruitment/Admin/FormSix',[
-                'vacancy'=>$vacancy,
-                'application'=>$application,
-                'masquerade'=>session('masquerade')
-            ]);
-        }
-
-        if(empty($page)){
-            $application->educations;
-            return Inertia::render('Recruitment/Admin/FormOne',[
-                'vacancy'=>$vacancy,
-                'application'=>$application,
-                'masquerade'=>session('masquerade')
-            ]);
-        }
-
-        if($page==1 && $application->id){
-            $application->educations;
-            return Inertia::render('Recruitment/Admin/FormOne',[
+                'educations'=>Config::item('rec_educations')->value,
+                'vehicles'=>Config::item('rec_vehicles')->value,
                 'vacancy'=>$vacancy,
                 'application'=>$application,
                 'masquerade'=>session('masquerade')
@@ -139,6 +157,8 @@ class AdminController extends Controller
                 foreach($application['educations'] as $edu){
                     if(isset($edu['id'])){
                         RecEducation::find($edu['id'])->update($edu);
+                        $app=RecApplication::find($application['id'])->update(['language'=>$application['language']]);
+
                     }else{
                         $recApp->educations()->create($edu);
                     }
@@ -197,8 +217,10 @@ class AdminController extends Controller
     }
 
     public function submit(Request $request){
+        $vacancy=RecVacancy::find($request->application['rec_vacancy_id']);
         $app=$request->application;
         $application=RecApplication::find($app['id']);
+        $application->payment=$vacancy->fee;
         $application->submitted=true;
         $application->save();
          return redirect()->route('recruitment.admin.payment',array('application_id'=>$application->id,'uuid'=>$application->uuid));

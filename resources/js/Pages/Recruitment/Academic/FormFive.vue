@@ -7,7 +7,7 @@
             </h2>
         </template>
         <div class="p-5">
-            <a-steps  progress-dot :current="this.page.current-1" @change="onChangeStep">
+            <a-steps  progress-dot :current="this.page.current-1">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
@@ -17,7 +17,6 @@
         <div class="container bg-white rounded mx-auto p-5">
             <CardBox :title="lang.part_D">
                 <template #content>
-                    
                         <table width="100%">
                             <tr>
                                 <th width="150px"><span class="text-red-500">*</span> {{ lang.doc_id }}</th>
@@ -340,12 +339,6 @@ export default {
                 this.application.email = 'chantaiman@example.com',
                 this.application.address = 'Somewhere near by..'
         },
-        onChangeStep(stepId){
-            if((stepId+1)<this.page.current){
-                this.page.next=stepId+1
-                this.saveToNext();
-            }
-        },
         saveToNext() {
             const file=this.application.uploads.find((f)=>f.document_type=='doc_id')
             if(!file){
@@ -354,7 +347,7 @@ export default {
             }
             this.$inertia.post(route('recruitment.academic.save'), { to_page: this.page.next, application: this.application }, {
                 onSuccess: (page) => {
-                    console.log(page.data)
+                    console.log('save & update success')
                 },
                 onError: (err) => {
                     console.log(err)
@@ -392,7 +385,7 @@ export default {
                 isValid=false
                 message.error("Not match to required file format!");
             }
-            const isLt2M = file.size / 1024 / 1024 < 0.2;
+            const isLt2M = file.size / 1024 / 1024 < 2;
             if (!isLt2M) {
                 isValid=false
                 message.error("File exceeds the limit!");
@@ -406,7 +399,7 @@ export default {
         deleteFileConfirmed(file){
             this.$inertia.delete(route('recruitment.academic.fileDelete',{rec_upload:file.id}), {
                 onSuccess: (page) => {
-                    console.log(page.data)
+                    console.log('file deleted!')
                 },
                 onError: (err) => {
                     onError(err)

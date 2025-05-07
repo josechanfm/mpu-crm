@@ -7,7 +7,7 @@
             </h2>
         </template>
         <div class="p-5">
-            <a-steps  progress-dot :current="page.current-1" @change="onChangeStep">
+            <a-steps  progress-dot :current="page.current-1">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
@@ -15,30 +15,25 @@
             <a-button @click="sampleData">Sample Data</a-button>
         </template>
         <div class="container bg-white rounded mx-auto p-5">
-            <CardBox :title="lang.part_B" :subtitle="lang.part_b">
+            <CardBox :title="lang.part_B">
                 <template #content>
+                    {{ lang.listed_in_sequence }}
                     <table class="myTable" width="100%">
                         <tr>
-                            <th colspan="2"> {{ lang.prof_organization }}</th>
-                            <th rowspan="2">{{ lang.prof_qualification }}</th>
-                            <th rowspan="2">{{ lang.prof_area }}</th>
-                            <th colspan="2">{{ lang.prof_date }}</th>
-                            <th rowspan="2">{{ lang.operation }}</th>
-                        </tr>
-                        <tr>
-                            <th>{{ lang.prof_organization_name }}</th>
-                            <th>{{ lang.prof_region }}</th>
-                            <th>{{ lang.prof_date_valid }}</th>
-                            <th>{{ lang.prof_date_expire }}</th>
+                            <th> {{ lang.prof_qualification }}</th>
+                            <th>{{ lang.prof_date_start }}</th>
+                            <th>{{ lang.prof_date_end }}</th>
+                            <th>{{ lang.prof_hours }}</th>
+                            <th>{{ lang.prof_organization }}</th>
+                            <th>{{ lang.operation }}</th>
                         </tr>
                         <template v-for="(professional,i) in application.professionals">
                             <tr>
-                                <td>{{ professional.organization_name }}</td>
-                                <td>{{ professional.region }}</td>
                                 <td>{{ professional.qualification }}</td>
-                                <td>{{ professional.area }}</td>
-                                <td>{{ professional.date_valid }}</td>
-                                <td>{{ professional.date_expire }}</td>
+                                <td>{{ formattedDate(professional.date_valid) }}</td>
+                                <td>{{ formattedDate(professional.date_expire) }}</td>
+                                <td>{{ professional.hours }}</td>
+                                <td>{{ professional.organization_name }}</td>
                                 <td>
                                     <a-popconfirm
                                         :title="lang.delete_confirm"
@@ -67,41 +62,27 @@
                         @finish="onFinish" 
                         @finishFailed="onFinishFailed"
                     >
+                    <a-form-item :label="lang.prof_qualification" name="qualification">
+                        <a-input v-model:value="professional.qualification" />
+                    </a-form-item>
+                    <a-form-item :label="lang.prof_organization" name="organization_name">
+                        <a-input v-model:value="professional.organization_name" />
+                    </a-form-item>
+
                         <a-row :gutter="10">
-                            <a-col :span="16">
-                                <a-form-item :label="lang.prof_organization_name" name="organization_name">
-                                    <a-input v-model:value="professional.organization_name" />
+                            <a-col :span="8">
+                                <a-form-item :label="lang.prof_date_start" name="date_valid">
+                                    <a-date-picker v-model:value="professional.date_valid" picker="month" :format="dateFormat" :valueFormat="dateFormat"/>
                                 </a-form-item>
                             </a-col>
                             <a-col :span="8">
-                                <a-form-item :label="lang.prof_region" name="region">
-                                    <a-input v-model:value="professional.region" />
+                                <a-form-item :label="lang.prof_date_end" name="data_expire">
+                                    <a-date-picker v-model:value="professional.date_expire" picker="month" :format="dateFormat" :valueFormat="dateFormat"/>
                                 </a-form-item>
                             </a-col>
-                        </a-row>
-                        <a-row :gutter="10">
-                            <a-col :span="12">
-                                <a-form-item :label="lang.prof_qualification" name="qualification">
-                                    <a-input v-model:value="professional.qualification" />
-                                </a-form-item>
-                            </a-col>
-                            <a-col :span="12">
-                                <a-form-item :label="lang.prof_area">
-                                    <a-input v-model:value="professional.area" />
-                                </a-form-item>
-                            </a-col>
-                        </a-row>
-                        <a-row :gutter="10">
-                            <a-col :span="12">
-                                <a-form-item :label="lang.prof_date_valid" name="date_valid">
-                                    <a-date-picker v-model:value="professional.date_valid" :format="dateFormat"
-                                        :valueFormat="dateFormat" />
-                                </a-form-item>
-                            </a-col>
-                            <a-col :span="12">
-                                <a-form-item :label="lang.prof_date_expire">
-                                    <a-date-picker v-model:value="professional.date_expire" :format="dateFormat"
-                                        :valueFormat="dateFormat" />
+                            <a-col :span="8">
+                                <a-form-item :label="lang.prof_hours" name="hours">
+                                    <a-input v-model:value="professional.hours" />
                                 </a-form-item>
                             </a-col>
                         </a-row>
@@ -127,6 +108,7 @@ import { CaretRightOutlined } from '@ant-design/icons-vue';
 import recLang  from '/lang/recruitment_admin.json';
 import { message } from 'ant-design-vue';
 import { CloseSquareOutlined,FormOutlined } from '@ant-design/icons-vue';
+import dayjs from 'dayjs';
 
 export default {
     components: {
@@ -140,7 +122,7 @@ export default {
         return {
             page: {},
             professional: {},
-            dateFormat: 'YYYY-MM-DD',
+            dateFormat: 'YYYY-MM',
             rules: {
                 organization_name: { required: true },
                 region: { required: true },
@@ -172,17 +154,10 @@ export default {
             this.professional.date_valid = '2020-01-01'
             this.professional.date_expire = '2022-01-01'
         },
-        onChangeStep(stepId){
-            if((stepId+1)<this.page.current){
-                this.page.next=stepId+1
-                this.saveToNext();
-            }
-        },
         saveToNext() {
-            console.log(this.currentPage);
             this.$inertia.post(route('recruitment.admin.save'), { to_page: this.page.next, application: this.application }, {
                 onSuccess: (page) => {
-                    console.log(page.data)
+                    console.log('save & update success')
                 },
                 onError: (err) => {
                     console.log(err)
@@ -192,7 +167,6 @@ export default {
         onFinish() {
             this.application.professionals.push({ ...this.professional })
             this.professional = {};
-            console.log(this.application);
         },
         onFinishFailed(){
             message.error(this.lang.error_required_fields);
@@ -203,6 +177,9 @@ export default {
         editItem(i){
             this.professional=this.application.professionals[i]
             this.application.professionals.splice(i,1)
+        },
+        formattedDate(date) {
+            return dayjs(date).format('YYYY-MM');
         }
     },
     computed:{

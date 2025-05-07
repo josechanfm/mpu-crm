@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->char('procedure_code',3); //ACA,ADM,ACP
             $table->integer('sequence')->nullable();
+            $table->string('vacancy_type');
             $table->string('name');
             $table->string('department_id');
             $table->string('department_abbr');

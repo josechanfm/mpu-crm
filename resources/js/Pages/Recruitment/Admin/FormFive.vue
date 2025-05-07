@@ -7,7 +7,7 @@
             </h2>
         </template>
         <div class="p-5">
-            <a-steps  progress-dot :current="page.current-1" @change="onChangeStep">
+            <a-steps  progress-dot :current="page.current-1">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
@@ -184,38 +184,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ lang.doc_academic }}</th>
-                                <td>
-                                    <ol>
-                                        <li v-for="file in getFileList('doc_academic')">
-                                            <a :href="file.full_path" target="_blank">{{file.original_name}}</a>
-                                            <a-popconfirm
-                                                title="Are you sure delete this task?"
-                                                :ok-text="lang.confirmed"
-                                                :cancel-text="lang.no"
-                                                :okButtonProps="{danger:true}"
-                                                @confirm="deleteFileConfirmed(file)"
-                                            >
-                                                <a class="pl-5 text-red-500"><delete-outlined /></a>
-                                            </a-popconfirm>
-                                        </li>
-                                    </ol>
-                                </td>
-                                <td>
-                                    <a-upload
-                                        :showUploadList="false"
-                                        name="doc_academic"
-                                        :multiple="true"
-                                        :customRequest="customeFileUpload('doc_academic')"
-                                    >
-                                        <a-button>
-                                        <upload-outlined></upload-outlined>
-                                        {{ lang.upload }}
-                                        </a-button>
-                                    </a-upload>
-                                </td>
-                            </tr>
-                            <tr>
                                 <th>{{ lang.doc_other }}</th>
                                 <td>
                                     <ol>
@@ -248,7 +216,9 @@
                                 </td>
                             </tr>
                         </table>
-                    {{ lang.doc_type_notes }}
+                        <p></p>
+                        <div v-html="lang.doc_type_notes"/>
+                    
                 </template>
             </CardBox>
             <a-divider />
@@ -340,12 +310,6 @@ export default {
                 this.application.email = 'chantaiman@example.com',
                 this.application.address = 'Somewhere near by..'
         },
-        onChangeStep(stepId){
-            if((stepId+1)<this.page.current){
-                this.page.next=stepId+1
-                this.saveToNext();
-            }
-        },
         saveToNext() {
             const file=this.application.uploads.find((f)=>f.document_type=='doc_id')
             if(!file){
@@ -354,7 +318,7 @@ export default {
             }
             this.$inertia.post(route('recruitment.admin.save'), { to_page: this.page.next, application: this.application }, {
                 onSuccess: (page) => {
-                    console.log(page.data)
+                    console.log('save & update success')
                 },
                 onError: (err) => {
                     console.log(err)
@@ -406,7 +370,7 @@ export default {
         deleteFileConfirmed(file){
             this.$inertia.delete(route('recruitment.admin.fileDelete',{rec_upload:file.id}), {
                 onSuccess: (page) => {
-                    console.log(page.data)
+                    console.log('file deleted!')
                 },
                 onError: (err) => {
                     onError(err)

@@ -33,10 +33,11 @@ class VacancyController extends Controller
     {
         //dd(RecWorkflow::selectRaw('vacancy_code as value,concat(vacancy_code," ",title_zh) as label')->where('status','ACTIVE')->get());
         //dd(Http::post('172.25.5.26/wms/api/recruitment/workflows')->json());
+        
         return Inertia::render('Department/Personnel/Recruitment/Vacancy',[
             'vacancyTypes'=>Config::item('vacancy_types')->value,
-            //'workflows'=> Http::post('172.25.5.26/wms/api/recruitment/workflows')->json(),
-            'workflows'=>RecWorkflow::where('status','ACTIVE')->get(),
+            'workflows'=> Http::post('172.25.5.26/wms/api/recruitment/workflows')->json(),
+            //'workflows'=>RecWorkflow::where('status','ACTIVE')->get(),
             'vacancy'=>RecVacancy::make(),
             'educations'=>Config::item('rec_educations'),
             'vehicles'=>Config::item('rec_vehicles')
@@ -52,7 +53,7 @@ class VacancyController extends Controller
     public function store(Request $request)
     {
         RecVacancy::create($request->all());
-        return redirect()->back();
+        return to_route('personnel.recruitment.vacancies.index');
     }
 
     /**
@@ -73,10 +74,12 @@ class VacancyController extends Controller
      */
     public function edit(RecVacancy $vacancy)
     {
+        // $workflows= Http::post('172.25.5.26/wms/api/recruitment/workflows')->json();
+        // dd($vacancy,Config::item('vacancy_types')->value,RecWorkflow::where('status','ACTIVE')->get(),$workflows);
         return Inertia::render('Department/Personnel/Recruitment/Vacancy',[
-            //'workflows'=> Http::post('172.25.5.26/wms/api/recruitment/workflows')->json(),
+            'workflows'=> Http::post('172.25.5.26/wms/api/recruitment/workflows')->json(),
             'vacancyTypes'=>Config::item('vacancy_types')->value,
-            'workflows'=>RecWorkflow::where('status','ACTIVE')->get(),
+            //'workflows'=>RecWorkflow::where('status','ACTIVE')->get(),
             'vacancy'=>$vacancy,
             'educations'=>Config::item('rec_educations'),
             'vehicles'=>Config::item('rec_vehicles')

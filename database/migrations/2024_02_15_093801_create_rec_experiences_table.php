@@ -17,12 +17,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('rec_application_id');
             $table->string('company_name');
-            $table->string('region');
+            $table->string('region')->nullable();
             $table->string('position');
             $table->string('salary')->nullable();
             $table->string('employment');
             $table->string('date_join');
-            $table->string('date_leave');
+            $table->string('date_leave')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

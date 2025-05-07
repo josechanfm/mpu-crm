@@ -15,9 +15,10 @@
                             {{ optionFind(fields.origin.options, record.origin) }}
                         </template>
                         <template v-else-if="column.dataIndex == 'degree'">
+                            {{ text }}
                             {{ optionFind(fields.degree.options, record.degree) }}
                         </template>
-                        <template v-else-if="column.dataIndex == 'full_name'">
+                        <template v-else-if="column.dataIndex == 'surname'">
                             {{ record.surname }}, {{ record.givenname }}
                         </template>
                         <template v-else-if="column.dataIndex == 'admission'">
@@ -82,7 +83,6 @@
                             {{ getOptionItem(configFields.subjects.options, subject) }}
                         </li>
                     </ol>
-                    
                 </a-form-item>
                 <a-form-item label="Question">
                     {{ modal.data.question }}
@@ -101,19 +101,28 @@
 
 <script>
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
-import { loadLanguageAsync } from "laravel-vue-i18n";
+// import { loadLanguageAsync } from "laravel-vue-i18n";
 import { defineComponent, reactive } from 'vue';
 import dayjs from 'dayjs';
 
 export default {
     components: {
         DepartmentLayout,
-        loadLanguageAsync,
+        // loadLanguageAsync,
         dayjs
     },
     props: ['department','enquiries', 'enquiriesStat', 'configFields'],
     data() {
         return {
+            filters:{
+                origin:null,
+                degree:null,
+                admission:null
+            },
+            sorter: {
+                field: null,
+                order: null // 'ascend' or 'descend'
+            },
             fields:[],
             breadcrumb:[
                 {label:"招生注冊處" ,url:route('registry.dashboard')},
@@ -128,12 +137,41 @@ export default {
             pagination: {
                 total: this.enquiries.total,
                 current: this.enquiries.current_page,
-                pageSize: this.enquiries.per_page,
+                pageSize: this  .enquiries.per_page,
                 defaultPageSize:40,
                 showSizeChanger:true,
                 pageSizeOptions:['10','20','30','40','50']
             },
-            columns: [
+        }   
+    },
+    created() {
+            this.fields=this.configFields
+            this.fields.origin.options.forEach(o => o.text = o.label)
+            this.fields.degree.options.forEach(o => o.text = o.label)
+            this.fields.admission.options.forEach(o => o.text = o.label)
+
+            // Initialize filters from URL parameters if they exist
+            if (this.$page.props.filters) {
+                this.filters = {
+                    ...this.filters,
+                    ...this.$page.props.filters
+                };
+            }
+            
+            // Initialize sorter from URL parameters if they exist
+            if (this.$page.props.sort_field) {
+                this.sorter = {
+                    field: this.$page.props.sort_field,
+                    order: this.$page.props.sort_order
+                };
+            }
+    },
+    mounted(){
+        //loadLanguageAsync(this.$page.props.lang)
+    },
+    computed: {
+        columns() {
+         return [
                 {
                     title: '日期',
                     dataIndex: 'created_at',
@@ -142,40 +180,61 @@ export default {
                             console.log(a)
                             return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
                         }
-                    }
+                    },
+                    sortOrder: this.sorter.field=='created_at'?this.sorter.order:null,
                 }, {
                     title: '查詢編號',
                     dataIndex: 'id',
-                    sorter: (a, b) => a.id - b.id
+                    sorter: (a, b) => a.id - b.id,
+                    sortOrder: this.sorter.field=='id'?this.sorter.order:null,
                 }, {
                     title: '證件類別(持有證件)',
                     dataIndex: 'origin',
                     sorter: (a, b) => a.origin.localeCompare(b.origin),
-                    filters: this.configFields.origin.options,
+                    // sorter:this.sorter.field=='origin'?true:false,
+                    sortOrder: this.sorter.field=='origin'?this.sorter.order:null,
+                    filters: this.configFields.origin.options.map(option=>({
+                        text:option['label_'+this.$t('lang')],
+                        value: option.value
+                    })),
+                    filteredValue:this.filters.origin? [this.filters.origin] : null,
                     filterMultiple: false,
-                    onFilter: (value, record) => record.origin == value
+                    onFilter: (value, record) => record.origin == value,
+
                 }, {
                     title: '課程類別(入讀課程)',
                     dataIndex: 'degree',
                     sorter: (a, b) => a.degree.localeCompare(b.degree),
-                    filters: this.configFields.degree.options,
+                    sortOrder: this.sorter.field=='degree'?this.sorter.order:null,
+                    filters: this.configFields.degree.options.map(option=>({
+                        text:option['label_'+this.$t('lang')] + option.value,
+                        value: option.value
+                    })),
+                    filteredValue:this.filters.degree? [this.filters.degree] : null,
                     filterMultiple: false,
-                    onFilter: (value, record) => record.degree == value
+                    // onFilter: (value, record) => record.degree == value
                 }, {
                     title: '入學途徑',
                     dataIndex: 'admission',
                     sorter: (a, b) => a.admission.localeCompare(b.admission),
-                    filters: this.configFields.admission.options,
+                    sortOrder: this.sorter.field=='admission'?this.sorter.order:null,
+                    filters: this.configFields.admission.options.map(option=>({
+                        text:option['label_'+this.$t('lang')],
+                        value: option.value
+                    })),
+                    filteredValue:this.filters.admission? [this.filters.admission] : null,
                     filterMultiple: false,
-                    onFilter: (value, record) => record.admission == value
+                    // onFilter: (value, record) => record.admission == value
                 }, {
                     title: '姓, 名',
-                    dataIndex: 'full_name',
-                    sorter: (a, b) => a.surname.localeCompare(b.surname)
+                    dataIndex: 'surname',
+                    sorter: (a, b) => a.surname.localeCompare(b.surname),
+                    sortOrder: this.sorter.field=='surname'?this.sorter.order:null,
                 }, {
                     title: '電話',
                     dataIndex: 'phone',
-                    sorter: (a, b) => a.phone.localeCompare(b.phone)
+                    sorter: (a, b) => a.phone.localeCompare(b.phone),
+                    sortOrder: this.sorter.field=='phone'?this.sorter.order:null,
                 }, {
                     title: '最後回應',
                     dataIndex: 'admin_user',
@@ -187,25 +246,37 @@ export default {
                     dataIndex: 'operation',
                     key: 'operation',
                 },
-            ],
+            ]
         }
-    },
-    created() {
-        this.fields=this.configFields
-        this.fields.origin.options.forEach(o => o.text = o.label)
-        this.fields.degree.options.forEach(o => o.text = o.label)
-        this.fields.admission.options.forEach(o => o.text = o.label)
-    },
-    mounted(){
-        loadLanguageAsync(this.$page.props.lang)
     },
     methods: {
         onPaginationChange(page, filters, sorter) {
+
+            this.filters = {
+                ...this.filters,
+                ...filters
+            };
+            if (sorter.field) {
+                this.sorter = {
+                    field: sorter.field,
+                    order: sorter.order
+                };
+            }
+            // if (sorter) {
+            //     this.sorter = {
+            //         ...this.sorter,
+            //         ...sorter
+            //     };
+            // }            
             this.$inertia.get(
                 route("registry.enquiries.index"),
                 {
                     page: page.current,
                     per_page: page.pageSize,
+                    filters:filters,
+                    // sorter:sorter,
+                    sort_field: this.sorter.field,
+                    sort_order: this.sorter.order,
                 },
                 {
                 onSuccess: (page) => {
@@ -252,7 +323,6 @@ export default {
             });
         },
         updateRecord() {
-            console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(() => {
                 this.$inertia.patch('/admin/teachers/' + this.modal.data.id, this.modal.data, {
                     onSuccess: (page) => {

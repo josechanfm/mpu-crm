@@ -23,16 +23,42 @@ class EnquiryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //$department=Department::where('abbr','DAMIA')->with('enquiries')->first();
         //$department=Department::where('abbr','DAMIA')->with('enquiriesStat')->first();
         $department=Department::where('abbr','DAMIA')->first();
         //dd($department->enquiriesStat());
+        $enquiries=Enquiry::whereBelongsto($department);
+        if($request->has('filters')){
+            $filters=$request->filters;
+            if(!empty($filters['degree'])){
+                $enquiries->whereIn('degree',$filters['degree']);
+            }
+            if(!empty($filters['admission'])){
+                $enquiries->whereIn('admission',$filters['admission']);
+            }
+            if(!empty($filters['origin'])){
+                $enquiries->whereIn('origin',$filters['origin']);
+            }
+
+        }
+        // Apply sorting
+        if ($request->has('sort_field') && $request->has('sort_order')) {
+            $sortField = $request->input('sort_field');
+            $sortOrder = $request->input('sort_order') === 'ascend' ? 'asc' : 'desc';
+            $enquiries->orderBy($sortField, $sortOrder);
+        }
+        // dd($request->all());
+        // dd($request->input('sort_field'), $request->input('sort_order'));
         return Inertia::render('Department/Registry/Enquiries',[
             'department'=>$department,
-            'enquiries'=>Enquiry::whereBelongsto($department)->with('lastResponse')->orderBy('created_at','DESC')->paginate(),
+            'enquiries'=>$enquiries->with('lastResponse')->orderBy('created_at','DESC')->paginate(),
             'configFields'=>Config::enquiryFormFields(),
+            'filters'=>$request->input('filters',[]),
+            // 'sorter'=>$request->input('sorter',[]),
+            'sort_field'=>$request->input('sort_field'),
+            'sort_order'=>$request->input('sort_order'),
         ]);
     }
 

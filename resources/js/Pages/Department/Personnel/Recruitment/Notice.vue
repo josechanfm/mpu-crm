@@ -23,7 +23,7 @@
                         (yyyy-mm-dd) hh:mm
                     </a-form-item>
                     
-                    <a-form-item label="附件文檔(中文)" name="file_zh" extra="Document in Chinese, PDF file only">
+                    <a-form-item label="附件文檔(中文)" name="upload_file_zh" extra="Document in Chinese, PDF file only">
                         <template v-if="notice.file_zh">
                             <inertia-link :href="route('personnel.recruitment.notice.deleteMedia',notice.file_zh)"
                                 class="float-right text-red-500">
@@ -41,6 +41,7 @@
                                 v-model:fileList="notice.upload_file_zh"
                                 name="file_zh"
                                 accept="image/png, image/jpeg"
+                                :max-count="1"
                             >
                                 <a-button>
                                 <template #icon><UploadOutlined /></template>
@@ -50,7 +51,7 @@
                         </template>
                     </a-form-item>
 
-                    <a-form-item label="附件文檔(英文)" name="file_en" extra="Document in Chinese, PDF file only">
+                    <a-form-item label="附件文檔(英文)" name="upload_file_en" extra="Document in Chinese, PDF file only">
                         <template v-if="notice.file_en">
                             <inertia-link :href="route('personnel.recruitment.notice.deleteMedia',notice.file_en)"
                                 class="float-right text-red-500">
@@ -68,6 +69,7 @@
                                 v-model:fileList="notice.upload_file_en"
                                 name="file_en"
                                 accept="image/png, image/jpeg"
+                                :max-count="1"
                             >
                                 <a-button>
                                 <template #icon><UploadOutlined /></template>
@@ -77,7 +79,7 @@
                         </template>
                     </a-form-item>
                     
-                    <a-form-item label="附件文檔(葡文)" name="file_pt" extra="Document in Chinese, PDF file only">
+                    <a-form-item label="附件文檔(葡文)" name="upload_file_pt" extra="Document in Chinese, PDF file only">
                         <template v-if="notice.file_pt">
                             <inertia-link :href="route('personnel.recruitment.notice.deleteMedia',notice.file_pt)"
                                 class="float-right text-red-500">
@@ -95,6 +97,7 @@
                                 v-model:fileList="notice.upload_file_pt"
                                 name="file_pt"
                                 accept="image/png, image/jpeg"
+                                :max-count="1"
                             >
                                 <a-button>
                                 <template #icon><UploadOutlined /></template>
@@ -145,6 +148,7 @@ import { quillEditor, Quill } from "vue3-quill";
 import { message, notification } from "ant-design-vue";
 import dayjs from 'dayjs';
 import axios from "axios";
+import { onBeforeUpdate } from "vue";
 
 export default {
     components: {
@@ -172,9 +176,9 @@ export default {
                 title_zh: { required: true },
                 title_en: { required: true },
                 title_pt: { required: true },
-                file_zh: { required: true },
-                file_en: { required: true },
-                file_pt: { required: true },
+                upload_file_zh: { required: true },
+                upload_file_en: { required: true },
+                upload_file_pt: { required: true },
                 date_start: { required: true },
                 date_end: { required: true },
                 can_download: { required: true },
@@ -204,6 +208,9 @@ export default {
             this.notice.file_zh=this.notice.media.find(m=>m.collection_name=='noticeFileZh');
             this.notice.file_en=this.notice.media.find(m=>m.collection_name=='noticeFileEn');
             this.notice.file_pt=this.notice.media.find(m=>m.collection_name=='noticeFilePt');
+        },
+        onBeforeUpload(file){
+            console.log(file)
         },
         onFormSubmit(){
             if(this.notice.id){

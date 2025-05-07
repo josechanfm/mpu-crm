@@ -92,17 +92,14 @@ export default {
             this.page.previours=this.page.current
             this.page.next=this.page.current
         }
-        console.log(this.page)
     },
     methods: {
         confirmPayment() {
-            console.log(this.payment);
             let formData = new FormData();
             Object.entries(this.payment).forEach(([key, value]) => {
                 formData.append(key, value)
             })
             axios.post('https://epay.mpu.edu.mo/bocpaytest/ipm/cashier', formData)
-            console.log(formData)
 
         }
     },

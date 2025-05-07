@@ -7,7 +7,7 @@
             </h2>
         </template>
         <div class="p-5">
-            <a-steps  progress-dot :current="this.page.current-1" @change="onChangeStep">
+            <a-steps  progress-dot :current="this.page.current-1">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
@@ -163,15 +163,6 @@ export default {
     },
     created() {
         this.lang = recLang[this.$page.props.lang]
-        // axios.get(route('api.config.item', { key: 'rec_employment_types' }))
-        //     .then(res => {
-        //         this.employmentOptions = res.data[this.$page.props.lang].value
-        //         this.experience.employment = this.employmentOptions[0].value
-        //     })
-        //     .then(err => {
-        //         console.log(err)
-        //     })
-
     },
     mounted() {
         let urlParams = new URLSearchParams(window.location.search);
@@ -191,20 +182,13 @@ export default {
             this.experience.date_join = '2020-01-01'
             this.experience.date_leave = '2022-01-01'
         },
-        onChangeStep(stepId){
-            if((stepId+1)<this.page.current){
-                this.page.next=stepId+1
-                this.saveToNext();
-            }
-        },
         saveToNext() {
             this.onFinish();
         },
         saveToNext() {
-            console.log(this.currentPage);
             this.$inertia.post(route('recruitment.academic.save'), { to_page: this.page.next, application: this.application }, {
                 onSuccess: (page) => {
-                    console.log(page.data)
+                    console.log('save & update success')
                 },
                 onError: (err) => {
                     console.log(err)
@@ -214,7 +198,6 @@ export default {
         onFinish() {
             this.application.experiences.push({ ...this.experience })
             this.experience = {};
-            console.log(this.application);
         },
         onFinishFailed(){
             message.error(this.lang.error_required_fields);
@@ -225,7 +208,7 @@ export default {
                 recordId:this.application.experiences[i].id
             }),{
                 onSuccess: (page) => {
-                    console.log(page.data)
+                    console.log('save & update success')
                 },
                 onError: (err) => {
                     console.log(err)

@@ -621,7 +621,7 @@ class ConfigSeeder extends Seeder
             {"value":"3_SHS","label_zh":"高中畢業","label_en":"Senior High School"},
             {"value":"4_HDP","label_zh":"高等課程","label_en":"Deploma"},
             {"value":"5_BCH","label_zh":"學士學位","label_en":"Bachalor"},
-            {"value":"6_MAST","label_zh":"碩士學位","label_en":"Master"},
+            {"value":"6_MST","label_zh":"碩士學位","label_en":"Master"},
             {"value":"7_PHD","label_zh":"博士學位","label_en":"PhD"},
             {"value":"8_PPD","label_zh":"博士後","label_en":"Postdoctoral"}
           ]'

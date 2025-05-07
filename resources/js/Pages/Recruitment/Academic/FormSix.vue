@@ -7,7 +7,7 @@
             </h2>
         </template>
         <div class="p-5">
-            <a-steps ref="refSteps" progress-dot :current="this.page.current-1" @change="onChangeStep">
+            <a-steps ref="refSteps" progress-dot :current="this.page.current-1">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
@@ -361,23 +361,10 @@ export default {
         }
     },
     methods: {
-        onChangeStep(stepId){
-            if((stepId+1)<this.page.current && this.application.submitted!=true){
-                this.page.next=stepId+1
-                this.$inertia.get(route('recruitment.academic.apply',{ code:this.vacancy.code, page: this.page.next }), {
-                    onSuccess: (page) => {
-                        console.log(page.data)
-                    },
-                    onError: (err) => {
-                        console.log(err)
-                    }
-                });
-            }
-        },
         confirmSubmit(){
             this.$inertia.post(route('recruitment.academic.submit'), { to_page: this.page.next, application: this.application }, {
                 onSuccess: (page) => {
-                    console.log(page.data)
+                    console.log('save & update success')
                 },
                 onError: (err) => {
                     console.log(err)
@@ -385,13 +372,12 @@ export default {
             });
         },
         optionItem(options, value){
-            console.log(options);
-                let option=options.find(o=>o.value==value)
-                if(option){
-                    return option.label
-                }else{
-                    return null;
-                }
+            let option=options.find(o=>o.value==value)
+            if(option){
+                return option.label
+            }else{
+                return null;
+            }
         },
         getFileList(documentType){
             let files=this.application.uploads.filter(f=>f.document_type==documentType)

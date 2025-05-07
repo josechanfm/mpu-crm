@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('title_zh');
             $table->string('title_en')->nullable();
             $table->string('title_pt')->nullable();
-            $table->string('education')->nullable();
-            $table->string('vehicle')->nullable();
+            $table->string('education',6)->nullable();
+            $table->string('vehicle',3)->nullable();
             $table->string('apply_in')->nullable();
             $table->string('apply_title')->nullable();
             $table->text('description')->nullable();

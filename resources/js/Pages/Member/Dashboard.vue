@@ -63,7 +63,7 @@
                                 </a-avatar>
                             </div>
                             <div class="mt-2">
-                                <h1 class="font-bold text-center text-3xl text-gray-900">{{ member.first_name }} {{ member.last_name }}</h1>
+                                <h1 class="font-bold text-center text-3xl text-gray-900" v-if="member">{{ member.first_name }} {{ member.last_name }}</h1>
                                 <p class="text-center text-sm text-gray-400 font-medium"> {{$page.props.user.name}} </p>
                                 <div class="my-5 px-6">
                                     <a href="#"

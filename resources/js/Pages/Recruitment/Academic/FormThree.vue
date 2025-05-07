@@ -7,7 +7,7 @@
             </h2>
         </template>
         <div class="p-5">
-            <a-steps  progress-dot :current="this.page.current-1" @change="onChangeStep">
+            <a-steps  progress-dot :current="this.page.current-1">
                 <a-step v-for="item in lang.steps" :description="item.title"/>
             </a-steps>
         </div>
@@ -180,17 +180,10 @@ export default {
             this.professional.date_valid = '2020-01-01'
             this.professional.date_expire = '2022-01-01'
         },
-        onChangeStep(stepId){
-            if((stepId+1)<this.page.current){
-                this.page.next=stepId+1
-                this.saveToNext();
-            }
-        },
         saveToNext() {
-            console.log(this.currentPage);
             this.$inertia.post(route('recruitment.academic.save'), { to_page: this.page.next, application: this.application }, {
                 onSuccess: (page) => {
-                    console.log(page.data)
+                    console.log('save & update success')
                 },
                 onError: (err) => {
                     console.log(err)
@@ -200,7 +193,6 @@ export default {
         onFinish() {
             this.application.professionals.push({ ...this.professional })
             this.professional = {};
-            console.log(this.application);
         },
         onFinishFailed(){
             message.error(this.lang.error_required_fields);
@@ -211,7 +203,7 @@ export default {
                 recordId:this.application.professionals[i].id
             }),{
                 onSuccess: (page) => {
-                    console.log(page.data)
+                    console.log('Item deleted!')
                 },
                 onError: (err) => {
                     console.log(err)
