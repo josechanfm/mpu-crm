@@ -75,6 +75,8 @@ Route::middleware([
         Route::resource('forms',App\Http\Controllers\Department\FormController::class)->names('manage.forms');
         Route::post('form/{form}/clone',[\App\Http\Controllers\Department\FormController::class,'clone'])->name('manage.form.clone');
         Route::resource('form/{form}/fields',App\Http\Controllers\Department\FormFieldController::class)->names('manage.form.fields');
+        Route::post('form/field/{formField}/clone',[\App\Http\Controllers\Department\FormFieldController::class,'clone'])->name('manage.form.field.clone');
+
         Route::post('form/{form}/fields_sequence',[App\Http\Controllers\Department\FormFieldController::class,'fieldsSequence'])->name('manage.form.fieldsSequence');
         Route::resource('form/{form}/entries',App\Http\Controllers\Department\EntryController::class)->names('manage.form.entries');
         Route::get('entry/{form}/export', [App\Http\Controllers\Department\EntryController::class, 'export'])->name('manage.entry.export');

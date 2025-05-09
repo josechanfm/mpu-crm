@@ -10,9 +10,13 @@
             <template #bodyCell="{ column, record, index }">
                 <template v-if="column.dataIndex === 'operation'">
                     <a-button @click="editRecord(record)">Edit</a-button>
-                    <a-popconfirm title="Are you sure delete this task?" ok-text="Yes" cancel-text="No"
-                        @confirm="deleteRecord(record)">
-                        <a-button :disabled="form.published == 1">Delete</a-button>
+                    <a-popconfirm title="Are you sure delete this field?" ok-text="Yes" cancel-text="No"
+                        @confirm="deleteRecord(record)" :disabled="form.published == true">
+                        <a-button :disabled="form.published == true">Delete</a-button>
+                    </a-popconfirm>
+                    <a-popconfirm title="Are you sure to clone this field?" ok-text="Yes" cancel-text="No"
+                        @confirm="cloneRecord(record)" :disabled="form.published == true">
+                        <a-button :disabled="form.published == true">Clone</a-button>
                     </a-popconfirm>
                 </template>
                 <template v-else-if="column.dataIndex == 'dragger' && isDraggable">
@@ -231,8 +235,17 @@ export default {
             this.modal.mode = "EDIT";
             this.modal.isOpen = true;
         },
+        cloneRecord(record){
+            this.$inertia.post(route('manage.form.field.clone',{formField:record.id}), {
+                onSuccess: (page) => {
+                    console.log(page)
+                },
+                onError: (err) => {
+                    console.log(err);
+                }
+            });
+        },
         storeRecord() {
-            console.log('manage.form.fields.store');
             this.$refs.modalRef.validateFields().then(() => {
                 this.$inertia.post(route('manage.form.fields.store', {
                     form: this.form.id

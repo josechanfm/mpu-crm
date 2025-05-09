@@ -134,5 +134,23 @@ class FormFieldController extends Controller
         return redirect()->back();
     }
 
+    public function clone(FormField $formField){
+        $form=Form::find($formField->form_id);
+        $fieldNameArray=explode('_',$formField->field_name);
+        $lastFieldName=FormField::where('form_id',$formField->form_id)->where('field_name','like',$fieldNameArray[0].'%')->orderBy('sequence','desc')->pluck('field_name')->first();
+        $lastFieldNameArray=explode('_',$lastFieldName);
+        $newField=$formField->toArray();
+        $newField['sequence']=$formField->sequence;
+        $newField['field_name']=$fieldNameArray[0].'_'.($lastFieldNameArray[1]+1).'_'.$fieldNameArray[2];
+        $newField['field_label']=$newField['field_label'].'(cloned)';
+        $formField::create($newField);
+        foreach($form->fields as $i=>$field){
+            $field->sequence=$i;
+            $field->save();
+        }
+        return redirect()->back();
+        dd($form, $formField, $newField, $fieldNameArray, $lastFieldName, $lastFieldNameArray);
+    }
+
    
 }
