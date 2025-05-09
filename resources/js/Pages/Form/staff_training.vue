@@ -192,12 +192,13 @@ export default {
         }
     },
     created() {
+        console.log(this.formFields);
         Object.values(this.form.fields).forEach(f=>{
             this.formFields[f.field_name]=f
         })
         this.questionCount=Object.keys(this.formFields).filter(f=>f.includes('question_')).length/2
         this.suggestCount=Math.ceil(Object.keys(this.formFields).filter(f=>f.includes('suggest_')).length/4)
-        console.log(this.suggestCount);
+        
     },
     methods: {
         storeRecord() {

@@ -119,7 +119,18 @@ class FormFieldController extends Controller
      */
     public function destroy(Department $department, Form $form, FormField $field)
     {
-        $field->delete();        
+
+        // $formFieldNameArray=explode('_',$field->field_name);
+        // $fields=FormField::where('form_id',$field->form_id)->where('field_name','like',$formFieldNameArray[0].'%')->get();
+        // dd($field, $fields);
+        // foreach($fields as $i=>$f){
+        //     $arr=explode('_',$f->field_name);
+        //     dd($f, $i, $arr);
+        //     $field->fiele_name=$arr[0].'_'.$i.'_'.$arr[2];
+        // }
+        // dd($field, $formFieldNameArray, $fields);
+
+        $formField->delete();        
     }
 
     public function fieldsSequence(Form $form, Request $request)
