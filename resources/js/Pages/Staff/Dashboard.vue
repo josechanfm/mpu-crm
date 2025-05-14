@@ -1,5 +1,5 @@
 <template>
-  <StaffLayout title="Dashboard">
+    <StaffLayout title="Dashboard">
     <div class="h-64 bg-gradient-to-tr from-green-800 to-green-500 rounded-md flex items-center">
       <div class="ml-20">
         <h2 class="text-white text-4xl">General Staff</h2>

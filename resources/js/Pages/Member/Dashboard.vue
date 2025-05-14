@@ -64,10 +64,10 @@
                             </div>
                             <div class="mt-2">
                                 <h1 class="font-bold text-center text-3xl text-gray-900" v-if="member">{{ member.first_name }} {{ member.last_name }}</h1>
-                                <p class="text-center text-sm text-gray-400 font-medium"> {{$page.props.user.name}} </p>
+                                <p class="text-center text-sm text-gray-400 font-medium"> {{$page.props.auth}} </p>
                                 <div class="my-5 px-6">
                                     <a href="#"
-                                        class="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white">{{ $page.props.user.email }}</a>
+                                        class="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white">{{ $page.props.auth }}</a>
                                 </div>
                                 <div class="flex justify-between items-center my-5 px-6">
                                     <a href="https://www.mpu.edu.mo"

@@ -13,6 +13,7 @@ use Inertia\Inertia;
 
 Route::resource('/accountcharts',App\Http\Controllers\AccountchartController::class)->names('accountcharts');
 
+/*
 Route::group(['middleware' => config('fortify.middleware', ['admin_web'])], function () {
     $limiter = config('fortify.limiters.login');
     Route::get('/staff/login', function () {
@@ -26,21 +27,21 @@ Route::group(['middleware' => config('fortify.middleware', ['admin_web'])], func
     )->name('staff.login');
     Route::post('/staff/logout', [AuthenticatedSessionController::class, 'destroy'])->name('staff.logout');
 });
+*/
 
-Route::middleware([
-    'auth:admin_web',
-    config('jetstream.auth_session'),
-    'checkIneternalIP'
-])->group(function() {
-    Route::prefix('/staff')->group(function(){
+Route::group([
+    'prefix' => '/staff',
+        // 'middleware' => [
+        //     'auth:sanctum',
+        // ]
+], function () {
         Route::get('/',[App\Http\Controllers\Staff\DashboardController::class,'index'])->name('staff');
         Route::resource('forms',\App\Http\Controllers\Staff\FormController::class)->names('staff.forms');
         Route::resource('ebooks',App\Http\Controllers\EbookController::class)->names('staff.ebooks');
         Route::get('ebook/clone_template',[App\Http\Controllers\EbookController::class,'staff.cloneTemplate']);
-    });
-    Route::get('/get-permissions', function () {
-        return auth()->check()?auth()->user()->jsPermissions():0;
-    });
+        Route::get('/get-permissions', function () {
+            return auth()->check()?auth()->user()->jsPermissions():0;
+        });
 });
 
 
@@ -152,6 +153,4 @@ Route::middleware([
         Route::resource('/publications',App\Http\Controllers\Department\Flt\PublicationController::class)->names('flt.publications'); 
     });
 });
-
-
 

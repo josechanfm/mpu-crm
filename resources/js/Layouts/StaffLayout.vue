@@ -62,7 +62,7 @@ defineProps({
                                         class="list-none  hover:text-indigo-600">Official Website</a>
                                 </li>
                                 <li class="py-3 border-b-2">
-                                    <inertia-link :href="route('api.services')">Api Services</inertia-link>
+                                    <!-- <inertia-link :href="route('api.services')">Api Services</inertia-link> -->
                                 </li>
                                 
                             </div>

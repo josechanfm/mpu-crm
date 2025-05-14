@@ -55,22 +55,24 @@ Route::prefix('enquiry')->group(function(){
 });
 Route::resource('enquiry',App\Http\Controllers\EnquiryController::class)->names('enquiry');
 Route::resource('forms',\App\Http\Controllers\FormController::class)->names('forms');
+// Route::post('forms',\App\Http\Controllers\FormController::class)->names('form.clone');
 
 Route::get('form/entry/{entry}/thank_you',[\App\Http\Controllers\FormController::class,'thankYou'])->name('form.entry.thankYou');
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/member/dashboard', function () {
-        return Inertia::render('Member/Dashboard');
-    })->name('dashboard');
-    Route::prefix('/member')->group(function(){
-        Route::get('/', [\App\Http\Controllers\Member\DashboardController::class,'index'])->name('member');
-        Route::get('recruitment/notifications',[App\Http\Controllers\Member\RecruitmentController::class,'notifications'])->name('member.recruitment.notifications');
-        Route::get('profile',[App\Http\Controllers\Member\ProfileController::class,'index'])->name('member.profile');
-    });
+
+
+Route::group([
+    'prefix' => '/member',
+    'middleware' => [
+        'auth:sanctum',
+    ]
+], function () {
+    // Route::get('dashboard', function () {
+    //     return Inertia::render('Member/Dashboard');
+    // })->name('member.dashboard');
+    Route::get('/', [\App\Http\Controllers\Member\DashboardController::class,'index'])->name('member');
+    Route::get('recruitment/notifications',[App\Http\Controllers\Member\RecruitmentController::class,'notifications'])->name('member.recruitment.notifications');
+    Route::get('profile',[App\Http\Controllers\Member\ProfileController::class,'index'])->name('member.profile');
 
     Route::get('membership',[App\Http\Controllers\Member\MembershipController::class,'index'])->name('membership');
 
@@ -79,6 +81,7 @@ Route::middleware([
     })->name('student');
 
 });
+
 Route::prefix('/recruitment')->group(function() {
     Route::get('/', [\App\Http\Controllers\Recruitment\VacancyController::class, 'index'])->name('recruitment');
     Route::get('user/profile',[\App\Http\Controllers\Recruitment\UserController::class,'profile'])->name('recruitment.userProfile');
@@ -116,6 +119,4 @@ Route::prefix('/recruitment')->group(function() {
     
 });
 
-
-
-
+require __DIR__ . '/auth.php';

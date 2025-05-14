@@ -14,7 +14,6 @@
         "inertiajs/inertia-laravel": "^0.6.8",
         "johngrogg/ics-parser": "^3.4",
         "laravel/framework": "^9.19",
-        "laravel/jetstream": "^2.16",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "maatwebsite/excel": "^3.1",

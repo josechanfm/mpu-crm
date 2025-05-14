@@ -17,8 +17,8 @@ class LogoutResponse implements LogoutResponseContract
      */
     public function toResponse($request)
     {
-        return $request->wantsJson()
-            ? response()->json(['two_factor' => false])
-            : redirect()->intended(config('fortify.home'));
+        // return $request->wantsJson()
+        //     ? response()->json(['two_factor' => false])
+        //     : redirect()->intended(config('fortify.home'));
     }
 }

@@ -21,9 +21,10 @@ class RedirectIfAuthenticated
     public function handle(Request $request, Closure $next, ...$guards)
     {
         foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return redirect(config('fortify.home'));
-            }
+            return redirect(RouteServiceProvider::HOME);
+            // if (Auth::guard($guard)->check()) {
+            //     return redirect(config('fortify.home'));
+            // }
         }
         return $next($request);
     }

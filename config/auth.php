@@ -40,14 +40,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'admin_web' => [
-            'driver' => 'session',
-            //'provider' => 'admin_users',
-            'provider' => 'ldap',
-        ],
-        'admin_local' => [
+        'admin' => [
             'driver' => 'session',
             'provider' => 'admin_users',
+        ],
+        'ldap' => [
+            'driver' => 'session',
+            //'provider' => 'admin_users',
+            'provider' => 'ldap_users',
         ],
     ],
 
@@ -79,18 +79,18 @@ return [
             'model' => App\Models\AdminUser::class,
         ],
 
-        'ldap' => [
+        'ldap_users' => [
             'driver' => 'ldap',
             'model' => LdapRecord\Models\ActiveDirectory\User::class,
-            'database' => [
-                'model' => App\Models\AdminUser::class,
-                'sync_passwords' => false,
-                'sync_attributes' => [
-                    'name' => 'cn',
-                    'email' => 'mail',
-                    'username' => 'samaccountname',
-                ],
-            ],
+            // 'database' => [
+            //     'model' => App\Models\AdminUser::class,
+            //     'sync_passwords' => false,
+            //     'sync_attributes' => [
+            //         'name' => 'cn',
+            //         'email' => 'mail',
+            //         'username' => 'samaccountname',
+            //     ],
+            // ],
         ],
         // 'users' => [
         //     'driver' => 'database',

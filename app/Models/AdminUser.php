@@ -6,9 +6,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use LdapRecord\Laravel\Auth\HasLdapUser;
@@ -16,14 +13,12 @@ use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
 use LaravelAndVueJS\Traits\LaravelPermissionToVueJS;
 
+
 class AdminUser extends Authenticatable implements LdapAuthenticatable
 {
     use HasApiTokens;
     use HasFactory;
-    use HasProfilePhoto;
-    use HasTeams;
     use Notifiable;
-    use TwoFactorAuthenticatable;
     use HasRoles;
     use Notifiable, AuthenticatesWithLdap;
     use HasLdapUser;
@@ -36,7 +31,9 @@ class AdminUser extends Authenticatable implements LdapAuthenticatable
      *
      * @var string[]
      */
+
     protected $fillable = ['name', 'username','email','email_varified_at', 'password','remember_token','current_team_id','profile_photo_path','guid','domain'];
+    protected $guard = 'admin';
 
     /**
      * The attributes that should be hidden for serialization.
@@ -46,8 +43,6 @@ class AdminUser extends Authenticatable implements LdapAuthenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'two_factor_recovery_codes',
-        'two_factor_secret',
     ];
     /**
      * The attributes that should be cast.

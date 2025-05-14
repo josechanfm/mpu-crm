@@ -192,7 +192,6 @@ export default {
         }
     },
     created() {
-        console.log(this.formFields);
         Object.values(this.form.fields).forEach(f=>{
             this.formFields[f.field_name]=f
         })
