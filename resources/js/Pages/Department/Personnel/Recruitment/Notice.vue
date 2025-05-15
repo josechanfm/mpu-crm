@@ -6,13 +6,13 @@
                 <a-form ref="formRef" :model="notice" name="formVacancy" :label-col="{ style:{width:'150px'}  }" :wrapper-col="{ span: 20 }"
                 autocomplete="off" :rules="rules" :validate-messages="validateMessages" @finish="onFormSubmit">
                     <a-form-item label="標題(中文)" name="title_zh">
-                        <a-input v-model:value="notice.title_zh"/>
+                        <a-input type="inpuut" v-model:value="notice.title_zh"/>
                     </a-form-item>
                     <a-form-item label="標題(英文)" name="title_en">
-                        <a-input v-model:value="notice.title_en"/>
+                        <a-input type="inpuut" v-model:value="notice.title_en"/>
                     </a-form-item>
                     <a-form-item label="標題(葡文)" name="title_pt">
-                        <a-input v-model:value="notice.title_pt"/>
+                        <a-input type="inpuut" v-model:value="notice.title_pt"/>
                     </a-form-item>
                     <a-form-item label="開始日" name="date_start">
                         <a-date-picker v-model:value="notice.date_start" :format="dateFormat" :valueFormat="dateFormat" />

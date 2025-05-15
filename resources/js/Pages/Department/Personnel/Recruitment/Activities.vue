@@ -28,7 +28,7 @@
         </div>
 
             <!-- Modal Start-->
-    <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
+    <a-modal v-model:open="modal.isOpen" :title="modal.title" width="60%">
       <a-form
         :model="modal.data"
         ref="modalRef"
@@ -39,7 +39,7 @@
         :label-col="{ style:{width:'120px'}  }" :wrapper-col="{ span: 20 }"
       >
           <a-form-item label="工作項目名稱" name="name" >
-            <a-input v-model:value="modal.data.name" />
+            <a-input type="inpuut" v-model:value="modal.data.name" />
           </a-form-item>
           <a-form-item label="部門/單位" name="department_id" >
             <a-select v-model:value="modal.data.department_id" :options="departments.map(d=>({value:d.id,label:d.abbr+'-'+d.name_zh}))"/>
@@ -69,7 +69,7 @@
             </a-col>
           </a-row>
           <a-form-item label="電郵" name="email" >
-            <a-input v-model:value="modal.data.email" />
+            <a-input type="inpuut" v-model:value="modal.data.email" />
           </a-form-item>
           <a-form-item label="備註" name="remark" >
             <a-textarea v-model:value="modal.data.remark" />

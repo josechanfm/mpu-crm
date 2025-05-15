@@ -135,7 +135,7 @@
                     <p><a-switch v-model:checked="myResponse.is_closed" />&nbsp;&nbsp;Closed</p>
                     <a-form-item name="title" label="Title"
                         :rules="[{ required: true, message: 'Summarize your response.' }]">
-                        <a-input v-model:value="myResponse.title" />
+                        <a-input type="inpuut" v-model:value="myResponse.title" />
                     </a-form-item>
                     <a-form-item name="remark" label="Remark">
                         <a-textarea v-model:value="myResponse.remark" :rows="5"></a-textarea>
@@ -144,11 +144,11 @@
                     <span v-if="myResponse.by_email">
                         <a-form-item name="email_address" label="Email"
                             :rules="[{ required: true, type: 'email', message: 'Reciever Email Address' }]">
-                            <a-input v-model:value="myResponse.email_address" />
+                            <a-input type="inpuut" v-model:value="myResponse.email_address" />
                         </a-form-item>
                         <a-form-item name="email_subject" label="Subject"
                             :rules="[{ required: true, message: 'Subject title of the Email' }]">
-                            <a-input v-model:value="myResponse.email_subject" />
+                            <a-input type="inpuut" v-model:value="myResponse.email_subject" />
                         </a-form-item>
                         <a-form-item name="email_content" label="Content"
                             :rules="[{ required: true, message: 'Content Body of the Email' }]">

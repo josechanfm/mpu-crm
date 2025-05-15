@@ -28,7 +28,7 @@
         </div>
 
             <!-- Modal Start-->
-    <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
+    <a-modal v-model:open="modal.isOpen" :title="modal.title" width="60%">
       <a-form
         :model="modal.data"
         ref="modalRef"
@@ -42,13 +42,13 @@
             <a-select v-model:value="modal.data.category" :options="categories" />
           </a-form-item>
           <a-form-item label="title_zh名稱" name="title_zh" >
-            <a-input v-model:value="modal.data.title_zh" />
+            <a-input type="inpuut" v-model:value="modal.data.title_zh" />
           </a-form-item>
           <a-form-item label="title_zh名稱" name="description_zh" >
             <a-textarea v-model:value="modal.data.description_zh" />
           </a-form-item>
           <a-form-item label="title_zh名稱" name="author" >
-            <a-input v-model:value="modal.data.author" />
+            <a-input type="inpuut" v-model:value="modal.data.author" />
           </a-form-item>
           <a-form-item label="title_zh名稱" name="print" >
             <a-textarea v-model:value="modal.data.print" />

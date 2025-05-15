@@ -11,13 +11,13 @@
         enctype="multipart/form-data"
     >
         <a-form-item label="Sender" name="sender">
-            <a-input v-model:value="email.sender" defaultValue="no-reply@mpu.edu.mo"/>
+            <a-input type="inpuut" v-model:value="email.sender" defaultValue="no-reply@mpu.edu.mo"/>
         </a-form-item>
         <a-form-item label="Receiver" name="receiver">
-            <a-input v-model:value="email.receiver" />
+            <a-input type="inpuut" v-model:value="email.receiver" />
         </a-form-item>
         <a-form-item label="subject" name="subject">
-            <a-input v-model:value="email.subject" />
+            <a-input type="inpuut" v-model:value="email.subject" />
         </a-form-item>
         <a-form-item label="Content" name="content">
             <quill-editor v-model:value="email.content" style="min-height:200px;" />

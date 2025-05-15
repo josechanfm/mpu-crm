@@ -16,13 +16,13 @@ class UserController extends Controller
         }else{
             $user=auth()->user();
         }
-
         if(!isset($user)){
             session(['url_intended'=>'/recruitment/user/profile']);
             return to_route('login');
         }else{
             session()->forget('url_intended');
         }
+        // dd(auth()->user(),RecApplication::with('vacancy')->whereBelongsTo(auth()->user())->get());
         return Inertia::render('Recruitment/UserProfile',[
             'user'=>auth()->user(),
             'applications'=>RecApplication::with('vacancy')->whereBelongsTo(auth()->user())->get()

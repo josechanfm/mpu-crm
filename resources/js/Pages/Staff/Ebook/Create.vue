@@ -4,7 +4,7 @@
         <h1 class="text-2xl font-bold mb-4">Upload PDF</h1>
         <a-form @submit.prevent="submit">
           <a-form-item label="Title" required>
-            <a-input v-model:value="pdfFile.title" placeholder="Enter the title" />
+            <a-input type="inpuut" v-model:value="pdfFile.title" placeholder="Enter the title" />
           </a-form-item>
           <a-form-item label="Description">
             <a-textarea v-model="pdfFile.description" placeholder="Enter a description" />

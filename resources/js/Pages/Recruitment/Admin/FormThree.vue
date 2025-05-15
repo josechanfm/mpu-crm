@@ -63,10 +63,10 @@
                         @finishFailed="onFinishFailed"
                     >
                     <a-form-item :label="lang.prof_qualification" name="qualification">
-                        <a-input v-model:value="professional.qualification" />
+                        <a-input type="inpuut" v-model:value="professional.qualification" />
                     </a-form-item>
                     <a-form-item :label="lang.prof_organization" name="organization_name">
-                        <a-input v-model:value="professional.organization_name" />
+                        <a-input type="inpuut" v-model:value="professional.organization_name" />
                     </a-form-item>
 
                         <a-row :gutter="10">
@@ -82,7 +82,7 @@
                             </a-col>
                             <a-col :span="8">
                                 <a-form-item :label="lang.prof_hours" name="hours">
-                                    <a-input v-model:value="professional.hours" />
+                                    <a-input type="inpuut" v-model:value="professional.hours" />
                                 </a-form-item>
                             </a-col>
                         </a-row>

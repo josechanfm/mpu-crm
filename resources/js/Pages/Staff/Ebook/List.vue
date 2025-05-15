@@ -40,7 +40,7 @@
     </div>
 
             <!-- Modal Start-->
-    <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
+    <a-modal v-model:open="modal.isOpen" :title="modal.title" width="60%">
       <a-form
         :model="modal.data"
         ref="modalRef"
@@ -51,7 +51,7 @@
         :label-col="{ style:{width:'120px'}  }" :wrapper-col="{ span: 20 }"
       >
           <a-form-item label="Title" name="title" >
-            <a-input v-model:value="modal.data.title" />
+            <a-input type="inpuut" v-model:value="modal.data.title" />
           </a-form-item>
           <a-form-item label="Description" name="description" >
             <a-textarea v-model:value="modal.data.description" />

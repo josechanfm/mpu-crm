@@ -27,7 +27,7 @@
                             :name="formFields['staff_num'].id"  
                             :rules="[{ required: formFields['staff_num'].required, message:'為必填欄位 is Required' }]"
                         >
-                            <a-input v-model:value="formData[formFields['staff_num'].id]" />
+                            <a-input type="inpuut" v-model:value="formData[formFields['staff_num'].id]" />
                         </a-form-item>
                     </a-col>
                     <a-col :span="8">
@@ -36,7 +36,7 @@
                             :name="formFields['fullname'].id"
                             :rules="[{ required: formFields['fullname'].required, message:'為必填欄位 is Required'}]"
                         >
-                            <a-input v-model:value="formData[formFields['fullname'].id]" />
+                            <a-input type="inpuut" v-model:value="formData[formFields['fullname'].id]" />
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -51,19 +51,19 @@
                             <th><span v-html="formFields['part_1_3'].extra"/></th>
                         </tr>
                         <tr>
-                            <td><a-input v-model:value="formData[formFields['part_1_1'].id]" /></td>
-                            <td><a-input v-model:value="formData[formFields['part_1_2'].id]" /></td>
-                            <td><a-input v-model:value="formData[formFields['part_1_3'].id]" /></td>
+                            <td><a-input type="inpuut" v-model:value="formData[formFields['part_1_1'].id]" /></td>
+                            <td><a-input type="inpuut" v-model:value="formData[formFields['part_1_2'].id]" /></td>
+                            <td><a-input type="inpuut" v-model:value="formData[formFields['part_1_3'].id]" /></td>
                         </tr>
                         <tr>
-                            <td><a-input v-model:value="formData[formFields['part_2_1'].id]" /></td>
-                            <td><a-input v-model:value="formData[formFields['part_2_2'].id]" /></td>
-                            <td><a-input v-model:value="formData[formFields['part_2_3'].id]" /></td>
+                            <td><a-input type="inpuut" v-model:value="formData[formFields['part_2_1'].id]" /></td>
+                            <td><a-input type="inpuut" v-model:value="formData[formFields['part_2_2'].id]" /></td>
+                            <td><a-input type="inpuut" v-model:value="formData[formFields['part_2_3'].id]" /></td>
                         </tr>
                         <tr>
-                            <td><a-input v-model:value="formData[formFields['part_3_1'].id]" /></td>
-                            <td><a-input v-model:value="formData[formFields['part_3_2'].id]" /></td>
-                            <td><a-input v-model:value="formData[formFields['part_3_3'].id]" /></td>
+                            <td><a-input type="inpuut" v-model:value="formData[formFields['part_3_1'].id]" /></td>
+                            <td><a-input type="inpuut" v-model:value="formData[formFields['part_3_2'].id]" /></td>
+                            <td><a-input type="inpuut" v-model:value="formData[formFields['part_3_3'].id]" /></td>
                         </tr>
                     </table>
                 </div>
@@ -89,7 +89,7 @@
                                             style="width: 100%" 
                                             :options="monthOptions"
                                         />
-                                        <!-- <a-input v-model:value="formData[formFields['question_'+i+'_2'].id]" @input="checkInputMonthOnly"/> -->
+                                        <!-- <a-input type="inpuut" v-model:value="formData[formFields['question_'+i+'_2'].id]" @input="checkInputMonthOnly"/> -->
                                     </td>
                                 </tr>
                             </template>
@@ -97,9 +97,9 @@
                                 <tr>
                                     <td>
                                         <div v-html="getExtraContent(formFields['suggest_'+i+'_1'].extra,'title')" />
-                                        <a-input v-model:value="formData[formFields['suggest_'+i+'_3'].id]" />
+                                        <a-input type="inpuut" v-model:value="formData[formFields['suggest_'+i+'_3'].id]" />
                                     </td>
-                                    <td><a-input v-model:value="formData[formFields['suggest_'+i+'_4'].id]" /></td>
+                                    <td><a-input type="inpuut" v-model:value="formData[formFields['suggest_'+i+'_4'].id]" /></td>
                                     <td class="text-center">
                                         <a-checkbox v-model:checked="formData[formFields['suggest_'+i+'_1'].id]" /></td>
                                     <td>

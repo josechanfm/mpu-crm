@@ -8,7 +8,7 @@ import { InertiaProgress } from '@inertiajs/progress';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css';
+// import 'ant-design-vue/dist/antd.css';
 
 //import LaravelPermissionToVueJS from '../../vendor/ahmedsaoud31/laravel-permission-to-vuejs/src/js'
 import LaravelPermissionToVueJS from 'laravel-permission-to-vuejs'

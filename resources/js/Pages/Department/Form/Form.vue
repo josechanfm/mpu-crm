@@ -29,10 +29,10 @@
                 />
             </a-form-item>
             <a-form-item label="Form Name" name="name">
-                <a-input v-model:value="form.name" />
+                <a-input type="inpuut" v-model:value="form.name" />
             </a-form-item>
             <a-form-item label="Title" name="title">
-                <a-input v-model:value="form.title" />
+                <a-input type="inpuut" v-model:value="form.title" />
             </a-form-item>
                 <div class="text-right">
                     <a @click="form.openWelcome=!form.openWelcome">Welcome Message</a>

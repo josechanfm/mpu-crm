@@ -51,7 +51,7 @@
     </a-table>
 
     <!-- Modal Start-->
-    <a-modal v-model:visible="modal.isOpen" title="View Only" width="60%">
+    <a-modal v-model:open="modal.isOpen" title="View Only" width="60%">
       <a-form
         :model="modal.data"
         ref="formRef"
@@ -66,7 +66,7 @@
               :name="field.id"
               :rules="[{ required: field.required }]"
             >
-              <a-input v-model:value="$page.props.user.id" />
+              <a-input type="inpuut" v-model:value="$page.props.user.id" />
             </a-form-item>
           </div>
 
@@ -76,7 +76,7 @@
               :name="field.id"
               :rules="[{ required: field.required }]"
             >
-              <a-input v-model:value="formData[field.id]" />
+              <a-input type="inpuut" v-model:value="formData[field.id]" />
             </a-form-item>
           </div>
           <div v-else-if="field.type == 'textarea'">
@@ -188,7 +188,7 @@
               :name="field.id"
               :rules="[{ required: field.required }, { type: 'email' }]"
             >
-              <a-input v-model:value="formData[field.id]" />
+              <a-input type="inpuut" v-model:value="formData[field.id]" />
             </a-form-item>
           </div>
           <div v-else-if="field.type == 'photo'">

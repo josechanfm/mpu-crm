@@ -60,61 +60,61 @@
         </div>
 
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
+        <a-modal v-model:open="modal.isOpen" :title="modal.title" width="60%">
             <a-form ref="modalRef" :model="modal.data" name="formField" :label-col="{ style:{width:'150px'}  }" :wrapper-col="{ span: 20 }"
                 autocomplete="off" :rules="rules" :validate-messages="validateMessages">
                 <a-row>
                     <a-col :span="14">
                         <a-form-item label="姓名(中文)" name="name_zh">
-                            <a-input v-model:value="modal.data.name_zh"/>
+                            <a-input type="inpuut" v-model:value="modal.data.name_zh"/>
                         </a-form-item>
                     </a-col>
                     <a-col :span="10">
                         <a-form-item label="員工編號" name="staff_num">
-                            <a-input v-model:value="modal.data.staff_num"/>
+                            <a-input type="inpuut" v-model:value="modal.data.staff_num"/>
                         </a-form-item>
                     </a-col>
                 </a-row>
                 <a-row>
                     <a-col :span="24">
                         <a-form-item label="姓名(外文)" name="name_fr">
-                            <a-input v-model:value="modal.data.name_fr"/>
+                            <a-input type="inpuut" v-model:value="modal.data.name_fr"/>
                         </a-form-item>
                     </a-col>
                 </a-row>
                 <a-row>
                     <a-col :span="12">
                         <a-form-item label="電郵地址" name="email">
-                            <a-input v-model:value="modal.data.email"/>
+                            <a-input type="inpuut" v-model:value="modal.data.email"/>
                         </a-form-item>
                     </a-col>
                     <a-col :span="12">
                         <a-form-item label="身份證明文件編號" name="id_num">
-                            <a-input v-model:value="modal.data.id_num"/>
+                            <a-input type="inpuut" v-model:value="modal.data.id_num"/>
                         </a-form-item>
                     </a-col>
                 </a-row>
                 <a-row>
                     <a-col :span="12">
                         <a-form-item label="現任職的實體/部門" name="current_department">
-                            <a-input v-model:value="modal.data.current_department"/>
+                            <a-input type="inpuut" v-model:value="modal.data.current_department"/>
                         </a-form-item>
                     </a-col>
                     <a-col :span="12">
                         <a-form-item label="現職位/職級/職務" name="current_position">
-                            <a-input v-model:value="modal.data.current_position"/>
+                            <a-input type="inpuut" v-model:value="modal.data.current_position"/>
                         </a-form-item>
                     </a-col>
                 </a-row>
                 <a-row>
                     <a-col :span="12">
                         <a-form-item label="原任職部門" name="original_department">
-                            <a-input v-model:value="modal.data.original_department"/>
+                            <a-input type="inpuut" v-model:value="modal.data.original_department"/>
                         </a-form-item>
                     </a-col>
                     <a-col :span="12">
                         <a-form-item label="原職位" name="original_postion">
-                            <a-input v-model:value="modal.data.original_position"/>
+                            <a-input type="inpuut" v-model:value="modal.data.original_position"/>
                         </a-form-item>
                     </a-col>
                 </a-row>

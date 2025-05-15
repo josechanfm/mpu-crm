@@ -58,7 +58,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $appends = [
-        'profile_photo_url',
+        // 'profile_photo_url',
     ];
 
     public function sendPasswordResetNotification($token)

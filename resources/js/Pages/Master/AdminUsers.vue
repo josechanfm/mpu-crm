@@ -34,7 +34,7 @@
 
 
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
+        <a-modal v-model:open="modal.isOpen" :title="modal.title" width="60%" >
         <a-form
             ref="modalRef"
             :model="modal.data"
@@ -45,19 +45,19 @@
             :validate-messages="validateMessages"
         >
             <a-form-item label="Username" name="username">
-                <a-input v-model:value="modal.data.username"                 />
+                <a-input type="inpuut" v-model:value="modal.data.username"                 />
             </a-form-item>
             <a-form-item label="Display Name" name="name">
-                <a-input v-model:value="modal.data.name"                 />
+                <a-input type="inpuut" v-model:value="modal.data.name"                 />
             </a-form-item>
             <a-form-item label="Email" name="email">
-                <a-input v-model:value="modal.data.email"/>
+                <a-input type="inpuut" v-model:value="modal.data.email"/>
             </a-form-item>
             <a-form-item label="Password" name="password">
-                <a-input v-model:value="modal.data.password"/>
+                <a-input type="inpuut" v-model:value="modal.data.password"/>
             </a-form-item>
             <a-form-item label="Retype Password" name="retype_password">
-                <a-input v-model:value="modal.data.retype_password"/>
+                <a-input type="inpuut" v-model:value="modal.data.retype_password"/>
             </a-form-item>
             <a-form-item label="Departments" name="departments">
                 <a-select 

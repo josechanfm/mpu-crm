@@ -27,7 +27,7 @@
 
 
     <!-- Modal Start-->
-    <a-modal v-model:visible="modal.isOpen" title="View Only" width="60%">
+    <a-modal v-model:open="modal.isOpen" title="View Only" width="60%">
       <a-form
         :model="modal.data"
         ref="formRef"
@@ -36,13 +36,13 @@
         :validate-messages="validateMessages"
       >
           <a-form-item label="名稱" name="name" >
-            <a-input v-model:value="modal.data.name" />
+            <a-input type="inpuut" v-model:value="modal.data.name" />
           </a-form-item>
           <a-form-item label="部門/單位" name="department_id" >
             <a-select v-model:value="modal.data.department_id" :options="departments.map(d=>({value:d.id,label:d.abbr+'-'+d.name_zh}))"/>
           </a-form-item>
           <a-form-item label="工作日數" name="days" >
-            <a-input v-model:value="modal.data.days" />
+            <a-input type="inpuut" v-model:value="modal.data.days" />
           </a-form-item>
       </a-form>
       <template #footer>

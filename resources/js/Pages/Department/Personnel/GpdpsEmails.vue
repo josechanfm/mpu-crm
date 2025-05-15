@@ -34,7 +34,7 @@
         </div>
 
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" :okButtonProps="{hidden:true}">
+        <a-modal v-model:open="modal.isOpen" :title="modal.title" width="60%" :okButtonProps="{hidden:true}">
             <a-form ref="modalRef" :model="modal.data" name="formField" :label-col="{ style:{width:'150px'}  }" :wrapper-col="{ span: 20 }"
                 autocomplete="off" :rules="rules" :validate-messages="validateMessages">
                 <a-form-item label="人動發件人" name="admin_user_id">

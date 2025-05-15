@@ -14,15 +14,15 @@
                 :validate-messages="validateMessages">
                 <a-form-item :label="formFields['staff_no'].field_label" :name="formFields['staff_no'].id"
                     :rules="[{ required: formFields['staff_no'].required, message: '為必填欄位 is Required' }]">
-                    <a-input v-model:value="formData[formFields['staff_no'].id]" />
+                    <a-input type="inpuut" v-model:value="formData[formFields['staff_no'].id]" />
                 </a-form-item>
                 <a-form-item :label="formFields['name_zh'].field_label" :name="formFields['name_zh'].id"
                     :rules="[{ required: formFields['name_zh'].required, message: '為必填欄位 is Required' }]">
-                    <a-input v-model:value="formData[formFields['name_zh'].id]" />
+                    <a-input type="inpuut" v-model:value="formData[formFields['name_zh'].id]" />
                 </a-form-item>
                 <a-form-item :label="formFields['name_fn'].field_label" :name="formFields['name_fn'].id"
                     :rules="[{ required: formFields['name_fn'].required, message: '為必填欄位 is Required' }]">
-                    <a-input v-model:value="formData[formFields['name_fn'].id]" />
+                    <a-input type="inpuut" v-model:value="formData[formFields['name_fn'].id]" />
                 </a-form-item>
                 <a-form-item :label="formFields['department'].field_label" :name="formFields['department'].id"
                     :rules="[{ required: formFields['department'].required, message: '為必填欄位 is Required' }]">
@@ -31,11 +31,11 @@
                 </a-form-item>
                 <a-form-item :label="formFields['email'].field_label" :name="formFields['email'].id"
                     :rules="[{ required: formFields['email'].required, type: 'email', message: '為必電郵格式填欄位 is Required with Email format' }]">
-                    <a-input v-model:value="formData[formFields['email'].id]" />
+                    <a-input type="inpuut" v-model:value="formData[formFields['email'].id]" />
                 </a-form-item>
                 <a-form-item :label="formFields['phone'].field_label" :name="formFields['phone'].id"
                     :rules="[{ required: formFields['phone'].required, message: '為必填欄位 is Required' }]">
-                    <a-input v-model:value="formData[formFields['phone'].id]" />
+                    <a-input type="inpuut" v-model:value="formData[formFields['phone'].id]" />
                 </a-form-item>
                 <a-form-item :label="formFields['course_code'].field_label" :name="formFields['course_code'].id"
                     :rules="[{ required: formFields['course_code'].required, message: '為必填欄位 is Required' }]">

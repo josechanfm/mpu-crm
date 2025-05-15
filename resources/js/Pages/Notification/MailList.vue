@@ -31,7 +31,7 @@
             </a-table>
 
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
+        <a-modal v-model:open="modal.isOpen" :title="modal.title" width="60%" >
             <MailerBox :email="modal.data"/>
         <template #footer>
             <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>

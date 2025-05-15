@@ -16,25 +16,25 @@
                         <a-select v-model:value="workflow.category_code" :options="workflowCategories"/>
                     </a-form-item>
                     <a-form-item label="招聘編號" name="vacancy_code">
-                        <a-input v-model:value="workflow.vacancy_code" />
+                        <a-input type="inpuut" v-model:value="workflow.vacancy_code" />
                     </a-form-item>
                     <a-form-item label="職位名稱(中文)" name="title_zh">
-                        <a-input v-model:value="workflow.title_zh" />
+                        <a-input type="inpuut" v-model:value="workflow.title_zh" />
                     </a-form-item>
                     <a-form-item label="職位名稱(英文)" name="title_en">
-                        <a-input v-model:value="workflow.title_en" />
+                        <a-input type="inpuut" v-model:value="workflow.title_en" />
                     </a-form-item>
                     <a-form-item label="職位名稱(葡文)" name="title_pt">
-                        <a-input v-model:value="workflow.title_pt" />
+                        <a-input type="inpuut" v-model:value="workflow.title_pt" />
                     </a-form-item>
                     <a-form-item label="簡介" name="description">
                         <a-textarea v-model:value="workflow.description" />
                     </a-form-item>
                     <a-form-item label="建議書編號" name="proposal_num">
-                        <a-input v-model:value="workflow.proposal_num" />
+                        <a-input type="inpuut" v-model:value="workflow.proposal_num" />
                     </a-form-item>
                     <a-form-item label="典試委員會主席" name="chairman">
-                        <a-input v-model:value="workflow.chairman" />
+                        <a-input type="inpuut" v-model:value="workflow.chairman" />
                     </a-form-item>
                     <a-form-item label="開始日期" name="date_start">
                         <a-date-picker v-model:value="workflow.date_start" :valueFormat="dateFormat" :format="dateFormat"/>
@@ -43,13 +43,13 @@
                         <a-date-picker v-model:value="workflow.date_end" :valueFormat="dateFormat" :format="dateFormat"/>
                     </a-form-item>
                     <a-form-item label="電郵" name="email_notice">
-                        <a-input v-model:value="workflow.email_notice" />
+                        <a-input type="inpuut" v-model:value="workflow.email_notice" />
                     </a-form-item>
                     <a-form-item label="負責人" name="handler">
-                        <a-input v-model:value="workflow.handler" />
+                        <a-input type="inpuut" v-model:value="workflow.handler" />
                     </a-form-item>
                     <a-form-item label="負責人電郵" name="handler_email">
-                        <a-input v-model:value="workflow.handler_email" />
+                        <a-input type="inpuut" v-model:value="workflow.handler_email" />
                     </a-form-item>
                     <a-form-item label="狀態" name="status">
                         <a-radio-group v-model:value="workflow.status" size="large" button-style="solid">

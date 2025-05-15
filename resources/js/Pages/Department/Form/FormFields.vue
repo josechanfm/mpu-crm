@@ -33,14 +33,14 @@
         </a-table>
 
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.mode == 'CREATE' ? 'Create' : 'Update'" width="60%">
+        <a-modal v-model:open="modal.isOpen" :title="modal.mode == 'CREATE' ? 'Create' : 'Update'" width="60%">
             <a-form ref="modalRef" :model="modal.data" name="formField" :label-col="{ span: 4 }"
                 :wrapper-col="{ span: 20 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages">
                 <a-form-item label="Field Name" name="field_name">
-                    <a-input v-model:value="modal.data.field_name" />
+                    <a-input type="inpuut" v-model:value="modal.data.field_name" />
                 </a-form-item>
                 <a-form-item label="Field Label" name="field_label">
-                    <a-input v-model:value="modal.data.field_label" @blur="onFieldLabelChanged" />
+                    <a-input type="inpuut" v-model:value="modal.data.field_label" @blur="onFieldLabelChanged" />
                 </a-form-item>
                 <a-form-item label="Field Type" name="type">
                     <a-select v-model:value="modal.data.type" placeholder="Field Type" :options="fieldTypes"
@@ -55,7 +55,7 @@
                         <a-radio-group>
                             <template v-for="option in modal.data.options">
                                 <a-radio :style="verticalStyle" :value="option.value">
-                                    <a-input v-model:value="option.label" />
+                                    <a-input type="inpuut" v-model:value="option.label" />
                                 </a-radio>
                             </template>
                             <a-radio @click="addOptionItem"> Add option</a-radio>

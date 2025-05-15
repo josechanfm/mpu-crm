@@ -70,24 +70,24 @@
                         <a-row :gutter="10">
                             <a-col :span="16">
                                 <a-form-item :label="lang.prof_organization_name" name="organization_name">
-                                    <a-input v-model:value="professional.organization_name" />
+                                    <a-input type="inpuut" v-model:value="professional.organization_name" />
                                 </a-form-item>
                             </a-col>
                             <a-col :span="8">
                                 <a-form-item :label="lang.prof_region" name="region">
-                                    <a-input v-model:value="professional.region" />
+                                    <a-input type="inpuut" v-model:value="professional.region" />
                                 </a-form-item>
                             </a-col>
                         </a-row>
                         <a-row :gutter="10">
                             <a-col :span="12">
                                 <a-form-item :label="lang.prof_qualification" name="qualification">
-                                    <a-input v-model:value="professional.qualification" />
+                                    <a-input type="inpuut" v-model:value="professional.qualification" />
                                 </a-form-item>
                             </a-col>
                             <a-col :span="12">
                                 <a-form-item :label="lang.prof_area">
-                                    <a-input v-model:value="professional.area" />
+                                    <a-input type="inpuut" v-model:value="professional.area" />
                                 </a-form-item>
                             </a-col>
                         </a-row>

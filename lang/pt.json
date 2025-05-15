@@ -41,5 +41,10 @@
     "read_more":"Consulte mais",
     "doc_id_type":"Tipo de identificação",
     "general_title":"General Service",
+    "rec.recruitment":"Recrutamento",
+    "rec.vacancies":"Vagas de recrutamento",
+    "rec.academic":"Pessoal Docente",
+    "rec.admin":"Pessoal Não docentes",
+    "procedure_note":"Procedimento de registro online e notas.",
     "thank_you":"Thank you"
 }

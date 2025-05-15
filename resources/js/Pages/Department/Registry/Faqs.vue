@@ -33,7 +33,7 @@
         </div>
 
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
+        <a-modal v-model:open="modal.isOpen" :title="modal.title" width="60%">
             <a-form ref="modalRef" :model="modal.data" name="Teacher" layout="vertical" autocomplete="off"
                 :rules="rules" :validate-messages="validateMessages">
                 <a-form-item label="所持證件" name="origins" :rules="{ required: true }">
@@ -48,7 +48,7 @@
                 <a-tabs>
                     <a-tab-pane key="1" :tab="$t('chinese')">
                         <a-form-item :label="$t('response_title')" name="question_zh" :rules="{ required: true }">
-                            <a-input v-model:value="modal.data.question_zh" />
+                            <a-input type="inpuut" v-model:value="modal.data.question_zh" />
                         </a-form-item>
                         <a-form-item :label="$t('response_content')" name="answer_zh" :rules="{ required: true }">
                             <quill-editor v-model:value="modal.data.answer_zh" style="min-height:200px;" />
@@ -56,7 +56,7 @@
                     </a-tab-pane>
                     <a-tab-pane key="2" :tab="$t('english')" >
                         <a-form-item :label="$t('response_title')" name="question_en" :rules="{ required: true }">
-                            <a-input v-model:value="modal.data.question_en" />
+                            <a-input type="inpuut" v-model:value="modal.data.question_en" />
                         </a-form-item>
                         <a-form-item :label="$t('response_content')" name="answer_en" :rules="{ required: true }">
                             <quill-editor v-model:value="modal.data.answer_en" style="min-height:200px;" />
@@ -64,7 +64,7 @@
                     </a-tab-pane>
                     <a-tab-pane key="3" :tab="$t('portuguese')">
                         <a-form-item :label="$t('response_title')" name="question_pt" :rules="{ required: true }">
-                            <a-input v-model:value="modal.data.question_pt" />
+                            <a-input type="inpuut" v-model:value="modal.data.question_pt" />
                         </a-form-item>
                         <a-form-item :label="$t('response_content')" name="answer_pt" :rules="{ required: true }">
                             <quill-editor v-model:value="modal.data.answer_pt" style="min-height:200px;" />

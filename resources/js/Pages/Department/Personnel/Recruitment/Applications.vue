@@ -44,7 +44,7 @@
         </div>
 
     <!-- Modal Start-->
-    <a-modal v-model:visible="modal.isOpen" :title="$t('rec.apply')" width="60%">
+    <a-modal v-model:open="modal.isOpen" :title="$t('rec.apply')" width="60%">
         <a-typography-title :level="5" class="text-center pb-5">{{vacancy.code}} {{vacancy.title_zh}}</a-typography-title>
       <a-form
         :model="modal.data"
@@ -63,19 +63,19 @@
             </a-select>
           </a-form-item>
           <a-form-item label="證件編號" name="id_num" >
-            <a-input v-model:value="modal.data.id_num" @blur="onBlurIdNum"/>
+            <a-input type="inpuut" v-model:value="modal.data.id_num" @blur="onBlurIdNum"/>
           </a-form-item>
           <a-form-item label="電郵" name="email" >
-            <a-input v-model:value="modal.data.email" @blur="onBlurEmail"/>
+            <a-input type="inpuut" v-model:value="modal.data.email" @blur="onBlurEmail"/>
           </a-form-item>
           <a-form-item label="中文全名" name="name_full_zh" >
-            <a-input v-model:value="modal.data.name_full_zh" />
+            <a-input type="inpuut" v-model:value="modal.data.name_full_zh" />
           </a-form-item>
           <a-form-item label="外文姓" name="name_family_fn" >
-            <a-input v-model:value="modal.data.name_family_fn" />
+            <a-input type="inpuut" v-model:value="modal.data.name_family_fn" />
           </a-form-item>
           <a-form-item label="外文名" name="name_given_fn" >
-            <a-input v-model:value="modal.data.name_given_fn" />
+            <a-input type="inpuut" v-model:value="modal.data.name_given_fn" />
           </a-form-item>
           <div v-if="errorMessages">
             <div v-html="errorMessages"/>

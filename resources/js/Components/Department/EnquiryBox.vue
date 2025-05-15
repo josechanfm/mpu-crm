@@ -11,13 +11,13 @@
         enctype="multipart/form-data"
     >
         <a-form-item label="Title" name="title">
-            <a-input v-model:value="enquiry.title"/>
+            <a-input type="inpuut" v-model:value="enquiry.title"/>
         </a-form-item>
         <a-form-item label="Email" name="email">
-            <a-input v-model:value="enquiry.email"/>
+            <a-input type="inpuut" v-model:value="enquiry.email"/>
         </a-form-item>
         <a-form-item label="Phone" name="phone">
-            <a-input v-model:value="enquiry.phone"/>
+            <a-input type="inpuut" v-model:value="enquiry.phone"/>
         </a-form-item>
         <a-form-item label="Content" name="content">
             <div style="background-color: white;">

@@ -73,12 +73,12 @@
                         <a-row :gutter="10">
                             <a-col :span="16">
                                 <a-form-item :label="lang.edu_school_name" name="school_name">
-                                    <a-input v-model:value="education.school_name" />
+                                    <a-input type="inpuut" v-model:value="education.school_name" />
                                 </a-form-item>
                             </a-col>
                             <a-col :span="8">
                                 <a-form-item :label="lang.edu_region" name="region">
-                                    <a-input v-model:value="education.region" />
+                                    <a-input type="inpuut" v-model:value="education.region" />
                                 </a-form-item>
                             </a-col>
                         </a-row>
@@ -90,19 +90,19 @@
                             </a-col>
                             <a-col :span="8">
                                 <a-form-item :label="lang.edu_degree" name="degree">
-                                    <a-input v-model:value="education.degree" />
+                                    <a-input type="inpuut" v-model:value="education.degree" />
                                 </a-form-item>
                             </a-col>
                             <a-col :span="8">
                                 <a-form-item :label="lang.edu_subject" name="subject">
-                                    <a-input v-model:value="education.subject" />
+                                    <a-input type="inpuut" v-model:value="education.subject" />
                                 </a-form-item>
                             </a-col>
                         </a-row>
                         <a-row :gutter="10">
                             <a-col :span="8">
                                 <a-form-item :label="lang.edu_language" name="language">
-                                    <a-input v-model:value="education.language"/>
+                                    <a-input type="inpuut" v-model:value="education.language"/>
                                 </a-form-item>
                             </a-col>
                             <a-col :span="8">

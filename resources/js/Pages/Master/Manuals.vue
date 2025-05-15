@@ -18,16 +18,16 @@
         </a-table>
 
         <!-- Modal Start-->
-        <a-modal :model="modal.data" v-model:visible="modal.isOpen" :title="modal.title" width="60%" okText="Save" @ok="onFinish">
+        <a-modal :model="modal.data" v-model:open="modal.isOpen" :title="modal.title" width="60%" okText="Save" @ok="onFinish">
             <a-form ref="modalRef" :model="modal.data" layout="vertical" @finish="onFinish" id="modalForm">
                 <a-form-item label="Route" name="route" :rules="[{required:true}]" >
-                    <a-input v-model:value="modal.data.route"/>
+                    <a-input type="inpuut" v-model:value="modal.data.route"/>
                 </a-form-item>
                 <a-form-item label="Re-Route" name="reroute" >
-                    <a-input v-model:value="modal.data.reroute"/>
+                    <a-input type="inpuut" v-model:value="modal.data.reroute"/>
                 </a-form-item>
                 <a-form-item label="Title" name="title" :rules="[{required:true}]" >
-                    <a-input v-model:value="modal.data.title"/>
+                    <a-input type="inpuut" v-model:value="modal.data.title"/>
                 </a-form-item>
                 <a-form-item label="Content" name="content" :rules="[{required:true}]">
                     <quill-editor

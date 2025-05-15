@@ -17,7 +17,6 @@
         <div class="container bg-white rounded mx-auto p-5">
             <CardBox :title="lang.part_D">
                 <template #content>
-                    
                         <table width="100%">
                             <tr>
                                 <th width="150px"><span class="text-red-500">*</span> {{ lang.doc_id }}</th>

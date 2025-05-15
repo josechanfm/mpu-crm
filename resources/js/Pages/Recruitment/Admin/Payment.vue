@@ -16,15 +16,26 @@
                 <div>
                     <div><span class="font-bold text-lg pr-3">{{ lang.vacancies }}:</span>{{ vacancy.code }}{{
                         vacancy['title_' + $page.props.lang] }}</div>
-                    <div><span class="font-bold text-lg pr-3">{{ lang.name_full_zh }}:</span>{{ application.name_full_zh }}
+                    <div>
+                        <span class="font-bold text-lg pr-3">{{ lang.name_full_zh }}:</span>
+                        {{ application.name_full_zh }}
                     </div>
-                    <div><span class="font-bold text-lg pr-3">{{ lang.name_family_fn }}:</span>{{ application.name_family_fn
-                        }}
+                    <div>
+                        <span class="font-bold text-lg pr-3">{{ lang.name_family_fn }}:</span>
+                        {{ application.name_family_fn}}
                     </div>
-                    <div><span class="font-bold text-lg pr-3">{{ lang.name_given_fn }}:</span>{{ application.name_given_fn
-                        }}</div>
-                    <div><span class="font-bold text-lg pr-3">{{ lang.payment_amount }}:</span>{{ payment.amount }}</div>
-                    <div><span class="font-bold text-lg pr-3">{{ lang.email }}:</span>{{ payment.email }}</div>
+                    <div>
+                        <span class="font-bold text-lg pr-3">{{ lang.name_given_fn }}:</span>
+                        {{ application.name_given_fn }}
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg pr-3">{{ lang.payment_amount }}:</span>
+                        {{ payment.amount }}
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg pr-3">{{ lang.email }}:</span>
+                        {{ payment.email }}
+                    </div>
                 </div>
             </div>
             <form method="post" action="https://epay.mpu.edu.mo/bocpaytest/ipm/cashier">

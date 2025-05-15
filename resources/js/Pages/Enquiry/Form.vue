@@ -109,8 +109,7 @@
                         <a-radio-group v-model:value="enquiry.profile" @change="delete enquiry.profile_other">
                             <a-radio v-for="option in fields.profile.options" :value="option.value"
                                 :style="radioStyle">{{ option['label_' + lang.lang] }}</a-radio>
-                            <a-input v-if="enquiry.profile === 'OTH'" style="width: 300px; margin-left: 10px"
-                                v-model:value="enquiry.profile_other" />
+                            <a-input type="input" v-model:value="enquiry.profile_other" v-if="enquiry.profile === 'OTH'" style="width: 300px; margin-left: 10px"/>
                         </a-radio-group>
                     </a-form-item>
                     
@@ -121,8 +120,7 @@
                             </a-radio>
                             <template v-if="enquiry.apply">
                                 <a-form-item name="apply_number" :rules="{required:true, message:fields.apply.other['message_' + lang.lang]}">
-                                    <a-input style="width: 100px; margin-left: 10px"
-                                        v-model:value="enquiry.apply_number"/>
+                                    <a-input type="input" v-model:value="enquiry.apply_number" style="width: 100px; margin-left: 10px"/>
                                     {{ fields.apply.other['label_'+lang.lang] }}
                                 </a-form-item>
                             </template>
@@ -136,21 +134,21 @@
                                 <a-form-item name="surname" 
                                     :label="fields.surname['question_' + lang.lang]" 
                                     :rules="{required:true, message:fields.surname['question_' + lang.lang] + lang.is_required}">
-                                    <a-input v-model:value="enquiry.surname" />
+                                    <a-input type="input" v-model:value="enquiry.surname" />
                                 </a-form-item>
                             </a-col>
                             <a-col :span="12">
                                 <a-form-item name="givenname" 
                                     :label="fields.givenname['question_' + lang.lang]"
                                     :rules="{required:true, message:fields.givenname['question_' + lang.lang] + lang.is_required}">
-                                    <a-input v-model:value="enquiry.givenname" />
+                                    <a-input type="input" v-model:value="enquiry.givenname" />
                                 </a-form-item>
                             </a-col>
                         </a-row>
                         <a-form-item name="email" 
                             :label="fields.email['question_' + lang.lang]"
                             :rules="{required:true, message:fields.email['question_' + lang.lang] + lang.is_required}">
-                            <a-input v-model:value="enquiry.email" />
+                            <a-input type="input" v-model:value="enquiry.email" />
                         </a-form-item>
                         <label>{{ fields.contact_number['question_' + lang.lang] }}</label>
                         <a-row :gutter="24">
@@ -167,7 +165,7 @@
                                 <a-form-item name="phone" 
                                     :label="fields.phone['question_' + lang.lang]"
                                     :rules="{required:true, message:fields.phone['question_' + lang.lang] + lang.is_required}">
-                                    <a-input v-model:value="enquiry.phone" />
+                                    <a-input type="input" v-model:value="enquiry.phone" />
                                 </a-form-item>
                             </a-col>
                         </a-row>

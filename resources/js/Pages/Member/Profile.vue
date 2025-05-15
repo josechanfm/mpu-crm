@@ -17,16 +17,16 @@
                             @finishFailed="onProfileFinishFailed"
                         >
                             <a-form-item :label="$t('profile.last_name')"  name="last_name">
-                                <a-input v-model:value="member.last_name"/>
+                                <a-input type="inpuut" v-model:value="member.last_name"/>
                             </a-form-item>
                             <a-form-item :label="$t('profile.first_name')"  name="first_name">
-                                <a-input v-model:value="member.first_name"/>
+                                <a-input type="inpuut" v-model:value="member.first_name"/>
                             </a-form-item>
                             <a-form-item :label="$t('profile.gender')"  name="gender">
-                                <a-input v-model:value="member.gender"/>
+                                <a-input type="inpuut" v-model:value="member.gender"/>
                             </a-form-item>
                             <a-form-item :label="$t('profile.email')"  name="email">
-                                <a-input v-model:value="member.email"/>
+                                <a-input type="inpuut" v-model:value="member.email"/>
                             </a-form-item>
                             <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
                                 <a-button type="primary" html-type="submit">{{ $t('submit') }}</a-button>

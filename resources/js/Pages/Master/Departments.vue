@@ -29,7 +29,7 @@
 
 
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
+        <a-modal v-model:open="modal.isOpen" :title="modal.title" width="60%" >
         <a-form
             ref="modalRef"
             :model="modal.data"
@@ -40,10 +40,10 @@
             :validate-messages="validateMessages"
         >
             <a-form-item label="Abbr" name="abbr">
-                <a-input v-model:value="modal.data.abbr"/>
+                <a-input type="inpuut" v-model:value="modal.data.abbr"/>
             </a-form-item>
             <a-form-item label="Name" name="name_zh">
-                <a-input v-model:value="modal.data.name_zh"/>
+                <a-input type="inpuut" v-model:value="modal.data.name_zh"/>
             </a-form-item>
         </a-form>
         <template #footer>

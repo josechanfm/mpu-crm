@@ -74,10 +74,10 @@
                         <a-row :gutter="10">
                             <a-col :span="16">
                                 <a-form-item :label="lang.exp_position" name="position">
-                                    <a-input v-model:value="experience.position" />
+                                    <a-input type="inpuut" v-model:value="experience.position" />
                                 </a-form-item>
                                 <a-form-item :label="lang.exp_company_name" name="company_name">
-                                    <a-input v-model:value="experience.company_name" />
+                                    <a-input type="inpuut" v-model:value="experience.company_name" />
                                 </a-form-item>
                             </a-col>
                             <a-col :span="8">
@@ -85,7 +85,7 @@
                                     <a-radio-group v-model:value="experience.employment" :options="lang.exp_employmentOptions" />
                                 </a-form-item>
                                 <a-form-item :label="lang.exp_salary" name="salary">
-                                    <a-input v-model:value="experience.salary" />
+                                    <a-input type="inpuut" v-model:value="experience.salary" />
                                 </a-form-item>
                             </a-col>
                         </a-row>

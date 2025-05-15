@@ -43,5 +43,10 @@
     "read_more":"Read More",
     "doc_id_type":"Id type",
     "general_title":"General Service",
+    "rec.recruitment":"Recruitment",
+    "rec.vacancies":"Recruitment positions",
+    "rec.academic":"Acadmic Staff",
+    "rec.admin":"Non-Academic Staff",
+    "procedure_note":"Online registration procedure and notes.",
     "thank_you":"Thank you"
 }

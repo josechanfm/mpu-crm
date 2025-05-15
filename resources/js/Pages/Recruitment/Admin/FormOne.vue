@@ -62,7 +62,7 @@
                         <a-row :gutter="12">
                             <a-col :span="16">
                                 <a-form-item :label="lang.name_full_zh" name="name_full_zh">
-                                    <a-input v-model:value="application.name_full_zh" />
+                                    <a-input type="inpuut" v-model:value="application.name_full_zh" />
                                 </a-form-item>
                             </a-col>
                             <a-col :span="8">
@@ -75,12 +75,12 @@
                             </a-col>
                         </a-row>
                         <a-form-item :label="lang.name_full_fn" name="name_full_fn">
-                            <a-input v-model:value="application.name_full_fn" />
+                            <a-input type="inpuut" v-model:value="application.name_full_fn" />
                         </a-form-item>
                         <a-row :gutter="12">
                             <a-col :span="12">
                                 <a-form-item :label="lang.id_num" name="id_num">
-                                    <a-input v-model:value="application.id_num" />
+                                    <a-input type="inpuut" v-model:value="application.id_num" />
                                     <div class="custom-label float-right">
                                         {{ lang.id_required_copy }}
                                     </div>
@@ -89,24 +89,24 @@
                             </a-col>
                             <a-col :span="12">
                                 <a-form-item :label="lang.dob" name="dob">
-                                    <a-input v-model:value="application.dob" />
+                                    <a-input type="inpuut" v-model:value="application.dob" />
                                 </a-form-item>
                             </a-col>
                         </a-row>
                         <a-row :gutter="12">
                             <a-col :span="12">
                                 <a-form-item :label="lang.email" name="email">
-                                    <a-input v-model:value="application.email" />
+                                    <a-input type="inpuut" v-model:value="application.email" />
                                 </a-form-item>
                             </a-col>
                             <a-col :span="12">
                                 <a-form-item :label="lang.phone" name="phone">
-                                    <a-input v-model:value="application.phone" />
+                                    <a-input type="inpuut" v-model:value="application.phone" />
                                 </a-form-item>
                             </a-col>
                         </a-row>
                         <a-form-item :label="lang.address" name="address">
-                            <a-input v-model:value="application.address" />
+                            <a-input type="inpuut" v-model:value="application.address" />
                         </a-form-item>
 
                     </template>

@@ -20,6 +20,7 @@
                     </h3>
                     <p class="text-gray-500 dark:text-gray-400" v-html="faq['answer_'+lang.lang]"></p>
                 </div>
+
                 <a-form
                     ref="refQuestion"
                     :model="followup"

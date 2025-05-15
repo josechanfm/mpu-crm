@@ -30,12 +30,12 @@
                     <template v-for="field in form.fields">
                         <div v-if="form.require_member">
                             <a-form-item label="Member Id" :name="field.id" :rules="[{required:field.required}]">
-                                <a-input v-model:value="$page.props.user.id" />
+                                <a-input type="inpuut" v-model:value="$page.props.user.id" />
                             </a-form-item>                        
                         </div>
                         <div v-if="field.type=='input'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
-                                <a-input v-model:value="formData[field.id]" />
+                                <a-input type="inpuut" v-model:value="formData[field.id]" />
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='number'">
@@ -97,7 +97,7 @@
                         </div>
                         <div v-else-if="field.type=='email'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required},{type:'email'}]" >
-                                <a-input v-model:value="formData[field.id]" />
+                                <a-input type="inpuut" v-model:value="formData[field.id]" />
                             </a-form-item>                        
                         </div>
                         <div v-else>

@@ -81,10 +81,10 @@
                         <a-row :gutter="10">
                             <a-col :span="12">
                                 <a-form-item :label="lang.edu_degree" name="degree">
-                                    <a-input v-model:value="education.degree" />
+                                    <a-input type="inpuut" v-model:value="education.degree" />
                                 </a-form-item>
                                 <a-form-item :label="lang.edu_program" name="qualification">
-                                    <a-input v-model:value="education.qualification" />
+                                    <a-input type="inpuut" v-model:value="education.qualification" />
                                     {{ lang.edu_program_note }}
                                 </a-form-item>
                             </a-col>
@@ -92,35 +92,35 @@
                                 <a-row :gutter="8">
                                     <a-col :span="12">
                                         <a-form-item :label="lang.edu_lang" name="language">
-                                            <a-input v-model:value="education.language" />
+                                            <a-input type="inpuut" v-model:value="education.language" />
                                         </a-form-item>
                                     </a-col>
                                     <a-col :span="12">
                                         <a-form-item :label="lang.edu_school_location" name="region">
-                                            <a-input v-model:value="education.region" />
+                                            <a-input type="inpuut" v-model:value="education.region" />
                                         </a-form-item>
                                     </a-col>
                                 </a-row>
                                 <a-form-item :label="lang.edu_start" name="date_start">
-                                    <a-input v-model:value="education.date_start" />
+                                    <a-input type="inpuut" v-model:value="education.date_start" />
                                 </a-form-item>
                             </a-col>
                         </a-row>
                         <a-row :gutter="10">
                             <a-col :span="12">
                                 <a-form-item :label="lang.edu_subject" name="subject">
-                                    <a-input v-model:value="education.subject" />
+                                    <a-input type="inpuut" v-model:value="education.subject" />
                                     <div v-html="lang.edu_subject_note"/>
                                 </a-form-item>
                             </a-col>
                             <a-col :span="12">
                                 <a-form-item :label="lang.edu_finish" name="date_finish">
-                                    <a-input v-model:value="education.date_finish" />
+                                    <a-input type="inpuut" v-model:value="education.date_finish" />
                                 </a-form-item>
                             </a-col>
                         </a-row>
                         <a-form-item :label="lang.edu_institute" name="school_name">
-                                    <a-input v-model:value="education.school_name" />
+                                    <a-input type="inpuut" v-model:value="education.school_name" />
                                 </a-form-item>
 
                         <a-form-item :wrapper-col="{ span: 24, offset: 11, }">
@@ -141,30 +141,30 @@
                             <td>{{ lang.lang_can }}</td>
                             <td rowspan="2"><a-select v-model:value="application.language.MAN.WRITE" :options="lang.lang_level_field_options" style="width:100%"/></td>
                             <td><a-select v-model:value="application.language.CAN.SPEAK" :options="lang.lang_level_field_options" style="width:100%"/></td>
-                            <td><a-input v-model:value="application.language.CAN.LEVEL" style="width:100%"/></td>
+                            <td><a-input type="inpuut" v-model:value="application.language.CAN.LEVEL" style="width:100%"/></td>
                         </tr>
                         <tr>
                             <td>{{ lang.lang_man }}</td>
                             <td><a-select v-model:value="application.language.MAN.SPEAK" :options="lang.lang_level_field_options" style="width:100%"/></td>
-                            <td><a-input v-model:value="application.language.MAN.LEVEL" style="width:100%"/></td>
+                            <td><a-input type="inpuut" v-model:value="application.language.MAN.LEVEL" style="width:100%"/></td>
                         </tr>
                         <tr>
                             <td>{{ lang.lang_por }}</td>
                             <td><a-select v-model:value="application.language.POR.WRITE" :options="lang.lang_level_field_options" style="width:100%"/></td>
                             <td><a-select v-model:value="application.language.POR.SPEAK" :options="lang.lang_level_field_options" style="width:100%"/></td>
-                            <td><a-input v-model:value="application.language.POR.LEVEL" style="width:100%"/></td>
+                            <td><a-input type="inpuut" v-model:value="application.language.POR.LEVEL" style="width:100%"/></td>
                         </tr>
                         <tr>
                             <td>{{ lang.lang_eng }}</td>
                             <td><a-select v-model:value="application.language.ENG.WRITE" :options="lang.lang_level_field_options" style="width:100%"/></td>
                             <td><a-select v-model:value="application.language.ENG.SPEAK" :options="lang.lang_level_field_options" style="width:100%"/></td>
-                            <td><a-input v-model:value="application.language.ENG.LEVEL" style="width:100%"/></td>
+                            <td><a-input type="inpuut" v-model:value="application.language.ENG.LEVEL" style="width:100%"/></td>
                         </tr>
                         <tr>
                             <td>{{ lang.lang_oth }}</td>
                             <td><a-select v-model:value="application.language.OTH.WRITE" :options="lang.lang_level_field_options" style="width:100%"/></td>
                             <td><a-select v-model:value="application.language.OTH.SPEAK" :options="lang.lang_level_field_options" style="width:100%"/></td>
-                            <td><a-input v-model:value="application.language.OTH.LEVEL" style="width:100%"/></td>
+                            <td><a-input type="inpuut" v-model:value="application.language.OTH.LEVEL" style="width:100%"/></td>
                         </tr>
                     </table>
                 </template>

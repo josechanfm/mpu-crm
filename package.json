@@ -23,7 +23,7 @@
         "@inertiajs/inertia-vue3": "^0.6.0",
         "@inertiajs/progress": "^0.2.7",
         "@tinymce/tinymce-vue": "^4.0.7",
-        "ant-design-vue": "^3.2.15",
+        "ant-design-vue": "^4.2.6",
         "laravel-permission-to-vuejs": "^3.0.2",
         "laravel-vue-i18n": "^2.7.7",
         "marked": "^13.0.0",

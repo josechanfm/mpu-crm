@@ -33,7 +33,7 @@
 
 
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
+        <a-modal v-model:open="modal.isOpen" :title="modal.title" width="60%" >
         <a-form
             ref="modalRef"
             :model="modal.data"
@@ -57,7 +57,7 @@
                 </a-radio-group>
             </a-form-item>
             <a-form-item label="title" name="title">
-                <a-input v-model:value="modal.data.title"/>
+                <a-input type="inpuut" v-model:value="modal.data.title"/>
             </a-form-item>
             <a-form-item label="Body" name="body">
                 <a-textarea v-model:value="modal.data.body"/>

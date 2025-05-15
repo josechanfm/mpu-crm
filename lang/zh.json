@@ -48,5 +48,29 @@
     "read_more":"更多資訊",
     "doc_id_type":"證件類別",
     "general_title":"綜合服務",
-     "thank_you":"感謝"
+    "rec.recruitment":"職位招聘..",
+    "rec.vacancies":"招聘職位",
+    "rec.academic":"教職人員",
+    "rec.admin":"非教職人員",
+    "rec.academic_procedure_note":"線上報名流程及注意事項",
+    "rec.application_process":"線上報名流程：",
+    "rec.application_notice":"注意",
+    "rec.process_note_1":"<div class='text-xl'><u>線上報名流程：</u></div><ol class='list-decimal pl-5'><li>如欲申請職位空缺，首次申請者請以電郵註冊新帳號，並通過電郵登入以進行申請程序；</li><li>填寫人員職位申請書；</li><li>如選擇“保存表格”，可於投考期內進行修改；</li><li>如選擇“遞交表格”，則不可修改。</li></ol>",
+    "rec.process_note_2":"<div class='text-xl'><u>* 注意：</u></div><p>教職人員職位申請：<br>- 必須選擇“遞交”方為完成整個申請程序。</p>",
+    "rec.profile":"個人檔案",
+    "rec.back_to_recuitment":"返回招聘首頁",
+    "rec.personal_info":"個人資料",
+    "rec.applications_summary":"申請表總覽",
+    "rec.last_submitted":"最後更新",
+    "rec.register_since":"注冊於",
+    "rec.your_applications":"你的申請表",
+    "rec.applied_on":"遞交於",
+    "rec.submitted_files":"已遞交文件",
+    "rec.supplementary_files":"補充文件",
+    "rec.notices":"招聘通告",
+    "rec.receipt":"收據",
+
+
+    "thank_you":"感謝"
+
 }

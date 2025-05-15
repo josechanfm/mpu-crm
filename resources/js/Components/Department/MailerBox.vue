@@ -11,13 +11,13 @@
         enctype="multipart/form-data"
     >
         <a-form-item label="Sender" name="sender">
-            <a-input v-model:value="email.sender"/>
+            <a-input type="inpuut" v-model:value="email.sender"/>
         </a-form-item>
         <a-form-item label="Receiver" name="receiver">
-            <a-input v-model:value="email.receiver" />
+            <a-input type="inpuut" v-model:value="email.receiver" />
         </a-form-item>
         <a-form-item label="subject" name="subject">
-            <a-input v-model:value="email.subject" />
+            <a-input type="inpuut" v-model:value="email.subject" />
         </a-form-item>
         <a-form-item label="Content" name="content">
             <a-button @click="switchRichTextMode">Switch Text Mode</a-button>

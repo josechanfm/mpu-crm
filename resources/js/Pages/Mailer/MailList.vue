@@ -26,7 +26,7 @@
             </a-table>
 
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" :footer="null" width="60%" >
+        <a-modal v-model:open="modal.isOpen" :title="modal.title" :footer="null" width="60%" >
             <MailerBox :email="modal.data"/>
         </a-modal>    
         <!-- Modal End-->

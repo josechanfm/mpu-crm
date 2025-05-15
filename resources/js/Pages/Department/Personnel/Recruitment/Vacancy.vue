@@ -13,13 +13,13 @@
                         <a-select v-else v-model:value="vacancy.code" show-search :options="workflowOptions.map(w=>({value:w.vacancy_code,label:w.vacancy_code+' : '+w.title_zh}))" @change="onChangeVacancyCode"/>
                     </a-form-item>
                     <a-form-item label="職位名稱(中文)" name="title_zh">
-                        <a-input v-model:value="vacancy.title_zh"/>
+                        <a-input type="inpuut" v-model:value="vacancy.title_zh"/>
                     </a-form-item>
                     <a-form-item label="職位名稱(英文)" name="title_en">
-                        <a-input v-model:value="vacancy.title_en"/>
+                        <a-input type="inpuut" v-model:value="vacancy.title_en"/>
                     </a-form-item>
                     <a-form-item label="職位名稱(葡文)" name="title_pt">
-                        <a-input v-model:value="vacancy.title_pt"/>
+                        <a-input type="inpuut" v-model:value="vacancy.title_pt"/>
                     </a-form-item>
                     <a-form-item label="教育程度" name="education">
                         <a-select v-model:value="vacancy.education" :options="educations.value" :fieldNames="{value:'value',label:'label_zh'}"/>
