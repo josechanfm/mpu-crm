@@ -12,6 +12,7 @@
             <a-form ref="loginForm" :model="form" name="LoginForm">
                 <a-form-item name="username" :rules="[{required:true,message:'請輸入帳號名稱'}]">
                     <a-input
+                        type="input"
                         placeholder="Username"
                         v-model:value="form.username"
                         size="large"
@@ -25,6 +26,7 @@
 
                 <a-form-item name="password" :rules="[{required:true,message:'請輸入密碼'}]">
                     <a-input-password 
+                        type="input"
                         placeholder="Password" size="large" v-model:value="form.password"
                         @keydown.enter="login">
                     >
