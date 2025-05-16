@@ -36,13 +36,21 @@ class AdminLoginController extends Controller
         $credentials = $request->only('username', 'password');
         $isLocalUser = $request->input('local');
         
-        
 
         if ($isLocalUser) {
-            if (Auth::guard('admin')->attempt($credentials, $request->remember)) {
+            Auth::shouldUse('admin');
+            $adminUser=AdminUser::where('username',$request->username)->first();
+            
+            Auth::guard('admin')->login($adminUser, $request->remember);
+            // if (Auth::guard('admin')->attempt($credentials, $request->remember)) {
+            //dd($credentials, $isLocalUser, $adminUser, auth()->user());
+            return redirect()->intended('/staff');
+            if($adminUser){
                 return redirect()->intended('/staff');
             }
+
         } else {
+            Auth::shouldUse('ldap');
             // LDAP Authentication
             try {
                 $credentials = [

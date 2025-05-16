@@ -11,20 +11,24 @@
           </template>
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
-              <inertia-link
-                :href="route('manage.form.entries.index',record.id)"
-                class="ant-btn">{{ $t('response') }}</inertia-link
-              >
-              <a
-                :href="route('manage.entry.export', { form: record.id })"
-                class="ant-btn">{{ $t('export') }}</a
-              >
-              <inertia-link
-                :href="route('manage.form.fields.index', { form: record.id })"
-                class="ant-btn">{{ $t('data_field') }}</inertia-link>
-              <inertia-link 
-                :href="route('manage.forms.edit',record.id)"
-                class="ant-btn">{{ $t('edit') }}</inertia-link>
+              <a-button>
+              <inertia-link :href="route('manage.form.entries.index',record.id)" class="ant-btn">
+                {{ $t('response') }}
+              </inertia-link>
+              </a-button>
+              <a-button :href="route('manage.entry.export', { form: record.id })" class="ant-btn">
+                {{ $t('export') }}
+              </a-button>
+              <a-button>
+                <inertia-link :href="route('manage.form.fields.index', { form: record.id })" class="ant-btn">
+                  {{ $t('data_field') }}
+                </inertia-link>
+              </a-button>
+              <a-button>
+                <inertia-link :href="route('manage.forms.edit',record.id)" class="ant-btn">
+                  {{ $t('edit') }}
+                </inertia-link>
+              </a-button>
               <a-popconfirm
                 title="Confirm Delete"
                 ok-text="Yes"

@@ -58,9 +58,9 @@ class AdminUser extends Authenticatable implements LdapAuthenticatable
      *
      * @var array
      */
-    protected $appends = [
-        'profile_photo_url',
-    ];
+    // protected $appends = [
+    //     'profile_photo_url',
+    // ];
 
 
     public function departments(){
