@@ -13,6 +13,7 @@ use Inertia\Inertia;
 use App\Exports\EntryExport;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
+use Illuminate\Support\Str;
 
 class EntryController extends Controller
 {
@@ -126,8 +127,8 @@ class EntryController extends Controller
 
     public function export(Form $form)
     {
-        // dd($form->excelRecords());
-        return Excel::download(new EntryExport($form), $form->name.'.xlsx');
+        dd($form->excelRecords());
+        return Excel::download(new EntryExport($form), Str::slug($form->name).'.xlsx');
     }
 
     public function success(Form $form, Entry $entry, Request $request)
