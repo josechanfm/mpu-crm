@@ -50,7 +50,6 @@ class AdminLoginController extends Controller
             }
 
         } else {
-            Auth::shouldUse('ldap');
             // LDAP Authentication
             try {
                 $credentials = [
@@ -72,6 +71,7 @@ class AdminLoginController extends Controller
                             'password' => bcrypt($request->password), // Not used for LDAP auth
                         ]
                     );
+                    Auth::shouldUse('admin');
                     Auth::guard('admin')->login($adminUser, $request->remember);
                     return redirect()->intended('/staff');
                 }
