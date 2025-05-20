@@ -16,6 +16,7 @@
           </inertia-link>
         </span>
       </a-menu-item>
+
       <a-sub-menu key="enquiry" v-if="is('DAMIA | admin | master')">
         <template #icon>
           <MailOutlined />
@@ -122,7 +123,7 @@ export default defineComponent({
       state.openKeys = state.collapsed ? [] : state.preOpenKeys;
     };
     onMounted(()=> {
-      axios.get('/get-permissions').then(
+      axios.get('/staff/get-permissions').then(
             response => {
                 if(JSON.stringify(window.Laravel.jsPermissions) !== JSON.stringify(response.data)){
                     window.Laravel.jsPermissions=response.data;
