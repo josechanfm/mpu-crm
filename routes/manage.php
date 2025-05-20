@@ -40,7 +40,6 @@ Route::group([
         Route::resource('ebooks',App\Http\Controllers\EbookController::class)->names('staff.ebooks');
         Route::get('ebook/clone_template',[App\Http\Controllers\EbookController::class,'staff.cloneTemplate']);
         Route::get('/get-permissions', function () {
-            //dd(auth()->check(), auth()->user()->jsPermissions());
             return auth()->check()?auth()->user()->jsPermissions():0;
         });
 });
