@@ -95,6 +95,10 @@ class EbookController extends Controller
         return redirect()->route('manage.ebooks.index');
     }
 
+    public function show($id)
+    {
+        dd($id);
+    }
 
     function create_flip_book($ebook, $file){
         $book_path=$this->destinationPath.$ebook->uid.'/';
