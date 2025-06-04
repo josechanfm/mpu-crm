@@ -1,0 +1,13 @@
+{   
+    "scripts": {
+        "start": "node service.js"
+    },
+    "private": true,
+    "type": "module",
+    "dependencies": {
+        "body-parser": "^2.2.0",
+        "express": "^5.1.0",
+        "pdf-poppler": "^0.2.1",
+        "pdf-to-png-converter": "^3.6.5"
+    }
+}

@@ -27,6 +27,8 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::get('ebooks',[App\Http\Controllers\EbookController::class,'index'])->name('ebooks');
+
 Route::get('/language/{language}', function ($language) {
     Session::put('applocale', $language);
     return Redirect::back();

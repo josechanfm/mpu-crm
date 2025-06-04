@@ -37,8 +37,6 @@ Route::group([
 ], function () {
         Route::get('/',[App\Http\Controllers\Staff\DashboardController::class,'index'])->name('staff');
         Route::resource('forms',\App\Http\Controllers\Staff\FormController::class)->names('staff.forms');
-        Route::resource('ebooks',App\Http\Controllers\EbookController::class)->names('staff.ebooks');
-        Route::get('ebook/clone_template',[App\Http\Controllers\EbookController::class,'staff.cloneTemplate']);
         Route::get('/get-permissions', function () {
             return auth()->check()?auth()->user()->jsPermissions():0;
         });
@@ -107,6 +105,11 @@ Route::group([
 
     Route::resource('mailers',App\Http\Controllers\MailerController::class)->names('manage.mailers');
 
+    Route::resource('ebooks',App\Http\Controllers\Department\EbookController::class)->names('manage.ebooks');
+    Route::get('action',[ App\Http\Controllers\Department\EbookController::class,'create_filp_book']   )->name('test');
+    // Route::get('member/yearList',[  App\Http\Controllers\Department\MemberController::class,'yearList']   )->name('yearList');
+    // Route::get('demoPdf',[  App\Http\Controllers\Department\ReportController::class,'viewPdf']   )->name('viewPdf');
+    Route::get('actionHandbook',[ App\Http\Controllers\Department\EbookController::class,'create_hand_book']   )->name('test2');
 
 });
 
@@ -248,4 +251,7 @@ Route::middleware([
         Route::resource('/publications',App\Http\Controllers\Department\Flt\PublicationController::class)->names('flt.publications'); 
     });
 });
+
+
+
 
