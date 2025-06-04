@@ -23,6 +23,7 @@ return new class extends Migration
             $table->date('date_end')->nullable();
             $table->text('remark')->nullable();
             $table->boolean('published')->default(false);
+            $table->string('template')->default('book1');
             $table->timestamps();
         });
     }
