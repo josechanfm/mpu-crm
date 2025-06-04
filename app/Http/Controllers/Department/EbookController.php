@@ -86,6 +86,7 @@ class EbookController extends Controller
             'template'=>'book1'
         ];
         $ebook->update($data);
+        dd($ebook);
         if($request->file('file')){
             $file = $request->file('file')[0];
             $ebook->original_filename=$file->getClientOriginalName();
