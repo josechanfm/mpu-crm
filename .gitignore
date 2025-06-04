@@ -3,7 +3,7 @@
 /public/hot
 /public/storage
 /public/media
-/public/flipbooks/*
+/public/flipbooks
 /public/recruitment/academic
 /public/thumbnail
 /storage/*.key
