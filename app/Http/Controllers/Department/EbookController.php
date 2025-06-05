@@ -112,7 +112,6 @@ class EbookController extends Controller
 
         $pdfPath = $file->move($book_path, $ebook->original_filename);
         $pageNum=$this->countPdfPages($book_path.$ebook->original_filename);
-        dd($pageNum);
         $this->cloneTemplate($template_path ,$book_path,$pageNum);
         $d= $this->_remote_post( $thumb_img_path, $book_img_path, $file_path);
         return true;
