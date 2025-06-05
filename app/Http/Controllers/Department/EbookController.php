@@ -23,7 +23,7 @@ class EbookController extends Controller
     protected $destinationPath;
 
     public function __construct() {
-        $this->templatePath=storage_path('flipbooks/template/book1/');
+        $this->templatePath=storage_path('flipbooks/template/');
         $this->destinationPath=public_path('flipbooks/');
     
     }
@@ -104,7 +104,8 @@ class EbookController extends Controller
         $book_path=$this->destinationPath.$ebook->uid.'/';
         $book_img_path=$book_path."files/mobile";
         $thumb_img_path=$book_path."files/thumb";
-        $template_path=base_path()."/resources/ebookTemplate/book1";
+        //$template_path=base_path()."/resources/ebookTemplate/book1";
+        $template_path=$this->templatePath.'book1';
         $file_path=$book_path.$ebook->original_filename;
         
         //dd($book_path, $book_img_path, $thumb_img_path, $template_path, $file_path);
