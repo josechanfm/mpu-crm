@@ -148,7 +148,6 @@ class EbookController extends Controller
             File::copyDirectory($fromPath, $toPath);
         }
         $filePath=$toPath.'mobile/javascript/pages.js';
-        dd($filePath);
         $newContent="var total_page={$pageNum}; \nvar book_title='demo';";
         if (file_put_contents($filePath, $newContent) === false) {
             die("Error writing to the file.");
