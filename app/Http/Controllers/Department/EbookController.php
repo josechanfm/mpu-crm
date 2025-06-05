@@ -107,9 +107,10 @@ class EbookController extends Controller
         $template_path=base_path()."/resources/ebookTemplate/book1";
         $file_path=$book_path.$ebook->original_filename;
         
-        dd($book_path, $book_img_path, $thumb_img_path, $template_path, $file_path);
+        //dd($book_path, $book_img_path, $thumb_img_path, $template_path, $file_path);
 
         $pdfPath = $file->move($book_path, $ebook->original_filename);
+        dd($pdfPath);
         $pageNum=$this->countPdfPages($book_path.$ebook->original_filename);
 
         $this->cloneTemplate($template_path ,$book_path,$pageNum);
