@@ -86,7 +86,6 @@ class EbookController extends Controller
             'template'=>'book1'
         ];
         $ebook->update($data);
-        dd($ebook);
         if($request->file('file')){
             $file = $request->file('file')[0];
             $ebook->original_filename=$file->getClientOriginalName();
@@ -108,6 +107,7 @@ class EbookController extends Controller
         $template_path=base_path()."/resources/ebookTemplate/book1";
         $file_path=$book_path.$ebook->original_filename;
         $pdfPath = $file->move($book_path, $ebook->original_filename);
+        dd($pdfPath);
         $pageNum=$this->countPdfPages($book_path.$ebook->original_filename);
 
         $this->cloneTemplate($template_path ,$book_path,$pageNum);
