@@ -90,7 +90,6 @@ class EbookController extends Controller
             $file = $request->file('file')[0];
             $ebook->original_filename=$file->getClientOriginalName();
             $ebook->save();
-            dd('with file, book saved');
             $this->create_flip_book($ebook, $file);
         }
         return redirect()->route('manage.ebooks.index');
@@ -107,6 +106,9 @@ class EbookController extends Controller
         $thumb_img_path=$book_path."files/thumb";
         $template_path=base_path()."/resources/ebookTemplate/book1";
         $file_path=$book_path.$ebook->original_filename;
+        
+        dd($book_path, $book_img_path, $thumb_img_path, $template_path, $file_path);
+
         $pdfPath = $file->move($book_path, $ebook->original_filename);
         $pageNum=$this->countPdfPages($book_path.$ebook->original_filename);
 
