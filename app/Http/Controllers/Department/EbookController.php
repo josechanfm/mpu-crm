@@ -120,7 +120,7 @@ class EbookController extends Controller
     function _remote_post($thumbFullPath='',$folderFullPath='', $pdfFullPath='' ){///
         //dd($thumbFullPath, $folderFullPath, $pdfFullPath);
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,"http://localhost:3000/convert");
+        curl_setopt($ch, CURLOPT_URL,"http://localhost:3030/convert");
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS,
                     "thumb={$thumbFullPath}&folder={$folderFullPath}&pdf={$pdfFullPath}");
