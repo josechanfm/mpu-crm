@@ -90,6 +90,7 @@ class EbookController extends Controller
             $file = $request->file('file')[0];
             $ebook->original_filename=$file->getClientOriginalName();
             $ebook->save();
+            dd('with file, book saved');
             $this->create_flip_book($ebook, $file);
         }
         return redirect()->route('manage.ebooks.index');
@@ -107,7 +108,6 @@ class EbookController extends Controller
         $template_path=base_path()."/resources/ebookTemplate/book1";
         $file_path=$book_path.$ebook->original_filename;
         $pdfPath = $file->move($book_path, $ebook->original_filename);
-        dd($pdfPath);
         $pageNum=$this->countPdfPages($book_path.$ebook->original_filename);
 
         $this->cloneTemplate($template_path ,$book_path,$pageNum);
@@ -164,24 +164,6 @@ class EbookController extends Controller
                 return 100;
             }
         }
-     function create_hand_book(Request $request){
-        $is_exist_pdf=true;
-        $pdf_path='';
-        $member=Member::first();
-        //$path=$member->getFirstMedia("*")->getPath(); 
-        // dd($path);
-        $name = "/app/public/Handbook_2023_24.pdf";
-        $path=storage_path($name);
-        $pageNum=$this->countPdfPages($path);
-        //
-        $book_path=base_path()."/public/books/hand_book_demo";
-        $book_img_path=$book_path."/files/mobile";
-        $thumb_img_path=$book_path."/files/thumb";
-        $template_path=base_path()."/resources/ebookTemplate";
-        $this->cloneTemplate($template_path ,$book_path,$pageNum);
-        $d= $this->_remote_post( $thumb_img_path, $book_img_path, $path);
-        echo $d; 
-    }
 
     public function _generateQrCode($ebook){
         // Create generic logo
