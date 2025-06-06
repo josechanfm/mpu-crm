@@ -85,7 +85,7 @@ class EbookController extends Controller
             'published'=>$request->published,
             'template'=>'book1'
         ];
-        dd($request->all(), $data);
+        //dd($request->all(), $data);
         $ebook->update($data);
         if($request->file('file')){
             $file = $request->file('file')[0];
