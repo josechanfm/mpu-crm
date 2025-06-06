@@ -281,8 +281,8 @@ export default {
         updateRecord() {
             this.$refs.modalRef.validateFields().then(() => {
                 this.loading=true
-                //this.modal.data._method = "PATCH";
-                this.$inertia.patch(route('manage.ebooks.update', {
+                this.modal.data._method = "PATCH";
+                this.$inertia.post(route('manage.ebooks.update', {
                      ebook: this.modal.data,
                 }), this.modal.data, {
                     onSuccess: (page) => {
