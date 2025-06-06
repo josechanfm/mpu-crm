@@ -119,7 +119,6 @@ class EbookController extends Controller
     }
 
     function _remote_post($thumbFullPath='',$folderFullPath='', $pdfFullPath='' ){///
-        dd($thumbFullPath, $folderFullPath, $pdfFullPath);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,"127.0.0.1:3030/convert");
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -129,6 +128,7 @@ class EbookController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $server_output = curl_exec ($ch);
         curl_close ($ch);
+        dd($server_output);
         return ($server_output) ;
     }
 
