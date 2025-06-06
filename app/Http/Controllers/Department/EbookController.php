@@ -121,26 +121,7 @@ class EbookController extends Controller
         return true;
     }
 
-
-    function _remote_post($thumbFullPath = '', $folderFullPath = '', $pdfFullPath = '') {
-        $client = new Client(['base_uri' => 'https://127.0.0.1:3030/']);
-
-        try {
-            $response = $client->post('convert', [
-                'form_params' => [
-                    'thumb' => $thumbFullPath,
-                    'folder' => $folderFullPath,
-                    'pdf' => $pdfFullPath,
-                ],
-            ]);
-
-            return $response->getBody()->getContents();
-        } catch (RequestException $e) {
-            // Handle the exception
-            return 'Error: ' . $e->getMessage();
-        }
-    }
-    function _remote_post2($thumbFullPath='',$folderFullPath='', $pdfFullPath='' ){///
+    function _remote_post($thumbFullPath='',$folderFullPath='', $pdfFullPath='' ){///
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,"127.0.0.1:3030/convert");
         curl_setopt($ch, CURLOPT_POST, 1);
