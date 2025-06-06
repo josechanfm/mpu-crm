@@ -21,7 +21,6 @@ app.post('/convert', async (req, res) => {
     const folder=body.folder
     const pdfPath=body.pdf
     const thumb_path=body.thumb
-    console.log(body, folder)
     try {
         if (!fs.existsSync(folder)) {
             fs.mkdirSync(folder);
