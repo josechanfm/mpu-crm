@@ -131,7 +131,6 @@ class EbookController extends Controller
         return ($server_output) ;
     }
 
-
      public function cloneTemplate($fromPath, $toPath,$pageNum){
         //dd($fromPath, $toPath, $pageNum, !is_dir($toPath));
         if(!is_dir($toPath)){
