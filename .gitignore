@@ -6,7 +6,6 @@
 /public/flipbooks
 /public/recruitment/academic
 /public/thumbnail
-/storage/**/*.key
 /vendor
 .env
 .env.backup
@@ -22,5 +21,3 @@ yarn-error.log
 /.idea
 /.vscode
 
-# Exceptions: Track these paths
-!/storage/flipbooks/template/book1/files
