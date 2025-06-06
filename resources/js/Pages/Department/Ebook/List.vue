@@ -78,10 +78,8 @@
             <a-spin v-if="loading" />
            </a-form-item>
            <a-form-item label="Date End" name="date_end" >
-            {{ modal.data.published }}
             <a-switch v-model:checked="modal.data.published"/>
            </a-form-item>
-
       </a-form>
       <template #footer>
         <a-button key="back" @click="modal.isOpen = false">{{ $t('close')}}</a-button>
@@ -283,8 +281,8 @@ export default {
         updateRecord() {
             this.$refs.modalRef.validateFields().then(() => {
                 this.loading=true
-                this.modal.data._method = "PATCH";
-                this.$inertia.post(route('manage.ebooks.update', {
+                //this.modal.data._method = "PATCH";
+                this.$inertia.patch(route('manage.ebooks.update', {
                      ebook: this.modal.data,
                 }), this.modal.data, {
                     onSuccess: (page) => {

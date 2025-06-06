@@ -92,7 +92,8 @@ class EbookController extends Controller
             $ebook->save();
             $this->create_flip_book($ebook, $file);
         }
-        return redirect()->route('manage.ebooks.index');
+        return redirect()->back();
+        // return redirect()->route('manage.ebooks.index');
     }
 
     public function show($id)
