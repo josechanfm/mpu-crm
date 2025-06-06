@@ -123,7 +123,7 @@ class EbookController extends Controller
 
 
     function _remote_post($thumbFullPath = '', $folderFullPath = '', $pdfFullPath = '') {
-        $client = new Client(['base_uri' => 'http://127.0.0.1:3030/']);
+        $client = new Client(['base_uri' => 'https://127.0.0.1:3030/']);
 
         try {
             $response = $client->post('convert', [
