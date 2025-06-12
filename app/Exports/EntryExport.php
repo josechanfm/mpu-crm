@@ -19,7 +19,7 @@ class EntryExport implements FromCollection, WithHeadings
     }
     public function headings(): array
     {
-        $columnHeaders = $this->form->fields->where('type','<>','html')->pluck('field_label')->orderBy('sequence')->toArray();
+        $columnHeaders = $this->form->fields->where('type','<>','html')->pluck('field_label')->sortBy('sequence')->toArray();
         return $columnHeaders;
     }
     public function collection()
