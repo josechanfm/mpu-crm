@@ -144,7 +144,7 @@ class Form extends Model implements HasMedia
 
     public function excelRecords()
     {
-        $form_fields = $this->fields->where('type','<>','html');
+        $form_fields = $this->fields->where('type','<>','html')->orderBy('sequence');
         $list = [];
         // $this->form->fields->pluck('field_label')->toArray();
         foreach ($this->entries as $entry) {
