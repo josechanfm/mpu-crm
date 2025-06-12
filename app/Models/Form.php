@@ -171,7 +171,7 @@ class Form extends Model implements HasMedia
                 } else {
                     $table_data[$field->field_label] = $entry_record?->field_value;
                 };
-            });
+            })->sortBy('sequence');
             array_push($list, $table_data);
         }
         return collect($list);
