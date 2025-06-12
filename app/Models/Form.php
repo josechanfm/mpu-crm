@@ -174,7 +174,6 @@ class Form extends Model implements HasMedia
             });
             array_push($list, $table_data);
         }
-        dd($list);
         return collect($list);
     }
     public function hasChild()
