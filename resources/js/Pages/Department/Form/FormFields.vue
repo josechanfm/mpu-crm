@@ -6,9 +6,13 @@
             <a-button v-else type="primary" ghost @click="isDraggable = !isDraggable">Drag sort</a-button>
             <a-button @click="createRecord()" type="primary">Create Field</a-button>
         </div>
-        <a-table :dataSource="dataModel" :columns="columns" :customRow="customRow">
+        <a-table 
+            :dataSource="dataModel" 
+            :columns="columns" 
+            :customRow="customRow"
+        >
             <template #bodyCell="{ column, record, index }">
-                <template v-if="column.dataIndex === 'operation'">
+                <template v-if="column.daaIndex === 'operation'">
                     <a-button @click="editRecord(record)">Edit</a-button>
                     <a-popconfirm title="Are you sure delete this field?" ok-text="Yes" cancel-text="No"
                         @confirm="deleteRecord(record)" :disabled="form.published == true">
