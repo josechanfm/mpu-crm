@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('souvenirs', function (Blueprint $table) {
             $table->id();
             $table->string('name'); 
-            $table->string('thumbnail')-;
+            $table->string('thumbnail');
             $table->string('description')->nullable(); 
             $table->integer('qty')->default(500);
             $table->integer('stock')->default(500);
