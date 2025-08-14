@@ -37,16 +37,16 @@
         >
             <a-input type="hidden" v-model:value="modal.data.id"/>
             <a-form-item label="姓名(中文)" name="name_zh">
-                <a-input type="inpuut" v-model:value="modal.data.name_zh" />
+                <a-input type="input" v-model:value="modal.data.name_zh" />
             </a-form-item>
             <a-form-item label="姓名(外文)" name="name_zh">
-                <a-input type="inpuut" v-model:value="modal.data.name_fn" />
+                <a-input type="input" v-model:value="modal.data.name_fn" />
             </a-form-item>
             <a-form-item label="別名" name="nickname">
-                <a-input type="inpuut" v-model:value="modal.data.nickname" />
+                <a-input type="input" v-model:value="modal.data.nickname" />
             </a-form-item>
             <a-form-item label="手機" name="mobile">
-                <a-input type="inpuut" v-model:value="modal.data.mobile" />
+                <a-input type="input" v-model:value="modal.data.mobile" />
             </a-form-item>
             <a-form-item label="狀態" name="status">
                 <a-select v-model:value="modal.data.state" :options="employmentStates"/>

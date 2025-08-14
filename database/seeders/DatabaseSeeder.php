@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Member',
             'email' => 'member@example.com',
             'password'=> Hash::make('password')
-        ])->withPersonalTeam()->create();
+        ])->create();
 
         //$member->assignRole('member');
         $adminUser=\App\Models\AdminUser::where('username','admin')->first();
