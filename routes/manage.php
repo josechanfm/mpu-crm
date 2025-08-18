@@ -182,6 +182,7 @@ Route::group([
 //     });
 // });
 
+
 Route::group([
     'prefix' => '/personnel',
     'middleware' => [
@@ -210,6 +211,22 @@ Route::group([
     Route::get('/recruitment/application/check_id_num',[App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class,'checkIdNum'])->name('personnel.recruitment.application.checkIdNum');
     Route::get('/recruitment/application/check_email',[App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class,'checkEmail'])->name('personnel.recruitment.application.checkEmail');
 
+});
+
+
+Route::group([
+    'prefix' => '/dae',
+    'middleware' => [
+        'auth:admin',
+        // 'checkInternalIP',
+        'role:DAE|admin|master'
+    ]
+], function () {
+    Route::get('/',[App\Http\Controllers\Department\Dae\DashboardController::class,'index'])->name('dae.dashboard');
+    Route::resource('souvenirs',App\Http\Controllers\Department\Dae\SouvenirController::class)->names('dae.souvenirs');
+    Route::resource('purchases',App\Http\Controllers\Department\Dae\PurchaseController::class)->names('dae.purchases');
+    Route::post('souvenir/remove_image/{souvenir}/{imageId}',[App\Http\Controllers\Department\Dae\SouvenirController::class,'removeImage'])->name('dae.souvenir.removeImage');
+    Route::get('souvenir/pickup',[App\Http\Controllers\Department\Dae\PickupController::class,'index'])->name('dae.souvenir.pickup');
 });
 // Route::middleware([
 //     'auth:admin',

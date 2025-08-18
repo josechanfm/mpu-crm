@@ -26,6 +26,8 @@ class DepartmentController extends Controller
             return redirect()->route('master');
         }
         $department=Department::where('abbr',$roleName)->first();
+       //dd($roleName, $department);
+
         if($department->default_route){
             session(['department'=>$department]);
             return redirect()->route($department->default_route);

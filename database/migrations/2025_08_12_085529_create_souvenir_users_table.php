@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('netid');
             $table->string('email')->nullable();
-            $table->string('phone');
-            $table->string('faculty_code');
-            $table->string('degree_code');
+            $table->string('phone')->nullable();
+            $table->string('faculty_code')->nullable();
+            $table->string('degree_code')->nullable();
             $table->text('remark')->nullable();
             $table->timestamps();
         });

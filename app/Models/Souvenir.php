@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Souvenir extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name','description','thumbnail','qty','stock','price','quota','available','thumbnail','images'];
+    protected $casts = ['images'=>'array'];
 }

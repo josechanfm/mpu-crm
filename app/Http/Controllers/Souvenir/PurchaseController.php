@@ -19,7 +19,6 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        
         return Inertia::render("Souvenir/Purchase",[
             "user"=>session("souvenirUser")?->load('purchases'),
             "products"=>Souvenir::all()
@@ -155,15 +154,14 @@ class PurchaseController extends Controller
     private function getPaymentData(SouvenirUser $souvenirUser, $purchase, $clientIp){
         $systemCode=env('BOC_SYSTEM_CODE','MPUCRM');
         $mercOrderNo=$souvenirUser->id.'-'.time().'-'.rand(1000,9999);
-        $amount=$purchase->totalAmount;
         $salt=env('BOC_SALT','8Ier5T)1up]_S7)XHd(KcHwtM><cuF415P$=Dqb6}OtN_[bd');
 
         $payment=[
             'system_code'=>$systemCode, //Required 授權後獲得
             'ipAddress'=>$clientIp, 
             'cashier_language'=>'zh_TW', //Required zh_TW或en_US
-            'amount'=>$amount, //Required 交易金額(折後，如無折扣，則和originalAmount一樣即可)
-            'original_amount'=>$amount, //Required 交易原金額
+            'amount'=>$purchase->amount, //Required 交易金額(折後，如無折扣，則和originalAmount一樣即可)
+            'original_amount'=>$purchase->amount, //Required 交易原金額
             'subject'=>'Admin', //Required 交易標題
             'product_desc'=>'', //Optional 交易描述
             'merc_order_no'=>$mercOrderNo, //Required 訂單唯一編號

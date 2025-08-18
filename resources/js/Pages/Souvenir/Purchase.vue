@@ -21,27 +21,33 @@
             <div class="" @click="orderIsOpen=true">| My orders</div>
         </div>
 
-        <div class="py-0">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                    <div class="grid gap-6">
-                        <div v-for="product in products" :key="product.id" class="flex bg-gray-100 rounded-lg p-4">
-                            <div class="flex-shrink-0 w-64 h-64 flex items-center justify-center">
-                                <img :src="product.thumbnail" alt="Product Image" class="object-cover w-full h-full rounded-md" />
-                            </div>
-                            <div class="flex-grow pl-4">
-                                <h3 class="mt-2 text-lg font-semibold">{{ product.name }}</h3>
-                                <p class="mt-1 text-gray-600">{{ product.description }}</p>
-                                <p class="mt-2 font-bold">${{ product.price.toFixed(2) }}</p>
-                                <a-button type="primary" @click="addToCart(product)" :disabled="user==null">
-                                    Add to cart / 加入購物車
-                                </a-button>
-                            </div>
-                        </div>
-                    </div>
+  <div class="py-0">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
+        <div class="grid gap-6">
+          <div v-for="product in products" :key="product.id" class="flex bg-gray-100 rounded-lg p-4">
+            <div class="flex-shrink-0 w-64">
+              <a-carousel :autoplay="true" dots>
+                <div v-for="(image, index) in product.images" :key="index">
+                  <img :src="image" alt="Product Image" class="object-cover w-full h-full rounded-md" />
                 </div>
+              </a-carousel>
             </div>
+            <div class="flex-grow pl-4">
+              <h3 class="mt-2 text-lg font-semibold">{{ product.name }}</h3>
+              <p class="mt-1 text-gray-600">{{ product.description }}</p>
+              <p class="mt-2 font-bold">${{ product.price.toFixed(2) }}</p>
+              <a-button type="primary" @click="addToCart(product)" :disabled="user == null">
+                Add to cart / 加入購物車
+              </a-button>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  
         <!-- Previous order drawer -->
         <a-drawer title="Orders" :visible="orderIsOpen" @close="orderIsOpen = false" with="400">
             Your previous Orders
@@ -288,6 +294,7 @@ export default {
 .drop-animation {
     animation: drop-animation 0.3s forwards;
 }
+
 
 /* Additional styling */
 </style>
