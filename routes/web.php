@@ -36,6 +36,9 @@ Route::prefix('souvenir')->group(function(){
     Route::get('checkout_order',[App\Http\Controllers\Souvenir\PurchaseController::class,'checkoutOrder'])->name('souvenir.checkoutOrder');
     Route::post('to_payment',[App\Http\Controllers\Souvenir\PurchaseController::class,'toPayment'])->name('souvenir.toPayment');
     Route::get('pickup_code',[App\Http\Controllers\Souvenir\PurchaseController::class,'pickupCode'])->name('souvenir.pickupCode');
+    Route::get('payment/notify',[App\Http\Controllers\Souvenir\PaymentController::class,'notify'])->name('souvenir.payment.notify');
+    Route::get('payment/result',[App\Http\Controllers\Souvenir\PaymentController::class,'result'])->name('souvenir.payment.result');
+
 });
 
 Route::get('ebooks',[App\Http\Controllers\EbookController::class,'index'])->name('ebooks');

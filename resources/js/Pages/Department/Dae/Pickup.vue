@@ -3,10 +3,10 @@
         <a-typography-title :level="3">{{ department?.name_zh }}</a-typography-title>
         <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto p-5">
-                <a-button type="primary" ghost @click="toggleCamera">{{ cameraActive ? 'Turn Off Camera' : 'Turn On Camera' }}</a-button>
+                <a-button type="primary" ghost @click="toggleSanner">{{ scannerActive ? 'Turn Off Scanner' : 'Turn On Scanner' }}</a-button>
                 <hr>
                 <h2 class="text-lg font-semibold">Pickup Orders</h2>
-                <div class="mt-5" v-if="cameraActive">
+                <div class="mt-5" v-if="scannerActive">
                     <QrcodeStream @decode="onDecode" @error="onError" />
                     <QrcodeDropZone @decode="onDecode" @error="onError" />
                     <QrcodeCapture @decode="onDecode" @error="onError" />
@@ -30,7 +30,11 @@
                         </div>
                         <hr>
                     </div>
-                    <a-button type="primary" @click="pickupConfirm">Cofirm</a-button>
+                    <div class="flex justify-between items-center pt-4">
+                        <a-button type="primary" @click="pickupConfirm" :disabled="responseData.user.purchases.find(p=>p.status==2)==null">Confirm</a-button>
+                        <a-button @click="clearData">Clear</a-button>
+                    </div>
+                    
                 </div>
             </div>
                 
@@ -58,13 +62,18 @@ export default {
                 { label: "學生事務處", url: null },
             ],
             decodedData: null,
-            cameraActive: false,
+            scannerActive: false,
             responseData:null,
         };
     },
     methods: {
-        toggleCamera() {
-            this.cameraActive = !this.cameraActive; // Toggle camera state
+        clearData(){
+            this.decodedData=null
+            this.scannerActive=false
+            this.responseData=null
+        },
+        toggleSanner() {
+            this.scannerActive = !this.scannerActive; // Toggle camera state
             this.responseData=null;
         },
         async onDecode(data) {
@@ -72,7 +81,7 @@ export default {
             this.errorMessage = ''; // Clear any previous error
 
             // Turn off the camera after successful read
-            this.cameraActive = false;
+            this.scannerActive = false;
 
             // Make the Axios request
             try {
@@ -81,7 +90,7 @@ export default {
                 });
                 // Handle the response data
                 this.responseData=response.data;
-                this.cameraActive = false;
+                this.scannerActive = false;
                 // You can update the UI with the response data if needed
             } catch (error) {
                 this.errorMessage = 'Failed to fetch data: ' + error.message;

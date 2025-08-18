@@ -24,6 +24,7 @@ Route::get('config/item', [\App\Http\Controllers\Api\ConfigController::class,'It
 Route::post('boc/notify',[\App\Http\Controllers\Api\BocController::class,'notify']);
 Route::post('boc/result',[\App\Http\Controllers\Api\BocController::class,'result']);
 
+
 Route::get('/',[\App\Http\Controllers\Api\CalendarController::class,'index'])->name('calendar');
 
 Route::get('/services', function () {

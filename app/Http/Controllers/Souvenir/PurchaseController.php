@@ -152,7 +152,7 @@ class PurchaseController extends Controller
         return $purchase;
     }
     private function getPaymentData(SouvenirUser $souvenirUser, $purchase, $clientIp){
-        $systemCode=env('BOC_SYSTEM_CODE','MPUCRM');
+        $systemCode=env('BOC_SYSTEM_CODE','DAESP');
         $mercOrderNo=$souvenirUser->id.'-'.time().'-'.rand(1000,9999);
         $salt=env('BOC_SALT','8Ier5T)1up]_S7)XHd(KcHwtM><cuF415P$=Dqb6}OtN_[bd');
 
@@ -175,7 +175,7 @@ class PurchaseController extends Controller
             'email'=>'tester@mpu.edu.mo', //交易成功後同步MCS(如有)，搜尋並更新相同orderNo的MCS記錄。
             //注1: 當你填寫了mcsSyncOrderNo，則不需要另外通過MCS paybill API做交易動作。
             //注2: MCS的交易金額不會在此步驟中發生變化，若交易時與MCS記錄創建時的金額不相同，請及時通過MCS API更新記錄。
-            'sign_text'=>hash('sha256',$systemCode.$mercOrderNo.$amount.$salt)
+            'sign_text'=>hash('sha256',$systemCode.$mercOrderNo.$purchase->amount.$salt)
             //System Code + mercOrderNo + amount + Salt使用SHA256生成的不可逆的字串。用於識別是否為經授權的系統發出的交易。
             //(2023-08-31 更新singText中加入amount以作檢查金額沒有被惡意修改)
         ];
