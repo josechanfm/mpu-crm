@@ -30,11 +30,6 @@ export default defineConfig({
     ],
     optimizeDeps: {
         include: ["quill"]
-    },
-    resolve: {
-        alias: {
-            
-        }
     }
 
 });
