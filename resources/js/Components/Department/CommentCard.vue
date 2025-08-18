@@ -57,13 +57,13 @@
 
 
 <script>
-import Editor from '@tinymce/tinymce-vue';
+// import Editor from '@tinymce/tinymce-vue';
 import { quillEditor } from 'vue3-quill';
 import dayjs from 'dayjs';
 
 export default {
   components: {
-    Editor,
+    // Editor,
     quillEditor,
     dayjs,
   },
