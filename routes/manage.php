@@ -227,6 +227,8 @@ Route::group([
     Route::resource('purchases',App\Http\Controllers\Department\Dae\PurchaseController::class)->names('dae.purchases');
     Route::post('souvenir/remove_image/{souvenir}/{imageId}',[App\Http\Controllers\Department\Dae\SouvenirController::class,'removeImage'])->name('dae.souvenir.removeImage');
     Route::get('souvenir/pickup',[App\Http\Controllers\Department\Dae\PickupController::class,'index'])->name('dae.souvenir.pickup');
+    Route::get('souvenir/pickup_code',[App\Http\Controllers\Department\Dae\PickupController::class,'pickupCode'])->name('dae.souvenir.pickupCode');
+    Route::post('souvenir/pickup_confirm',[App\Http\Controllers\Department\Dae\PickupController::class,'pickupConfirm'])->name('dae.souvenir.pickupConfirm');
 });
 // Route::middleware([
 //     'auth:admin',

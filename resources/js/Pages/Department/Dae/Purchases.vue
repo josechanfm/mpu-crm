@@ -22,10 +22,11 @@
                             {{  formatDate(record.created_at) }}
                         </template>
                         <template v-else-if="column.dataIndex=='status'">
-                            <span v-if="record.status==null">未支付</span>
-                            <span v-else-if="record.status==0">支付失敗</span>
-                            <span v-else-if="record.status==1">已支付</span>
-                            <span v-else-if="record.status==2">確認支付</span>
+                            <span v-if="record.status==null"class="tex-yellow-500">未支付</span>
+                            <span v-else-if="record.status==0" class="tex-red-500">支付失敗</span>
+                            <span v-else-if="record.status==1" class="tex-red-800">已支付</span>
+                            <span v-else-if="record.status==2" class="text-blue-300">確認支付</span>
+                            <span v-else-if="record.status==3" class="text-green-300">已領取</span>
                         </template>
                         <template v-else>
                             {{ record[column.dataIndex] }}

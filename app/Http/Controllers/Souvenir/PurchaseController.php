@@ -188,4 +188,15 @@ class PurchaseController extends Controller
 
         return $payment;
     }
+
+    public function pickupCode(){
+        //dd(hash('sha256',session('souvenirUser')->id));
+        $salt=env('SALT','dae-souvenir');
+        
+        $pickupCode=session('souvenirUser')->id.'-'.hash('sha256',session('souvenirUser')->id.$salt);
+        return Inertia::render('Souvenir/PickupCode',[
+            'user'=>session('souvenirUser'),
+            'pickupCode'=>$pickupCode,
+        ]);
+    }
 }
