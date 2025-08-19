@@ -9,7 +9,7 @@ class SouvenirOrder extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['uuid','sourvenir_user_id','form_meta','items','amount','payment_method','payment_meta','payment_notify','payment_result','payment_status','status'];
+    protected $fillable = ['uuid','merc_order_no','sourvenir_user_id','form_meta','items','amount','payment_method','payment_meta','payment_notify','payment_result','payment_status','status'];
     protected $casts = ['form_meta'=>'object','payment_notifiy'=>'object','payment_result'=>'object','items'=>'array'];
 
     public function user(){
