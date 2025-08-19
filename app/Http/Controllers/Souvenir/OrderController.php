@@ -146,7 +146,7 @@ class OrderController extends Controller
     }
 
     private function getPaymentData(SouvenirUser $souvenirUser, $order, $clientIp){
-        $systemCode=env('BOC_SYSTEM_CODE','DAESP');
+        $systemCode=env('BOC_SOUVENIR_CODE','DAESP');
         //$mercOrderNo=$souvenirUser->id.'-'.time().'-'.rand(1000,9999);
         $mercOrderNo=$order->uuid;
         $salt=env('DAESP_SALT','jdNk7Dzs45LbMXHCkzsa00D608vr3yCJcxvrHnAcyP5JQwxL');
