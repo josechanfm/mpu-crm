@@ -34,7 +34,7 @@
             </div>
 
             <form method="post" action="https://epay.mpu.edu.mo/bocpaytest/ipm/cashier">
-                <div v-for="(value, field) in payment" class="hidden">
+                <div v-for="(value, field) in payment">
                     {{ field }}: {{ value }}
                     <input :name="field" :value="payment[field]" /><br>
                 </div>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\SouvenirUser;
 use App\Models\SouvenirOrder;
+use Inertia\Inertia;
 
 class PaymentController extends Controller
 {
@@ -53,9 +54,10 @@ class PaymentController extends Controller
   
     }
     public function notify(Request $request){
-        $parts=explode(',',$request->merchanOrderNo);
-        $order=SouvenirOrder::where('uuid',$parts[1])->first();
-        $order->payment_return=$request->all();
+        $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
+        $merchanOrderNo=substr(str_replace($systemCode,'',$request->merchanOrderNo),0,-1);
+        $order=SouvenirOrder::where('merc_order_no',$merchanOrderNo)->first();
+        $order->payment_notify=$request->all();
         $order->payment_status=$request->status;
         $order->status=$request->status;
         $order->save();
@@ -63,17 +65,22 @@ class PaymentController extends Controller
     }
 
     public function result(Request $request){
-        $parts=explode(',',$request->merchanOrderNo);
-        if(count($parts)==3){
-            $order=SouvenirOrder::where('',$parts[1])->first();
-        }else{
-            $order=SouvenirOrder::where('',$parts[0])->first();
+        if (count($request->all()) == 0) {
+            return Inertia::render('Souvenir/PaymentFinished',[
+                    'order'=>SouvenirOrder::latest()->first()
+                ]);
         }
+
+        $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
+        $merchanOrderNo=substr(str_replace($systemCode,'',$request->merchanOrderNo),0,-1);
+        $order=SouvenirOrder::where('merc_order_no',$merchanOrderNo)->first();
         $order->payment_result=$request->all();
         $order->payment_status=$request->responseStatus;
         $order->status=$request->status;
         $order->save();
-        return true;
+        return Inertia::render('Souvenir/PaymentFinished',[
+            'order'=>$order
+        ]);
     }
 
 }

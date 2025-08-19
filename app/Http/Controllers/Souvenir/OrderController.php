@@ -147,8 +147,11 @@ class OrderController extends Controller
 
     private function getPaymentData(SouvenirUser $souvenirUser, $order, $clientIp){
         $systemCode=env('BOC_SOUVENIR_CODE','DAESP');
-        //$mercOrderNo=$souvenirUser->id.'-'.time().'-'.rand(1000,9999);
-        $mercOrderNo=$order->uuid;
+        
+        $mercOrderNo=$order->id.'-'.time().'-'.rand(1000,9999);
+        $order->merc_order_no=$mercOrderNo;
+        $order->save();
+        //$mercOrderNo=(string)$order->uuid;
         $salt=env('DAESP_SALT','jdNk7Dzs45LbMXHCkzsa00D608vr3yCJcxvrHnAcyP5JQwxL');
 
         $payment=[
@@ -174,12 +177,6 @@ class OrderController extends Controller
             //System Code + mercOrderNo + amount + Salt使用SHA256生成的不可逆的字串。用於識別是否為經授權的系統發出的交易。
             //(2023-08-31 更新singText中加入amount以作檢查金額沒有被惡意修改)
         ];
-        // $data=[];
-        // foreach($payment as $key=>$value){
-        //     $data[Str::snake($key)]=$value;
-        // };
-        //$data['rec_application_id']=$application->id;
-        // RecPayment::create($data);
 
         return $payment;
     }
