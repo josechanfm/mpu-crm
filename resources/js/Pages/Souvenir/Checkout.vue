@@ -1,5 +1,5 @@
 <template>
-    <BlankLayout title="Souvenir Purchase">
+    <BlankLayout title="Souvenir Order">
         <template #header>
             <div class="flex justify-between items-center">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -7,6 +7,8 @@
                 </h2>
             </div>
         </template>
+
+
     <div class="py-0">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
@@ -16,45 +18,23 @@
             <ul v-else class="w-96">
                 <li v-for="item in cart.cartItems" :key="item.id" class="flex items-center justify-between mb-2">
                     <span class="w-1/2 truncate">{{ item.name }}</span>
+                    <span class="w-1/2 truncate">{{ item.count }}</span>
                     <span>${{ (item.price * item.count).toFixed(2) }}</span>
+
                 </li>
             </ul>
 
-            <!-- Purchase Form -->
-            <a-form :model="orderForm" :rules="rules" @submit.prevent="handlePayment" class="mt-4" v-if="cart.cartItems.length > 0">
-                <a-form-item label="Faculty" name="faculty">
-                    <a-select v-model:value="orderForm.faculty" placeholder="Select your faculty">
-                        <a-select-option value="science">Science</a-select-option>
-                        <a-select-option value="arts">Arts</a-select-option>
-                        <a-select-option value="engineering">Engineering</a-select-option>
-                    </a-select>
-                </a-form-item>
-
-                <a-form-item label="Degree" name="degree">
-                    <a-select v-model:value="orderForm.degree" placeholder="Select your degree">
-                        <a-select-option value="bachelor">Bachelor</a-select-option>
-                        <a-select-option value="master">Master</a-select-option>
-                        <a-select-option value="phd">PhD</a-select-option>
-                    </a-select>
-                </a-form-item>
-
-                <a-form-item label="Contact Phone Number" name="phone">
-                    <a-input type="input" v-model:value="orderForm.phone" placeholder="Enter your phone number" />
-                </a-form-item>
-
-                <a-form-item label="Personal Email (optional)" name="email">
-                    <a-input type="input" v-model:value="orderForm.email" placeholder="Enter your email" />
-                </a-form-item>
-
-                <div class="flex justify-end mt-4">
-                    <a-button class="ml-2" @click="selectedIsOpen = false">Close</a-button>
-                    <a-button type="primary" html-type="submit">Pay</a-button>
-                </div>
-            </a-form>
-
+            <div>
+                <div>Contact Info:</div>
+                <div><strong>NetId: </strong>{{ cart.netid }}</div>
+                <div><strong>Faculty: </strong>{{ cart.faculty }}</div>
+                <div><strong>Degree: </strong>{{ cart.degree }}</div>
+                <div><strong>Phone: </strong>{{ cart.phone }}</div>
+                <div><strong>email: </strong>{{ cart.email }}</div>
+            </div>
 
             <form method="post" action="https://epay.mpu.edu.mo/bocpaytest/ipm/cashier">
-                <div v-for="(value, field) in payment">
+                <div v-for="(value, field) in payment" class="hidden">
                     {{ field }}: {{ value }}
                     <input :name="field" :value="payment[field]" /><br>
                 </div>
@@ -138,29 +118,6 @@ export default {
                 },
                 onError: (error) => {
                     console.error('Logout error:', error);
-                },
-            });
-        },
-        handlePayment() {
-            // Handle the purchase logic here
-            console.log('Purchase Data:', this.orderForm);
-            this.orderForm.cartItems=this.cart.cartItems
-            this.orderForm.uuid=this.cart.uuid;
-            this.$inertia.post(route('souvenir.toPayment'), this.orderForm, {
-                onSuccess: (page) => {
-                    console.log(page);
-                    // Optionally reset the form
-                    this.orderForm = {
-                        netid: '',
-                        password: '',
-                        faculty: '',
-                        degree: '',
-                        phone: '',
-                        email: '',
-                    };
-                },
-                onError: (error) => {
-                    console.log(error);
                 },
             });
         },

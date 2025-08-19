@@ -5,7 +5,7 @@
                 
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                <a-table :dataSource="purchases" :columns="columns">
+                <a-table :dataSource="orders" :columns="columns">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button @click="viewRecord(record)">{{ $t('edit') }}</a-button>
@@ -111,7 +111,7 @@ export default {
         message,
         dayjs
     },
-    props: ["purchases"],
+    props: ["orders"],
     data() {
         return {
             breadcrumb:[

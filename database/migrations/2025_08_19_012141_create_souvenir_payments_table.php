@@ -13,18 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('souvenir_purchases', function (Blueprint $table) {
+        Schema::create('souvenir_payments', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid');
+            $table->string('uuid');
             $table->foreignId('souvenir_user_id');
-            $table->text('form_meta')->nullable();
-            $table->json('items')->nullable();
+            $table->text('order_ids')->nullable();
             $table->char('currency',3)->nullable();
             $table->integer('amount')->nullable();
             $table->text('payment_method')->nullable();
             $table->text('payment_meta')->nullable();
             $table->text('transction_code')->nullable();
             $table->text('transection_meta')->nullable();
+
             $table->timestamps();
         });
     }
@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('souvenir_purchases');
+        Schema::dropIfExists('souvenir_payments');
     }
 };

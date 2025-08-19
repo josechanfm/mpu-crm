@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Souvenir;
 
 use App\Http\Controllers\Controller;
 use App\Models\Souvenir;
-use App\Models\SouvenirUser;
-use App\Models\SouvenirPurchase;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http; 
+use App\Models\SouvenirUser;
 
-class PurchaseController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +19,8 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        return Inertia::render("Souvenir/Purchase",[
-            "user"=>session("souvenirUser")?->load('purchases'),
+        return Inertia::render("Souvenir/Order",[
+            "user"=>session("souvenirUser")?->load('orders'),
             "products"=>Souvenir::all()
         ]);
     }
@@ -92,41 +92,35 @@ class PurchaseController extends Controller
     }
     public function checkout(Request $request){
         session()->flash('cart',$request->all());
-        //  dd($request->all(), $request->cartItems, session('souvenirUser'));
         return to_route("souvenir.checkoutOrder");
     }
     public function checkoutOrder(Request $request){
-
-        //  dd($request->all(), $request->cartItems, session('souvenirUser'));
-        //if session('souvenirUser) not exist return to sourvenir home page.
-        // dd(session('cart'));
         $cart=session('cart');
-        
+
         if($cart==null){
             return redirect()->route('souvenir');
         }
         $cart['uuid']=Str::uuid();
         $cart['client_ip']=$request->getClientIp();
-        $purchase=$this->storeToPurchase(session('souvenirUser'), $cart);
-        $paymentData=$this->getPaymentData(session('souvenirUser'),$purchase, $cart['client_ip']);
-        $purchase->payment_meta=json_encode($paymentData);
-        $purchase->save();
+        $order=$this->storeToOrder(session('souvenirUser'), $cart);
+
+        $paymentData=$this->getPaymentData(session('souvenirUser'),$order, $cart['client_ip']);
+        $order->payment_meta=json_encode($paymentData);
+        $order->save();
         return Inertia::render("Souvenir/Checkout",[
             "user"=>session("")?->load(""),
             "cart"=>$cart,
             "payment"=>$paymentData,
         ]);
     }
-    private function storeToPurchase($souvenirUser, $params){
-        // dd($request->all(),session('souvenirUser'));
-        // $params=$request->all();
-        // //$souvenirUser=SouvenirUser::where("netid",   $params["netid"])->first();
-        // $souvenirUser=session('souvenirUser');
-        $purchaseItems=[];
+    
+    private function storeToOrder($souvenirUser, $params){
+        
+        $orderItems=[];
         $totalAmount=0;
         foreach($params['cartItems'] as $item){
             $souvenir=Souvenir::find($item['id']);
-            $purchaseItems[]=[
+            $orderItems[]=[
                 'souvenir_id'=> $souvenir->id,
                 'name'=> $souvenir->name,
                 'qty'=>$item['count'],
@@ -136,12 +130,11 @@ class PurchaseController extends Controller
             $totalAmount+=$souvenir->price*$item['count'];
         }
         try {
-            $purchase=$souvenirUser->purchases()->firstOrCreate([
-                'uuid'=>$params['uuid'],
-                'form_meta'=>json_encode($params),
-                'items'=>$purchaseItems,
+            $order=$souvenirUser->orders()->firstOrCreate([
+                'uuid'=>Str::uuid(),
+                'form_meta'=>$params,
+                'items'=>$orderItems,
                 'amount'=>$totalAmount,
-                'payment_method'=>'ONLINE'
             ]);
 
         } catch (\Illuminate\Database\QueryException $e) {
@@ -149,33 +142,35 @@ class PurchaseController extends Controller
             // Handle the exception (e.g., log it, return a message, etc.)
             // You can check for specific error codes if needed
         }
-        return $purchase;
+        return $order;
     }
-    private function getPaymentData(SouvenirUser $souvenirUser, $purchase, $clientIp){
+
+    private function getPaymentData(SouvenirUser $souvenirUser, $order, $clientIp){
         $systemCode=env('BOC_SYSTEM_CODE','DAESP');
-        $mercOrderNo=$souvenirUser->id.'-'.time().'-'.rand(1000,9999);
-        $salt=env('BOC_SALT','8Ier5T)1up]_S7)XHd(KcHwtM><cuF415P$=Dqb6}OtN_[bd');
+        //$mercOrderNo=$souvenirUser->id.'-'.time().'-'.rand(1000,9999);
+        $mercOrderNo=$order->uuid;
+        $salt=env('DAESP_SALT','jdNk7Dzs45LbMXHCkzsa00D608vr3yCJcxvrHnAcyP5JQwxL');
 
         $payment=[
-            'system_code'=>$systemCode, //Required 授權後獲得
+            'systemCode'=>$systemCode, //Required 授權後獲得
             'ipAddress'=>$clientIp, 
-            'cashier_language'=>'zh_TW', //Required zh_TW或en_US
-            'amount'=>$purchase->amount, //Required 交易金額(折後，如無折扣，則和originalAmount一樣即可)
-            'original_amount'=>$purchase->amount, //Required 交易原金額
+            'cashierLanguage'=>'zh_TW', //Required zh_TW或en_US
+            'amount'=>$order->amount, //Required 交易金額(折後，如無折扣，則和originalAmount一樣即可)
+            'originalAmount'=>$order->amount, //Required 交易原金額
             'subject'=>'Admin', //Required 交易標題
-            'product_desc'=>'', //Optional 交易描述
-            'merc_order_no'=>$mercOrderNo, //Required 訂單唯一編號
+            'productDesc'=>'', //Optional 交易描述
+            'mercOrderNo'=>$mercOrderNo, //Required 訂單唯一編號
             'requester'=>'venus.mpu.edu.mo', //Optional 支付者名稱
-            'order_date'=>date("Y-m-d"), //Optional 請求日期。如不填，則自動填寫系統即時日期
-            'order_dime'=>date("H:i:s"), //Optional 請求時間。如不填，則自動填寫系統即時時間
-            'valid_number'=>'', //Optional 交易有效時間(單位:秒)，預設為300秒
-            'other_business_type'=>'Souvenir', //Required 交易類型
-            'payment_channel'=>'boc', //boc, cep 當有多於一個交易渠道，使用|間隔，例如boc|cep，如不填或格式錯誤，則顯示所有可用交易渠道
-            'mcs_sync_order_no'=>$purchase->uuid, //
+            'orderDate'=>'',//date("Y-m-d"), //Optional 請求日期。如不填，則自動填寫系統即時日期
+            'orderDime'=>'',//date("H:i:s"), //Optional 請求時間。如不填，則自動填寫系統即時時間
+            'validNumber'=>'', //Optional 交易有效時間(單位:秒)，預設為300秒
+            'otherBusinessType'=>'Souvenir', //Required 交易類型
+            'paymentChannel'=>'boc', //boc, cep 當有多於一個交易渠道，使用|間隔，例如boc|cep，如不填或格式錯誤，則顯示所有可用交易渠道
+            'mcsSyncOrderNo'=>$order->uuid, //
             'email'=>'tester@mpu.edu.mo', //交易成功後同步MCS(如有)，搜尋並更新相同orderNo的MCS記錄。
             //注1: 當你填寫了mcsSyncOrderNo，則不需要另外通過MCS paybill API做交易動作。
             //注2: MCS的交易金額不會在此步驟中發生變化，若交易時與MCS記錄創建時的金額不相同，請及時通過MCS API更新記錄。
-            'sign_text'=>hash('sha256',$systemCode.$mercOrderNo.$purchase->amount.$salt)
+            'signText'=>hash('sha256',$systemCode.$mercOrderNo.$order->amount.$salt)
             //System Code + mercOrderNo + amount + Salt使用SHA256生成的不可逆的字串。用於識別是否為經授權的系統發出的交易。
             //(2023-08-31 更新singText中加入amount以作檢查金額沒有被惡意修改)
         ];
@@ -188,7 +183,6 @@ class PurchaseController extends Controller
 
         return $payment;
     }
-
     public function pickupCode(){
         //dd(hash('sha256',session('souvenirUser')->id));
         $salt=env('SALT','dae-souvenir');

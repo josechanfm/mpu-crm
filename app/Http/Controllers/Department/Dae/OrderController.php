@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Department\Dae;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\SouvenirPurchase;
+use App\Models\SouvenirOrder;
 
-class PurchaseController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +16,8 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Department/Dae/Purchases',[
-            "purchases"=>SouvenirPurchase::with('user')->get(),
+        return Inertia::render('Department/Dae/Orders',[
+            "orders"=>SouvenirOrder::with('user')->get(),
         ]);
     }
 

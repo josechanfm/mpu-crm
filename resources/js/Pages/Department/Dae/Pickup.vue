@@ -16,22 +16,22 @@
                     <div>{{ responseData.user.netid }}</div>
                     <div>{{ responseData.user.phone }}</div>
                     <hr>
-                    <div v-for="purchase in responseData.user.purchases">
-                        <div>{{ purchase.created_at }}</div>
+                    <div v-for="order in responseData.user.orders">
+                        <div>{{ order.created_at }}</div>
                         <div>
-                            <span v-if="purchase.status==null" class="text-yellow-500">未支付</span>
-                            <span v-else-if="purchase.status==0" class="text-red-500">支付失敗</span>
-                            <span v-else-if="purchase.status==1" class="text-red-800">已支付</span>
-                            <span v-else-if="purchase.status==2" class="text-blue-500">確認支付</span>
-                            <span v-else-if="purchase.status==3" class="text-green-500">已領取</span>
+                            <span v-if="order.status==null" class="text-yellow-500">未支付</span>
+                            <span v-else-if="order.status==0" class="text-red-500">支付失敗</span>
+                            <span v-else-if="order.status==1" class="text-red-800">已支付</span>
+                            <span v-else-if="order.status==2" class="text-blue-500">確認支付</span>
+                            <span v-else-if="order.status==3" class="text-green-500">已領取</span>
                         </div>
-                        <div v-for="item in purchase.items">
+                        <div v-for="item in order.items">
                             {{ item.qty }} : {{  item.name }} 
                         </div>
                         <hr>
                     </div>
                     <div class="flex justify-between items-center pt-4">
-                        <a-button type="primary" @click="pickupConfirm" :disabled="responseData.user.purchases.find(p=>p.status==2)==null">Confirm</a-button>
+                        <a-button type="primary" @click="pickupConfirm" :disabled="responseData.user.orders.find(p=>p.status==2)==null">Confirm</a-button>
                         <a-button @click="clearData">Clear</a-button>
                     </div>
                     

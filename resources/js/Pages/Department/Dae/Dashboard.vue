@@ -13,8 +13,8 @@
                     </inertia-link>
                 </div>
                 <div>
-                    <inertia-link :href="route('dae.purchases.index')">
-                        <a-button>Purchases</a-button>
+                    <inertia-link :href="route('dae.orders.index')">
+                        <a-button>Order</a-button>
                     </inertia-link>
                 </div>
                 <div>

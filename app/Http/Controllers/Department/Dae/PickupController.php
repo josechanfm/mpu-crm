@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Department\Dae;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\SouvenirPurchase;
+use App\Http\SouvenirOrder;
 use Inertia\Inertia;
 use App\Models\SouvenirUser;
 
@@ -22,7 +22,7 @@ class PickupController extends Controller
             ]);
 
             // Fetch the user based on your business logic; for testing, we'll just get the first user
-            $user = SouvenirUser::with('purchases')->first();
+            $user = SouvenirUser::with('orders')->first();
 
             // Check if user exists
             if (!$user) {
@@ -70,9 +70,9 @@ class PickupController extends Controller
             return response()->json(['message' => 'Invalid hash code.'], 403);
         }
 
-        // Update all purchase statuses to 3
-        // $updated = SouvenirPurchase::where('souvenir_user_id', $user->id)->update(['status' => 3]);
-        $updated=$user->purchases()->where('status',2)->update(['status'=>3]);
+        // Update all order statuses to 3
+        // $updated = SouvenirOrder::where('souvenir_user_id', $user->id)->update(['status' => 3]);
+        $updated=$user->orders()->where('status',2)->update(['status'=>3]);
         // return response()->json([
         //     "code"=>$request->code, 
         //     'parts'=>$parts,
@@ -86,18 +86,18 @@ class PickupController extends Controller
         //     'pp'=>$updated,
         // ]);
 
-        // Check if any purchases were updated
+        // Check if any orders were updated
         if ($updated) {
             return response()->json(['message' => 'Pickup confirmed successfully.']);
         } else {
-            return response()->json(['message' => 'No purchases found for this user.'], 404);
+            return response()->json(['message' => 'No orders found for this user.'], 404);
         }
 
     }
     public function store(Request $request){
         dd($request->all());
     }
-    public function getPurchase(Request $request){
+    public function getOrder(Request $request){
         dd($request->all());
     }
 

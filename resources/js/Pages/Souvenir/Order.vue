@@ -1,9 +1,9 @@
 <template>
-    <BlankLayout title="Souvenir Purchase">
+    <BlankLayout title="Souvenir Order">
         <template #header>
             <div class="flex justify-between items-center">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Souvenir Purchase
+                    Souvenir Order
                 </h2>
                 <div class="flex justify-end gap-2">
                     <div v-if="user" @click="logout">Logout</div>
@@ -53,37 +53,69 @@
             Your previous Orders
             <div class="p-4">
                 <h2 class="text-lg font-semibold">Your Previous Orders</h2>
-                <div v-for="(purchase, index) in user.purchases" :key="index" class="mb-4">
-                    <h3 class="font-bold">Order #{{ index + 1 }} @{{  formatDate(purchase.created_at) }}</h3>
-                    <div v-for="item in purchase.items" :key="item.id" class="flex justify-between py-2">
+                <div v-for="(order, index) in user.orders" :key="index" class="mb-4">
+                    <h3 class="font-bold">Order #{{ index + 1 }} @{{  formatDate(order.created_at) }}</h3>
+                    <div v-for="item in order.items" :key="item.id" class="flex justify-between py-2">
                         <span>{{ item.name }}</span>
                         <span>{{ item.count }} x ${{ item.price }}</span>
                     </div>
                     <div class="font-bold float-right">
-                        Total: ${{ purchase.amount }}
+                        Total: ${{ order.amount }}
                     </div>
                 </div>
             </div>
         </a-drawer>
+
         <!-- Checkout drawer -->
         <a-drawer title="Cart Items" :visible="selectedIsOpen" @close="selectedIsOpen = false" width="400">
             <div v-if="cartItems.length==0">
-                You don't have any item selected.
+                <p>You don't have any item selected.</p>
+                <a-button class="ml-2" @click="selectedIsOpen = false">Close</a-button>
             </div>
-            <ul v-else>
-                <li v-for="item in cartItems" :key="item.id" class="flex items-center justify-between mb-2">
-                    <span class="w-1/2 truncate">{{ item.name }}</span>
-                    <div class="flex items-center space-x-2">
-                        <a-button @click="decreaseCount(item)" size="small">-</a-button>
-                        <span>{{ item.count }}</span>
-                        <a-button @click="increaseCount(item)" size="small">+</a-button>
-                    </div>
-                    <span>${{ (item.price * item.count).toFixed(2) }}</span>
-                </li>
-            </ul>
+            <div v-else>
+                <ul>
+                    <li v-for="item in cartItems" :key="item.id" class="flex items-center justify-between mb-2">
+                        <span class="w-1/2 truncate">{{ item.name }}</span>
+                        <div class="flex items-center space-x-2">
+                            <a-button @click="decreaseCount(item)" size="small">-</a-button>
+                            <span>{{ item.count }}</span>
+                            <a-button @click="increaseCount(item)" size="small">+</a-button>
+                        </div>
+                        <span>${{ (item.price * item.count).toFixed(2) }}</span>
+                    </li>
+                </ul>
+                <!-- Order Form -->
+                <a-form :model="orderForm" :rules="rules" @submit.prevent="handleOrder" class="mt-4">
+                    <a-form-item label="Faculty" name="faculty">
+                        <a-select v-model:value="orderForm.faculty" placeholder="Select your faculty">
+                            <a-select-option value="science">Science</a-select-option>
+                            <a-select-option value="arts">Arts</a-select-option>
+                            <a-select-option value="engineering">Engineering</a-select-option>
+                        </a-select>
+                    </a-form-item>
 
-            
-            <a-button @click="checkout()">Checkout</a-button>
+                    <a-form-item label="Degree" name="degree">
+                        <a-select v-model:value="orderForm.degree" placeholder="Select your degree">
+                            <a-select-option value="bachelor">Bachelor</a-select-option>
+                            <a-select-option value="master">Master</a-select-option>
+                            <a-select-option value="phd">PhD</a-select-option>
+                        </a-select>
+                    </a-form-item>
+
+                    <a-form-item label="Contact Phone Number" name="phone">
+                        <a-input type="input" v-model:value="orderForm.phone" placeholder="Enter your phone number" />
+                    </a-form-item>
+
+                    <a-form-item label="Personal Email (optional)" name="email">
+                        <a-input type="input" v-model:value="orderForm.email" placeholder="Enter your email" />
+                    </a-form-item>
+
+                    <div class="flex justify-end mt-4">
+                        <a-button class="ml-2" @click="selectedIsOpen = false">Close</a-button>
+                        <a-button type="primary" html-type="submit">Pay</a-button>
+                    </div>
+                </a-form>
+            </div>
 
         </a-drawer>
     </BlankLayout>
@@ -184,31 +216,8 @@ export default {
 
             this.cartItemCount = this.cartItems.reduce((total, item) => total + item.count, 0);
         },
-        handlePurchase() {
-            // Handle the purchase logic here
-            console.log('Purchase Data:', this.orderForm);
-            this.orderForm.cartItems=this.cartItems
-            this.$inertia.post(route('souvenir.order'), this.orderForm, {
-                onSuccess: (page) => {
-                    console.log(page);
-                    // Optionally reset the form
-                    this.orderForm = {
-                        netid: '',
-                        password: '',
-                        faculty: '',
-                        degree: '',
-                        phone: '',
-                        email: '',
-                    };
-                },
-                onError: (error) => {
-                    console.log(error);
-                },
-            });
-        },
-        checkout(){
-            console.log('checkout')
-            console.log(this.orderForm);
+        handleOrder() {
+            // Handle the order logic here
             this.orderForm.cartItems=this.cartItems
             
             this.$inertia.post(route('souvenir.checkout'), this.orderForm, {
@@ -228,8 +237,10 @@ export default {
                     console.log(error);
                 },
             });
+        },
 
-        }, 
+
+
         triggerAnimation() {
             const cartIcon = this.cartIconRef;
             if (cartIcon) {

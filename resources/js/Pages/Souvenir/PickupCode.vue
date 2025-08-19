@@ -1,9 +1,9 @@
 <template>
-    <BlankLayout title="Souvenir Purchase">
+    <BlankLayout title="Souvenir Order">
         <template #header>
             <div class="flex justify-between items-center">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Souvenir Purchase
+                    Souvenir Order
                 </h2>
                 <div class="flex justify-end gap-2">
                     <div v-if="user" @click="logout">Logout</div>
