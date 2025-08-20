@@ -56,6 +56,9 @@ class PaymentController extends Controller
     }
     public function notify(Request $request){
         $payment=SouvenirPayment::create([
+            'type'=>'notify1',
+        ]);
+        $payment=SouvenirPayment::create([
             'type'=>'notify',
             'meta_data'=>$request->all(),
             'status'=>$request->status
@@ -71,6 +74,10 @@ class PaymentController extends Controller
     }
 
     public function result(Request $request){
+        $payment=SouvenirPayment::create([
+            'type'=>'result1',
+        ]);
+
         $payment=SouvenirPayment::create([
             'type'=>'result',
             'meta_data'=>$request->all(),
