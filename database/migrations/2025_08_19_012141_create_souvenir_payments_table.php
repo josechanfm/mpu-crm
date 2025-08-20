@@ -15,16 +15,10 @@ return new class extends Migration
     {
         Schema::create('souvenir_payments', function (Blueprint $table) {
             $table->id();
-            $table->string('uuid');
-            $table->foreignId('souvenir_user_id');
-            $table->text('order_ids')->nullable();
-            $table->char('currency',3)->nullable();
-            $table->integer('amount')->nullable();
-            $table->text('payment_method')->nullable();
-            $table->text('payment_meta')->nullable();
-            $table->text('transction_code')->nullable();
-            $table->text('transection_meta')->nullable();
-
+            $table->text('type')->nullable();
+            $table->text('meta_data')->nullable();
+            $table->text('order_id')->nullable();
+            $table->text('status')->nullable();
             $table->timestamps();
         });
     }

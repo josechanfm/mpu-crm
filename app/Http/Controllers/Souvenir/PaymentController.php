@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\SouvenirUser;
 use App\Models\SouvenirOrder;
+use App\Models\SouvenirPayment;
 use Inertia\Inertia;
 
 class PaymentController extends Controller
@@ -54,9 +55,14 @@ class PaymentController extends Controller
   
     }
     public function notify(Request $request){
+        $payment=SouvenirPayment::create([
+            'type'=>'notify',
+            'meta_data'=>$request->all(),
+            'status'=>$request->status
+        ]);
         $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
-        $merchanOrderNo=substr(str_replace($systemCode,'',$request->merchanOrderNo),0,-1);
-        $order=SouvenirOrder::where('merc_order_no',$merchanOrderNo)->first();
+        $mercOrderNo=substr(str_replace($systemCode,'',$request->merchanOrderNo),0,-2);
+        $order=SouvenirOrder::where('merc_order_no',$mercOrderNo)->first();
         $order->payment_notify=$request->all();
         $order->payment_status=$request->status;
         $order->status=$request->status;
@@ -65,6 +71,11 @@ class PaymentController extends Controller
     }
 
     public function result(Request $request){
+        $payment=SouvenirPayment::create([
+            'type'=>'result',
+            'meta_data'=>$request->all(),
+            'status'=>$request->responseStatus
+        ]);
         if (count($request->all()) == 0) {
             return Inertia::render('Souvenir/PaymentFinished',[
                     'order'=>SouvenirOrder::latest()->first()
@@ -72,8 +83,8 @@ class PaymentController extends Controller
         }
 
         $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
-        $merchanOrderNo=substr(str_replace($systemCode,'',$request->merchanOrderNo),0,-1);
-        $order=SouvenirOrder::where('merc_order_no',$merchanOrderNo)->first();
+        $mercOrderNo=substr(str_replace($systemCode,'',$request->merchanOrderNo),0,-2);
+        $order=SouvenirOrder::where('merc_order_no',$mercOrderNo)->first();
         $order->payment_result=$request->all();
         $order->payment_status=$request->responseStatus;
         $order->status=$request->status;
