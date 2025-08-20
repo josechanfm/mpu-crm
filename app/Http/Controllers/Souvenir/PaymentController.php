@@ -65,7 +65,8 @@ class PaymentController extends Controller
         ]);
         $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
         $mercOrderNo=substr(str_replace($systemCode,'',$request->merchantOrderNo),0,-2);
-        $order=SouvenirOrder::where('merc_order_no',$mercOrderNo)->first();
+        $parts=explode('-',$mercOrderNo);
+        $order=SouvenirOrder::where('merc_order_no',$parts[0])->first();
         $order->payment_notify=$request->all();
         $order->payment_status=$request->status;
         $order->status=$request->status;
@@ -91,7 +92,8 @@ class PaymentController extends Controller
 
         $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
         $mercOrderNo=substr(str_replace($systemCode,'',$request->merchantOrderNo),0,-2);
-        $order=SouvenirOrder::where('merc_order_no',$mercOrderNo)->first();
+        $parts=explode('-',$mercOrderNo);
+        $order=SouvenirOrder::where('merc_order_no',$parts[0])->first();
         $order->payment_result=$request->all();
         $order->payment_status=$request->responseStatus;
         $order->status=$request->status;
