@@ -94,6 +94,7 @@ class PaymentController extends Controller
         $mercOrderNo=substr(str_replace($systemCode,'',$request->merchantOrderNo),0,-2);
         $parts=explode('-',$mercOrderNo);
         $order=SouvenirOrder::where('merc_order_no',$parts[0])->first();
+        dd($systemCode, $mercOrderNo, $order);
         $order->payment_result=$request->all();
         $order->payment_status=$request->responseStatus;
         $order->status=$request->status;
