@@ -6,8 +6,8 @@
                     Souvenir Order
                 </h2>
                 <div class="flex justify-end gap-2">
-                    <div v-if="user" @click="logout">Logout</div>
-                    <div v-else @click="login">Login</div>
+                    <div v-if="user" @click="logout">Logout / 登出</div>
+                    <div v-else @click="login">Login / 登入</div>
                 </div>
             </div>
         </template>
@@ -16,108 +16,113 @@
                 <a-badge :count="cartItemCount">
                     <ShoppingCartOutlined class="text-xl" />
                 </a-badge>
-                 Check Out
+                 Check Out / 結帳
             </div>
-            <div class="" @click="orderIsOpen=true">| My orders</div>
+             | 
+            <div class="" @click="orderIsOpen=true">
+                <a-badge :count="user.orders.length" color="green" :offset="[10, -5]">
+                My orders    
+                </a-badge>
+                 / 我的訂單
+            </div>
         </div>
 
-  <div class="py-0">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-        <div class="grid gap-6">
-          <div v-for="product in products" :key="product.id" class="flex bg-gray-100 rounded-lg p-4">
-            <div class="flex-shrink-0 w-64">
-              <a-carousel :autoplay="true" dots>
-                <div v-for="(image, index) in product.images" :key="index">
-                  <img :src="image" alt="Product Image" class="object-cover w-full h-full rounded-md" />
+        <div class="py-0">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
+                <div class="grid gap-6">
+                <div v-for="product in products" :key="product.id" class="flex bg-gray-100 rounded-lg p-4">
+                    <div class="flex-shrink-0 w-64">
+                    <a-carousel :autoplay="true" dots>
+                        <div v-for="(image, index) in product.images" :key="index">
+                        <img :src="image" alt="Product Image" class="object-cover w-full h-full rounded-md" />
+                        </div>
+                    </a-carousel>
+                    </div>
+                    <div class="flex-grow pl-4">
+                    <h3 class="mt-2 text-lg font-semibold">{{ product.name }}</h3>
+                    <p class="mt-1 text-gray-600">{{ product.description }}</p>
+                    <p class="mt-2 font-bold">${{ product.price.toFixed(2) }}</p>
+                    <a-button type="primary" @click="addToCart(product)" :disabled="user == null">
+                        Add to cart / 加入購物車
+                    </a-button>
+                    </div>
                 </div>
-              </a-carousel>
+                </div>
             </div>
-            <div class="flex-grow pl-4">
-              <h3 class="mt-2 text-lg font-semibold">{{ product.name }}</h3>
-              <p class="mt-1 text-gray-600">{{ product.description }}</p>
-              <p class="mt-2 font-bold">${{ product.price.toFixed(2) }}</p>
-              <a-button type="primary" @click="addToCart(product)" :disabled="user == null">
-                Add to cart / 加入購物車
-              </a-button>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </div>
 
-  
+<!-- Checkout drawer -->
+<a-drawer title="Cart Items / 購物車" :visible="selectedIsOpen" @close="selectedIsOpen = false" width="400">
+    <div v-if="cartItems.length==0">
+        <p>You don't have any item selected.</p>
+        <p>您尚未選擇任何商品。</p>
+        <a-button class="mt-10 float-right" @click="selectedIsOpen = false">Close / 關閉</a-button>
+    </div>
+    <div v-else>
+        <ul>
+            <li v-for="item in cartItems" :key="item.id" class="flex items-center justify-between mb-2">
+                <span class="w-1/2 truncate">{{ item.name }}</span>
+                <div class="flex items-center space-x-2">
+                    <a-button @click="decreaseCount(item)" size="small">-</a-button>
+                    <span>{{ item.count }}</span>
+                    <a-button @click="increaseCount(item)" size="small">+</a-button>
+                </div>
+                <span>${{ (item.price * item.count).toFixed(2) }}</span>
+            </li>
+        </ul>
+        <!-- Order Form -->
+        <a-form :model="orderForm" layout="vertical" :rules="rules" @submit.prevent="handleOrder" class="mt-4">
+            <a-form-item label="Faculty / 系所" name="faculty" class="mb-0">
+                <a-select v-model:value="orderForm.faculty" placeholder="Select your faculty / 選擇您的系所">
+                    <a-select-option value="science">Science / 科學</a-select-option>
+                    <a-select-option value="arts">Arts / 人文</a-select-option>
+                    <a-select-option value="engineering">Engineering / 工程</a-select-option>
+                </a-select>
+            </a-form-item>
+
+            <a-form-item label="Degree / 學位" name="degree" class="mb-0">
+                <a-select v-model:value="orderForm.degree" placeholder="Select your degree / 選擇您的學位">
+                    <a-select-option value="bachelor">Bachelor / 學士</a-select-option>
+                    <a-select-option value="master">Master / 碩士</a-select-option>
+                    <a-select-option value="phd">PhD / 博士</a-select-option>
+                </a-select>
+            </a-form-item>
+            <a-form-item label="Contact Phone Number / 聯絡電話" name="phone" class="mb-0">
+                <a-input type="input" v-model:value="orderForm.phone" placeholder="Enter your phone number / 輸入您的電話號碼" />
+            </a-form-item>
+
+            <a-form-item label="Personal Email (optional) / 個人電子郵件（可選）" name="email" class="mb-0">
+                <a-input type="input" v-model:value="orderForm.email" placeholder="Enter your email / 輸入您的電子郵件" />
+            </a-form-item>
+
+            <div class="flex justify-end mt-4 gap-5">
+                <a-button type="primary" html-type="submit">Pay / 付款</a-button>
+                <a-button class="ml-2" @click="selectedIsOpen = false">Close / 關閉</a-button>
+            </div>
+        </a-form>
+    </div>
+</a-drawer>
+
         <!-- Previous order drawer -->
-        <a-drawer title="Orders" :visible="orderIsOpen" @close="orderIsOpen = false" with="400">
-            Your previous Orders
+        <a-drawer title="Orders / 訂單" :visible="orderIsOpen" @close="orderIsOpen = false" width="400">
+            <h2 class="text-lg font-semibold">Your Previous Orders / 您的歷史訂單</h2>
             <div class="p-4">
-                <h2 class="text-lg font-semibold">Your Previous Orders</h2>
+                
                 <div v-for="(order, index) in user.orders" :key="index" class="mb-4">
-                    <h3 class="font-bold">Order #{{ index + 1 }} @{{  formatDate(order.created_at) }}</h3>
+                    <h3 class="font-bold">Order / 訂單 #{{ index + 1 }} @{{ formatDate(order.created_at) }} </h3>
                     <div v-for="item in order.items" :key="item.id" class="flex justify-between py-2">
                         <span>{{ item.name }}</span>
-                        <span>{{ item.count }} x ${{ item.price }}</span>
+                        <span>{{ item.qty }} x ${{ item.price }}</span>
                     </div>
                     <div class="font-bold float-right">
-                        Total: ${{ order.amount }}
+                        Total / 總計: ${{ order.amount }}
                     </div>
                 </div>
             </div>
         </a-drawer>
 
-        <!-- Checkout drawer -->
-        <a-drawer title="Cart Items" :visible="selectedIsOpen" @close="selectedIsOpen = false" width="400">
-            <div v-if="cartItems.length==0">
-                <p>You don't have any item selected.</p>
-                <a-button class="ml-2" @click="selectedIsOpen = false">Close</a-button>
-            </div>
-            <div v-else>
-                <ul>
-                    <li v-for="item in cartItems" :key="item.id" class="flex items-center justify-between mb-2">
-                        <span class="w-1/2 truncate">{{ item.name }}</span>
-                        <div class="flex items-center space-x-2">
-                            <a-button @click="decreaseCount(item)" size="small">-</a-button>
-                            <span>{{ item.count }}</span>
-                            <a-button @click="increaseCount(item)" size="small">+</a-button>
-                        </div>
-                        <span>${{ (item.price * item.count).toFixed(2) }}</span>
-                    </li>
-                </ul>
-                <!-- Order Form -->
-                <a-form :model="orderForm" :rules="rules" @submit.prevent="handleOrder" class="mt-4">
-                    <a-form-item label="Faculty" name="faculty">
-                        <a-select v-model:value="orderForm.faculty" placeholder="Select your faculty">
-                            <a-select-option value="science">Science</a-select-option>
-                            <a-select-option value="arts">Arts</a-select-option>
-                            <a-select-option value="engineering">Engineering</a-select-option>
-                        </a-select>
-                    </a-form-item>
-
-                    <a-form-item label="Degree" name="degree">
-                        <a-select v-model:value="orderForm.degree" placeholder="Select your degree">
-                            <a-select-option value="bachelor">Bachelor</a-select-option>
-                            <a-select-option value="master">Master</a-select-option>
-                            <a-select-option value="phd">PhD</a-select-option>
-                        </a-select>
-                    </a-form-item>
-
-                    <a-form-item label="Contact Phone Number" name="phone">
-                        <a-input type="input" v-model:value="orderForm.phone" placeholder="Enter your phone number" />
-                    </a-form-item>
-
-                    <a-form-item label="Personal Email (optional)" name="email">
-                        <a-input type="input" v-model:value="orderForm.email" placeholder="Enter your email" />
-                    </a-form-item>
-
-                    <div class="flex justify-end mt-4">
-                        <a-button class="ml-2" @click="selectedIsOpen = false">Close</a-button>
-                        <a-button type="primary" html-type="submit">Pay</a-button>
-                    </div>
-                </a-form>
-            </div>
-
-        </a-drawer>
     </BlankLayout>
 </template>
 
@@ -238,8 +243,6 @@ export default {
                 },
             });
         },
-
-
 
         triggerAnimation() {
             const cartIcon = this.cartIconRef;

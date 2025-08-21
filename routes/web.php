@@ -28,14 +28,14 @@ Route::get('/', function () {
 })->name('home');
 
 Route::prefix('souvenir')->group(function(){
+    Route::get('/',[App\Http\Controllers\Souvenir\OrderController::class,'index'])->name('souvenir');
     Route::get('/login',[App\Http\Controllers\Souvenir\LoginController::class,'login'])->name('souvenir.login');
     Route::post('/login',[App\Http\Controllers\Souvenir\LoginController::class,'checker'])->name('souvenir.loginChecker');
     Route::post('/logout',[App\Http\Controllers\Souvenir\LoginController::class,'logout'])->name('souvenir.logout');
-    Route::get('/',[App\Http\Controllers\Souvenir\OrderController::class,'index'])->name('souvenir');
     Route::post('checkout',[App\Http\Controllers\Souvenir\OrderController::class,'checkout'])->name('souvenir.checkout');
     Route::get('checkout_order',[App\Http\Controllers\Souvenir\OrderController::class,'checkoutOrder'])->name('souvenir.checkoutOrder');
     Route::get('pickup_code',[App\Http\Controllers\Souvenir\OrderController::class,'pickupCode'])->name('souvenir.pickupCode');
-    Route::post('to_pay/{souvenirUser}/',[App\Http\Controllers\Souvenir\PaymentController::class,'toPay'])->name('souvenir.toPay');
+    Route::get('payment/confirm',[App\Http\Controllers\Souvenir\PaymentController::class,'confirm'])->name('souvenir.payment.confirm');
     Route::match(['get','post'],'payment/notify',[App\Http\Controllers\Souvenir\PaymentController::class,'notify'])->name('souvenir.payment.notify');
     Route::match(['get','post'],'payment/result',[App\Http\Controllers\Souvenir\PaymentController::class,'result'])->name('souvenir.payment.result');
 

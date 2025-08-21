@@ -9,43 +9,47 @@
         </template>
 
 
-    <div class="py-0">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-            <div v-if="cart.cartItems.length==0">
-                You don't have any item selected.
-            </div>
-            <ul v-else class="w-96">
-                <li v-for="item in cart.cartItems" :key="item.id" class="flex items-center justify-between mb-2">
-                    <span class="w-1/2 truncate">{{ item.name }}</span>
-                    <span class="w-1/2 truncate">{{ item.count }}</span>
-                    <span>${{ (item.price * item.count).toFixed(2) }}</span>
+    <div class="py-6">
+            <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white shadow-md rounded-lg p-6">
+                    <div v-if="order.items.length === 0" class="text-center text-red-600">
+                        <p class="text-lg">You don't have any items selected. / 你沒有選擇任何項目。</p>
+                    </div>
+                    <ul v-else class="divide-y divide-gray-200">
+                        <li v-for="item in order.items" :key="item.id" class="flex items-center justify-between py-4">
+                            <span class="w-1/2 text-gray-700 font-medium truncate">{{ item.name }}</span>
+                            <span class="w-1/4 text-gray-600 truncate">Qty: {{ item.qty }} / 數量: {{ item.qty }}</span>
+                            <span class="w-1/4 text-gray-800 font-semibold">${{ (item.amount).toFixed(2) }} / ${{ (item.amount).toFixed(2) }}</span>
+                        </li>
+                    </ul>
 
-                </li>
-            </ul>
+                    <div class="mt-6">
+                        <h3 class="font-semibold text-lg text-gray-800">
+                            Contact Info: / 聯絡資訊：
+                        </h3>
+                            <div class="mt-2">
+                                <div><strong>NetId / 學生號碼: </strong>{{ user.netid }}</div>
+                                <div><strong>Faculty / 學院: </strong>{{ order.form_meta.faculty }}</div>
+                                <div><strong>Degree / 學位: </strong>{{ order.form_meta.degree }}</div>
+                                <div><strong>Phone / 電話: </strong>{{ order.form_meta.phone }}</div>
+                                <div><strong>Email / 電郵: </strong>{{ order.form_meta.email }}</div>
+                            </div>
+                    </div>
 
-            <div>
-                <div>Contact Info:</div>
-                <div><strong>NetId: </strong>{{ cart.netid }}</div>
-                <div><strong>Faculty: </strong>{{ cart.faculty }}</div>
-                <div><strong>Degree: </strong>{{ cart.degree }}</div>
-                <div><strong>Phone: </strong>{{ cart.phone }}</div>
-                <div><strong>email: </strong>{{ cart.email }}</div>
-            </div>
-
-            <form method="post" action="https://epay.mpu.edu.mo/bocpaytest/ipm/cashier">
-                <div v-for="(value, field) in payment">
-                    {{ field }}: {{ value }}
-                    <input :name="field" :value="payment[field]" /><br>
+                    <form method="get" :action="route('souvenir.payment.confirm')" class="mt-6 flex justify-between">
+                        <input type="hidden" name="order_uuid" :value="order.uuid" />
+                        <div class="flex justify-between w-full">
+                            <a-button :href="route('souvenir')" class="bg-gray-300 text-gray-800 hover:bg-gray-400 w-full mr-2">
+                                Back to Main Page / 返回主頁
+                            </a-button>
+                            <a-button type="submit" class="bg-blue-600 text-white hover:bg-blue-700 w-full">
+                                Confirm to Pay / 確認付款
+                            </a-button>
+                        </div>
+                    </form>
                 </div>
-                <div class="text-center">
-                    <a-button type="primary" html-type="submit" class="mt-5">Confirm to Pay</a-button>
-                </div>
-            </form>
-
             </div>
         </div>
-    </div>
 
     </BlankLayout>
 </template>
@@ -66,46 +70,17 @@ export default {
             type: Object,
             required: false,
         },
-        cart: {
+        order: {
             type: Object,
             required: true,
         },
-        payment:{
-            type: Array,
-            require: true
-        }
-        // cartItems: {
-        //     type: Array,
-        //     required: true,
-        // },
     },
 
     data() {
         return {
-            cartItemCount: 0,
-            cartIconRef: null,
-            selectedIsOpen: false,
-            orderIsOpen: false,
-            orderForm: {
-                faculty: '',
-                degree: '',
-                phone: '',
-                email: '',
-            },
-            rules: {
-                netid: [{ required: true, message: 'Please enter your NetID' }],
-                password: [{ required: true, message: 'Please enter your password' }],
-                faculty: [{ required: true, message: 'Please select your faculty' }],
-                degree: [{ required: true, message: 'Please select your degree' }],
-                phone: [{ required: true, message: 'Please enter your phone number' }],
-                email: [], // Optional
-            },
         };
     },
     methods: {
-        formatDate(dateString) {
-            return dayjs(dateString).format('YYYY-MM-DD H:s');
-        },
         login(){
             this.$inertia.get(route('souvenir.login'))
         },
@@ -121,32 +96,11 @@ export default {
                 },
             });
         },
-        triggerAnimation() {
-            const cartIcon = this.cartIconRef;
-            if (cartIcon) {
-                cartIcon.classList.add('drop-animation');
-                setTimeout(() => {
-                    cartIcon.classList.remove('drop-animation');
-                }, 300);
-            }
-        },
+
     },
 };
 </script>
 
 <style scoped>
-@keyframes drop-animation {
-    0% {
-        transform: translateY(0);
-    }
-    100% {
-        transform: translateY(20px);
-    }
-}
-
-.drop-animation {
-    animation: drop-animation 0.3s forwards;
-}
-
 /* Additional styling */
 </style>

@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http; 
 use App\Models\SouvenirUser;
 use App\Models\SouvenirPayment;
+use App\Models\SouvenirOrder;
 
 class OrderController extends Controller
 {
@@ -20,8 +21,11 @@ class OrderController extends Controller
      */
     public function index()
     {
+        $user=session("souvenirUser");
         return Inertia::render("Souvenir/Order",[
-            "user"=>session("souvenirUser")?->load('orders'),
+            "user"=>$user->load(['orders' => function ($query) {
+                        $query->where('status', 3);
+                    }]),
             "products"=>Souvenir::all()
         ]);
     }
@@ -105,13 +109,13 @@ class OrderController extends Controller
         $cart['client_ip']=$request->getClientIp();
         $order=$this->storeToOrder(session('souvenirUser'), $cart);
 
-        $paymentData=$this->getPaymentData(session('souvenirUser'),$order, $cart['client_ip']);
-        $order->payment_meta=json_encode($paymentData);
-        $order->save();
+        //$paymentData=$this->writePaymentData(session('souvenirUser'), $order, $cart['client_ip']);
+        //$order->payment_meta=json_encode($paymentData);
+        //$order->save();
         return Inertia::render("Souvenir/Checkout",[
-            "user"=>session("")?->load(""),
-            "cart"=>$cart,
-            "payment"=>$paymentData,
+            "user"=>session("souvenirUser"),
+            "order"=>$order,
+            //"payment"=>$paymentData,
         ]);
     }
     
@@ -137,7 +141,6 @@ class OrderController extends Controller
                 'items'=>$orderItems,
                 'amount'=>$totalAmount,
             ]);
-
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->route('souvenir');
             // Handle the exception (e.g., log it, return a message, etc.)
@@ -146,7 +149,7 @@ class OrderController extends Controller
         return $order;
     }
 
-    private function getPaymentData(SouvenirUser $souvenirUser, $order, $clientIp){
+    private function writePaymentData(SouvenirUser $souvenirUser, $order, $clientIp){
         $systemCode=env('BOC_SOUVENIR_CODE','DAESP');
         
         $mercOrderNo=$order->id.'-'.time().'-'.rand(1000,9999);

@@ -23,10 +23,8 @@ return new class extends Migration
             $table->char('currency',3)->nullable();
             $table->integer('amount')->nullable();
             $table->text('payment_method')->nullable();
-            $table->text('payment_notice')->nullable();
-            $table->string('payment_result')->nullable();
             $table->string('payment_status')->nullable();
-            $table->string('status')->nullable();
+            $table->integer('status')->nullable();
             $table->timestamps();
         });
     }
