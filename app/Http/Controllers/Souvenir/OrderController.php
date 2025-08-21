@@ -23,7 +23,7 @@ class OrderController extends Controller
     {
         $user=session("souvenirUser");
         return Inertia::render("Souvenir/Order",[
-            "user"=>$user->load(['orders' => function ($query) {
+            "user"=>$user?->load(['orders' => function ($query) {
                         $query->where('status', 3);
                     }]),
             "products"=>Souvenir::all()
