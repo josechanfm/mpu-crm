@@ -39,12 +39,12 @@
                     <form method="get" :action="route('souvenir.payment.confirm')" class="mt-6 flex justify-between">
                         <input type="hidden" name="order_uuid" :value="order.uuid" />
                         <div class="flex justify-between w-full">
-                            <a-button :href="route('souvenir')" class="bg-gray-300 text-gray-800 hover:bg-gray-400 w-full mr-2">
+                            <button :href="route('souvenir')" class="bg-gray-300 text-gray-800 hover:bg-gray-400 w-full mr-2">
                                 Back to Main Page / 返回主頁
-                            </a-button>
-                            <a-button type="submit" class="bg-blue-600 text-white hover:bg-blue-700 w-full">
+                            </button>
+                            <button type="submit" class="bg-blue-600 text-white hover:bg-blue-700 w-full">
                                 Confirm to Pay / 確認付款
-                            </a-button>
+                            </button>
                         </div>
                     </form>
                 </div>
