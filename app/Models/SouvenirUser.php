@@ -9,6 +9,8 @@ class SouvenirUser extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['netid', 'email', 'phone', 'faculty_code', 'degree_code', 'can_buy', 'remark'];
+
     public function orders(){
         return $this->hasMany(SouvenirOrder::class);
     }

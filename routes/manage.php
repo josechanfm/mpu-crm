@@ -224,7 +224,7 @@ Route::group([
 ], function () {
     Route::get('/',[App\Http\Controllers\Department\Dae\DashboardController::class,'index'])->name('dae.dashboard');
     Route::resource('souvenirs',App\Http\Controllers\Department\Dae\SouvenirController::class)->names('dae.souvenirs');
-    Route::resource('orders',App\Http\Controllers\Department\Dae\OrderController::class)->names('dae.orders');
+    Route::resource('souvenir/orders',App\Http\Controllers\Department\Dae\OrderController::class)->names('dae.souvenir.orders');
     Route::post('souvenir/remove_image/{souvenir}/{imageId}',[App\Http\Controllers\Department\Dae\SouvenirController::class,'removeImage'])->name('dae.souvenir.removeImage');
     Route::get('souvenir/pickup',[App\Http\Controllers\Department\Dae\PickupController::class,'index'])->name('dae.souvenir.pickup');
     Route::get('souvenir/pickup_code',[App\Http\Controllers\Department\Dae\PickupController::class,'pickupCode'])->name('dae.souvenir.pickupCode');

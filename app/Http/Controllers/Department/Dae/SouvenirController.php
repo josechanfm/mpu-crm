@@ -22,10 +22,32 @@ class SouvenirController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        //dd($request->all());
+        if ($request->has('sort_column') && !is_null($request->sort_column)) {
+            $souvenirs = Souvenir::orderBy($request->sort_column, $request->sort_order);
+        }else{
+            $souvenirs = Souvenir::orderBy('created_at', 'desc');
+        }
+
+        if ($request->has('search_column') && !is_null($request->search_column) && $request->has('search_text') && !is_null($request->search_text)) {
+            $souvenirs = $souvenirs->where($request->search_column,'LIKE', '%'.$request->search_text.'%');
+        }
+
+        if ($request->has('show_all') && $request->show_all && $request->show_all == 'true') {
+        }else{
+           $souvenirs = $souvenirs->where('is_available', true);
+        }
+
+        // if(isset($souvenirs)){
+        //     $souvenirs=$souvenirs->paginate($request->per_page?? 2);
+        // }else{
+        //     $souvenirs = Souvenir::paginate($request->per_page ?? 2);
+        // }
+        // dd($request->sort_column, $request->sort_order, $request->search_column, $request->search_text);
         return Inertia::render("Department/Dae/Souvenirs",[
-            'souvenirs'=>Souvenir::all(),
+            'souvenirs'=>$souvenirs=$souvenirs->paginate($request->per_page?? 2),
         ]);
     }
 
@@ -49,7 +71,6 @@ class SouvenirController extends Controller
     {
         $this->validate($request, [
             'name'=> 'required',
-            'qty'=> 'required',
             'stock'=>'required',
             'price'=> 'required'
         ]);
@@ -104,7 +125,6 @@ class SouvenirController extends Controller
         //dd($request->all(), $request->file());
         $this->validate($request, [
             'name'=> 'required',
-            'qty'=> 'required',
             'stock'=>'required',
             'price'=> 'required'
         ]);

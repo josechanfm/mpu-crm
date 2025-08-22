@@ -17,13 +17,13 @@ return new class extends Migration
             $table->id();
             $table->string('name'); 
             $table->string('description')->nullable(); 
-            $table->integer('qty')->default(500);
             $table->integer('stock')->default(500);
             $table->integer('price')->default(100); 
             $table->integer('quota')->default(3);
-            $table->boolean('available')->default(false); 
+            $table->boolean('is_available')->default(false); 
             $table->string('thumbnail')->nullable();
             $table->text('images')->nullable();
+            $table->text('remark')->nullable();
             $table->timestamps();
         });
     }

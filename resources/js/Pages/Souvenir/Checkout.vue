@@ -19,10 +19,10 @@
                         <li v-for="item in order.items" :key="item.id" class="flex items-center justify-between py-4">
                             <span class="w-1/2 text-gray-700 font-medium truncate">{{ item.name }}</span>
                             <span class="w-1/4 text-gray-600 truncate">Qty: {{ item.qty }} / 數量: {{ item.qty }}</span>
-                            <span class="w-1/4 text-gray-800 font-semibold">${{ (item.amount).toFixed(2) }} / ${{ (item.amount).toFixed(2) }}</span>
+                            <span class="w-1/8 text-gray-800 font-semibold">${{ (item.amount).toFixed(2) }} </span>
                         </li>
                     </ul>
-
+                    <div class="font-bold float-right">Total / 總計: ${{ order.amount.toFixed(2) }}</div>
                     <div class="mt-6">
                         <h3 class="font-semibold text-lg text-gray-800">
                             Contact Info: / 聯絡資訊：

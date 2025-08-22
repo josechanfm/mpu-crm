@@ -17,7 +17,8 @@
                     <div>{{ responseData.user.phone }}</div>
                     <hr>
                     <div v-for="order in responseData.user.orders">
-                        <div>{{ order.created_at }}</div>
+                        <div>Order # / 單號：{{ String(order.id).padStart(6,'0') }}</div>
+                        <div>Date / 日期：{{ order.created_at }}</div>
                         <div>
                             <span v-if="order.status==null" class="text-yellow-500">未支付</span>
                             <span v-else-if="order.status==0" class="text-red-500">支付失敗</span>
@@ -34,11 +35,8 @@
                         <a-button type="primary" @click="pickupConfirm" :disabled="responseData.user.orders.find(p=>p.status==2)==null">Confirm</a-button>
                         <a-button @click="clearData">Clear</a-button>
                     </div>
-                    
                 </div>
             </div>
-                
-
         </div>
     </WebLayout>
 </template>

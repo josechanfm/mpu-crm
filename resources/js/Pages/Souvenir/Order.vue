@@ -27,31 +27,27 @@
             </div>
         </div>
 
-        <div class="py-0">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                <div class="grid gap-6">
-                <div v-for="product in products" :key="product.id" class="flex bg-gray-100 rounded-lg p-4">
-                    <div class="flex-shrink-0 w-64">
+<div class="py-0">
+        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-2">
+            <div v-for="product in products" :key="product.id" class="flex flex-col md:flex-row bg-gray-100 rounded-lg mt-5">
+                <div class="flex-shrink-0 w-full md:w-64 md:h-48">
                     <a-carousel :autoplay="true" dots>
                         <div v-for="(image, index) in product.images" :key="index">
-                        <img :src="image" alt="Product Image" class="object-cover w-full h-full rounded-md" />
+                            <img :src="image" alt="Product Image" class="object-cover w-full h-full rounded-md" />
                         </div>
                     </a-carousel>
-                    </div>
-                    <div class="flex-grow pl-4">
+                </div>
+                <div class="flex-grow mt-0 md:mt-0 md:pl-4">
                     <h3 class="mt-2 text-lg font-semibold">{{ product.name }}</h3>
-                    <p class="mt-1 text-gray-600">{{ product.description }}</p>
+                    <p class="mt-1 text-gray-600" v-html="product.description"/>
                     <p class="mt-2 font-bold">${{ product.price.toFixed(2) }}</p>
-                    <a-button type="primary" @click="addToCart(product)" :disabled="user == null">
+                    <a-button type="primary" @click="addToCart(product)" :disabled="user == null" class="mt-2">
                         Add to cart / 加入購物車
                     </a-button>
-                    </div>
                 </div>
-                </div>
-            </div>
             </div>
         </div>
+</div>
 
 <!-- Checkout drawer -->
 <a-drawer title="Cart Items / 購物車" :visible="selectedIsOpen" @close="selectedIsOpen = false" width="400">
@@ -66,11 +62,12 @@
                 <span class="w-1/2 truncate">{{ item.name }}</span>
                 <div class="flex items-center space-x-2">
                     <a-button @click="decreaseCount(item)" size="small">-</a-button>
-                    <span>{{ item.count }}</span>
+                    <span>{{ item.qty }}</span>
                     <a-button @click="increaseCount(item)" size="small">+</a-button>
                 </div>
-                <span>${{ (item.price * item.count).toFixed(2) }}</span>
+                <span>${{ (item.price * item.qty).toFixed(2) }}</span>
             </li>
+            
         </ul>
         <!-- Order Form -->
         <a-form :model="orderForm" layout="vertical" :rules="rules" @submit.prevent="handleOrder" class="mt-4">
@@ -196,30 +193,30 @@ export default {
             const existingItem = this.cartItems.find(item => item.id === product.id);
 
             if (existingItem) {
-                if (existingItem.count < 3) {
-                    existingItem.count += 1;
+                if (existingItem.qty < 3) {
+                    existingItem.qty += 1;
                 }
             } else {
-                this.cartItems.push({ ...product, count: 1 });
+                this.cartItems.push({ id: product.id, name: product.name, price:product.price, quota:product.quota, qty: 1 });
             }
 
-            this.cartItemCount = this.cartItems.reduce((total, item) => total + item.count, 0);
+            this.cartItemCount = this.cartItems.reduce((total, item) => total + item.qty, 0);
             this.triggerAnimation();
             console.log(`Added ${product.name} to cart`);
         },
         increaseCount(item) {
-            if (item.count < item.quota) {
-                item.count += 1;
+            if (item.qty < item.quota) {
+                item.qty += 1;
             }
         },
         decreaseCount(item) {
-            if (item.count > 1) {
-                item.count -= 1;
+            if (item.qty > 1) {
+                item.qty -= 1;
             } else {
                 this.cartItems = this.cartItems.filter(cartItem => cartItem.id !== item.id);
             }
 
-            this.cartItemCount = this.cartItems.reduce((total, item) => total + item.count, 0);
+            this.cartItemCount = this.cartItems.reduce((total, item) => total + item.qty, 0);
         },
         handleOrder() {
             // Handle the order logic here

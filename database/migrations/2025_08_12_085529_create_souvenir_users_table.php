@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('faculty_code')->nullable();
             $table->string('degree_code')->nullable();
             $table->text('remark')->nullable();
+            $table->boolean('can_buy')->default(false);
             $table->timestamps();
         });
     }

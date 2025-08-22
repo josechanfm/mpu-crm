@@ -26,7 +26,9 @@ class OrderController extends Controller
             "user"=>$user?->load(['orders' => function ($query) {
                         $query->where('status', 3);
                     }]),
-            "products"=>Souvenir::all()
+            "products"=>Souvenir::where('is_available', true)
+                ->orderBy('created_at', 'desc')
+                ->get()
         ]);
     }
 
@@ -101,7 +103,6 @@ class OrderController extends Controller
     }
     public function checkoutOrder(Request $request){
         $cart=session('cart');
-
         if($cart==null){
             return redirect()->route('souvenir');
         }
@@ -119,25 +120,24 @@ class OrderController extends Controller
         ]);
     }
     
-    private function storeToOrder($souvenirUser, $params){
-        
+    private function storeToOrder($souvenirUser, $cart){
         $orderItems=[];
         $totalAmount=0;
-        foreach($params['cartItems'] as $item){
+        foreach($cart['cartItems'] as $item){
             $souvenir=Souvenir::find($item['id']);
             $orderItems[]=[
                 'souvenir_id'=> $souvenir->id,
                 'name'=> $souvenir->name,
-                'qty'=>$item['count'],
+                'qty'=>$item['qty'],
                 'price'=>$souvenir->price,
-                'amount'=>$souvenir->price*$item['count'],
+                'amount'=>$souvenir->price*$item['qty'],
             ];
-            $totalAmount+=$souvenir->price*$item['count'];
+            $totalAmount+=$souvenir->price*$item['qty'];
         }
         try {
             $order=$souvenirUser->orders()->firstOrCreate([
                 'uuid'=>Str::uuid(),
-                'form_meta'=>$params,
+                'form_meta'=>$cart,
                 'items'=>$orderItems,
                 'amount'=>$totalAmount,
             ]);

@@ -9,6 +9,6 @@ class Souvenir extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','description','thumbnail','qty','stock','price','quota','available','thumbnail','images'];
-    protected $casts = ['images'=>'array'];
+    protected $fillable = ['name','description','thumbnail','stock','is_available','price','quota','thumbnail','images','remark'];
+    protected $casts = ['images'=>'array','is_available'=>'boolean'];
 }
