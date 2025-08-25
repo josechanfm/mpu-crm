@@ -16,9 +16,9 @@ class SetLocale
     public function handle($request, Closure $next)
     {
         // Determine the locale based on the authenticated user (if any)
-        if (Auth::guard('admin_web')->check()) {
-            // User is authenticated with the admin_web guard
-            $user = Auth::guard('admin_web')->user();
+        if (Auth::guard('admin')->check()) {
+            // User is authenticated with the admin guard
+            $user = Auth::guard('admin')->user();
             if ($user && $user->locale) {
                 $locale = $user->locale; // Get locale from user object
             } else {

@@ -34,7 +34,7 @@ class AuthServiceProvider extends ServiceProvider
         //     // dd(config('fortify.guard'));
         //     // dd(config('fortify.username'));
         //     // dd($request->all());
-        //     if(config('fortify.guard')=='admin_web' || config('fortify.guard')=='admin_local'){
+        //     if(config('fortify.guard')=='admin' || config('fortify.guard')=='admin_local'){
         //         if($request->local){
         //             config(['fortify.username' => 'username']);
         //             config(['fortify.guard' => 'admin_local']);
@@ -45,7 +45,7 @@ class AuthServiceProvider extends ServiceProvider
         //             ]);
         //         }else{
         //                 config(['fortify.username' => 'username']);
-        //                 config(['fortify.guard' => 'admin_web']);
+        //                 config(['fortify.guard' => 'admin']);
         //                 Auth::shouldUse(config('fortify.guard'));
         //                 $validated = Auth::validate([
         //                     //'mail' => $request->username,

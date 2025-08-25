@@ -1,5 +1,5 @@
 <template>
-    <WebLayout title="工作項目" >
+    <DepartmentLayout title="工作項目" >
         <div class="mx-auto pt-5">
             <div class="flex-auto pb-3 text-right">
                 <a-button @click="createRecord" class="ant-btn ant-btn-primary">{{ $t('create') }}</a-button>
@@ -147,11 +147,11 @@
       </template>
     </a-modal>
     <!-- Modal End-->
-    </WebLayout>
+    </DepartmentLayout>
 </template>
 
 <script>
-import WebLayout from "@/Layouts/WebLayout.vue";
+import DepartmentLayout from "@/Layouts/DepartmentLayout.vue";
 import {
     UploadOutlined,
     LoadingOutlined,
@@ -168,7 +168,7 @@ import axios from "axios";
 
 export default {
     components: {
-        WebLayout,
+        DepartmentLayout,
         UploadOutlined, LoadingOutlined, PlusOutlined, DeleteOutlined,
         RestFilled,
         quillEditor,

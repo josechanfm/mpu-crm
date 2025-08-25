@@ -46,9 +46,9 @@ Route::group([
 Route::group([
     'prefix' => '/master',
     'middleware' => [
-        'auth:sanctum',
-        'checkInternalIP',
-        'role:master'
+        // 'auth:sanctum',
+        // 'checkInternalIP',
+        //'role:admin|master'
     ]
 ], function () {
     Route::get('/',[App\Http\Controllers\Master\DashboardController::class,'index'])->name('master');
@@ -261,7 +261,7 @@ Route::group([
 
 
 Route::middleware([
-    'auth:admin_web',
+    'auth:admin',
     config('jetstream.auth_session'),
     'role:FLT',
     'checkIneternalIP'

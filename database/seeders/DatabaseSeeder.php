@@ -21,11 +21,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $roleMaster=Role::create(['name'=>'master','guard_name' => 'admin_web']);
-        $roleAdmin=Role::create(['name'=>'admin','guard_name' => 'admin_web']);
-        $roleDepartment=Role::create(['name'=>'department','guard_name' => 'admin_web']);
-        $rolePES=Role::create(['name'=>'PES','guard_name' => 'admin_web']);
-        $rolePES=Role::create(['name'=>'DAMIA','guard_name' => 'admin_web']);
+        $roleMaster=Role::create(['name'=>'master','guard_name' => 'admin']);
+        $roleAdmin=Role::create(['name'=>'admin','guard_name' => 'admin']);
+        $roleDepartment=Role::create(['name'=>'department','guard_name' => 'admin']);
+        $rolePES=Role::create(['name'=>'PES','guard_name' => 'admin']);
+        $rolePES=Role::create(['name'=>'DAMIA','guard_name' => 'admin']);
 
         $roleMember=Role::create(['name'=>'member','guard_name' => 'web']);
         

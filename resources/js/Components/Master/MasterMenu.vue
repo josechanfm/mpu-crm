@@ -47,6 +47,14 @@
             <inertia-link :href="route('master.articles.index')">Articles</inertia-link>
           </span>
         </a-menu-item>
+        <a-menu-item key="5">
+          <template #icon>
+            <InboxOutlined />
+          </template>
+          <span>
+            <inertia-link @click="logout">Logout</inertia-link>
+          </span>
+        </a-menu-item>
 
         <a-sub-menu key="sub1">
           <template #icon>
@@ -74,39 +82,40 @@
     </div>
   </template>
   <script>
-  import { defineComponent, reactive, toRefs, watch } from 'vue';
-  import { MenuFoldOutlined, MenuUnfoldOutlined, PieChartOutlined, MailOutlined, DesktopOutlined, InboxOutlined, AppstoreOutlined } from '@ant-design/icons-vue';
-  
-  export default defineComponent({
-    components: {
-      MenuFoldOutlined,
-      MenuUnfoldOutlined,
-      PieChartOutlined,
-      MailOutlined,
-      DesktopOutlined,
-      InboxOutlined,
-      AppstoreOutlined,
+import { MenuFoldOutlined, MenuUnfoldOutlined, PieChartOutlined, MailOutlined, DesktopOutlined, InboxOutlined, AppstoreOutlined } from '@ant-design/icons-vue';
+
+export default {
+  components: {
+    MenuFoldOutlined,
+    MenuUnfoldOutlined,
+    PieChartOutlined,
+    MailOutlined,
+    DesktopOutlined,
+    InboxOutlined,
+    AppstoreOutlined,
+  },
+  data() {
+    return {
+      collapsed: false,
+      selectedKeys: ['1'],
+      openKeys: ['sub1'],
+      preOpenKeys: ['sub1'],
+    };
+  },
+  watch: {
+    openKeys(newVal, oldVal) {
+      this.preOpenKeys = oldVal;
     },
-    props: [],
-    setup() {
-      const state = reactive({
-        collapsed: false,
-        selectedKeys: ['1'],
-        openKeys: ['sub1'],
-        preOpenKeys: ['sub1'],
-      });
-      watch(() => state.openKeys, (_val, oldVal) => {
-        state.preOpenKeys = oldVal;
-      });
-      const toggleCollapsed = () => {
-        state.collapsed = !state.collapsed;
-        state.openKeys = state.collapsed ? [] : state.preOpenKeys;
-        console.log(state.collapsed.value);
-      };
-      return {
-        ...toRefs(state),
-        toggleCollapsed,
-      };
+  },
+  methods: {
+    toggleCollapsed() {
+      this.collapsed = !this.collapsed;
+      this.openKeys = this.collapsed ? [] : this.preOpenKeys;
+      console.log(this.collapsed);
     },
-  });
-  </script>
+    logout(){
+      this.$inertia.post(route('staff.logout'));
+    }
+  },
+};
+</script>

@@ -13,7 +13,7 @@ class DashboardController extends Controller
     public function index(){
         // dd(Department::all());
         // dd(AdminUser::with('departments')->get());
-        // dd('master');
+         //dd('master', auth(), auth()->user());
         return Inertia::render('Master/Dashboard',[
             'adminUsers'=>AdminUser::with('departments')->get(),
             'departments'=>Department::all()

@@ -1,5 +1,5 @@
 <template>
-    <WebLayout title="學生事務處" :department="department" :breadcrumb="breadcrumb">
+    <AdminLayout title="學生事務處" :department="department" :breadcrumb="breadcrumb">
         <a-typography-title :level="3">{{ department.name_zh }}</a-typography-title>
         <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
@@ -24,16 +24,16 @@
                 </div>
             </div>
         </div>
-    </WebLayout>
+    </AdminLayout>
 </template>
 
 <script>
-import WebLayout from '@/Layouts/WebLayout.vue';
+import AdminLayout from '@/Layouts/AdminLayout.vue';
 
 
 export default {
     components: {
-        WebLayout,
+        AdminLayout,
     },
     props: ['department'],
     data() {

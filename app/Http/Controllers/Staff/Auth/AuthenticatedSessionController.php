@@ -47,11 +47,11 @@ class AuthenticatedSessionController extends Controller
     {
         $credentials = $request->only('username', 'password');
 
-        $guard = $request->local ? 'admin_local' : 'admin_web';
+        $guard = $request->local ? 'admin_local' : 'admin';
         Auth::shouldUse($guard);
         $request->session()->flush();
 
-        if ($guard === 'admin_web') {
+        if ($guard === 'admin') {
             // Attempt LDAP authentication using LdapRecord
             dd($this->attemptLdapAuthentication($guard, $credentials));
             if ($this->attemptLdapAuthentication($guard, $credentials)) {
@@ -91,7 +91,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('admin_web')->logout();
+        Auth::guard('admin')->logout();
 
         $request->session()->invalidate();
 
@@ -100,7 +100,7 @@ class AuthenticatedSessionController extends Controller
         return redirect('/');
     }
     public function logout(Request $request) {
-        Auth::guard('admin_web')->logout();
+        Auth::guard('admin')->logout();
 
         $request->session()->invalidate();
 
