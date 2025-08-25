@@ -64,7 +64,7 @@ class AdminLoginController extends Controller
    
                 //$connection = Container::getConnection('default');
                 //dd($connection, $credentials, Auth::guard('ldap')->attempt($credentials));
-                dd($credentials, Auth::guard('ldap')->attempt($credentials));
+                //dd($credentials, Auth::guard('ldap')->attempt($credentials));
                 if (Auth::guard('ldap')->attempt($credentials)) {
                     //dd('ldap', Auth::guard('ldap')->user());
                     // If you want to synchronize LDAP user with local database
