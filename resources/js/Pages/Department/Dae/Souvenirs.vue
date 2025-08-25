@@ -93,11 +93,10 @@
             <a-input type="inpuut" v-model:value="modal.data.name" />
           </a-form-item>
           <a-form-item label="Description" name="description" >
-            <!-- <quill-editor
+            <quill-editor
                 v-model:value="modal.data.description"
                 style="min-height: 200px"
-              /> -->
-
+            />
             <a-textarea v-model:value="modal.data.description" />
           </a-form-item>
           <a-form-item label="Stock" name="stock" >
