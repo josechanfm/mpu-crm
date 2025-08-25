@@ -10,6 +10,7 @@ use App\Models\Department;
 class DashboardController extends Controller
 {
     public function index(){
+        //dd(session('department'),auth()->user());
         if(session('department')){
             return Inertia::render('Department/Dae/Dashboard',[
                 'department'=>session('department')

@@ -79,6 +79,16 @@
           </inertia-link>
         </a-menu-item>
       </a-sub-menu>
+      <a-menu-item key="personnel" v-if="is('DAE | admin | master')">
+        <template #icon>
+          <InboxOutlined />
+        </template>
+        <span>
+          <inertia-link :href="route('dae.dashboard')">
+            學生事務處
+          </inertia-link>
+        </span>
+      </a-menu-item>
         
       <a-menu-item key="forms">
         <template #icon>

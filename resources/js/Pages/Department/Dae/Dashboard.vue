@@ -1,5 +1,5 @@
 <template>
-    <AdminLayout title="學生事務處" :department="department" :breadcrumb="breadcrumb">
+    <DepartmentLayout title="學生事務處" :department="department" :breadcrumb="breadcrumb">
         <a-typography-title :level="3">{{ department.name_zh }}</a-typography-title>
         <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
@@ -13,7 +13,7 @@
                     </inertia-link>
                 </div>
                 <div>
-                    <inertia-link :href="route('dae.orders.index')">
+                    <inertia-link :href="route('dae.souvenir.orders.index')">
                         <a-button>Order</a-button>
                     </inertia-link>
                 </div>
@@ -24,16 +24,16 @@
                 </div>
             </div>
         </div>
-    </AdminLayout>
+    </DepartmentLayout>
 </template>
 
 <script>
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
 
 
 export default {
     components: {
-        AdminLayout,
+        DepartmentLayout,
     },
     props: ['department'],
     data() {

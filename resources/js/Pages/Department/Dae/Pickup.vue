@@ -1,8 +1,14 @@
 <template>
     <WebLayout title="學生事務處">
-        <a-typography-title :level="3">{{ department?.name_zh }}</a-typography-title>
-        <div class="container mx-auto pt-5">
-            <div class="bg-white relative shadow rounded-lg overflow-x-auto p-5">
+        <inertia-link :href="route('dae.dashboard')" class="float-right">
+            <a-button type="primary" danger ghost>返回學生事務處首頁</a-button>
+        </inertia-link>
+        
+            <a-typography-title :level="3">{{ department?.name_zh }}</a-typography-title>
+        
+        
+        <div class="container mx-auto pt-2">
+            <div class="bg-white relative shadow rounded-lg overflow-x-auto p-2">
                 <a-button type="primary" ghost @click="toggleSanner">{{ scannerActive ? 'Turn Off Scanner' : 'Turn On Scanner' }}</a-button>
                 <hr>
                 <h2 class="text-lg font-semibold">Pickup Orders</h2>
