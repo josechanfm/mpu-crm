@@ -139,6 +139,7 @@ class OrderController extends Controller
                 'uuid'=>Str::uuid(),
                 'form_meta'=>$cart,
                 'items'=>$orderItems,
+                'currency'=>'MOP',
                 'amount'=>$totalAmount,
             ]);
         } catch (\Illuminate\Database\QueryException $e) {

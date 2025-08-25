@@ -73,9 +73,12 @@
         <a-form :model="orderForm" layout="vertical" :rules="rules" @submit.prevent="handleOrder" class="mt-4">
             <a-form-item label="Faculty / 系所" name="faculty" class="mb-0">
                 <a-select v-model:value="orderForm.faculty" placeholder="Select your faculty / 選擇您的系所">
-                    <a-select-option value="science">Science / 科學</a-select-option>
+                    <template v-for="faculty in faculties" :key="faculty.value">
+                        <a-select-option :value="faculty.value">{{ faculty.label }}</a-select-option>
+                    </template>
+                    <!-- <a-select-option value="science">Science / 科學</a-select-option>
                     <a-select-option value="arts">Arts / 人文</a-select-option>
-                    <a-select-option value="engineering">Engineering / 工程</a-select-option>
+                    <a-select-option value="engineering">Engineering / 工程</a-select-option> -->
                 </a-select>
             </a-form-item>
 
@@ -160,6 +163,14 @@ export default {
                 phone: '',
                 email: '',
             },
+            faculties:[
+                { label: 'FAC / 應用科學學院', value: 'FAC' },
+                { label: 'FHSS / 健康科學及體育學院', value: 'FHSS' },
+                { label: 'FLT / 語言及翻譯學院', value: 'FLT' },
+                { label: 'FAD / 藝術及設計學院', value: 'FDA' },
+                { label: 'FHSS / 人文及社會科學學院', value: 'FHSS' },
+                { label: 'FB / 管理科學學院', value: 'FB' },
+            ],
             rules: {
                 netid: [{ required: true, message: 'Please enter your NetID' }],
                 password: [{ required: true, message: 'Please enter your password' }],
