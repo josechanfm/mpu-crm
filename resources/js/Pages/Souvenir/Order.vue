@@ -52,6 +52,16 @@
                         </div>
                     </div>
                 </div>
+            <div class="pt-10">
+                <div class="font-bold">預購須知：</div>
+                <div>本人(即購買人)已知悉並接受 (1) 此預購商品及款項一經付款，不能更改或退款；(2) 小心保管付款/領取憑證，於簽領時出示；(3) 由他人代簽領，毋需事先申請，但代領人須出示簽領憑證，因此購買人將自行承擔因轉發憑證所衍生之風險及或有之損失；(4) 按照簽領指引及時間領取預購貨品，不得另約時間領取，逾期未領者，不設補領，不設退款；(5) 簽領紀念品時，當場檢查貨品，若有明顯質量問題，可即場更換，若完成簽領，則不能以任何理由提出更換；(6) 詳情可細閱 "畢業生須知"。</div>
+                <div class="font-bold">Note：</div>
+                <div>I (the buyer) understand and agree to the following (1) Once the payment is made, the order cannot be changed or refunded; (2) I will keep my payment/collection receipt and present it when picking up my item(s); (3) Collection by a third party does not require prior application, but they must present the collection receipt. In this case, the buyer will bear any risks and losses associated with forwarding the receipt or related proof to the third party; (4) Items must be collected according to the provided guidelines and schedule. No alternative collection times will be accommodated, and items not collected by the deadline will not be eligible for re-collection or refunds; (5) Check my items on the spot upon collection. If there is a clear quality issue, I may request an immediate exchange. Otherwise, no exchanges can be made for any reason once the collection is accepted; (6) For more details, I shall refer to the "Graduates' Information Kit".  </div>
+            </div>
+            <div class="pt-20">
+
+            </div>
+
         </div>
 
         <!-- Checkout drawer -->
@@ -118,17 +128,28 @@
         <a-drawer title="Orders / 訂單" :visible="orderIsOpen" @close="orderIsOpen = false" width="350">
             <h2 class="text-lg font-semibold">Your Previous Orders / 您的歷史訂單</h2>
             <div class="p-4">
-                
-                <div v-for="(order, index) in user.orders" :key="index" class="mb-4">
-                    <h3 class="font-bold">Order / 訂單 #{{ index + 1 }} @{{ formatDate(order.created_at) }} </h3>
-                    <div v-for="item in order.items" :key="item.id" class="flex justify-between py-2">
-                        <span>{{ item.name }}</span>
-                        <span>{{ item.qty }} x ${{ item.price }}</span>
+                <template v-if="user.orders.length==0">
+                    <p>You don't have any item ordered.</p>
+                    <p>您尚已訂購的商品。</p>
+                    <a-button class="mt-10 float-right" @click="selectedIsOpen = false">Close / 關閉</a-button>
+                </template>
+                <template v-else>
+                    <div class="w-full flex justify-end pb-5">
+                        <a-button :href="route('souvenir.pickupCode')" danger ghost class="float-right">
+                            取件碼
+                        </a-button>
                     </div>
-                    <div class="font-bold float-right">
-                        Total / 總計: ${{ order.amount }}
+                    <div v-for="(order, index) in user.orders" :key="index" class="mb-4">
+                        <h3 class="font-bold">Order / 訂單 #{{ index + 1 }} @{{ formatDate(order.created_at) }} </h3>
+                        <div v-for="item in order.items" :key="item.id" class="flex justify-between py-2">
+                            <span>{{ item.name }}</span>
+                            <span>{{ item.qty }} x ${{ item.price }}</span>
+                        </div>
+                        <div class="font-bold float-right">
+                            Total / 總計: ${{ order.amount }}
+                        </div>
                     </div>
-                </div>
+                </template>
             </div>
         </a-drawer>
 
