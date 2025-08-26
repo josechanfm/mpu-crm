@@ -11,13 +11,16 @@
             </div>
         </div>
     </template>
-    <div>
+    <div v-if="paymentData && Object.keys(paymentData).length">
         <form id="paymentForm" :action="paymentUrl" method="POST">
             <div v-for="(value, field) in paymentData" :key="field">
                 {{ field }}:
                 <input :name="field" :value="value">
             </div>
         </form>
+    </div>
+    <div v-else>
+        Loading...
     </div>
 </template>
 
