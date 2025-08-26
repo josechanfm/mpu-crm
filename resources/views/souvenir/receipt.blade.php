@@ -5,7 +5,7 @@
     <style type="text/css">
         @font-face {
             font-family: SimHei;
-            src: url('{{ asset('fonts/simhei.ttf') }}') format('truetype');
+            src: url('/public/fonts/simhei.ttf') format('truetype');
         }
 
         body {
