@@ -24,8 +24,15 @@
 <script>
 export default {
     props: {
-        paymentData: Object,
-        paymentUrl: String,
+        paymentData: {
+            type: Object,
+            required: true,
+            default: () => ({})
+        },
+        paymentUrl: {
+            type: String,
+            required: true
+        }
     },
     mounted() {
         this.$nextTick(() => {
