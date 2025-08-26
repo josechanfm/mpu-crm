@@ -139,12 +139,13 @@
                             取件碼
                         </a-button>
                     </div>
-                    <div v-for="(order, index) in user.orders" :key="index" class="mb-4">
+                    <div v-for="(order, index) in user.orders" :key="index" class="mb-10">
                         <h3 class="font-bold">Order / 訂單 #{{ index + 1 }} @{{ formatDate(order.created_at) }} </h3>
                         <div v-for="item in order.items" :key="item.id" class="flex justify-between py-2">
                             <span>{{ item.name }}</span>
                             <span>{{ item.qty }} x ${{ item.price }}</span>
                         </div>
+                        <a :href="route('souvenir.receipt', { id: order.id })" target="_blank">Receipt/收據</a>
                         <div class="font-bold float-right">
                             Total / 總計: ${{ order.amount }}
                         </div>

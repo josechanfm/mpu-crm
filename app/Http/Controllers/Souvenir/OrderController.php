@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\SouvenirUser;
 use App\Models\SouvenirPayment;
 use App\Models\SouvenirOrder;
+use PDF;
 
 class OrderController extends Controller
 {
@@ -98,6 +99,9 @@ class OrderController extends Controller
         //
     }
     public function checkout(Request $request){
+        if(!session()->has('souvenirUser')){
+            return to_route("souvenir.login");
+        }
         session()->flash('cart',$request->all());
         return to_route("souvenir.checkoutOrder");
     }
@@ -123,8 +127,11 @@ class OrderController extends Controller
     private function storeToOrder($souvenirUser, $cart){
         $orderItems=[];
         $totalAmount=0;
+
         foreach($cart['cartItems'] as $item){
             $souvenir=Souvenir::find($item['id']);
+            $souvenir->update(['stock' => $souvenir->stock - $item['qty']]);
+            $souvenir->save();
             $orderItems[]=[
                 'souvenir_id'=> $souvenir->id,
                 'name'=> $souvenir->name,
@@ -198,5 +205,25 @@ class OrderController extends Controller
             'user'=>session('souvenirUser'),
             'pickupCode'=>$pickupCode,
         ]);
+    }
+
+    public function receipt($id){
+        $order = SouvenirOrder::findOrFail($id);
+        // dd($order);
+
+        // return view('Souvenir/Receipt', [
+        //     'order' => $order
+        // ]);
+
+        $pdf = PDF::loadView('Souvenir/Receipt', [
+            'order' => $order,
+        ]);
+        $pdf->render();
+        
+        return $pdf->stream('receipt.pdf', array('Attachment' => false));
+        // return Inertia::render('Souvenir/Invoice', [
+        //     'user'=>session('souvenirUser'),
+        //     'order'=>$order,
+        // ]);
     }
 }
