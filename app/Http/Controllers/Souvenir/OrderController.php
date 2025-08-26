@@ -211,9 +211,9 @@ class OrderController extends Controller
         $order = SouvenirOrder::findOrFail($id);
         // dd($order);
 
-        // return view('Souvenir/Receipt', [
-        //     'order' => $order
-        // ]);
+        return view('souvenir/receipt', [
+            'order' => $order
+        ]);
 
         $pdf = PDF::loadView('souvenir/receipt', [
             'order' => $order,
