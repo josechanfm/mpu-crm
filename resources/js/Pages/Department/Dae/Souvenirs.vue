@@ -244,6 +244,10 @@ export default {
             return new URLSearchParams(window.location.search);
         },
         pagination() {
+            this.myFilter.sort.column = this.urlParams.get('sort_column');
+            this.myFilter.sort.order = this.urlParams.get('sort_order');
+            this.myFilter.search.column = this.urlParams.get('search_column');
+            this.myFilter.search.text = this.urlParams.get('search_text');
             return {
                 current: this.souvenirs.current_page,
                 pageSize: this.souvenirs.per_page,

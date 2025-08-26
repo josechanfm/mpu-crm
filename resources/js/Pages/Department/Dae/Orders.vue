@@ -243,11 +243,15 @@ export default {
             return new URLSearchParams(window.location.search);
         },
         pagination() {
+            this.myFilter.filter.value = this.urlParams['filter_value'];
+            this.myFilter.search.column = this.urlParams['search_column'];
+            this.myFilter.search.text = this.urlParams['search_text'];
             return {
                 current: this.orders.current_page,
                 pageSize: this.orders.per_page,
                 total: this.orders.total,
                 showSizeChanger: true,
+                
                 showTotal: (total, range) => `Showing ${range[0]}-${range[1]} of ${total} items`,
             };
         },
