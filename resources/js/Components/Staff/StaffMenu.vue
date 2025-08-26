@@ -70,6 +70,11 @@
               <ResponsiveNavLink :href="route('staff')">
                 Staff
               </ResponsiveNavLink>
+              <template v-for="role in $page.props.currentUser.roles">
+                <ResponsiveNavLink :href="route('manage.department.redirect', { roleName: role })">
+                  {{ role }}
+                </ResponsiveNavLink>
+              </template>
               <form @submit.prevent="logout">
                 <DropdownLink as="button">
                   登出
