@@ -215,6 +215,7 @@ class OrderController extends Controller
         //     'order' => $order
         // ]);
 
+        
         $pdf = PDF::loadView('souvenir/receipt', [
             'order' => $order,
         ]);
