@@ -3,11 +3,15 @@
         <template #header>
             <div class="flex justify-between items-center">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Souvenir Order Form
+                    預購畢業生限量專屬紀念品<br>
+                    Pre-order of Graduation Gifts
                 </h2>
+                <div class="flex justify-end gap-2">
+                    <div v-if="user" @click="logout">Logout<br>登出</div>
+                    <div v-else @click="login">Login<br>登入</div>
+                </div>
             </div>
         </template>
-
 
     <div>
             <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">

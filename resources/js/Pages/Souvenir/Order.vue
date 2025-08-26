@@ -3,15 +3,16 @@
         <template #header>
             <div class="flex justify-between items-center">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Souvenir Order
+                    預購畢業生限量專屬紀念品<br>
+                    Pre-order of Graduation Gifts
                 </h2>
                 <div class="flex justify-end gap-2">
-                    <div v-if="user" @click="logout">Logout / 登出</div>
-                    <div v-else @click="login">Login / 登入</div>
+                    <div v-if="user" @click="logout">Logout<br>登出</div>
+                    <div v-else @click="login">Login<br>登入</div>
                 </div>
             </div>
         </template>
-        <div class="flex justify-end gap-2"  v-if="user">
+        <div class="flex justify-end gap-2 pt-5" v-if="user">
             <div class="relative" ref="cartIconRef" @click="selectedIsOpen = true">
                 <a-badge :count="cartItemCount">
                     <ShoppingCartOutlined class="text-xl" />
@@ -27,86 +28,94 @@
             </div>
         </div>
 
-<div class="py-0">
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-2">
-            <div v-for="product in products" :key="product.id" class="flex flex-col md:flex-row bg-gray-100 rounded-lg mt-5">
-                <div class="flex-shrink-0 w-full md:w-64 md:h-48">
-                    <a-carousel :autoplay="true" dots>
-                        <div v-for="(image, index) in product.images" :key="index">
-                            <img :src="image" alt="Product Image" class="object-cover w-full h-full rounded-md" />
+        <div class="py-0">
+            <div class="m-4">
+                <div>歡迎參與"畢業生限量專屬紀念品"預購活動！本校特意為準畢業生製作了3款專屬紀念品，濃縮校園記憶，注入點滴情誼，期望澳理大的關懷能陪伴畢業生走過更多的人生角色與秋冬。本次預購活動純屬自願性質，收益將全數作為大學收入用於母校發展。有興趣的同學可填寫下表，並繳付預購金額，支持本次活動。在此，祝願同學順利畢業，前程似錦！</div>
+                <div>MPU warmly invite you to participate in our "Graduation Gifts (Limited Edition)" pre-ordering! Our university has crafted 3 exclusive items for graduating students, capturing campus memories and celebrating the friendships formed here. We hope that the support from MPU carried in the gifts will accompany graduates all the time as they embrace new roles in life. For interested students, please fill out the pre-order form below. Last but not least, wishing you a smooth graduation and a bright future ahead!</div>
+            </div>
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-2">
+                    <div v-for="product in products" :key="product.id" class="flex flex-col md:flex-row bg-gray-100 rounded-lg mbt-5">
+                        <div class="flex-shrink-0 w-full md:w-64 md:h-48">
+                            <a-carousel :autoplay="true" dots>
+                                <div v-for="(image, index) in product.images" :key="index">
+                                    <img :src="image" alt="Product Image" class="object-cover w-full h-full rounded-md" />
+                                </div>
+                            </a-carousel>
                         </div>
-                    </a-carousel>
+                        <div class="flex-grow mt-0 md:mt-0 md:pl-4">
+                            <h3 class="mt-2 text-lg font-semibold">{{ product.name }}</h3>
+                            <p class="mt-1 text-gray-600" v-html="product.description"/>
+                            <p class="mt-2 font-bold">${{ product.price.toFixed(2) }}</p>
+                            <a-button type="primary" @click="addToCart(product)" :disabled="user == null" class="mt-2">
+                                Add to cart / 加入購物車
+                            </a-button>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex-grow mt-0 md:mt-0 md:pl-4">
-                    <h3 class="mt-2 text-lg font-semibold">{{ product.name }}</h3>
-                    <p class="mt-1 text-gray-600" v-html="product.description"/>
-                    <p class="mt-2 font-bold">${{ product.price.toFixed(2) }}</p>
-                    <a-button type="primary" @click="addToCart(product)" :disabled="user == null" class="mt-2">
-                        Add to cart / 加入購物車
-                    </a-button>
-                </div>
-            </div>
         </div>
-</div>
 
-<!-- Checkout drawer -->
-<a-drawer title="Cart Items / 購物車" :visible="selectedIsOpen" @close="selectedIsOpen = false" width="400">
-    <div v-if="cartItems.length==0">
-        <p>You don't have any item selected.</p>
-        <p>您尚未選擇任何商品。</p>
-        <a-button class="mt-10 float-right" @click="selectedIsOpen = false">Close / 關閉</a-button>
-    </div>
-    <div v-else>
-        <ul>
-            <li v-for="item in cartItems" :key="item.id" class="flex items-center justify-between mb-2">
-                <span class="w-1/2 truncate">{{ item.name }}</span>
-                <div class="flex items-center space-x-2">
-                    <a-button @click="decreaseCount(item)" size="small">-</a-button>
-                    <span>{{ item.qty }}</span>
-                    <a-button @click="increaseCount(item)" size="small">+</a-button>
-                </div>
-                <span>${{ (item.price * item.qty).toFixed(2) }}</span>
-            </li>
-            
-        </ul>
-        <!-- Order Form -->
-        <a-form :model="orderForm" layout="vertical" :rules="rules" @submit.prevent="handleOrder" class="mt-4">
-            <a-form-item label="Faculty / 系所" name="faculty" class="mb-0">
-                <a-select v-model:value="orderForm.faculty" placeholder="Select your faculty / 選擇您的系所">
-                    <template v-for="faculty in faculties" :key="faculty.value">
-                        <a-select-option :value="faculty.value">{{ faculty.label }}</a-select-option>
-                    </template>
-                    <!-- <a-select-option value="science">Science / 科學</a-select-option>
-                    <a-select-option value="arts">Arts / 人文</a-select-option>
-                    <a-select-option value="engineering">Engineering / 工程</a-select-option> -->
-                </a-select>
-            </a-form-item>
-
-            <a-form-item label="Degree / 學位" name="degree" class="mb-0">
-                <a-select v-model:value="orderForm.degree" placeholder="Select your degree / 選擇您的學位">
-                    <a-select-option value="bachelor">Bachelor / 學士</a-select-option>
-                    <a-select-option value="master">Master / 碩士</a-select-option>
-                    <a-select-option value="phd">PhD / 博士</a-select-option>
-                </a-select>
-            </a-form-item>
-            <a-form-item label="Contact Phone Number / 聯絡電話" name="phone" class="mb-0">
-                <a-input type="input" v-model:value="orderForm.phone" placeholder="Enter your phone number / 輸入您的電話號碼" />
-            </a-form-item>
-
-            <a-form-item label="Personal Email (optional) / 個人電子郵件（可選）" name="email" class="mb-0">
-                <a-input type="input" v-model:value="orderForm.email" placeholder="Enter your email / 輸入您的電子郵件" />
-            </a-form-item>
-
-            <div class="flex justify-end mt-4 gap-5">
-                <a-button type="primary" html-type="submit">Pay / 付款</a-button>
-                <a-button class="ml-2" @click="selectedIsOpen = false">Close / 關閉</a-button>
+        <!-- Checkout drawer -->
+        <a-drawer title="Cart Items / 購物車" :visible="selectedIsOpen" @close="selectedIsOpen = false" width="350">
+            <div v-if="cartItems.length==0">
+                <p>You don't have any item selected.</p>
+                <p>您尚未選擇任何商品。</p>
+                <a-button class="mt-10 float-right" @click="selectedIsOpen = false">Close / 關閉</a-button>
             </div>
-        </a-form>
-    </div>
-</a-drawer>
+            <div v-else>
+                <ul>
+                    <li v-for="item in cartItems" :key="item.id" class="flex items-center justify-between mb-2">
+                        <span class="w-1/2 truncate">{{ item.name }}</span>
+                        <div class="flex items-center space-x-2">
+                            <a-button @click="decreaseCount(item)" size="small">-</a-button>
+                            <span>{{ item.qty }}</span>
+                            <a-button @click="increaseCount(item)" size="small">+</a-button>
+                        </div>
+                        <span>${{ (item.price * item.qty).toFixed(2) }}</span>
+                    </li>
+                    
+                </ul>
+                <!-- Order Form -->
+                 <!-- @submit.prevent="handleOrder"  -->
+                <a-form :model="orderForm" layout="vertical" :rules="rules" 
+                    @finish="handleOrderFinish"
+                    class="mt-4"
+                >
+                    <a-form-item label="Faculty / 系所" name="faculty" class="mb-0">
+                        <a-select v-model:value="orderForm.faculty" placeholder="Select your faculty / 選擇您的系所">
+                            <template v-for="faculty in faculties" :key="faculty.value">
+                                <a-select-option :value="faculty.value">{{ faculty.label }}</a-select-option>
+                            </template>
+                            <!-- <a-select-option value="science">Science / 科學</a-select-option>
+                            <a-select-option value="arts">Arts / 人文</a-select-option>
+                            <a-select-option value="engineering">Engineering / 工程</a-select-option> -->
+                        </a-select>
+                    </a-form-item>
+
+                    <a-form-item label="Degree / 學位" name="degree" class="mb-0">
+                        <a-select v-model:value="orderForm.degree" placeholder="Select your degree / 選擇您的學位">
+                            <a-select-option value="bachelor">Bachelor / 學士</a-select-option>
+                            <a-select-option value="master">Master / 碩士</a-select-option>
+                            <a-select-option value="phd">PhD / 博士</a-select-option>
+                        </a-select>
+                    </a-form-item>
+                    <a-form-item label="Contact Phone Number / 聯絡電話" name="phone" class="mb-0">
+                        <a-input type="input" v-model:value="orderForm.phone" placeholder="Enter your phone number / 輸入您的電話號碼" />
+                    </a-form-item>
+
+                    <a-form-item label="Personal Email (optional) / 個人電子郵件（可選）" name="email" class="mb-0">
+                        <a-input type="input" v-model:value="orderForm.email" placeholder="Enter your email / 輸入您的電子郵件" />
+                    </a-form-item>
+
+                    <div class="flex justify-end mt-4 gap-5">
+                        <a-button type="primary" html-type="submit">Pay / 付款</a-button>
+                        <a-button class="ml-2" @click="selectedIsOpen = false">Close / 關閉</a-button>
+                    </div>
+                </a-form>
+            </div>
+        </a-drawer>
 
         <!-- Previous order drawer -->
-        <a-drawer title="Orders / 訂單" :visible="orderIsOpen" @close="orderIsOpen = false" width="400">
+        <a-drawer title="Orders / 訂單" :visible="orderIsOpen" @close="orderIsOpen = false" width="350">
             <h2 class="text-lg font-semibold">Your Previous Orders / 您的歷史訂單</h2>
             <div class="p-4">
                 
@@ -229,7 +238,7 @@ export default {
 
             this.cartItemCount = this.cartItems.reduce((total, item) => total + item.qty, 0);
         },
-        handleOrder() {
+        handleOrderFinish() {
             // Handle the order logic here
             this.orderForm.cartItems=this.cartItems
             
