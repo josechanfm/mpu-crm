@@ -15,7 +15,7 @@
         <form id="paymentForm" :action="paymentUrl" method="POST">
             <div v-for="(value, field) in paymentData" :key="field">
                 {{ field }}:
-                <input type="input" :name="field" :value="value">
+                <input :name="field" :value="value">
             </div>
         </form>
     </div>
