@@ -211,14 +211,17 @@ class OrderController extends Controller
         $order = SouvenirOrder::findOrFail($id);
         // dd($order);
 
-        // return view('souvenir/receipt', [
-        //     'order' => $order
-        // ]);
+        return view('souvenir/receipt', [
+            'order' => $order
+        ]);
 
 
         $pdf = PDF::loadView('souvenir/receipt', [
             'order' => $order,
         ]);
+
+        $pdf->setOption(['dpi' => 150, 'defaultFont' => 'simhei']);
+
         $pdf->render();
         
         return $pdf->stream('receipt.pdf', array('Attachment' => false));
