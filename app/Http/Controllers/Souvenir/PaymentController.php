@@ -106,26 +106,33 @@ class PaymentController extends Controller
         // $parts=explode('-',$mercOrderNo);
         // $order=SouvenirOrder::find($parts[0]);
         // dd($test, $systemCode, $mercOrderNo, $parts[0], $order);
-
         $payment=SouvenirPayment::create([
             'type'=>'result',
             'meta_data'=>$request->all(),
             'status'=>$request->responseStatus
         ]);
+
         if (count($request->all()) == 0) {
             return Inertia::render('Souvenir/PaymentFinished',[
                     'order'=>SouvenirOrder::latest()->first()
                 ]);
         }
 
+
         $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
         $mercOrderNo=substr(str_replace($systemCode,'',$request->merchantOrderNo),0,-2);
         $parts=explode('-',$mercOrderNo);
         $order=SouvenirOrder::find((int)$parts[0]);
+
+
         //dd($systemCode, $mercOrderNo, $parts, (int)$parts[0], $order);
         $order->payment_status=$request->responseStatus;
         $order->status=$request->responseStatus=='SUCCESS'?3:2;
         $order->save();
+        
+        $payment->order_id=$order->id;
+        $payment->save();
+
         return Inertia::render('Souvenir/PaymentFinished',[
             'order'=>$order
         ]);
