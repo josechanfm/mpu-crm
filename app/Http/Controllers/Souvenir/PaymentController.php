@@ -121,7 +121,7 @@ class PaymentController extends Controller
         $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
         $mercOrderNo=substr(str_replace($systemCode,'',$request->merchantOrderNo),0,-2);
         $parts=explode('-',$mercOrderNo);
-        $order=SouvenirOrder::find($parts[0]);
+        $order=SouvenirOrder::find((int)$parts[0]);
         dd($systemCode, $mercOrderNo, $parts, $order);
         $order->payment_status=$request->responseStatus;
         $order->status=$request->responseStatus=='SUCCESS'?3:2;
