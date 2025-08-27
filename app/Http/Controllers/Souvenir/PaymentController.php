@@ -122,7 +122,7 @@ class PaymentController extends Controller
         $mercOrderNo=substr(str_replace($systemCode,'',$request->merchantOrderNo),0,-2);
         $parts=explode('-',$mercOrderNo);
         $order=SouvenirOrder::find((int)$parts[0]);
-        dd($systemCode, $mercOrderNo, $parts, $order);
+        dd($systemCode, $mercOrderNo, $parts, (int)$parts[0], $order);
         $order->payment_status=$request->responseStatus;
         $order->status=$request->responseStatus=='SUCCESS'?3:2;
         $order->save();
