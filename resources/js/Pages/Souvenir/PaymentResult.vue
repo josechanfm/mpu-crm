@@ -21,7 +21,7 @@
                 </li>
                 <div class="font-bold float-right">Total / 總計: ${{ order.amount.toFixed(2) }}</div>
             </div>
-            <div class="text-center p-5"><a :href="route('souvenir.payment.receipt',{id:order.id, uuid:order.uuid})">Receipt / 收據</a></div>
+            <div class="text-center p-5"><a :href="route('souvenir.order.receipt',{id:order.id, uuid:order.uuid})">Receipt / 收據</a></div>
             <div class="text-center p-5"><a-button :href="route('souvenir')">Back to Main Page / 返回主要</a-button></div>
         </div>
     </div>

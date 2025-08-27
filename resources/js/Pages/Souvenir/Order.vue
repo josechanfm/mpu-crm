@@ -145,7 +145,7 @@
                             <span>{{ item.name }}</span>
                             <span>{{ item.qty }} x ${{ item.price }}</span>
                         </div>
-                        <a :href="route('souvenir.receipt', { id: order.id, uuid:order.uuid })" target="_blank">Receipt/收據</a>
+                        <a :href="route('souvenir.order.receipt', { id: order.id, uuid:order.uuid })" target="_blank">Receipt/收據</a>
                         <div class="font-bold float-right">
                             Total / 總計: ${{ order.amount }}
                         </div>
