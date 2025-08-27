@@ -99,6 +99,14 @@ class PaymentController extends Controller
     }
 
     public function result(Request $request){
+        dd($request->all());
+        // $test='daesp1-1755742832-8087xx';
+        // $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
+        // $mercOrderNo=substr(str_replace($systemCode,'',$test),0,-2);
+        // $parts=explode('-',$mercOrderNo);
+        // $order=SouvenirOrder::find($parts[0]);
+        // dd($test, $systemCode, $mercOrderNo, $parts[0], $order);
+
         $payment=SouvenirPayment::create([
             'type'=>'result',
             'meta_data'=>$request->all(),
@@ -114,8 +122,6 @@ class PaymentController extends Controller
         $mercOrderNo=substr(str_replace($systemCode,'',$request->merchantOrderNo),0,-2);
         $parts=explode('-',$mercOrderNo);
         $order=SouvenirOrder::find($parts[0]);
-        //dd($systemCode, $mercOrderNo, $order, $parts);
-        // $order->payment_result=$request->all();
         $order->payment_status=$request->responseStatus;
         $order->status=$request->responseStatus=='SUCCESS'?3:2;
         $order->save();
