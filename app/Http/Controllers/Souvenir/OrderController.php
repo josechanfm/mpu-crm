@@ -226,7 +226,7 @@ class OrderController extends Controller
             'order' => $order,
         ]);
 
-        $pdf->setOption(['dpi' => 150, 'defaultFont' => 'simhei']);
+        //$pdf->setOption(['dpi' => 150, 'defaultFont' => 'simhei']);
 
         $pdf->render();
         
