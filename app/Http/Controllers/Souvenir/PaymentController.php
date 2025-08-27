@@ -99,8 +99,8 @@ class PaymentController extends Controller
     }
 
     public function result(Request $request){
-        dd($request->all());
-        // $test='daesp1-1755742832-8087xx';
+        // dd($request->all());
+        // $test='daesp18-1756268443-379201';
         // $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
         // $mercOrderNo=substr(str_replace($systemCode,'',$test),0,-2);
         // $parts=explode('-',$mercOrderNo);
