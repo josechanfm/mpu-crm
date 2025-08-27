@@ -113,7 +113,7 @@ class PaymentController extends Controller
         ]);
 
         if (count($request->all()) == 0) {
-            return Inertia::render('Souvenir/paymentResult',[
+            return Inertia::render('Souvenir/PaymentResult',[
                     'order'=>SouvenirOrder::latest()->first()
                 ]);
         }
@@ -133,7 +133,7 @@ class PaymentController extends Controller
         $payment->order_id=$order->id;
         $payment->save();
 
-        return Inertia::render('Souvenir/paymentResult',[
+        return Inertia::render('Souvenir/PaymentResult',[
             'order'=>$order
         ]);
     }

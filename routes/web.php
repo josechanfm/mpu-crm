@@ -36,7 +36,7 @@ Route::prefix('souvenir')->group(function(){
     Route::get('checkout_order',[App\Http\Controllers\Souvenir\OrderController::class,'checkoutOrder'])->name('souvenir.checkoutOrder');
     Route::get('pickup_code',[App\Http\Controllers\Souvenir\OrderController::class,'pickupCode'])->name('souvenir.pickupCode');
 
-    Route::get('{id}/receipt',[App\Http\Controllers\Souvenir\OrderController::class,'receipt'])->name('souvenir.receipt');
+    Route::get('{id}/receipt',[App\Http\Controllers\Souvenir\OrderController::class,'receipt'])->name('souvenir.order.receipt');
 
     Route::get('payment/confirm',[App\Http\Controllers\Souvenir\PaymentController::class,'confirm'])->name('souvenir.payment.confirm');
     Route::match(['get','post'],'payment/notify',[App\Http\Controllers\Souvenir\PaymentController::class,'notify'])->name('souvenir.payment.notify');
