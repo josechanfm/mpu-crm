@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\SouvenirUser;
 use App\Models\SouvenirPayment;
 use App\Models\SouvenirOrder;
+
 use PDF;
 
 class OrderController extends Controller
@@ -209,13 +210,12 @@ class OrderController extends Controller
 
     public function receipt($id){
         $order = SouvenirOrder::findOrFail($id);
-
+        
          //dd(session('souvenirUser'), $order, session('souvenirUser')->id, $order->souvenir_user_id);
 
         if(!session()->has('souvenirUser') || empty($order) || $order->souvenir_user_id != session('souvenirUser')->id){
             return redirect()->route('souvenir');
         }
-        // dd($order);
 
         // return view('souvenir/receipt', [
         //     'order' => $order
@@ -225,8 +225,9 @@ class OrderController extends Controller
         $pdf = PDF::loadView('souvenir/receipt', [
             'order' => $order,
         ]);
+        //$pdf->setOption(['dpi' => 150, 'defaultFont' => 'SimHei']);
 
-        //$pdf->setOption(['dpi' => 150, 'defaultFont' => 'simhei']);
+        //dd($pdf);
 
         $pdf->render();
         
