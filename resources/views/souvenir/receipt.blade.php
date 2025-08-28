@@ -6,7 +6,7 @@
 <style>
     @font-face {
         font-family: 'SimHei';
-        src: url('fonts/simhei.ttf') format('truetype');
+        src: url('storage/fonts/simhei.ttf') format('truetype');
     }
     *{
         font-family: 'SimHei' ;

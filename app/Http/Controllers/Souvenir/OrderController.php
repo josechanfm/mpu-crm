@@ -115,6 +115,7 @@ class OrderController extends Controller
         $cart['client_ip']=$request->getClientIp();
         $order=$this->storeToOrder(session('souvenirUser'), $cart);
 
+
         //$paymentData=$this->writePaymentData(session('souvenirUser'), $order, $cart['client_ip']);
         //$order->payment_meta=json_encode($paymentData);
         //$order->save();
@@ -128,7 +129,7 @@ class OrderController extends Controller
     private function storeToOrder($souvenirUser, $cart){
         $orderItems=[];
         $totalAmount=0;
-
+        
         foreach($cart['cartItems'] as $item){
             $souvenir=Souvenir::find($item['id']);
             $souvenir->update(['stock' => $souvenir->stock - $item['qty']]);
@@ -145,6 +146,7 @@ class OrderController extends Controller
         try {
             $order=$souvenirUser->orders()->firstOrCreate([
                 'uuid'=>Str::uuid(),
+                'souvenir_user_id'=>$souvenirUser->id,
                 'form_meta'=>$cart,
                 'items'=>$orderItems,
                 'currency'=>'MOP',

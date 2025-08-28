@@ -20,7 +20,6 @@ class SouvenirSeeder extends Seeder
             "name"=>"USB Thumb drive",
             "description"=>"USB thumb drive with MPU logo",
             "thumbnail"=>"/images/souvenirs/Phone_Strap.jpg",
-            "qty"=>500,
             "stock"=>500,
             "price"=>100,
             "quota"=>3
@@ -29,7 +28,6 @@ class SouvenirSeeder extends Seeder
             "name"=>"Pin",
             "description"=>"MPU logo pins",
             "thumbnail"=>"/images/souvenirs/Bear.jpg",
-            "qty"=>500,
             "stock"=>500,
             "price"=>100,
             "quota"=>3
@@ -38,7 +36,6 @@ class SouvenirSeeder extends Seeder
             "name"=>"T-Shirt",
             "description"=>"MPU logo T-shirt",
             "thumbnail"=>"/images/souvenirs/Cardholder_Lanyard.jpg",
-            "qty"=>500,
             "stock"=>500,
             "price"=>100,
             "quota"=>3
