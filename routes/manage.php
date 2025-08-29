@@ -223,6 +223,7 @@ Route::group([
     ]
 ], function () {
     Route::get('/',[App\Http\Controllers\Department\Dae\DashboardController::class,'index'])->name('dae.dashboard');
+    Route::resource('souvenir/users',App\Http\Controllers\Department\Dae\SouvenirUserController::class)->names('dae.souvenir.users');
     Route::resource('souvenirs',App\Http\Controllers\Department\Dae\SouvenirController::class)->names('dae.souvenirs');
     Route::resource('souvenir/orders',App\Http\Controllers\Department\Dae\OrderController::class)->names('dae.souvenir.orders');
     Route::post('souvenir/remove_image/{souvenir}/{imageId}',[App\Http\Controllers\Department\Dae\SouvenirController::class,'removeImage'])->name('dae.souvenir.removeImage');

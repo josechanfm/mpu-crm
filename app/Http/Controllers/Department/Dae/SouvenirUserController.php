@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Department\Dae;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\SouvenirOrder;
+use App\Models\SouvenirUser;
 
-class OrderController extends Controller
+class SouvenirUserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,27 +16,19 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        //  dd($request->all());
-         $orders = SouvenirOrder::query();
+        //dd($request->all());
+        $users = SouvenirUser::query();
         if ($request->has('filter_column') && !is_null($request->filter_column && $request->has('filter_value') && !is_null($request->filter_value))) {
-            $orders = SouvenirOrder::where($request->filter_column, $request->filter_value);
+            $users = $users->where($request->filter_column, $request->filter_value);
         }else{
-            $orders = SouvenirOrder::where('status', 2);
+            $users = $users->where('can_buy', true);
         }
         if($request->search_column && $request->search_column=='buyer' && $request->search_text){
-            $orders = $orders->whereHas('user', function($query) use ($request){
-                $query->where('netid','LIKE', '%'.$request->search_text.'%');
-            });
+            $users = $users->where('netid', 'LIKE', '%'.$request->search_text.'%');
         }
-        // if ($request->has('search_column') && !is_null($request->search_column) && $request->has('search_text') && !is_null($request->search_text)) {
-        //     $orders = $souvenior->where($request->search_column,'LIKE', '%'.$request->search_text.'%');
-        // }
-        // if ($request->has('show_all') && $request->show_all && $request->show_all == 'true') {
-        // }else{
-        //    $orders = $orders->where('is_available', true);
-        // }
-        return Inertia::render('Department/Dae/Orders',[
-            "orders"=>$orders->with('user')->paginate($request->per_page??5),
+
+        return Inertia::render('Department/Dae/SouvenirUsers',[
+            'users' => $users->paginate()
         ]);
     }
 
