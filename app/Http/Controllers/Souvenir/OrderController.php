@@ -117,7 +117,6 @@ class OrderController extends Controller
         $cart['uuid']=Str::uuid();
         $cart['client_ip']=$request->getClientIp();
         $cart['netid']=session('souvenirUser')->netid;
-        dd($cart);
         $order=$this->storeToOrder(session('souvenirUser'), $cart);
 
 
