@@ -14,20 +14,19 @@
         </template>
 
     <div>
-            <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white shadow-md rounded-lg px-6">
+            <div class="max-w-3xl mx-auto sm:px-6 p-4">
+                <div class="bg-white shadow-md rounded-lg p-4">
                     <div v-if="order.items.length === 0" class="text-center text-red-600">
                         <p class="text-lg">You don't have any items selected. / 你沒有選擇任何項目。</p>
                     </div>
-                    <ul v-else class="divide-y divide-gray-200">
+                    <ul v-else class="divide-gray-200">
                         <li v-for="item in order.items" :key="item.id" class="flex items-center justify-between py-4">
-                            <span class="w-1/2 text-gray-700 font-medium truncate">{{ item.name }}</span>
-                            <span class="w-1/4 text-gray-600 truncate">Qty: {{ item.qty }} / 數量: {{ item.qty }}</span>
-                            <span class="w-1/8 text-gray-800 font-semibold">MOP${{ (item.amount).toFixed(2) }} </span>
+                            <span class="w-3/4 text-gray-700 font-medium truncate">{{ item.name }} ( x {{ item.qty }} )</span>
+                            <span class="w-1/4 text-gray-800 font-semibold">MOP${{ (item.amount).toFixed(2) }} </span>
                         </li>
                     </ul>
                     <div class="font-bold float-right">Total / 總計: MOP${{ order.amount.toFixed(2) }}</div>
-                    <div class="mt-6">
+                    <div class="mt-10">
                         <h3 class="font-semibold text-lg text-gray-800">
                             Contact Info: / 聯絡資訊：
                         </h3>
