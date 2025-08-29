@@ -19,14 +19,14 @@
                     </div>
                     <hr class="my-4"/>
                     <h4 class="text-lg font-semibold">Your Pickup Code:</h4>
-                    <div v-if="pickupCode" class="flex justify-center">
-                        <!-- <a-qrcode :value="pickupCode" /> -->
+                    <div v-if="pickupCode" class="flex flex-col items-center gap-4">
                         <a-qrcode
                             size="256"
                             error-level="H"
                             :value="pickupCode"
                             icon="/storage/images/mpu_logo.png"
                         />
+                        <a-button :href="route('souvenir')">Back to Main page</a-button>
                     </div>
             </div>
         </div>
@@ -56,11 +56,20 @@ export default {
         return {};
     },
     methods: {
-        logout() {
-            // Implement logout logic
+        login(){
+            this.$inertia.get(route('souvenir.login'))
         },
-        login() {
-            // Implement login logic
+        logout(){
+            this.$inertia.post(route('souvenir.logout'), {}, {
+                onSuccess: () => {
+                    console.log('Logout successful');
+                    this.isLoggedIn = false; // Update login state
+                    this.user = {}; // Clear user data
+                },
+                onError: (error) => {
+                    console.error('Logout error:', error);
+                },
+            });
         },
     }
 };

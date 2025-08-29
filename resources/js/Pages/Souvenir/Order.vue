@@ -46,13 +46,14 @@
                             <h3 class="mt-2 text-lg font-semibold">{{ product.name }}</h3>
                             <p class="mt-1 text-gray-600" v-html="product.description"/>
                             <p class="mt-2 font-bold">${{ product.price.toFixed(2) }}</p>
-                            <a-button type="primary" @click="addToCart(product)" :disabled="user == null" class="my-2">
-                                Add to cart / 加入購物車
+                            <a-button type="primary" @click="addToCart(product)" :disabled="user == null || selectedProductCount(product.id) >= product.quota" class="my-2">
+                                Add to cart / 加入購物車 ({{ selectedProductCount(product.id) }})
                             </a-button>
+                            
                         </div>
                     </div>
                 </div>
-            <div class="pt-10">
+            <div class="p-5">
                 <div class="font-bold">預購須知：</div>
                 <div>本人(即購買人)已知悉並接受 (1) 此預購商品及款項一經付款，不能更改或退款；(2) 小心保管付款/領取憑證，於簽領時出示；(3) 由他人代簽領，毋需事先申請，但代領人須出示簽領憑證，因此購買人將自行承擔因轉發憑證所衍生之風險及或有之損失；(4) 按照簽領指引及時間領取預購貨品，不得另約時間領取，逾期未領者，不設補領，不設退款；(5) 簽領紀念品時，當場檢查貨品，若有明顯質量問題，可即場更換，若完成簽領，則不能以任何理由提出更換；(6) 詳情可細閱 "畢業生須知"。</div>
                 <div class="font-bold">Note：</div>
@@ -131,7 +132,6 @@
                 <template v-if="user.orders.length==0">
                     <p>You don't have any item ordered.</p>
                     <p>您尚已訂購的商品。</p>
-                    <a-button class="mt-10 float-right" @click="selectedIsOpen = false">Close / 關閉</a-button>
                 </template>
                 <template v-else>
                     <div class="w-full flex justify-end pb-5">
@@ -145,12 +145,13 @@
                             <span>{{ item.name }}</span>
                             <span>{{ item.qty }} x ${{ item.price }}</span>
                         </div>
-                        <a :href="route('souvenir.order.receipt', { id: order.id, uuid:order.uuid })" target="_blank">Receipt/收據</a>
+                        <a-button :href="route('souvenir.order.receipt', { id: order.id, uuid:order.uuid })" target="_blank">Receipt/收據</a-button>
                         <div class="font-bold float-right">
                             Total / 總計: ${{ order.amount }}
                         </div>
                     </div>
                 </template>
+                <a-button class="mt-5 float-right" @click="orderIsOpen = false">Close / 關閉</a-button>
             </div>
         </a-drawer>
 
@@ -202,14 +203,21 @@ export default {
                 { label: 'FAD / 藝術及設計學院', value: 'FDA' },
                 { label: 'FHSS / 人文及社會科學學院', value: 'FHSS' },
                 { label: 'FB / 管理科學學院', value: 'FB' },
+                { label: 'AE / 北京大學醫學部——澳門理工大學護理書院', value: 'AE' },
+                
             ],
             rules: {
                 netid: [{ required: true, message: 'Please enter your NetID' }],
                 password: [{ required: true, message: 'Please enter your password' }],
                 faculty: [{ required: true, message: 'Please select your faculty' }],
                 degree: [{ required: true, message: 'Please select your degree' }],
-                phone: [{ required: true, message: 'Please enter your phone number' }],
-                email: [], // Optional
+                phone: [
+                    { required: true, message: 'Please enter your phone number' },
+                    { pattern: /^[0-9]*$/, message: 'Phone number must contain only numbers' },
+                ],
+                email: [
+                    { type: 'email', message: 'Please enter a valid email address' },
+                ], // Optional but must be in email format
             },
         };
     },
@@ -304,6 +312,10 @@ export default {
                 }, 300);
             }
         },
+        selectedProductCount(productId){
+            const item = this.cartItems.find(item => item.id === productId);
+            return item ? item.qty : 0;
+        }
 
     },
 };

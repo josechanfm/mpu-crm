@@ -31,19 +31,19 @@ const logout = () => {
     <!-- Header -->
     <header>
         <!-- navbar and menu -->
-        <nav class="shadow">
+        <nav class="shadow fixed top-0 left-0 w-full bg-white z-10">
             <div class="flex justify-between items-center py-6 px-10 container mx-auto">
                 <div class="shrink-0 flex items-center">
                     <Link :href="route('home')">
-                    <ApplicationMark class="block h-14 w-auto" />
+                        <ApplicationMark class="block h-14 w-auto" />
                     </Link>
                 </div>
             </div>
         </nav>
     </header>
     <!-- Page Heading -->
-    <header v-if="$slots.header" class="bg-gray-100 shadow">
-        <div class="mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <header v-if="$slots.header" class="bg-gray-100 shadow mt-28">
+        <div class="mx-auto py-4 px-4 sm:px-6 lg:px-8">
             <slot name="header" />
         </div>
     </header>
@@ -60,6 +60,5 @@ const logout = () => {
                 </div>
             </main>
         </section>
-
     </main>
 </template>

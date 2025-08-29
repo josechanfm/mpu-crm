@@ -35,9 +35,17 @@ const submit = () => {
         <template #logo>
             <AuthenticationCardLogo />
         </template>
+
+        <div class="flex justify-center items-center pb-10">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight text-center">
+                預購畢業生限量專屬紀念品<br>
+                Pre-order of Graduation Gifts
+            </h2>
+        </div>
+
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="netid" value="NetId" />
+                <InputLabel for="netid" value="Student ID / 學生編號" />
                 <TextInput
                     id="netid"
                     v-model="form.netid"
@@ -48,7 +56,7 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.netid" />
             </div>
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" value="Password / 密碼" />
                 <TextInput
                     id="password"
                     v-model="form.password"
@@ -61,7 +69,7 @@ const submit = () => {
             </div>
             <div class="flex items-center justify-end mt-4">
                 <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
+                    Log in / 登入
                 </PrimaryButton>
             </div>
         </form>
