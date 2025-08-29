@@ -2,54 +2,87 @@
 <html lang="en">
 <head>
     <title>Macao Polytechnic University</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: SimHei, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        .theader {
+            background-color: #3498db;
+            color: white;
+        }
+        .tfooter{
+            background-color: #ecf0f1;
+            text-align: right;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+    </style>
 </head>
-<style>
-    @font-face {
-        font-family: 'SimHei';
-        src: url('storage/fonts/simhei.ttf') format('truetype');
-    }
-    *{
-        font-family: 'SimHei' ;
-     }
-
-</style>
-
-<body style="margin: 0; padding: 20px;">
+<body>
     <div>
-        <img src="{{ public_path('images\mpu_banner.png') }}" alt="MPU Logo" style="display: block; margin: 0 auto 20px; height: 80px;" />
+        <img src="{{ public_path('/storage/images/mpu_banner.png') }}" alt="MPU Logo" style="display: block; margin: 0 auto 20px; height: 80px;" />
     </div>
-    <p>{{ storage_path('app\public\fonts\simhei.ttf') }}</p>
-    <p>{{ public_path('images\mpu_banner.png') }}</p>
-    <p>{{  url('/storage/fonts/simhei.ttf') }}</p>
-    <div class="title" style="text-align: center; color: #2c3e50;">Official Receipt / 官方收據</div>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <div>
+        <div style="font-size:20px; text-align: center; color: #2c3e50;">Official Receipt / 官方收據</div>
+        <p></p>
+
+        <div style="float:right">
+            <div>Pickup Code / 取件碼</div>
+            <img style="float:right" width="150" src="{{ $pickupQrcodePath }}" alt="QR Code" />
+        </div>
+        <div>Faculty/學院: {{ $order->form_meta->faculty  }}</div>
+        <div>Degree/學位: {{ $order->form_meta->degree  }}</div>
+        <div>Phone/電話: {{ $order->form_meta->phone }}</div>
+        <div>Email/電郵: {{ $order->form_meta->email  }}</div>
+        <div>Order ID / 訂單編號: {{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</div>
+        <div>Order Date / 訂單日期: {{ $order->created_at->format('Y-m-d H:i:s') }}</div>
+        <p></p>
+        <p></p>
+    </div>
+    <table>
         <thead>
             <tr>
-                <th style="border: 1px solid #ccc; padding: 10px; text-align: center; background-color: #3498db; color: white;">產品 / Product</th>
-                <th style="border: 1px solid #ccc; padding: 10px; text-align: center; background-color: #3498db; color: white;">數量 / Quantity</th>
-                <th style="border: 1px solid #ccc; padding: 10px; text-align: center; background-color: #3498db; color: white;">單價 / Unit Price</th>
-                <th style="border: 1px solid #ccc; padding: 10px; text-align: center; background-color: #3498db; color: white;">金額 / Amount</th>
+                <td class="theader">Product / 產品</td>
+                <td class="theader">Quantity / 數量</td>
+                <td class="theader">Unit Price / 單價</td>
+                <td class="theader">Amount / 金額</td>
             </tr>
         </thead>
         <tbody>
             @foreach($order->items as $item)
             <tr>
-                <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">{{ $item['name'] }}</td>
-                <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">{{ $item['qty'] }}</td>
-                <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">{{ $item['price'] }}</td>
-                <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">{{ $item['amount'] }}</td>
+                <td>{{ $item['name'] }}</td>
+                <td>{{ $item['qty'] }}</td>
+                <td>{{ $item['price'] }}</td>
+                <td>{{ $item['amount'] }}</td>
             </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="3" style="text-align: right; font-weight: bold; background-color: #ecf0f1; border: 1px solid #ccc; padding: 10px;">總計 / Total:</td>
-                <td style="border: 1px solid #ccc; padding: 10px;">{{ $order->amount }}</td>
+                <td colspan="3" class="tfooter">Total / 總計:</td>
+                <td>{{ $order->amount }}</td>
             </tr>
         </tfoot>
     </table>
 
-    <div class="footer" style="text-align: center; margin-top: 20px; font-size: 14px; color: #7f8c8d;">
+    <div class="footer">
         <p>Thank you for your purchase! / 感謝您的購買！</p>
         <p>For any inquiries, contact us at support@mpu.edu.mo / 如有任何查詢，請聯繫我們 support@mpu.edu.mo</p>
     </div>

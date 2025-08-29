@@ -34,7 +34,7 @@
                 <div>MPU warmly invite you to participate in our "Graduation Gifts (Limited Edition)" pre-ordering! Our university has crafted 3 exclusive items for graduating students, capturing campus memories and celebrating the friendships formed here. We hope that the support from MPU carried in the gifts will accompany graduates all the time as they embrace new roles in life. For interested students, please fill out the pre-order form below. Last but not least, wishing you a smooth graduation and a bright future ahead!</div>
             </div>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-2">
-                    <div v-for="product in products" :key="product.id" class="flex flex-col md:flex-row bg-gray-100 rounded-lg mbt-5">
+                    <div v-for="product in products" :key="product.id" class="flex flex-col md:flex-row bg-gray-100 rounded-lg mb-5">
                         <div class="flex-shrink-0 w-full md:w-64 md:h-48">
                             <a-carousel :autoplay="true" dots>
                                 <div v-for="(image, index) in product.images" :key="index">
@@ -42,11 +42,11 @@
                                 </div>
                             </a-carousel>
                         </div>
-                        <div class="flex-grow mt-0 md:mt-0 md:pl-4">
+                        <div class="flex-grow mt-0 md:mt-0 md:pl-4 m-2">
                             <h3 class="mt-2 text-lg font-semibold">{{ product.name }}</h3>
                             <p class="mt-1 text-gray-600" v-html="product.description"/>
                             <p class="mt-2 font-bold">${{ product.price.toFixed(2) }}</p>
-                            <a-button type="primary" @click="addToCart(product)" :disabled="user == null" class="mt-2">
+                            <a-button type="primary" @click="addToCart(product)" :disabled="user == null" class="my-2">
                                 Add to cart / 加入購物車
                             </a-button>
                         </div>
@@ -162,6 +162,7 @@ import BlankLayout from '@/Layouts/BlankLayout.vue';
 import { ShoppingCartOutlined } from '@ant-design/icons-vue';
 import dayjs from 'dayjs';
 
+
 export default {
     components: {
         BlankLayout,
@@ -233,22 +234,33 @@ export default {
         },
         addToCart(product) {
             const existingItem = this.cartItems.find(item => item.id === product.id);
+            var itemAdded=false;
 
             if (existingItem) {
-                if (existingItem.qty < 3) {
+                if (existingItem.quota > existingItem.qty) {
                     existingItem.qty += 1;
+                    itemAdded=true;
                 }
             } else {
                 this.cartItems.push({ id: product.id, name: product.name, price:product.price, quota:product.quota, qty: 1 });
+                itemAdded=true;
             }
 
-            this.cartItemCount = this.cartItems.reduce((total, item) => total + item.qty, 0);
-            this.triggerAnimation();
-            console.log(`Added ${product.name} to cart`);
+            if(itemAdded){
+                this.cartItemCount = this.cartItems.reduce((total, item) => total + item.qty, 0);
+                this.triggerAnimation();
+                this.$message.success(`Added ${product.name} to cart`);
+            }else{
+                this.$message.warning(`You cannot increase the quantity beyond the quota of ${product.quota}.`);
+            }
+
         },
         increaseCount(item) {
             if (item.qty < item.quota) {
                 item.qty += 1;
+                this.cartItemCount = this.cartItems.reduce((total, item) => total + item.qty, 0);
+            }else{
+                this.$message.warning(`You cannot increase the quantity beyond the quota of ${item.quota}.`);
             }
         },
         decreaseCount(item) {

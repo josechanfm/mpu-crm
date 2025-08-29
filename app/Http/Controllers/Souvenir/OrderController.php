@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Http;
 use App\Models\SouvenirUser;
 use App\Models\SouvenirPayment;
 use App\Models\SouvenirOrder;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Writer\SvgWriter;
 
 use PDF;
 
@@ -113,6 +116,8 @@ class OrderController extends Controller
         }
         $cart['uuid']=Str::uuid();
         $cart['client_ip']=$request->getClientIp();
+        $cart['netid']=session('souvenirUser')->netid;
+        dd($cart);
         $order=$this->storeToOrder(session('souvenirUser'), $cart);
 
 
@@ -201,12 +206,11 @@ class OrderController extends Controller
     }
     public function pickupCode(){
         //dd(hash('sha256',session('souvenirUser')->id));
-        $salt=env('SALT','dae-souvenir');
-        
-        $pickupCode=session('souvenirUser')->id.'-'.hash('sha256',session('souvenirUser')->id.$salt);
+        // $salt=env('SALT','dae-souvenir');
+        // $pickupCode=session('souvenirUser')->id.'-'.hash('sha256',session('souvenirUser')->id.$salt);
         return Inertia::render('Souvenir/PickupCode',[
             'user'=>session('souvenirUser'),
-            'pickupCode'=>$pickupCode,
+            'pickupCode'=>$this->genPickupCode(session('souvenirUser')->id),
         ]);
     }
 
@@ -218,25 +222,55 @@ class OrderController extends Controller
         if(!session()->has('souvenirUser') || empty($order) || $order->souvenir_user_id != session('souvenirUser')->id){
             return redirect()->route('souvenir');
         }
+        // $data = 'https://example.com'; // Replace with your dynamic data
+        // $qrCode = QrCode::create($data)
+        //     ->setSize(300)
+        //     ->setMargin(10);
 
-        // return view('souvenir/receipt', [
-        //     'order' => $order
-        // ]);
-
-
-        $pdf = PDF::loadView('souvenir/receipt', [
-            'order' => $order,
-        ]);
-        //$pdf->setOption(['dpi' => 150, 'defaultFont' => 'SimHei']);
-
-        //dd($pdf);
-
-        $pdf->render();
+        // // Generate SVG
+        // $writer = new SvgWriter();
+        // $svgContent = $writer->write($qrCode)->getString();
         
+        $pickupCode=$this->genPickupCode(session('souvenirUser')->id);
+        $pdf = PDF::loadView('souvenir/receipt', [
+            'order' => $order->load('user'),
+            'pickupCode' => $this->genQrcode($pickupCode),
+            'pickupQrcodePath' => $this->genPickupQrImage($pickupCode)
+        ]);
+        $pdf->render();
         return $pdf->stream('receipt.pdf', array('Attachment' => false));
-        // return Inertia::render('Souvenir/Invoice', [
-        //     'user'=>session('souvenirUser'),
-        //     'order'=>$order,
+        // return view('souvenir/receipt', [
+        //     'order' => $order,
+        //     'pickupCode' => $this->genQrcode($pickupCode),
+        //     'pickupQrcodePath' => $this->genPickupQrImage($pickupCode)
         // ]);
+
+    }
+    private function genPickupCode($str){
+        $salt=env('SALT','dae-souvenir');
+        return $str.'-'.hash('sha256',$str.$salt);
+    }
+    private function genPickupQrImage($string){
+        $qrCode = QrCode::create($string)
+            ->setSize(300)
+            ->setMargin(10);
+        // Generate the PNG writer
+        $writer = new PngWriter();
+        $result = $writer->write($qrCode);
+        $tempFilePath = public_path('/images/souvenirs/qrcodes/'.$string.'png');
+        file_put_contents($tempFilePath, $result->getString());
+        return $tempFilePath;
+        //return '/images/souvenirs/qrcodes/'.$string.'png';
+    }
+    private function genQrcode($string){
+        // Create the QR code instance
+        $qrCode = QrCode::create($string)
+            ->setSize(300)
+            ->setMargin(10);
+        // Generate the PNG writer
+        $writer = new PngWriter();
+        $result = $writer->write($qrCode);
+        // Convert the QR code image to Base64
+        return base64_encode($result->getString());
     }
 }

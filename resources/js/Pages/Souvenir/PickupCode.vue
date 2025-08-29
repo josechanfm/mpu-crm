@@ -25,7 +25,7 @@
                             size="256"
                             error-level="H"
                             :value="pickupCode"
-                            icon="/images/mpu_logo.png"
+                            icon="/storage/images/mpu_logo.png"
                         />
                     </div>
             </div>

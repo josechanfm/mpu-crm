@@ -2,7 +2,7 @@
     <div class="flex justify-between bg-gray-200">
         <div class="p-5">
             <a href="/">
-                <img src="/images/mpu_banner.png" width="300" />
+                <img src="/storage/images/mpu_banner.png" width="300" />
             </a>
         </div>
         <div class="hidden lg:block lg:p-10 lg:text-4xl font-medium text-slate-500">
