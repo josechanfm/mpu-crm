@@ -1,8 +1,16 @@
 <template>
     <DepartmentLayout title="工作項目" >
         <div class="mx-auto pt-5">
-            <div class="flex-auto pb-3 text-right">
-                <a-button @click="createRecord" class="ant-btn ant-btn-primary">{{ $t('create') }}</a-button>
+            <div class="flex flex-justify justify-end pb-3 gap-5">
+                <a href="/storage/souvenirUsers.xlsx" class="pt-1">Download Sample file</a>
+                <a-upload
+                    :before-upload="beforeUpload"
+                    :show-upload-list="false"
+                    accept=".xlsx, .xls"
+                >
+                    <a-button danger ghost><UploadOutlined /> Select upload File</a-button>
+                </a-upload>
+                <a-button type="primary" @click="createRecord">{{ $t('create') }}</a-button>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
 
@@ -175,6 +183,10 @@ export default {
                     order: 'asc' // 'asc' or 'desc'
                 }
             },
+            file: null,
+            error: '',
+            successMessage: '',
+            loading: false
         };
     },
     created() {
@@ -199,7 +211,7 @@ export default {
                 showTotal: (total, range) => `Showing ${range[0]}-${range[1]} of ${total} items`,
             };
         },
-                columns(){
+        columns(){
             return [
                 {
                     title: "Student No.",
@@ -322,12 +334,49 @@ export default {
             this.modal.isOpen = true;
         },
         handleModalClose(){
-            console.log('modal is going to close')
             this.modal.isOpen=false
             location.reload();
         },
 
 
-    },
+        // method for excel file import
+        beforeUpload(file) {
+            console.log('Selected file:', file);
+            const isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || 
+                            file.type === 'application/vnd.ms-excel';
+            const isLt2M = file.size / 1024 / 1024 < 2; // Limit to 2MB
+
+            if (!isExcel) {
+                this.error = 'You can only upload Excel files!';
+                return false; // Prevent upload
+            } else if (!isLt2M) {
+                this.error = 'File must be smaller than 2MB!';
+                return false; // Prevent upload
+            }
+
+            this.error = ''; // Clear any previous errors
+            this.file = file; // Store the file for upload
+            this.uploadFile(file); // Immediately upload the file
+            return false; // Prevent automatic upload
+        },
+        async uploadFile(file) {
+            console.log('Uploading file:', file);
+            const formData = new FormData();
+            formData.append('file', file);
+            this.$inertia.post(route('dae.souvenir.user.import'), formData, {
+                onSuccess: (page) => {
+                    console.log('File imported successfully:', page);
+                    this.loading=false
+                },
+                onError: (err) => {
+                    console.log(err);
+                    this.loading=false
+                }
+            });
+
+
+        },
+
+    }
 };
 </script>

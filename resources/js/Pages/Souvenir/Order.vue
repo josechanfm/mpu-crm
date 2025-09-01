@@ -104,9 +104,9 @@
 
                     <a-form-item label="Degree / 學位" name="degree" class="mb-0">
                         <a-select v-model:value="orderForm.degree" placeholder="Select your degree / 選擇您的學位">
-                            <a-select-option value="bachelor">Bachelor / 學士</a-select-option>
-                            <a-select-option value="master">Master / 碩士</a-select-option>
-                            <a-select-option value="phd">PhD / 博士</a-select-option>
+                            <a-select-option value="BACHALOR">Bachelor / 學士</a-select-option>
+                            <a-select-option value="MASTER">Master / 碩士</a-select-option>
+                            <a-select-option value="PHD">PhD / 博士</a-select-option>
                         </a-select>
                     </a-form-item>
                     <a-form-item label="Contact Phone Number / 聯絡電話" name="phone" class="mb-0">
@@ -197,14 +197,13 @@ export default {
                 email: '',
             },
             faculties:[
-                { label: 'FAC / 應用科學學院', value: 'FAC' },
-                { label: 'FHSS / 健康科學及體育學院', value: 'FHSS' },
+                { label: 'FAC / 應用科學學院', value: 'FCA' },
+                { label: 'FHSS / 健康科學及體育學院', value: 'FCSD' },
                 { label: 'FLT / 語言及翻譯學院', value: 'FLT' },
-                { label: 'FAD / 藝術及設計學院', value: 'FDA' },
-                { label: 'FHSS / 人文及社會科學學院', value: 'FHSS' },
-                { label: 'FB / 管理科學學院', value: 'FB' },
+                { label: 'FAD / 藝術及設計學院', value: 'FAD' },
+                { label: 'FHSS / 人文及社會科學學院', value: 'FCHS' },
+                { label: 'FB / 管理科學學院', value: 'FCG' },
                 { label: 'AE / 北京大學醫學部——澳門理工大學護理書院', value: 'AE' },
-                
             ],
             rules: {
                 netid: [{ required: true, message: 'Please enter your NetID' }],

@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('souvenir_users', function (Blueprint $table) {
             $table->id();
             $table->string('netid');
+            $table->string('name_zh')->nullable();
+            $table->string('name_en')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('faculty_code')->nullable();

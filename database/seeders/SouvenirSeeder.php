@@ -42,9 +42,9 @@ class SouvenirSeeder extends Seeder
         ]);
 
         $souvenirUsers=[
-            ["netid"=>"p2000010","email"=>"p2000010@mpu.edu.mo","phone"=>"64562101"],
-            ["netid"=>"p2000020","email"=>"p2000020@mpu.edu.mo","phone"=>"64562102"],
-            ["netid"=>"p2000030","email"=>"p2000030@mpu.edu.mo","phone"=>"64562103"],
+            ["netid"=>"p2000012","email"=>"p2000010@mpu.edu.mo","phone"=>"64562101"],
+            ["netid"=>"p2000029","email"=>"p2000020@mpu.edu.mo","phone"=>"64562102"],
+            ["netid"=>"p2000031","email"=>"p2000030@mpu.edu.mo","phone"=>"64562103"],
             ["netid"=>"p2000040","email"=>"p2000040@mpu.edu.mo","phone"=>"64562104"],
             ["netid"=>"p2000050","email"=>"p2000050@mpu.edu.mo","phone"=>"64562105"],
             ["netid"=>"p2000060","email"=>"p2000060@mpu.edu.mo","phone"=>"64562106"],

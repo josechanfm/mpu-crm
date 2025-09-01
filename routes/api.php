@@ -46,5 +46,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('publications',[\App\Http\Controllers\Api\PublicationController::class,'get'])->name('publication.get');
 
+Route::get('id_validator', [\App\Http\Controllers\Api\IdValidatorController::class,'index'])->name('api.id_validator');
 
 

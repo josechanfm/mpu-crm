@@ -1,8 +1,7 @@
 <template>
-    <DepartmentLayout title="學生事務處" :department="department" :breadcrumb="breadcrumb">
-        <a-typography-title :level="3" class="text-center mb-6">{{ department.name_zh }}</a-typography-title>
+    <DepartmentLayout :title="department.name_zh" :department="department" :breadcrumb="breadcrumb">
         
-        <div class="container mx-auto pt-5">
+        <div class="pt-5">
             <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
                 <h4 class="font-semibold text-xl mb-4">Personnel Department Dashboard</h4>
                 <p class="text-gray-600">Welcome to the DAE department! Here you can manage your souvenirs, orders, and pickups.</p>
@@ -10,12 +9,15 @@
 
             <div v-html="department.landing_page" class="mb-6"></div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <inertia-link :href="route('dae.souvenir.users.index')">
+                    <a-button class="w-full hover:bg-gray-200 transition duration-300 text-xl h-16">Users</a-button>
+                </inertia-link>
                 <inertia-link :href="route('dae.souvenirs.index')" as="button">
                     <a-button class="w-full hover:bg-gray-200 transition duration-300 text-xl h-16">Souvenirs</a-button>
                 </inertia-link>
                 <inertia-link :href="route('dae.souvenir.orders.index')">
-                    <a-button class="w-full hover:bg-gray-200 transition duration-300 text-xl h-16">Order</a-button>
+                    <a-button class="w-full hover:bg-gray-200 transition duration-300 text-xl h-16">Orders</a-button>
                 </inertia-link>
                 <inertia-link :href="route('dae.souvenir.pickup')">
                     <a-button class="w-full hover:bg-gray-200 transition duration-300 text-xl h-16">Pickup</a-button>
