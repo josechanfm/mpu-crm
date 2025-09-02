@@ -93,7 +93,7 @@ class PaymentController extends Controller
         $order=SouvenirOrder::find($parts[0]);
         // $order->payment_notify=$request->all();
         $order->payment_status=$request->status;
-        $order->status=$request->status=='SUCCESS'?3:2;
+        $order->status=$request->status=='SUCCESS'?config('constants.PAID'):config('constants.PAY_FAIL');
         $order->save();
         return true;
     }
@@ -118,7 +118,6 @@ class PaymentController extends Controller
                 ]);
         }
 
-
         $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
         $mercOrderNo=substr(str_replace($systemCode,'',$request->merchantOrderNo),0,-2);
         $parts=explode('-',$mercOrderNo);
@@ -127,7 +126,7 @@ class PaymentController extends Controller
 
         //dd($systemCode, $mercOrderNo, $parts, (int)$parts[0], $order);
         $order->payment_status=$request->responseStatus;
-        $order->status=$request->responseStatus=='SUCCESS'?3:2;
+        $order->status=$request->status=='SUCCESS'?config('constants.PAID'):config('constants.PAY_FAIL');
         $order->save();
 
         $payment->order_id=$order->id;

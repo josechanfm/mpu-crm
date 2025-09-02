@@ -70,9 +70,8 @@ class PickupController extends Controller
             return response()->json(['message' => 'Invalid hash code.'], 403);
         }
 
-        // Update all order statuses to 3
-        // $updated = SouvenirOrder::where('souvenir_user_id', $user->id)->update(['status' => 3]);
-        $updated=$user->orders()->where('status',2)->update(['status'=>3]);
+        // Update all PAID orders status to PICKUP
+        $updated=$user->orders()->where('status',config('constants.ORDER_PAID'))->update(['status'=>config('constants.ORDER_PICKUP')]);
         // return response()->json([
         //     "code"=>$request->code, 
         //     'parts'=>$parts,

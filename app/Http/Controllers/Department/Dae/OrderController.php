@@ -21,7 +21,7 @@ class OrderController extends Controller
         if ($request->has('filter_column') && !is_null($request->filter_column && $request->has('filter_value') && !is_null($request->filter_value))) {
             $orders = SouvenirOrder::where($request->filter_column, $request->filter_value);
         }else{
-            $orders = SouvenirOrder::where('status', 2);
+            $orders = SouvenirOrder::where('status', config('constants.ORDER_PAID'));
         }
         if($request->search_column && $request->search_column=='buyer' && $request->search_text){
             $orders = $orders->whereHas('user', function($query) use ($request){

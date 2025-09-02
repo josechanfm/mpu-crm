@@ -81,8 +81,7 @@
                             <span v-if="record.status==null" class="text-yellow-500">未支付</span>
                             <span v-else-if="record.status==0" class="text-red-500">支付失敗</span>
                             <span v-else-if="record.status==1" class="text-red-800">已支付</span>
-                            <span v-else-if="record.status==2" class="text-blue-300">確認支付</span>
-                            <span v-else-if="record.status==3" class="text-green-300">已領取</span>
+                            <span v-else-if="record.status==2" class="text-blue-300">已領取</span>
                         </template>
                         <template v-else>
                             {{ record[column.dataIndex] }}
@@ -119,7 +118,7 @@
             {{ modal.data.amount }}
           </a-form-item>
           <a-form-item label="Items" >
-            <div v-for="item in modal.data.items">
+            <div v-for="item in modal.data.items" :key="item.id">
                 {{ item.name }} ({{ item.qty }})
             </div>
           </a-form-item>
@@ -130,7 +129,7 @@
             <span v-if="modal.data.status==null">未支付</span>
             <span v-else-if="modal.data.status==0">支付失敗</span>
             <span v-else-if="modal.data.status==1">已支付</span>
-            <span v-else-if="modal.data.status==2">確認支付</span>
+            <span v-else-if="modal.data.status==2">己領取</span>
           </a-form-item>
 
       </a-form>
