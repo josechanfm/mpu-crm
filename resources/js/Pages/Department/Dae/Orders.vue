@@ -1,8 +1,8 @@
 <template>
-    <DepartmentLayout title="工作項目" >
+    <DepartmentLayout title="Souvenir orders" >
         <div class="mx-auto pt-5">
-            <div class="flex-auto pb-3 text-right">
-                
+            <div class="flex flex-justify justify-end pb-3 gap-5">
+                <a-button :href="route('dae.dashboard')">Back</a-button>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
 
@@ -56,7 +56,7 @@
                         />
                     </div> -->
                     <div class="flex items-center space-x-2">
-                        <a-button type="primary" @click="onClickFilter">{{ $t('filter') }}</a-button>
+                        <a-button type="primary" @click="onClickFilter">Filter</a-button>
                         <a-button @click="clearMyFilter">Clear</a-button>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                 <a-table :dataSource="orders.data" :columns="columns" :pagination="pagination" @change="onPaginationChange">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <a-button @click="viewRecord(record)">{{ $t('edit') }}</a-button>
+                            <a-button @click="viewRecord(record)">Edit</a-button>
                         </template>
                         <template v-else-if="column.dataIndex=='buyer' && record.user">
                             <span>{{ record.user.netid }}</span>
@@ -102,7 +102,7 @@
         :label-col="{ style:{width:'120px'}  }" :wrapper-col="{ span: 20 }"
       >
           <a-form-item label="User" >
-            {{ modal.data.user.netid }}
+            {{ modal.data.user?.netid }}
           </a-form-item>
           <a-form-item label="Form" >
             <div modal.data.form_meta>
@@ -264,7 +264,7 @@ export default {
         viewRecord(record) {
             this.modal.data = { ...record };
             this.modal.mode = "VIEW";
-            this.modal.title = "詳細";
+            this.modal.title = "View Record";
             this.modal.isOpen = true;
         },
         clearMyFilter(){

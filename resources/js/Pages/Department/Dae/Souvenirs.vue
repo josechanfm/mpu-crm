@@ -1,8 +1,9 @@
 <template>
-    <DepartmentLayout title="工作項目" >
+    <DepartmentLayout title="Souvenirs" >
         <div class="mx-auto pt-5">
-            <div class="flex-auto pb-3 text-right">
-                <a-button @click="createRecord" class="ant-btn ant-btn-primary">{{ $t('create') }}</a-button>
+            <div class="flex flex-justify justify-end pb-3 gap-5">
+                <a-button :href="route('dae.dashboard')">Back</a-button>
+                <a-button type="primary" @click="createRecord">Create</a-button>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <div class="flex flex-wrap p-5 gap-4">
@@ -44,14 +45,14 @@
                         />
                     </div>
                     <div class="flex items-center space-x-2">
-                        <a-button type="primary" @click="onClickFilter">{{ $t('filter') }}</a-button>
+                        <a-button type="primary" @click="onClickFilter">Filter</a-button>
                         <a-button @click="clearMyFilter">Clear</a-button>
                     </div>
                 </div>
                 <a-table :dataSource="souvenirs.data" :columns="columns" :pagination="pagination" @change="onPaginationChange">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <a-button @click="editRecord(record)">{{ $t('edit') }}</a-button>
+                            <a-button @click="editRecord(record)">Edit</a-button>
                         </template>
                         <template v-else-if="column.dataIndex=='images'">
                             <div class="flex flex-wrap">
@@ -286,7 +287,7 @@ export default {
                     title: "Available",
                     dataIndex: "is_available",
                 }, {
-                    title: "操作",
+                    title: "Operation",
                     dataIndex: "operation",
                     key: "operation",
                     width: 240,
@@ -387,13 +388,13 @@ export default {
                 published:false  
             };
             this.modal.mode = "CREATE";
-            this.modal.title = "新增";
+            this.modal.title = "Create new item";
             this.modal.isOpen = true;
         },
         editRecord(record) {
             this.modal.data = { ...record };
             this.modal.mode = "EDIT";
-            this.modal.title = "修改";
+            this.modal.title = "Edit item";
             this.modal.isOpen = true;
         },
         handleModalClose(){

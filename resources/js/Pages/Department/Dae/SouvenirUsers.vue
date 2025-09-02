@@ -1,8 +1,8 @@
 <template>
-    <DepartmentLayout title="工作項目" >
+    <DepartmentLayout title="Sourvenir Users" >
         <div class="mx-auto pt-5">
             <div class="flex flex-justify justify-end pb-3 gap-5">
-                <a href="/storage/souvenirUsers.xlsx" class="pt-1">Download Sample file</a>
+                <a href="/storage/souvenirUsers.xlsx" class="pt-1">DownloadSample file</a>
                 <a-upload
                     :before-upload="beforeUpload"
                     :show-upload-list="false"
@@ -10,7 +10,8 @@
                 >
                     <a-button danger ghost><UploadOutlined /> Select upload File</a-button>
                 </a-upload>
-                <a-button type="primary" @click="createRecord">{{ $t('create') }}</a-button>
+                <a-button :href="route('dae.dashboard')">Back</a-button>
+                <a-button type="primary" @click="createRecord">Create</a-button>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
 
@@ -64,7 +65,7 @@
                         />
                     </div> -->
                     <div class="flex items-center space-x-2">
-                        <a-button type="primary" @click="onClickFilter">{{ $t('filter') }}</a-button>
+                        <a-button type="primary" @click="onClickFilter">Filter</a-button>
                         <a-button @click="clearMyFilter">Clear</a-button>
                     </div>
                 </div>
@@ -72,7 +73,7 @@
                 <a-table :dataSource="users.data" :columns="columns" :pagination="pagination" @change="onPaginationChange">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <a-button @click="editRecord(record)">{{ $t('edit') }}</a-button>
+                            <a-button @click="editRecord(record)">Edit</a-button>
                         </template>
                         <template v-else-if="column.dataIndex=='updated_at'">
                             {{  formatDate(record.updated_at) }}
@@ -110,9 +111,9 @@
           </a-form-item>
       </a-form>
       <template #footer>
-        <a-button key="back" @click="handleModalClose">{{ $t('close')}}</a-button>
-        <a-button v-if="modal.mode=='EDIT'" key="submit" type="primary" @click="updateRecord" :loading="loading">{{  $t('update') }}</a-button>
-        <a-button v-if="modal.mode=='CREATE'" key="submit" type="primary" @click="storeRecord" :loading="loading">{{  $t('save') }}</a-button>
+        <a-button key="back" @click="handleModalClose">Close</a-button>
+        <a-button v-if="modal.mode=='EDIT'" key="submit" type="primary" @click="updateRecord" :loading="loading">Update</a-button>
+        <a-button v-if="modal.mode=='CREATE'" key="submit" type="primary" @click="storeRecord" :loading="loading">Save</a-button>
       </template>
     </a-modal>
     <!-- Modal End-->
@@ -234,11 +235,11 @@ export default {
                 }, {
                     title: "Updated At",
                     dataIndex: "updated_at",
-                }, {
-                    title: "操作",
-                    dataIndex: "operation",
-                    key: "operation",
-                    width: 240,
+                // }, {
+                //     title: "Operation",
+                //     dataIndex: "operation",
+                //     key: "operation",
+                //     width: 240,
                 },
             ]
         },
@@ -252,7 +253,7 @@ export default {
         viewRecord(record) {
             this.modal.data = { ...record };
             this.modal.mode = "VIEW";
-            this.modal.title = "詳細";
+            this.modal.title = "View Record";
             this.modal.isOpen = true;
         },
         clearMyFilter(){
