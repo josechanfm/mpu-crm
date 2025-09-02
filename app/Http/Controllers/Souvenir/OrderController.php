@@ -221,28 +221,32 @@ class OrderController extends Controller
         if(!session()->has('souvenirUser') || empty($order) || $order->souvenir_user_id != session('souvenirUser')->id){
             return redirect()->route('souvenir');
         }
-        // $data = 'https://example.com'; // Replace with your dynamic data
-        // $qrCode = QrCode::create($data)
-        //     ->setSize(300)
-        //     ->setMargin(10);
-
-        // // Generate SVG
-        // $writer = new SvgWriter();
-        // $svgContent = $writer->write($qrCode)->getString();
-        
+       
         $pickupCode=$this->genPickupCode(session('souvenirUser')->id);
-        $pdf = PDF::loadView('souvenir/receipt', [
-            'order' => $order->load('user'),
-            'pickupCode' => $this->genQrcode($pickupCode),
-            'pickupQrcodePath' => $this->genPickupQrImage($pickupCode)
-        ]);
-        $pdf->render();
-        return $pdf->stream('receipt.pdf', array('Attachment' => false));
         // return view('souvenir/receipt', [
         //     'order' => $order,
         //     'pickupCode' => $this->genQrcode($pickupCode),
         //     'pickupQrcodePath' => $this->genPickupQrImage($pickupCode)
         // ]);
+
+        $pdf = PDF::loadView('souvenir/receipt', [
+            'order' => $order->load('user'),
+            'pickupCode' => $this->genQrcode($pickupCode),
+            'pickupQrcodePath' => $this->genPickupQrImage($pickupCode)
+        ])
+        ->setPaper('A4', 'portrait')
+        ->setOption([
+            'fontDir' => public_path('/fonts/Noto'),
+            'fontCache' => public_path('/fonts'),
+            'defaultFont' => 'NotoSansTC',
+            'margin-top' => '20mm',    // Set top margin
+            'margin-right' => '50mm',  // Set right margin
+            'margin-bottom' => '20mm', // Set bottom margin
+            'margin-left' => '15mm',   // Set left margin
+        ]);
+
+        //$pdf->render();
+        return $pdf->stream('receipt.pdf', array('Attachment' => false));
 
     }
     private function genPickupCode($str){

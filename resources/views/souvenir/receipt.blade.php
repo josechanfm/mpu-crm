@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
     <title>Macao Polytechnic University</title>
-    <style>
+    <style type="text/css">
+        @font-face {
+            font-family: SimHei;
+            src: url('{{base_path().' /storage/'}}fonts/simhei.ttf') format('truetype')
+        }
         body {
             margin: 0;
             padding: 20px;
