@@ -5,11 +5,17 @@
     <title>Macao Polytechnic University</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style type="text/css">
-
+        @font-face {
+            font-family: 'SimHei';
+            src: url('storage/fonts/simhei.ttf') format('truetype');
+        }
+        /* *{
+            font-family: 'SimHei' ;
+        } */
         body {
             margin: 0;
             padding: 20px;
-            /* font-family: SimHei, sans-serif; */
+            font-family: SimHei, sans-serif; 
         }
         table {
             width: 100%;
