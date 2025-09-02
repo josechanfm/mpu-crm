@@ -73,7 +73,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="w-full flex justify-center p-10 ">
+                <div class="w-full flex justify-center p-10 gap-5">
                     <a-button :href="route('dae.souvenir.users.index')">Back</a-button>
                     <a-button type="primary" @click="confirmImport">Confirm Import</a-button>
                 </div>
