@@ -4,7 +4,6 @@
             <div class="flex flex-justify justify-end pb-3 gap-5">
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                {{ records }}
                 <div class="font-bold text-red-500 text-xl mt-10">錯過名單</div>
                 <hr>
                 <table width="100%">
@@ -75,6 +74,7 @@
                     </tbody>
                 </table>
                 <div class="w-full flex justify-center p-10 ">
+                    <a-button :href="route('dae.souvenir.users.index')">Back</a-button>
                     <a-button type="primary" @click="confirmImport">Confirm Import</a-button>
                 </div>
             </div>
