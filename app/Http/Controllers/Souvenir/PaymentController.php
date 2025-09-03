@@ -93,7 +93,7 @@ class PaymentController extends Controller
         $order=SouvenirOrder::find($parts[0]);
         // $order->payment_notify=$request->all();
         $order->payment_status=$request->status;
-        $order->status=$request->status=='SUCCESS'?config('constants.PAID'):config('constants.PAY_FAIL');
+        $order->status=$request->status=='SUCCESS'?config('constants.ORDER_PAID'):config('constants.ORDER_PAY_FAIL');
         $order->save();
         return true;
     }
@@ -124,7 +124,7 @@ class PaymentController extends Controller
 
         //dd($systemCode, $mercOrderNo, $parts, (int)$parts[0], $order);
         $order->payment_status=$request->responseStatus;
-        $order->status=$request->status=='SUCCESS'?config('constants.PAID'):config('constants.PAY_FAIL');
+        $order->status=$request->status=='SUCCESS'?config('constants.ORDER_PAID'):config('constants.ORDER_PAY_FAIL');
         $order->save();
 
         $payment->order_id=$order->id;
