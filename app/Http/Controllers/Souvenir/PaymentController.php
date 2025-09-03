@@ -99,24 +99,22 @@ class PaymentController extends Controller
     }
 
     public function result(Request $request){
-        // dd($request->all());
         // $test='daesp18-1756268443-379201';
         // $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
         // $mercOrderNo=substr(str_replace($systemCode,'',$test),0,-2);
         // $parts=explode('-',$mercOrderNo);
         // $order=SouvenirOrder::find($parts[0]);
         // dd($test, $systemCode, $mercOrderNo, $parts[0], $order);
+        if ($request->has('test')) {
+            return Inertia::render('Souvenir/PaymentResult',[
+                    'order'=>SouvenirOrder::latest()->first()
+                ]);
+        }
         $payment=SouvenirPayment::create([
             'type'=>'result',
             'meta_data'=>$request->all(),
             'status'=>$request->responseStatus
         ]);
-
-        if (count($request->all()) == 0) {
-            return Inertia::render('Souvenir/PaymentResult',[
-                    'order'=>SouvenirOrder::latest()->first()
-                ]);
-        }
 
         $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
         $mercOrderNo=substr(str_replace($systemCode,'',$request->merchantOrderNo),0,-2);

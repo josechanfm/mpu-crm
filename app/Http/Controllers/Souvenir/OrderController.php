@@ -215,8 +215,6 @@ class OrderController extends Controller
 
     public function receipt($id){
         $order = SouvenirOrder::findOrFail($id);
-        
-         //dd(session('souvenirUser'), $order, session('souvenirUser')->id, $order->souvenir_user_id);
 
         if(!session()->has('souvenirUser') || empty($order) || $order->souvenir_user_id != session('souvenirUser')->id){
             return redirect()->route('souvenir');

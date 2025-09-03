@@ -131,7 +131,6 @@
             <span v-else-if="modal.data.status==1">已支付</span>
             <span v-else-if="modal.data.status==2">己領取</span>
           </a-form-item>
-
       </a-form>
       <template #footer>
         <a-button key="back" @click="modal.isOpen=false">{{ $t('close')}}</a-button>
@@ -184,10 +183,10 @@ export default {
             myFilter :{
                 filter:{
                     options:[
-                        { value: 0, label: "未支付" },
-                        { value: 1, label: "支付失敗" },
-                        { value: 2, label: "己支付" },
-                        { value: 3, label: "己領取" },
+                        { value: "null", label: "未支付" },
+                        { value: "0", label: "支付失敗" },
+                        { value: "1", label: "己支付" },
+                        { value: "2", label: "己領取" },
                     ],
                     column:'status',
                     value: 2
@@ -242,9 +241,10 @@ export default {
             return new URLSearchParams(window.location.search);
         },
         pagination() {
-            this.myFilter.filter.value = this.urlParams['filter_value']??2;
-            this.myFilter.search.column = this.urlParams['search_column'];
-            this.myFilter.search.text = this.urlParams['search_text'];
+            console.log('comput page', this.urlParams.get('filter_value'))
+            this.myFilter.filter.value = this.urlParams.get('filter_value')??2;
+            this.myFilter.search.column = this.urlParams.get('search_column');
+            this.myFilter.search.text = this.urlParams.get('search_text');
             return {
                 current: this.orders.current_page,
                 pageSize: this.orders.per_page,
@@ -270,7 +270,7 @@ export default {
             this.myFilter.search.column = null;
             this.myFilter.search.text = '';
             this.myFilter.filter.column= 'status';
-            this.myFilter.filter.value= 2;
+            this.myFilter.filter.value= 1;
             this.pagination.current = 1; // Reset to first page
             this.onPaginationChange(this.pagination);
         },
