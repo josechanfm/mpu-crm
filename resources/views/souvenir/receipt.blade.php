@@ -9,7 +9,7 @@
             font-family: 'NotoSansTC';
             font-style: normal;
             font-weight: 400;
-            src: url('{{ public_path('fonts/Noto/NotoSansTC-Regular.ttf') }}') format('truetype');
+            src: url('{{ storage_path('app/public/fonts/Noto/NotoSansTC-Regular.ttf') }}') format('truetype');
         }
 
         body {
