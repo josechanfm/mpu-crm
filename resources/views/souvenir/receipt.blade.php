@@ -6,17 +6,17 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style type="text/css">
         @font-face {
-            font-family: 'SimHei';
-            src: url('storage/fonts/simhei.ttf') format('truetype');
+            font-family: 'NotoSansTC';
+            font-style: normal;
+            font-weight: 400;
+            src: url('{{ public_path('fonts/Noto/NotoSansTC-Regular.ttf') }}') format('truetype');
         }
-        /* *{
-            font-family: 'SimHei' ;
-        } */
+
         body {
-            margin: 0;
-            padding: 20px;
-            font-family: SimHei, sans-serif; 
+            margin: 30px;
+            font-family: 'NotoSansTC', sans-serif;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
