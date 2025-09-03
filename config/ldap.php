@@ -27,7 +27,7 @@ return [
     */
 
     'connections' => [
-
+        
         'default' => [
             'hosts' => [env('LDAP_HOST', 'ldap4.ipm.edu.mo')],
             'username' => env('LDAP_USERNAME', 'cn=ldapproxy,ou=guest,dc=ipm,dc=edu,dc=mo'),

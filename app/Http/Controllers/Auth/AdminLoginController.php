@@ -36,7 +36,6 @@ class AdminLoginController extends Controller
         $credentials = $request->only('username', 'password');
         $isLocalUser = $request->input('local');
         
-
         if ($isLocalUser) {
             $adminUser=AdminUser::where('username',$request->username)->first();
             $credentials = [

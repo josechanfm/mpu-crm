@@ -7,7 +7,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-
+import { message } from "ant-design-vue";
 
 defineProps({
 
@@ -25,6 +25,18 @@ const submit = () => {
         remember: form.remember ? 'on' : '',
     })).post(route('souvenir.loginChecker'), {
         onFinish: () => form.reset('password'),
+        onError: (errors) => {
+            console.log('Login failed:', errors);
+            // Optionally, you can set a form error message
+            // form.errors=errors;
+            message.error({
+                content: () => "Username or password is incorrect, or you don't have permission",
+                class: 'custom-class',
+                style: {
+                marginTop: '30vh',
+                },
+            });
+        },
     });
 };
 </script>
