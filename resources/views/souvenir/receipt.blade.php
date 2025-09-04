@@ -37,8 +37,8 @@
         }
         .footer {
             text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
+            margin-top: 5px;
+            font-size: 12px;
             color: #7f8c8d;
         }
     </style>
@@ -90,10 +90,13 @@
             </tr>
         </tfoot>
     </table>
-
     <div class="footer">
-        <p>Thank you for your purchase! <br> 感謝您的購買！</p>
-        <p>For any inquiries, contact us at sao@mpu.edu.mo <br> 如有任何查詢，請聯繫我們 sao@mpu.edu.mo</p>
+        <table width="100%" style="border: none; border-collapse: collapse; margin: 0; padding: 0;">
+            <tr>
+                <td style="text-align: left; border: none; padding: 0;">Thank you for your purchase! <br> 感謝您的購買！</td>
+                <td style="text-align: right; border: none; padding: 0;">For any inquiries, contact us at sao@mpu.edu.mo <br> 如有任何查詢，請聯繫我們 sao@mpu.edu.mo</td>
+            </tr>
+        </table>
     </div>
 </body>
 </html>
