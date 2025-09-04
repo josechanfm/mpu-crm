@@ -25,11 +25,12 @@
         th, td {
             border: 1px solid #ccc;
             padding: 10px;
-            text-align: center;
         }
         .theader {
             background-color: #3498db;
             color: white;
+            font-size: 14px;
+            text-align:center;
         }
         .tfooter{
             background-color: #ecf0f1;
@@ -68,25 +69,25 @@
         <thead>
             <tr>
                 <td class="theader">Product / 產品</td>
-                <td class="theader">Quantity / 數量</td>
-                <td class="theader">Unit Price / 單價</td>
-                <td class="theader">Amount / 金額</td>
+                <td class="theader" width="120px">Quantity / 數量</td>
+                <td class="theader" width="120px">Unit Price / 單價</td>
+                <td class="theader" width="120px">Amount / 金額</td>
             </tr>
         </thead>
         <tbody>
             @foreach($order->items as $item)
             <tr>
-                <td>{{ $item['name'] }}</td>
-                <td>{{ $item['qty'] }}</td>
-                <td>{{ $item['price'] }}</td>
-                <td>{{ $item['amount'] }}</td>
+                <td style="text-align:left;">{{ $item['name'] }}</td>
+                <td style="text-align:center;">{{ $item['qty'] }}</td>
+                <td style="text-align:center;">{{ $item['price'] }}</td>
+                <td style="text-align:center">{{ $item['amount'] }}</td>
             </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
                 <td colspan="3" class="tfooter">Total / 總計:</td>
-                <td>{{ $order->amount }}</td>
+                <td style="text-align:center">{{ $order->amount }}</td>
             </tr>
         </tfoot>
     </table>
