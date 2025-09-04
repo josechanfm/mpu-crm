@@ -20,11 +20,9 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
         }
         th, td {
             border: 1px solid #ccc;
-            padding: 10px;
         }
         .theader {
             background-color: #3498db;
@@ -38,7 +36,6 @@
         }
         .footer {
             text-align: center;
-            margin-top: 5px;
             font-size: 12px;
             color: #7f8c8d;
         }
