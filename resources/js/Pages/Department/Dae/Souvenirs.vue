@@ -93,11 +93,9 @@
           <a-form-item label="Name" name="name" >
             <a-input type="inpuut" v-model:value="modal.data.name" />
           </a-form-item>
-                      {{ modal.data.description }}
-
           <a-form-item label="Description" name="description" >
             <quill-editor
-                v-model:value="modal.data.description"
+                v-model="modal.data.description"
                 style="min-height: 200px"
             />
           </a-form-item>
@@ -162,17 +160,17 @@ import {
     ConsoleSqlOutlined,
 } from "@ant-design/icons-vue";
 import Icon, { RestFilled } from "@ant-design/icons-vue";
-import { quillEditor, Quill } from "vue3-quill";
 import { message } from "ant-design-vue";
 import dayjs from 'dayjs';
 import axios from "axios";
+import QuillEditor from "@/Components/QuillEditor.vue";
 
 export default {
     components: {
         DepartmentLayout,
         UploadOutlined, LoadingOutlined, PlusOutlined, DeleteOutlined,
         RestFilled,
-        quillEditor,
+        QuillEditor,
         message,
         dayjs
     },

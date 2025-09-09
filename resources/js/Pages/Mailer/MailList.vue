@@ -36,14 +36,12 @@
 
 <script>
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
-import { quillEditor } from 'vue3-quill';
 import MailerBox from '@/Components/Department/MailerBox.vue';
 import { defineComponent, reactive } from 'vue';
 
 export default {
     components: {
         DepartmentLayout,
-        quillEditor,
         MailerBox,
     },
     props: ['department','emails'],

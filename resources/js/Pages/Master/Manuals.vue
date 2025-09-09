@@ -31,7 +31,7 @@
                 </a-form-item>
                 <a-form-item label="Content" name="content" :rules="[{required:true}]">
                     <quill-editor
-                        v-model:value="modal.data.content"
+                        v-model="modal.data.content"
                         style="min-height: 200px"
                     />
                 </a-form-item>
@@ -50,13 +50,13 @@
 
 <script>
 import MasterLayout from '@/Layouts/MasterLayout.vue';
-import { quillEditor, Quill } from "vue3-quill";
+import QuillEditor from "@/Components/QuillEditor.vue";
 import dayjs from 'dayjs';
 
 export default {
     components: {
         MasterLayout,
-        quillEditor,
+        QuillEditor,
         dayjs,
     },
     props: ['manuals'],

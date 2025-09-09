@@ -103,7 +103,10 @@ class FormFieldController extends Controller
             'field_label'=>'required',
             'type'=>'required',
         ]);
+
         $data=$request->all();
+        $data['field_name']=$data['field_name']??time();
+        
         $data['direction']=isset($request->direction)?$request->direction:'H';
         $data['required']=isset($request->required)?$request->required:false;
         $field['in_column']=isset($request->in_column)?$request->in_column:false;

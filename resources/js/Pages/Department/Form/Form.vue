@@ -45,7 +45,7 @@
             </a-form-item>
             <a-form-item label="Description" name="description">
                 <quill-editor
-                    v-model:value="form.description"
+                    v-model="form.description"
                     style="min-height: 200px"
                 />
             </a-form-item>
@@ -160,8 +160,8 @@ import {
   InfoCircleFilled,
 } from "@ant-design/icons-vue";
 import Icon, { RestFilled } from "@ant-design/icons-vue";
-import { quillEditor, Quill } from "vue3-quill";
 import { message } from "ant-design-vue";
+import QuillEditor from "@/Components/QuillEditor.vue";
 
 export default {
   components: {
@@ -171,7 +171,7 @@ export default {
     PlusOutlined,
     DeleteOutlined,
     RestFilled,
-    quillEditor,
+    QuillEditor,
     message,
   },
   props: ["departments", "form"],

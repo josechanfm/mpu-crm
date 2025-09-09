@@ -152,7 +152,7 @@
                         </a-form-item>
                         <a-form-item name="email_content" label="Content"
                             :rules="[{ required: true, message: 'Content Body of the Email' }]">
-                            <quill-editor v-model:value="myResponse.email_content" style="min-height:200px;" />
+                            <quill-editor v-model="myResponse.email_content" style="min-height:200px;" />
                         </a-form-item>
                         <p>A link will be added at the end of the email</p>
                     </span>
@@ -183,7 +183,7 @@ import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
 import CommentCard from '@/Components/Department/CommentCard.vue';
 import MailerBox from '@/Components/Department/MailerBox.vue';
 import EnquiryBox from '@/Components/Department/EnquiryBox.vue';
-import { quillEditor } from 'vue3-quill';
+import QuillEditor from "@/Components/QuillEditor.vue";
 import { ConsoleSqlOutlined, UploadOutlined } from '@ant-design/icons-vue';
 import dayjs from 'dayjs';
 import enquiryLang  from '/lang/enquiry.json';
@@ -195,7 +195,7 @@ export default {
         MailerBox,
         EnquiryBox,
         UploadOutlined,
-        quillEditor,
+        QuillEditor,
     },
     props: ['fields', 'department', 'enquiry', 'active_question'],
     data() {

@@ -21,12 +21,12 @@
         </a-form-item>
         <a-form-item label="Content" name="content">
             <div style="background-color: white;">
-              <quill-editor v-model:value="enquiry.content" style="min-height:200px;" />
+              <quill-editor v-model="enquiry.content" style="min-height:200px;" />
             </div>
         </a-form-item>
         <a-form-item label="Response" name="response">
             <div style="background-color: white;">
-              <quill-editor v-model:value="enquiry.response" style="min-height:200px;" />
+              <quill-editor v-model="enquiry.response" style="min-height:200px;" />
             </div>
         </a-form-item>
         <div>
@@ -48,7 +48,7 @@
 
 <script>
 // import Editor from '@tinymce/tinymce-vue';
-import { quillEditor } from 'vue3-quill';
+import QuillEditor from "@/Components/QuillEditor.vue";
 import dayjs from 'dayjs';
 import { UploadOutlined } from '@ant-design/icons-vue';
 
@@ -56,7 +56,7 @@ import { UploadOutlined } from '@ant-design/icons-vue';
 export default {
   components: {
     // Editor,
-    quillEditor,
+    QuillEditor,
     dayjs,  
     UploadOutlined, 
   },

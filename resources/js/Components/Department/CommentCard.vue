@@ -58,13 +58,11 @@
 
 <script>
 // import Editor from '@tinymce/tinymce-vue';
-import { quillEditor } from 'vue3-quill';
 import dayjs from 'dayjs';
 
 export default {
   components: {
     // Editor,
-    quillEditor,
     dayjs,
   },
   emits: ['emailBox', 'enquiryBox'],

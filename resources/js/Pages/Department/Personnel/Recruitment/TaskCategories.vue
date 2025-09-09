@@ -23,7 +23,6 @@ import {
     InfoCircleFilled,
 } from "@ant-design/icons-vue";
 import Icon, { RestFilled } from "@ant-design/icons-vue";
-import { quillEditor, Quill } from "vue3-quill";
 import { message } from "ant-design-vue";
 import dayjs from 'dayjs';
 import axios from "axios";
@@ -35,7 +34,6 @@ export default {
         LoadingOutlined,
         PlusOutlined,
         RestFilled,
-        quillEditor,
         message,
         dayjs
     },

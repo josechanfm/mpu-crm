@@ -127,7 +127,6 @@
 <script>
 import MemberLayout from '@/Layouts/MemberLayout.vue';
 import BlankLayout from '@/Layouts/BlankLayout.vue';
-import { quillEditor } from 'vue3-quill';
 import { message } from 'ant-design-vue';
 import { CheckOutlined } from '@ant-design/icons-vue';
 
@@ -135,7 +134,6 @@ export default {
     components: {
         MemberLayout,
         BlankLayout,
-        quillEditor
     },
     props: ['form'],
     data() {

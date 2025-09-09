@@ -11,23 +11,17 @@
           </template>
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
-              <a-button>
-              <inertia-link :href="route('manage.form.entries.index',record.id)" class="ant-btn">
-                {{ $t('response') }}
-              </inertia-link>
+              <a-button :href="route('manage.form.entries.index',record.id)">
+                  {{ $t('response') }}
               </a-button>
-              <a-button :href="route('manage.entry.export', { form: record.id })" class="ant-btn">
+              <a-button :href="route('manage.entry.export', { form: record.id })">
                 {{ $t('export') }}
               </a-button>
-              <a-button>
-                <inertia-link :href="route('manage.form.fields.index', { form: record.id })" class="ant-btn">
+              <a-button :href="route('manage.form.fields.index', { form: record.id })">
                   {{ $t('data_field') }}
-                </inertia-link>
               </a-button>
-              <a-button>
-                <inertia-link :href="route('manage.forms.edit',record.id)" class="ant-btn">
+              <a-button :href="route('manage.forms.edit',record.id)">
                   {{ $t('edit') }}
-                </inertia-link>
               </a-button>
               <a-popconfirm
                 title="Confirm Delete"
@@ -40,6 +34,7 @@
               </a-popconfirm>
               <a-button @click="cloneForm(record)">Clone</a-button>
               <a-button @click="backupRecords(record)" v-if="record.entries_count > 0">Backup</a-button>
+              <a-button :href="route('forms.show',{form: record.id, view:record.uuid})" target="_blank">Link</a-button>
             </template>
             <template v-else-if="column.type == 'yesno'">
               <span v-if="record[column.dataIndex] == 1">Yes</span>
@@ -68,7 +63,6 @@ import {
   InfoCircleFilled,
 } from "@ant-design/icons-vue";
 import Icon, { RestFilled } from "@ant-design/icons-vue";
-import { quillEditor, Quill } from "vue3-quill";
 import { message } from "ant-design-vue";
 
 export default {
@@ -78,7 +72,6 @@ export default {
     LoadingOutlined,
     PlusOutlined,
     RestFilled,
-    quillEditor,
     message,
   },
   props: ["departments","forms"],

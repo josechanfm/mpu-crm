@@ -22,24 +22,26 @@
                     name="default"
                     layout="vertical"
                     :validate-messages="validateMessages"
+                    @finish="onFinish"
+                    @finishFailed="onFinishFailed"
                 >
                     <template v-for="field in form.fields">
-                        <div v-if="form.require_member">
+                        <div v-if="form.require_member" :key="field.id">
                             <a-form-item label="Member Id" :name="field.id" :rules="[{required:field.required}]">
                                 <a-input type="inpuut" v-model:value="$page.props.user.id" />
                             </a-form-item>                        
                         </div>
-                        <div v-if="field.type=='input'">
+                        <div v-if="field.type=='input'" :key="field.id">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
-                                <a-input type="inpuut" v-model:value="formData[field.id]" />
+                                <a-input type="input" v-model:value="formData[field.id]" />
                             </a-form-item>                        
                         </div>
-                        <div v-else-if="field.type=='number'">
+                        <div v-else-if="field.type=='number'" :key="field.id">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
                                 <a-input-number v-model:value="formData[field.id]" />
                             </a-form-item>                        
                         </div>
-                        <div v-else-if="field.type=='select'">
+                        <div v-else-if="field.type=='select'" :key="field.id">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
                                 <a-select
                                     v-model:value="formData[field.id]"
@@ -47,23 +49,26 @@
                                 ></a-select>
                             </a-form-item>                        
                         </div>
-                        <div v-else-if="field.type=='radio'">
+                        <div v-else-if="field.type=='radio'" :key="field.id">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
-                                <a-radio-group
-                                    v-model:value="formData[field.id]"
-                                    :options="field.options"
-                                ></a-radio-group>
+                                <a-radio-group v-model:value="formData[field.id]">
+                                <template v-for="item in field.options" :key="item.value">
+                                    <a-radio :style="field.direction=='V'?verticalStyle:null" :value="item.value">{{ item.label }}</a-radio>
+                                </template>
+                                </a-radio-group>
                             </a-form-item>                        
                         </div>
-                        <div v-else-if="field.type=='checkbox'">
+                        <div v-else-if="field.type=='checkbox'" :key="field.id">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
-                                <a-checkbox-group
-                                    v-model:value="formData[field.id]"
-                                    :options="field.options"
-                                ></a-checkbox-group>
+                                <a-checkbox-group v-model:value="formData[field.id]" :class="field.direction=='V'?'checkbox-vertical':null">
+                                    <template v-for="item in field.options" :key="item.value">
+                                        <a-checkbox :style="verticalStyle" :value="item.value">{{ item.label }}</a-checkbox>
+                                    </template>
+
+                                </a-checkbox-group>
                             </a-form-item>                        
                         </div>
-                        <div v-else-if="field.type=='dropdown'">
+                        <div v-else-if="field.type=='dropdown'" :key="field.id">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
                                 <a-select 
                                     v-model:value="formData[field.id]"
@@ -71,42 +76,59 @@
                                 />
                             </a-form-item>                        
                         </div>
-                        <div v-else-if="field.type=='textarea'">
+                        <div v-else-if="field.type=='textarea'" :key="field.id">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
                                 <a-textarea v-model:value="formData[field.id]" />
                             </a-form-item>                        
                         </div>
-                        <div v-else-if="field.type=='richtext'">
+                        <div v-else-if="field.type=='richtext'" :key="field.id">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
                                 <quill-editor
-                                    v-model:value="formData[field.id]"
+                                    v-model="formData[field.id]"
                                     style="min-height:200px"
                                 />
                             </a-form-item>                        
                         </div>
-                        <div v-else-if="field.type=='date'">
+                        <div v-else-if="field.type=='datetime'" :key="field.id">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]" >
+                                <a-date-picker v-model:value="formData[field.id]" :show-time="{ format: 'HH:mm' }" :format="dateTimeFormat" :valueFormat="dateTimeFormat" />
+                            </a-form-item>                        
+                        </div>
+                        <div v-else-if="field.type=='date'" :key="field.id">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]" >
                                 <a-date-picker v-model:value="formData[field.id]" :format="dateFormat" :valueFormat="dateFormat" />
                             </a-form-item>                        
                         </div>
-                        <div v-else-if="field.type=='email'">
+                        <div v-else-if="field.type=='time'" :key="field.id">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]" >
+                                <a-date-picker v-model:value="formData[field.id]" picker="time" :show-time="{ format: 'HH:mm' }"  :format="timeFormat" :valueFormat="timeFormat" />
+                            </a-form-item>                        
+                        </div>
+                        <div v-else-if="field.type=='email'" :key="field.id">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required},{type:'email'}]" >
                                 <a-input type="inpuut" v-model:value="formData[field.id]" />
                             </a-form-item>                        
                         </div>
-                        <div v-else-if="field.type=='true_false'">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required},{type:'email'}]" >
+                        <div v-else-if="field.type=='true_false'" :key="field.id">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required},{type:'boolean'}]" >
                                 <a-checkbox v-model:checked="formData[field.id]" />
                             </a-form-item>                        
                         </div>
-                        <div v-else>
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required},{type:'email'}]" >
+                        <div v-else-if="field.type=='html'" :key="field.id">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required},{type:'boolean'}]" >
+                                <div v-html="field.extra"/>
+                            </a-form-item>                        
+                        </div>
+                        <div v-else :key="field.id">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]" >
                                 <p>Data type undefined</p>
+                                {{ field }}
                             </a-form-item>                        
                         </div>
                     </template>
                     <div class="text-center pb-10">
-                        <a-button @click="storeRecord" type="primary">遞交 Submit</a-button>
+                        <!-- <a-button @click="storeRecord" type="primary">遞交 Submit</a-button> -->
+                        <a-button type="primary" html-type="submit">遞交 Submit</a-button>
                     </div>
                     
                 </a-form>
@@ -118,13 +140,12 @@
 <script>
 import MemberLayout from '@/Layouts/MemberLayout.vue';
 import WebLayout from '@/Layouts/WebLayout.vue';
-import { quillEditor } from 'vue3-quill';
-
+import QuillEditor from "@/Components/QuillEditor.vue";
 export default {
     components: {
         MemberLayout,
         WebLayout,
-        quillEditor
+        QuillEditor
     },
     props: ['form'],
     data() {
@@ -133,7 +154,9 @@ export default {
 
             },
             richText:'<p>Jose</p>',
+            dateTimeFormat:'YYYY-MM-DD HH:mm',
             dateFormat:'YYYY-MM-DD',
+            timeFormat:'HH:mm',
             columns:[
                 {
                     title: 'Name',
@@ -172,33 +195,61 @@ export default {
                 width: '150px',
                 },
             },
+            verticalStyle:{
+                display: 'flex',
+                height: '30px',
+                lineHeight: '30px',
+            }
         }
     },
     created(){
     },
     methods: {
-        onFormChange(){
-            console.log(this.formData);
+        // onFormChange(){
+        //     console.log('onFromchange',this.formData);
+        // },
+        // storeRecord(){
+        //     console.log(this.form);
+        //     console.log(this.formData);
+        //     this.$refs.formRef.validateFields().then(()=>{
+        //         this.$inertia.post(route('forms.store'), {
+        //             form:this.form,
+        //             fields:this.formData
+        //         },{
+        //             onSuccess:(page)=>{
+        //                 this.formData={};
+        //             },
+        //             onError:(err)=>{
+        //                 console.log(err);
+        //             }
+        //         });
+        //     }).catch(err => {
+        //         console.log(err);
+        //     });
+        // },
+        onFinish(values){
+            console.log('onFinish',values)
+            // this.$inertia.post(route('forms.store'), {
+            //     form:this.form,
+            //     fields:this.formData
+            // },{
+            //     onSuccess:(page)=>{
+            //         this.formData={};
+            //     },
+            //     onError:(err)=>{
+            //         console.log(err);
+            //     }
+            // });
+
         },
-        storeRecord(){
-            console.log(this.form);
-            console.log(this.formData);
-            this.$refs.formRef.validateFields().then(()=>{
-                this.$inertia.post(route('forms.store'), {
-                    form:this.form,
-                    fields:this.formData
-                },{
-                    onSuccess:(page)=>{
-                        this.formData={};
-                    },
-                    onError:(err)=>{
-                        console.log(err);
-                    }
-                });
-            }).catch(err => {
-                console.log(err);
+        onFinishFailed(errorInfo ){
+            this.$message.error('Required Field not missing!');
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // Optional: smooth scroll
             });
-        },
+        }
+
 
     },
 }
@@ -207,5 +258,9 @@ export default {
 <style>
 .ant-form-vertical .ant-form-item-label{
     padding:0px !important;
+}
+.checkbox-vertical {
+    display: block;
+    margin-right: 0;
 }
 </style>

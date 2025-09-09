@@ -41,8 +41,9 @@
         <a-modal v-model:open="modal.isOpen" :title="modal.mode == 'CREATE' ? 'Create' : 'Update'" width="60%">
             <a-form ref="modalRef" :model="modal.data" name="formField" :label-col="{ span: 4 }"
                 :wrapper-col="{ span: 20 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages">
-                <a-form-item label="Field Name" name="field_name">
+                <a-form-item  v-if="is('admin | master')" label="Field Name" name="field_name">
                     <a-input type="inpuut" v-model:value="modal.data.field_name" />
+                    <p class="text-red-500 text-xs">* Only shows for admin and master, suggest to keep it blank</p>
                 </a-form-item>
                 <a-form-item label="Field Label" name="field_label">
                     <a-input type="inpuut" v-model:value="modal.data.field_label" @blur="onFieldLabelChanged" />
@@ -135,8 +136,9 @@ export default {
                 { value: "checkbox", label: "多項選擇" },
                 { value: "dropdown", label: "下拉清單" },
                 { value: "true_false", label: "真/偽" },
-                { value: "date", label: "日期格式" },
                 { value: "datetime", label: "日期時間" },
+                { value: "date", label: "日期格式" },
+                { value: "time", label: "時間" },
                 { value: "email", label: "電郵欄位" },
                 { value: "number", label: "數值欄位" },
                 { value: "html", label: "HMTL text" }
@@ -315,7 +317,7 @@ export default {
                 if (!Number.isInteger(this.modal.data.type)) {
                     this.modal.data.options = 5;
                 }
-            } else if (['radio', 'checkbox'].includes(this.modal.data.type)) {
+            } else if (['radio', 'checkbox','dropdown'].includes(this.modal.data.type)) {
                 if (typeof this.modal.data.options !== 'object') {
                     this.modal.data.options = [{ value: 'option_1', label: 'option_1' }];
                 }

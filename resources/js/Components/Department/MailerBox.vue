@@ -21,7 +21,7 @@
         </a-form-item>
         <a-form-item label="Content" name="content">
             <a-button @click="switchRichTextMode">Switch Text Mode</a-button>
-            <quill-editor v-if="email.is_html" v-model:value="email.content" style="min-height:200px;" :options="editorOption"/>
+            <quill-editor v-if="email.is_html" v-model="email.content" style="min-height:200px;" :options="editorOption"/>
             <a-textarea v-else v-model:value="email.content" :rows="10"></a-textarea>
         </a-form-item>
         <div>
@@ -42,7 +42,7 @@
 
 <script>
 // import Editor from '@tinymce/tinymce-vue';
-import { quillEditor } from 'vue3-quill';
+import QuillEditor from "@/Components/QuillEditor.vue";
 import dayjs from 'dayjs';
 import { UploadOutlined } from '@ant-design/icons-vue';
 
@@ -50,7 +50,7 @@ import { UploadOutlined } from '@ant-design/icons-vue';
 export default {
   components: {
     // Editor,
-    quillEditor,
+    QuillEditor,
     dayjs,  
     UploadOutlined, 
   },

@@ -51,7 +51,7 @@
                             <a-input type="inpuut" v-model:value="modal.data.question_zh" />
                         </a-form-item>
                         <a-form-item :label="$t('response_content')" name="answer_zh" :rules="{ required: true }">
-                            <quill-editor v-model:value="modal.data.answer_zh" style="min-height:200px;" />
+                            <quill-editor v-model="modal.data.answer_zh" style="min-height:200px;" />
                         </a-form-item>
                     </a-tab-pane>
                     <a-tab-pane key="2" :tab="$t('english')" >
@@ -59,7 +59,7 @@
                             <a-input type="inpuut" v-model:value="modal.data.question_en" />
                         </a-form-item>
                         <a-form-item :label="$t('response_content')" name="answer_en" :rules="{ required: true }">
-                            <quill-editor v-model:value="modal.data.answer_en" style="min-height:200px;" />
+                            <quill-editor v-model="modal.data.answer_en" style="min-height:200px;" />
                         </a-form-item>
                     </a-tab-pane>
                     <a-tab-pane key="3" :tab="$t('portuguese')">
@@ -67,7 +67,7 @@
                             <a-input type="inpuut" v-model:value="modal.data.question_pt" />
                         </a-form-item>
                         <a-form-item :label="$t('response_content')" name="answer_pt" :rules="{ required: true }">
-                            <quill-editor v-model:value="modal.data.answer_pt" style="min-height:200px;" />
+                            <quill-editor v-model="modal.data.answer_pt" style="min-height:200px;" />
                         </a-form-item>
                     </a-tab-pane>
                 </a-tabs>
@@ -96,15 +96,15 @@
 
 <script>
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
-import { quillEditor } from 'vue3-quill';
 import dayjs from 'dayjs';
 import { loadLanguageAsync } from "laravel-vue-i18n";
+import QuillEditor from "@/Components/QuillEditor.vue";
 
 export default {
     components: {
         loadLanguageAsync,
         DepartmentLayout,
-        quillEditor
+        QuillEditor
     },
     props: ['department', 'fields'],
     data() {

@@ -230,12 +230,10 @@
 import DepartmentLayout from "@/Layouts/DepartmentLayout.vue";
 import { message } from "ant-design-vue";
 //import CropperModal from "@/Components/Member/CropperModal.vue";
-import { quillEditor, Quill } from "vue3-quill";
 
 export default {
   components: {
     DepartmentLayout,
-    quillEditor
     //CropperModal,
   },
   props: ["form", "entries", "entryColumns"],

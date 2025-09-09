@@ -85,7 +85,7 @@
                         <div v-else-if="field.type=='richtext'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
                                 <quill-editor
-                                    v-model:value="formData[field.id]"
+                                    v-model="formData[field.id]"
                                     style="min-height:200px"
                                 />
                             </a-form-item>                        
@@ -118,13 +118,13 @@
 <script>
 import MemberLayout from '@/Layouts/MemberLayout.vue';
 import StaffLayout from '@/Layouts/StaffLayout.vue';
-import { quillEditor } from 'vue3-quill';
+import QuillEditor from "@/Components/QuillEditor.vue";
 
 export default {
     components: {
         MemberLayout,
         StaffLayout,
-        quillEditor
+        QuillEditor
     },
     props: ['form'],
     data() {

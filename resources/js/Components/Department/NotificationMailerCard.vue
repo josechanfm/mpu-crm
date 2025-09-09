@@ -20,7 +20,7 @@
             <a-input type="inpuut" v-model:value="email.subject" />
         </a-form-item>
         <a-form-item label="Content" name="content">
-            <quill-editor v-model:value="email.content" style="min-height:200px;" />
+            <quill-editor v-model="email.content" style="min-height:200px;" />
         </a-form-item>
         <a-upload v-model:file-list="email.attachments" :multiple="false">
             <a-button>
@@ -36,7 +36,7 @@
 
 <script>
 import Editor from '@tinymce/tinymce-vue';
-import { quillEditor } from 'vue3-quill';
+import QuillEditor from "@/Components/QuillEditor.vue";
 import dayjs from 'dayjs';
 import { UploadOutlined } from '@ant-design/icons-vue';
 
@@ -44,7 +44,7 @@ import { UploadOutlined } from '@ant-design/icons-vue';
 export default {
   components: {
     Editor,
-    quillEditor,
+    QuillEditor,
     dayjs,  
     UploadOutlined, 
   },
