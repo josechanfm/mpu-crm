@@ -1,9 +1,9 @@
 <template>
   <DepartmentLayout title="表格" :breadcrumb="breadcrumb">
     <div class="flex-auto pb-3 text-right">
-      <inertia-link :href="route('manage.forms.create')" class="ant-btn ant-btn-primary !rounded">{{ $t('create') }}</inertia-link>
+      <a-button :href="route('manage.forms.create')" class="ant-btn ant-btn-primary !rounded">{{ $t('create') }}</a-button>
     </div>
-    <div class="container mx-auto pt-5">
+    <div class="mx-auto pt-5">
       <div class="bg-white relative shadow rounded-lg overflow-x-auto">
         <a-table :dataSource="forms" :columns="columns">
           <template #headerCell="{ column }">

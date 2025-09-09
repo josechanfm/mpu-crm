@@ -5,7 +5,16 @@
                 表格管理
             </h2>
         </template>
+        
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+            <!-- Alert Component -->
+            <a-alert
+                v-if="form.published==false"
+                message="Your are in the form preview which is not yet PUBLISHED!"
+                type="error"
+                closable
+            />
+
             <div class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
                 <a-form
                     :model="formData"

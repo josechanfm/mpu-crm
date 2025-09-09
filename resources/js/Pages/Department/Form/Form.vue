@@ -38,7 +38,7 @@
                     <a @click="form.openWelcome=!form.openWelcome">Welcome Message</a>
                 </div>
             <a-form-item label="Welcome Message" name="welcome" v-if="form.openWelcome">
-                <quill-editor
+                <a-textarea
                     v-model:value="form.welcome"
                     style="min-height: 200px"
                 />
@@ -92,6 +92,7 @@
                     The form has responses, please backup before unpublished.</span
                 >
             </a-form-item>
+
             <a-form-item label="Banner Image" name="banner_image">
               <div class="flex gap-5">
                   <div>
@@ -99,12 +100,15 @@
                   </div>
                   <a-upload
                     v-model:file-list="form.banner_image"
+                    list-type="picture-card"
+                    :accept="'image/*'"
                     :multiple="false"
                     :max-count="1"
-                    :accept="'image/*'"
-                    list-type="picture-card"
+                    :auto-upload="false"
+                    :customRequest="null"
+                    :before-upload="beforeUpload"
                     @change="handleBannerUpload"
-                    >
+                  >
                     <!--before upload preview-->
                     <div v-if="!form.banner_image">
                         <plus-outlined></plus-outlined>
@@ -203,7 +207,6 @@ export default {
   },
   methods: {
     onFinish(){
-        console.log('on Finshed')
         if(this.form.id){
             console.log('Update')
             this.updateRecord()
@@ -227,10 +230,11 @@ export default {
         this.$inertia.post(
             route("manage.forms.update", this.form.id),this.form,{
                 onSuccess: (page) => {
-                    console.log(page);
+                  //console.log('form updated');
+                    //console.log(page);
                 },
                 onError: (error) => {
-                    console.log(error);
+                    console.log('form update error',error);
                 },
             }
         );
@@ -243,6 +247,35 @@ export default {
       }
       return true;
     },
+
+        beforeUpload(file) {
+          const isImage = file.type === 'image/jpeg' || file.type === 'image/png';
+          if (!isImage) {
+            message.error('You can only upload JPG/PNG files!');
+            this.filesProcessed++;
+            this.checkProcessingComplete();
+            return false;
+          }
+          
+          const isLt5MB = file.size / 1024 / 1024 < 5;
+          if (!isLt5MB) {
+            message.error('Image must be smaller than 5MB!');
+            this.filesProcessed++;
+            this.checkProcessingComplete();
+            return false;
+          }
+          // Generate preview thumbnail
+          this.generateThumbnail(file).then(() => {
+            this.filesProcessed++;
+            this.checkProcessingComplete();
+          });
+          return false; // Prevent automatic upload
+        },
+        handleBannerChange({ file, fileList }) {
+          this.form.uploadBanner = fileList.filter(f =>  f.status === 'done' || f.originFileObj);
+        },
+
+
     handleBannerUpload(info) {
       if(!this.checkFileSize(info.file)){
         this.form.banner_image = null;

@@ -1,18 +1,19 @@
 <template>
     <DepartmentLayout title="Dashboard" :department="department">
         <div class="flex pb-3 justify-end gap-2">
-            <a-button :href="route('staff.forms.index')">Back</a-button>
+            <a-button :href="route('manage.forms.index')">Back</a-button>
             <a-button v-if="isDraggable" type="primary" ghost @click="reloadFormFields">Finish</a-button>
             <a-button v-else type="primary" ghost @click="isDraggable = !isDraggable">Drag sort</a-button>
             <a-button @click="createRecord()" type="primary">Create Field</a-button>
         </div>
+        
         <a-table 
             :dataSource="dataModel" 
             :columns="columns" 
             :customRow="customRow"
         >
             <template #bodyCell="{ column, record, index }">
-                <template v-if="column.daaIndex === 'operation'">
+                <template v-if="column.dataIndex === 'operation'">
                     <a-button @click="editRecord(record)">Edit</a-button>
                     <a-popconfirm title="Are you sure delete this field?" ok-text="Yes" cancel-text="No"
                         @confirm="deleteRecord(record)" :disabled="form.published == true">
@@ -90,7 +91,7 @@
                 </a-form-item>
             </a-form>
             <template #footer>
-                <a-button key="back" @click="modal.isOpen = false">cancel</a-button>
+                <a-button key="back" @click="modal.isOpen = false">Cancel</a-button>
                 <a-button v-if="modal.mode == 'EDIT'" key="Update" type="primary"
                     @click="updateRecord()">Update</a-button>
                 <a-button v-if="modal.mode == 'CREATE'" key="Store" type="primary"
@@ -241,8 +242,11 @@ export default {
         },
         cloneRecord(record){
             this.$inertia.post(route('manage.form.field.clone',{formField:record.id}), {
+                preserveState:false,
                 onSuccess: (page) => {
-                    console.log(page)
+                    //window.location.reload();
+                    // console.log('cloned')
+                    // console.log(page)
                 },
                 onError: (err) => {
                     console.log(err);
@@ -290,6 +294,7 @@ export default {
             this.$inertia.delete(route('manage.form.fields.destroy', {
                 form: this.form.id, field: record.id
             }), {
+                preserveState:false,
                 onSuccess: (page) => {
                     console.log('the field has been deleted!');
                 },
@@ -378,8 +383,8 @@ export default {
                 },
                 // mouse up
                 onDrop: event => {
-                    console.log(event)
-                    console.log(this.dataModel)
+                    // console.log(event)
+                    // console.log(this.dataModel)
                     if (this.isDraggable) {
                         var ev = event || window.event
                         ev.stopPropagation()
@@ -389,7 +394,7 @@ export default {
                         let targetIndex = ''
                         this.dataModel.map((item, idx) => {
                             if (this.sourceObj == item) {
-                                console.log(idx)
+                                // console.log(idx)
                                 sourceIndex = idx
                             }
                             if (this.targetObj == item) {
@@ -409,7 +414,7 @@ export default {
                         })
                         arr.map((item, idx) => {
                             arr[idx].sequence = idx
-                            console.log(item);
+                            // console.log(item);
                         })
                         this.dataModel = arr
                         this.$inertia.post(route("manage.form.fieldsSequence", this.form.id), this.dataModel, {

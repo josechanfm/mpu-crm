@@ -61,7 +61,8 @@ class FormFieldController extends Controller
         $data['required']=isset($request->required)?$request->required:false;
         $field['in_column']=isset($request->in_column)?$request->in_column:false;
         $form->fields()->create($data);
-        return redirect()->back();
+        return Inertia::location(route('manage.form.fields.index', $form->id));
+        //return redirect()->back();
 
     }
 
@@ -108,7 +109,8 @@ class FormFieldController extends Controller
         $field['in_column']=isset($request->in_column)?$request->in_column:false;
 
         FormField::find($request->id)->update($data);
-        return redirect()->back();
+        //return redirect()->back();
+        return Inertia::location(route('manage.form.fields.index', $form->id));
     }
 
     /**
@@ -129,8 +131,9 @@ class FormFieldController extends Controller
         //     $field->fiele_name=$arr[0].'_'.$i.'_'.$arr[2];
         // }
         // dd($field, $formFieldNameArray, $fields);
-
-        $formField->delete();        
+        //dd($department, $form, $field);
+        $field->delete();   
+        return redirect()->back();
     }
 
     public function fieldsSequence(Form $form, Request $request)
@@ -142,25 +145,33 @@ class FormFieldController extends Controller
                 $field->save();
             }
         }
-        return redirect()->back();
+        return Inertia::location(route('manage.form.fields.index', $form->id));
+        //.return redirect()->back();
     }
 
     public function clone(FormField $formField){
         $form=Form::find($formField->form_id);
         $fieldNameArray=explode('_',$formField->field_name);
-        $lastFieldName=FormField::where('form_id',$formField->form_id)->where('field_name','like',$fieldNameArray[0].'%')->orderBy('sequence','desc')->pluck('field_name')->first();
-        $lastFieldNameArray=explode('_',$lastFieldName);
         $newField=$formField->toArray();
         $newField['sequence']=$formField->sequence;
-        $newField['field_name']=$fieldNameArray[0].'_'.($lastFieldNameArray[1]+1).'_'.$fieldNameArray[2];
+        if(sizeof($fieldNameArray)>1){
+            $lastFieldName=FormField::where('form_id',$formField->form_id)->where('field_name','like',$fieldNameArray[0].'%')->orderBy('sequence','desc')->pluck('field_name')->first();
+            $lastFieldNameArray=explode('_',$lastFieldName);
+            $newField['field_name']=$fieldNameArray[0].'_'.($lastFieldNameArray[1]+1).'_'.$fieldNameArray[2];
+        }else{
+              $newField['field_name']=$newField['field_name'].'-'.time();
+        }
+
         $newField['field_label']=$newField['field_label'].'(cloned)';
+
         $formField::create($newField);
         foreach($form->fields as $i=>$field){
             $field->sequence=$i;
             $field->save();
         }
-        return redirect()->back();
-        dd($form, $formField, $newField, $fieldNameArray, $lastFieldName, $lastFieldNameArray);
+        return Inertia::location(route('manage.form.fields.index', $form->id));
+        //return redirect()->back();
+        //return redirect()->back()->with(['fields'=>$form->fields]);
     }
 
    

@@ -61,7 +61,7 @@ class FormPolicy
      */
     public function update(AdminUser $user, Form $form)
     {
-        if($user->hasRole('admin|master')){
+        if($user->hasRole('admin|master') || $user->roles->pluck('name')->contains($form->department->abbr)){
             return true;
         }
         return $user->hasRole($form->department->abbr);
@@ -77,7 +77,7 @@ class FormPolicy
      */
     public function delete(AdminUser $user, Form $form)
     {
-        if($user->hasRole('admin')){
+        if($user->hasRole('admin|master') || $user->roles->pluck('name')->contains($form->department->abbr)){
             return true;
         }
         return $form->department->hasUser($user);

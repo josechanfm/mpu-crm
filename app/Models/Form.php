@@ -9,6 +9,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 
 class Form extends Model implements HasMedia
@@ -18,6 +19,17 @@ class Form extends Model implements HasMedia
     protected $fillable = ['department_id', 'name', 'title', 'welcome', 'description', 'thanks', 'require_login', 'for_staff', 'published','layout','remark'];
     protected $cast=['require_login'=>'boolean','for_staff'=>'boolean','published'=>'boolean'];
     protected $appends=['entry_count'];
+
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            // Generate a unique ID using Str::random or any other method
+            $model->uuid =  (string) Str::uuid();
+        });
+    }
 
     public function getEntryCountAttribute(){
         return $this->entries->count();

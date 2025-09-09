@@ -107,7 +107,5 @@ class PublicationController extends Controller
 
         }
         return redirect()->back();
-        dd($request->all());
-        dd($publication);
     }
 }

@@ -80,10 +80,11 @@ class FormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Form $form)
+    public function show(Form $form, Request $request)
     {
         //$form=Form::with('fields')->find($id);
-        if(!$form->published){
+        
+        if(!$form->published && empty($request->view) && $request->view!=$form->uuid){
             return redirect()->route('forms.index');
         }
         $form->fields;
