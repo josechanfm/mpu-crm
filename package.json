@@ -27,6 +27,7 @@
         "laravel-vue-i18n": "^2.8.0",
         "marked": "^13.0.0",
         "qrcode-reader-vue3": "^3.1.4",
+        "qrcode-vue3": "^1.7.1",
         "quill": "^2.0.3",
         "vue-draggable-next": "^2.2.1"
     }

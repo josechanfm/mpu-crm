@@ -140,12 +140,11 @@ class FormController extends Controller
             'title'=>'required',
         ]);
         $form->update($request->all());
-
-        if($request->file('upload_banner')){
-            $form->addMedia($request->file('upload_banner')[0]['originFileObj'])->toMediaCollection('banner');
+        if($request->file('banner_image')){
+            $form->addMedia($request->file('banner_image')[0]['originFileObj'])->toMediaCollection('banner');
         }
-        if($request->file('upload_thumb')){
-            $form->addMedia($request->file('upload_thumb')[0]['originFileObj'])->toMediaCollection('thumb');
+        if($request->file('thumb_image')){
+            $form->addMedia($request->file('thumb_image')[0]['originFileObj'])->toMediaCollection('thumb');
         }
         return Inertia::location(route('manage.forms.index'));
         // return to_route('manage.forms.index');

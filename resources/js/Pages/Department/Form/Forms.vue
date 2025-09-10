@@ -11,6 +11,9 @@
           </template>
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
+                <div>
+                  <button @click="generateQrCode('https://example.com')">Get QR Code</button>
+                </div>
               <a-button :href="route('manage.form.entries.index',record.id)">
                   {{ $t('form_entries') }}
               </a-button>
@@ -64,6 +67,7 @@ import {
 } from "@ant-design/icons-vue";
 import Icon, { RestFilled } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
+import QrCodeModal from '@/Components/QrCodeModal.vue';
 
 export default {
   components: {
@@ -73,6 +77,7 @@ export default {
     PlusOutlined,
     RestFilled,
     message,
+    QrCodeModal
   },
   props: ["departments","forms"],
   data() {
@@ -151,7 +156,10 @@ export default {
           alert(error.message);
         },
       });
-    }
+    },
+    generateQrCode(url) {
+      this.$refs.qrCodeModal.openModal(url);
+    },
   },
 };
 </script>

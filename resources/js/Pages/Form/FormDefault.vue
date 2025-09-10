@@ -15,7 +15,12 @@
                 closable
             />
 
-            <div class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
+            <div class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
+                <div class="text-center font-bold">{{ form.title }}</div>
+                <div v-if="form.banner">
+                    <img :src="form.banner" style="width: 100%; height: auto;" alt="Banner Image"/>
+                </div>
+                <div class="mb-10" v-html="form.description"/>
                 <a-form
                     :model="formData"
                     ref="formRef"

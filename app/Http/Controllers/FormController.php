@@ -44,31 +44,28 @@ class FormController extends Controller
      */
     public function store(Request $request)
     {
-        //date('Y-m-d',strtotime($request->date))
-            // $this->validate($request,[
-            //     'form_id'=>'required',
-            // ]);
-                $entry=new Entry();
-                $entry->form_id=$request->form['id'];
-                //$entry->member_id=auth()->user()->id;
-                $entry->save();
 
-                foreach($request->fields as $key=>$value){
-                    $field=new EntryRecord();
-                    $field->entry_id=$entry->id;
-                    $field->form_field_id=$key;
-                    if(is_array($value)){
-                        $field->field_value=json_encode($value, JSON_UNESCAPED_UNICODE);
-                    }else{
-                        $field->field_value=$value;
-                    }
-                    $field->save();
-                }
-                $form=Form::find($entry->form_id);
-                return Inertia::render('Form/Thanks',[
-                    'form'=>$form,
-                    'entry'=>$entry
-                ]);
+        $entry=new Entry();
+        $entry->form_id=$request->form['id'];
+        //$entry->member_id=auth()->user()->id;
+        $entry->save();
+
+        foreach($request->fields as $key=>$value){
+            $field=new EntryRecord();
+            $field->entry_id=$entry->id;
+            $field->form_field_id=$key;
+            if(is_array($value)){
+                $field->field_value=json_encode($value, JSON_UNESCAPED_UNICODE);
+            }else{
+                $field->field_value=$value;
+            }
+            $field->save();
+        }
+        $form=Form::find($entry->form_id);
+        return Inertia::render('Form/Thanks',[
+            'form'=>$form,
+            'entry'=>$entry
+        ]);
     }
 
     /**
@@ -88,6 +85,8 @@ class FormController extends Controller
         if($form->require_login==1 && !Auth()->user()){
             return redirect('forms');
         }
+        $form->banner=$form->media()->where('collection_name','banner')->first()?->original_url;
+        $form->thumbnail==$form->media()->where('collection_name','thumbnail')->first()?->original_url;
         if($form->layout){
             /* Groupping for only one field, required setup manually from databases*/
             $grouping=$form->fields()->where('grouping',true)->first();
