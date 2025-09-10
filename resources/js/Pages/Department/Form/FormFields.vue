@@ -6,7 +6,6 @@
             <a-button v-else type="primary" ghost @click="isDraggable = !isDraggable">Drag sort</a-button>
             <a-button @click="createRecord()" type="primary">Create Field</a-button>
         </div>
-        {{ configs['faculties'].value }}        
         <a-table 
             :dataSource="dataModel" 
             :columns="columns" 
