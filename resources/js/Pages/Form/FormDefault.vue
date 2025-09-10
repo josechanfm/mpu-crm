@@ -76,7 +76,7 @@
                                 />
                             </a-form-item>                        
                         </div>
-                        <div v-else-if="field.type=='textarea'" :key="field.id">
+                        <div v-else-if="field.type=='longtext'" :key="field.id">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
                                 <a-textarea v-model:value="formData[field.id]" />
                             </a-form-item>                        
