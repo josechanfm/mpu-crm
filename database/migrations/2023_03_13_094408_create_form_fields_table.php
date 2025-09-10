@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('form_fields', function (Blueprint $table) {
             $table->id();
+            $table->string('uuid')->unique();
             $table->foreignId('form_id')->reference('id')->on('forms')->onDelete('restric');
             $table->integer('sequence')->nullable();
             $table->string('field_name');
