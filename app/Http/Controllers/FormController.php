@@ -51,11 +51,16 @@ class FormController extends Controller
                 $entry->form_id=$request->form['id'];
                 //$entry->member_id=auth()->user()->id;
                 $entry->save();
+
                 foreach($request->fields as $key=>$value){
                     $field=new EntryRecord();
                     $field->entry_id=$entry->id;
                     $field->form_field_id=$key;
-                    $field->field_value=$value;
+                    if(is_array($value)){
+                        $field->field_value=json_encode($value, JSON_UNESCAPED_UNICODE);
+                    }else{
+                        $field->field_value=$value;
+                    }
                     $field->save();
                 }
                 $form=Form::find($entry->form_id);

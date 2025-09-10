@@ -128,7 +128,7 @@ export default {
             dataModel: null,
             fieldTypes: [
                 { value: "input", label: "單行文字" },
-                { value: "largetext", label: "長編文字" },
+                { value: "longtext", label: "長編文字" },
                 { value: "richtext", label: "格式文字" },
                 { value: "radio", label: "單項選擇" },
                 { value: "checkbox", label: "多項選擇" },
