@@ -228,19 +228,17 @@ export default {
         //     });
         // },
         onFinish(values){
-            console.log('onFinish',values)
-            // this.$inertia.post(route('forms.store'), {
-            //     form:this.form,
-            //     fields:this.formData
-            // },{
-            //     onSuccess:(page)=>{
-            //         this.formData={};
-            //     },
-            //     onError:(err)=>{
-            //         console.log(err);
-            //     }
-            // });
-
+            this.$inertia.post(route('forms.store'), {
+                form:this.form,
+                fields:this.formData
+            },{
+                onSuccess:(page)=>{
+                    this.formData={};
+                },
+                onError:(err)=>{
+                    console.log(err);
+                }
+            });
         },
         onFinishFailed(errorInfo ){
             this.$message.error('Required Field not missing!');
