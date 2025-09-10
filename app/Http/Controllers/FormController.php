@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Form;
 use App\Models\Entry;
 use App\Models\EntryRecord;
+use PDF;
 
 class FormController extends Controller
 {
@@ -152,9 +153,28 @@ class FormController extends Controller
     public function receipt(Entry $entry, Request $request){
         if($entry && $request->has('uuid') && $request->uuid==$entry->uuid){
             //dd($entry->load(['form','records']));
-            return view('Form/EntryReceipt', [
+            // return view('Form/EntryReceipt', [
+            //     'entry' => $entry->load(['form','records']),
+            // ]);
+
+            $pdf = PDF::loadView('Form/EntryReceipt', [
                 'entry' => $entry->load(['form','records']),
+            ])
+            ->setPaper('A4', 'portrait')
+            ->setOption([
+                'fontDir' => public_path('fonts/Noto'),
+                'fontCache' => public_path('fonts'),
+                'defaultFont' => 'NotoSansTC',
+                'margin-top' => '20mm',    // Set top margin
+                'margin-right' => '50mm',  // Set right margin
+                'margin-bottom' => '20mm', // Set bottom margin
+                'margin-left' => '15mm',   // Set left margin
             ]);
+
+            //$pdf->render();
+            
+            return $pdf->stream('receipt.pdf', array('Attachment' => false));
+
 
         }
         return redirect()->route('forms.index');
