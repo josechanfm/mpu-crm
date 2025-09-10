@@ -6,7 +6,7 @@
             <a-button v-else type="primary" ghost @click="isDraggable = !isDraggable">Drag sort</a-button>
             <a-button @click="createRecord()" type="primary">Create Field</a-button>
         </div>
-        
+        {{ configs['faculties'].value }}        
         <a-table 
             :dataSource="dataModel" 
             :columns="columns" 
@@ -183,6 +183,7 @@ export default {
                 },
                 { value: 'gender', label: 'Gender', template: [{ value: 'M', label: 'Male' }, { value: 'F', label: 'Female' }] },
                 { value: 'department', label: 'Department', template: this.configs['departments'].map(d => ({ value: d.abbr, label: d.abbr + " " + d.name_zh })) },
+                { value: 'faculty', label: 'Faculty', template: this.configs['faculties'].value},
             ]
         }
     },
