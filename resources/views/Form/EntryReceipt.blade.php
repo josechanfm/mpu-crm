@@ -107,7 +107,7 @@
                     @endphp
                     <tr>
                         <td style="border: 1px solid #ccc; padding: 10px;">{{ $fieldName }}</td>
-                        <td style="border: 1px solid #ccc; padding: 10px;">{{ $fieldValue }}</td>
+                        <td style="border: 1px solid #ccc; padding: 10px;">{!! $fieldValue !!}</td>
                     </tr>
                     @php
                     }
