@@ -12,8 +12,6 @@
     <div class="pb-3 float-right">
       <a :href="route('manage.entry.export', form.id)" class="ant-btn ant-btn-primary">滙出Excel</a>
     </div>
-    
-
     <a-table
       :dataSource="entries"
       :columns="entryColumns"
@@ -24,10 +22,10 @@
         <template v-if="column.dataIndex == 'operation'">
           <a-button @click="editRecord(record)">Edit</a-button>
           <a-button
-            :href="route('manage.form.entry.success', { form: form, entry: record.id })"
+            :href="route('form.entry.receipt', { entry: record.id, uuid: record.uuid })"
             target="_blank"
             class="ant-btn"
-            >receipt
+            >Receipt
           </a-button>
           <a-popconfirm
             title="Confirm to delete therecord?"
