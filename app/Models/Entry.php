@@ -18,7 +18,9 @@ class Entry extends Model
 
     public function getUidAttribute(){
         $form=Form::find($this->form_id);
-        return substr('00'.strtoupper(dechex($form->organization_id)),-2).'-'.substr('0000'.strtoupper(dechex($this->id)),-5);
+        $twoDigitYear = date('y', strtotime($this->created_at));
+        return $twoDigitYear.'-'.substr('0000'.strtoupper(dechex($this->id)),-5);
+        //return substr('00'.strtoupper(dechex($form->organization_id)),-2).'-'.substr('0000'.strtoupper(dechex($this->id)),-5);
     }
     public function form(){
         return $this->belongsTo(Form::class)->with('fields');

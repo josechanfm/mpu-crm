@@ -46,6 +46,7 @@
         <div class="error-spacer"></div>
         <div role="main" class="main">
             <h2 style="text-align: center; margin-top: 20px;">{{ $entry->form->title }}</h2> <!-- Form title -->
+            <div style="text-align: right">No.: {{ $entry->uid }}</div>
             <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
                 <thead>
                     <tr>
