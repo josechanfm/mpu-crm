@@ -11,9 +11,7 @@
           </template>
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
-                <div>
-                  <button @click="generateQrCode('https://example.com')">Get QR Code</button>
-                </div>
+             
               <a-button :href="route('manage.form.entries.index',record.id)">
                   {{ $t('form_entries') }}
               </a-button>
@@ -35,6 +33,8 @@
               >
                 <a-button :disabled="record.entries_count > 0">{{ $t('delete') }}</a-button>
               </a-popconfirm>
+              <br>
+              <qr-code-modal ref="qrCodeModal" :fullUrl="fullUrl(record)" :title="record.title"/>
               <a-button @click="cloneForm(record)">Clone</a-button>
               <a-button @click="backupRecords(record)" v-if="record.entries_count > 0">Backup</a-button>
               <a-button :href="route('forms.show',{form: record.id, view:record.uuid})" target="_blank">Link</a-button>
@@ -157,9 +157,10 @@ export default {
         },
       });
     },
-    generateQrCode(url) {
-      this.$refs.qrCodeModal.openModal(url);
+    fullUrl(record) {
+      return `${window.location.origin}/forms/${record.id}`; // Construct the full URL
     },
+
   },
 };
 </script>

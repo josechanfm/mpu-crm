@@ -85,7 +85,7 @@
                         <div v-else-if="field.type=='richtext'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
                                 <quill-editor
-                                    v-model="formData[field.id]"
+                                    v-model:value="formData[field.id]"
                                     style="min-height:200px"
                                 />
                             </a-form-item>                        

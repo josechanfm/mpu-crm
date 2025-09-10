@@ -76,13 +76,14 @@ class FormController extends Controller
      */
     public function show(Form $form, Request $request)
     {
+        // dd($form, $request->all());
         //$form=Form::with('fields')->find($id);
-        
+
         if(!$form->published && empty($request->view) && $request->view!=$form->uuid){
             return redirect()->route('forms.index');
         }
         $form->fields;
-        if($form->require_login==1 && !Auth()->user()){
+        if($form->require_login==1 && empty($request->user_id) && $request->uuid!=$form->uuid){
             return redirect('forms');
         }
         $form->banner=$form->media()->where('collection_name','banner')->first()?->original_url;

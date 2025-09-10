@@ -1,73 +1,77 @@
 <template>
-  <div>
     <!-- Trigger Button -->
-    <button @click="openModal">Generate QR Code</button>
+    <a-button type="primary" ghost @click="openModal" >Generate QR Code</a-button>
 
     <!-- Modal -->
-    <div v-if="isModalOpen" class="modal-overlay">
-      <div class="modal-content">
-        <h3>QR Code</h3>
-        <qrcode-vue3 :value="url" :size="200" />
-        <button @click="copyImage">Copy Image</button>
-        <button @click="closeModal">Close</button>
+    <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+      <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+        <h3 class="text-lg font-bold mb-4 text-center max-w-xs mx-auto break-words">{{ title }}</h3>
+        <div class="relative">
+          <qrcode-vue 
+            :value="fullUrl" 
+            ref="qrCode" 
+            :download="true"
+            :downloadOptions="{ name: title, extension: 'png' }"
+            :qrOptions="{ typeNumber: 0, mode: 'Byte', errorCorrectionLevel: 'H' }"
+            image='/storage/images/mpu_logo.png'
+            :imageOptions="{ hideBackgroundDots: true, imageSize: 0.4, margin: 0 }"
+            :dotsOptions="{
+                type: 'dots',
+                color: '#26249a',
+                gradient: {
+                  type: 'linear',
+                  rotation: 0,
+                  colorStops: [
+                    { offset: 0, color: '#26249a' },
+                    { offset: 1, color: '#26249a' },
+                  ],
+                },
+              }"
+            :backgroundOptions="{ color: '#ffffff' }"
+            :cornersSquareOptions="{ type: 'square', color: '#008000' }"
+            :cornersDotOptions="{ type: undefined, color: '#000000' }"
+          />
+        </div>
+        <button @click="closeModal" class="bg-red-500 text-white px-4 py-2 rounded mt-4">Close</button>
       </div>
     </div>
-  </div>
+
 </template>
 
 <script>
-import { QrcodeVue } from 'qrcode-vue3';
+import QrcodeVue from 'qrcode-vue3';
 
 export default {
   components: {
     QrcodeVue,
   },
+  props: {
+    fullUrl: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: false,
+      default: 'QR Code', // Default title
+    },
+  },
   data() {
     return {
       isModalOpen: false,
-      url: '',
     };
   },
   methods: {
-    openModal(url) {
-      this.url = url; // Set the URL for the QR code
+    openModal() {
       this.isModalOpen = true;
     },
     closeModal() {
       this.isModalOpen = false;
-    },
-    copyImage() {
-      const canvas = document.querySelector("canvas");
-      if (canvas) {
-        canvas.toBlob((blob) => {
-          const item = new ClipboardItem({ "image/png": blob });
-          navigator.clipboard.write([item]).then(() => {
-            alert('Image copied to clipboard!');
-          });
-        });
-      }
     },
   },
 };
 </script>
 
 <style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-}
+/* No additional CSS needed when using Tailwind CSS */
 </style>

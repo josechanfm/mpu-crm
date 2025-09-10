@@ -11,22 +11,24 @@
       </div>
     </div>
     <a-row class="pt-5">
-      <a-col :xs="{span:24}" :lg="{span:8}">
-        <a-card title="邀請出席預防詐騙講座" :bordered="false" style="width: 100%">
-          <p>日期：2024年3月8日</p>
-          <p>時間：下午3時至4時</p>
-          <p>地點：匯智樓一號演講廳</p>
-          <p>語言：廣州話</p>
-          <div>
-            <inertia-link :href="route('staff.forms.show', { form: 2 })"
-              class="ant-btn ant-btn-primary">報名Apply</inertia-link>
-          </div>
-        </a-card>
-      </a-col>
-      <a-col :span="8">
-      </a-col>
-      <a-col :span="8">
-      </a-col>
+      <template v-for="form in forms" :key="form.id">
+        <a-col :xs="{span: 24}" :lg="{span: 8}">
+          <a-card :title="form.title" :bordered="false" style="width: 100%">
+            <template #extra>
+              <inertia-link :href="route('staff.forms.show', { form: form.id })" type="primary">
+                Apply
+              </inertia-link>
+            </template>
+            <div class="flex items-start">
+              <img v-if="form.thumbnail" :src="form.thumbnail" alt="Thumbnail" class="w-1/3 mr-4" />
+              <div class="flex-1">
+                <div v-html="form.description" />
+              </div>
+            </div>
+          </a-card>
+        </a-col>
+      </template>
+
     </a-row>
     
     <div v-if="$page.props.currentUser.roles.includes('master')">
@@ -41,6 +43,7 @@
           </a>
         </li>
       </ol>
+      <p class="text-red-500">This list only show for admin role.</p>
     </div>
   </StaffLayout>
 </template>

@@ -72,41 +72,39 @@ class FormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Form $form)
+    public function show(Form $form, Request $request)
     {
-        if(!$form->published){
-            return redirect()->route('staff');
-        }
-        $form->fields;
-        if($form->require_login==0 || $form->for_staff){
-            $entry=$form->entries->where('admin_user_id',auth()->user()->id)->first();
-            if($entry){
-                return Inertia::render('Staff/Form/Duplicate',[
-                    'form'=>$form,
-                    'entry'=>$entry
-                ]);
-            }else if($form->layout){
-                return Inertia::render('Form/'.$form->layout,[
-                    'form'=>$form,
-                    'entry'=>$entry
-                ]);
-            }else{
-                return Inertia::render('Form/FormDefault',[
-                    'form'=>$form,
-                    'entry'=>$entry
-                ]);
-            }
-        }
+        return redirect()->route('forms.show', [
+            'form' => $form->id,
+            'user_id' => auth()->user()->id,
+            'uuid' => $form->uuid
+        ]);
+
 
         //$form=Form::with('fields')->find($id);
-
+        if(!$form->published && empty($request->view) && $request->view!=$form->uuid){
+            return redirect()->route('forms.index');
+        }
         $form->fields;
-        if($form->require_login==1 && !Auth()->user()){
+        if($form->require_login==1 && !auth()->user()){
             return redirect('forms');
         }
-        return Inertia::render('Staff/Form/FormDefault',[
-            'form'=>$form,
-        ]);
+        $form->banner=$form->media()->where('collection_name','banner')->first()?->original_url;
+        $form->thumbnail==$form->media()->where('collection_name','thumbnail')->first()?->original_url;
+        if($form->layout){
+            /* Groupping for only one field, required setup manually from databases*/
+            $grouping=$form->fields()->where('grouping',true)->first();
+            if($grouping){
+                $form->entry_groups=$form->entries_group_count($grouping->field_name);
+            }
+            return Inertia::render('Form/'.$form->layout,[
+                'form'=>$form,
+            ]);
+        }else{
+            return Inertia::render('Form/FormDefault',[
+                'form'=>$form,
+            ]);
+        }
         
     }
 

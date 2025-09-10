@@ -18,7 +18,7 @@ class Form extends Model implements HasMedia
     use InteractsWithMedia;
     protected $fillable = ['department_id', 'name', 'title', 'welcome', 'description', 'thanks', 'require_login', 'for_staff', 'published','layout','remark'];
     protected $cast=['require_login'=>'boolean','for_staff'=>'boolean','published'=>'boolean'];
-    protected $appends=['entry_count'];
+    protected $appends=['entry_count','thumbnail'];
 
 
     protected static function boot()
@@ -33,6 +33,9 @@ class Form extends Model implements HasMedia
 
     public function getEntryCountAttribute(){
         return $this->entries->count();
+    }
+    public function getThumbnailAttribute(){
+        return $this->media()->where('collection_name','thumb')->first()?->original_url;
     }
 
     public function registerMediaConversions(Media $media = null): void
