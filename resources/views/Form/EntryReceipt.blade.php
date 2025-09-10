@@ -73,12 +73,12 @@
                                 $fieldValue=$fieldValue?'是/Yes':'否/No';
                                 break;
                             case 'dropdown':
-                                $value=array_column($fieldsMap[$fieldId]['options'], 'label', 'value')['FCA'];
+                                $value=array_column($fieldsMap[$fieldId]['options'], 'label', 'value')[$fieldValue];
                                 $fieldValue=$value;
                                 break;
                             case 'radio':
                                 // If fieldValue is a string and maps to options
-                                $value=array_column($fieldsMap[$fieldId]['options'], 'label', 'value')['FCA'];
+                                $value=array_column($fieldsMap[$fieldId]['options'], 'label', 'value')[$fieldValue];
                                 $fieldValue=$value;
                                 break;
                             case 'checkbox':
