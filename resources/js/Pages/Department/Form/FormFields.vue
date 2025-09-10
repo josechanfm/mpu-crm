@@ -14,7 +14,7 @@
         >
             <template #bodyCell="{ column, record, index }">
                 <template v-if="column.dataIndex === 'operation'">
-                    <a-button @click="editRecord(record)">Edit</a-button>
+                    <a-button @click="editRecord(record)" :disabled="form.published == true">Edit</a-button>
                     <a-popconfirm title="Are you sure delete this field?" ok-text="Yes" cancel-text="No"
                         @confirm="deleteRecord(record)" :disabled="form.published == true">
                         <a-button :disabled="form.published == true">Delete</a-button>
@@ -46,7 +46,7 @@
                     <p class="text-red-500 text-xs">* Only shows for admin and master, suggest to keep it blank</p>
                 </a-form-item>
                 <a-form-item label="Field Label" name="field_label">
-                    <a-input type="inpuut" v-model:value="modal.data.field_label" @blur="onFieldLabelChanged" />
+                    <a-input type="inpuut" v-model:value="modal.data.field_label" />
                 </a-form-item>
                 <a-form-item label="Field Type" name="type">
                     <a-select v-model:value="modal.data.type" placeholder="Field Type" :options="fieldTypes"
@@ -117,7 +117,7 @@ export default {
         Sortable,
         HolderOutlined,
     },
-    props: ['departments', 'department', 'form', 'fields'],
+    props: ['department', 'form', 'fields','configs'],
     data() {
         return {
             modal: {
@@ -182,7 +182,7 @@ export default {
                     ]
                 },
                 { value: 'gender', label: 'Gender', template: [{ value: 'M', label: 'Male' }, { value: 'F', label: 'Female' }] },
-                { value: 'department', label: 'Department', template: this.departments.map(d => ({ value: d.abbr, label: d.abbr + " " + d.name_zh })) },
+                { value: 'department', label: 'Department', template: this.configs['departments'].map(d => ({ value: d.abbr, label: d.abbr + " " + d.name_zh })) },
             ]
         }
     },
@@ -321,11 +321,6 @@ export default {
                 if (typeof this.modal.data.options !== 'object') {
                     this.modal.data.options = [{ value: 'option_1', label: 'option_1' }];
                 }
-            }
-        },
-        onFieldLabelChanged(value) {
-            if (!this.modal.data.field_name) {
-                this.modal.data.field_name = this.modal.data.field_label;
             }
         },
         rowChange(event) {

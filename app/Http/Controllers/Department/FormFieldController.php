@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Department;
 use App\Models\Form;
 use App\Models\FormField;
+use App\Models\Config;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -25,10 +26,14 @@ class FormFieldController extends Controller
     public function index(Form $form)
     {
         return Inertia::render('Department/Form/FormFields',[
-            'departments'=>Department::all(),
+//            'departments'=>Department::all(),
             'department'=>session('department'),
             'form'=>$form,
             'fields'=>$form->fields,
+            'configs'=>[
+                'departments'=>Department::all(),
+                'faculties'=>Config::item('faculties')
+            ]
         ]);
     }
 

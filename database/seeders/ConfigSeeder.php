@@ -16,6 +16,21 @@ class ConfigSeeder extends Seeder
     public function run()
     {
 
+      
+         DB::table('configs')->insert([
+            'key'=>'faculties',
+            'label'=>'Faculties',
+            'value'=>'[
+                { "label": "FAC / 應用科學學院", "value": "FCA" },
+                { "label": "FHSS / 健康科學及體育學院", "value": "FCSD" },
+                { "label": "FLT / 語言及翻譯學院", "value": "FLT" },
+                { "label": "FAD / 藝術及設計學院", "value": "FAD" },
+                { "label": "FHSS / 人文及社會科學學院", "value": "FCHS" },
+                { "label": "FB / 管理科學學院", "value": "FCG" },
+                { "label": "AE / 北京大學醫學部——澳門理工大學護理書院", "value": "AE" }
+            ]'
+          ]);
+ 
           DB::table('configs')->insert([
             'key'=>'enquiry_form',
             'label'=>'privacy',
