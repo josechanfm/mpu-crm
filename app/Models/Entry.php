@@ -20,6 +20,9 @@ class Entry extends Model
         $form=Form::find($this->form_id);
         return substr('00'.strtoupper(dechex($form->organization_id)),-2).'-'.substr('0000'.strtoupper(dechex($this->id)),-5);
     }
+    public function form(){
+        return $this->belongsTo(Form::class)->with('fields');
+    }
     public function records(){
         return $this->hasMany(EntryRecord::class);
     }

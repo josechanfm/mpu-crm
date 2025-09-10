@@ -70,15 +70,6 @@ class FormController extends Controller
                 ]);
     }
 
-    public function thankYou(Entry $entry){
-        $form=Form::find($entry->form_id);
-        return Inertia::render('Form/Thanks',[
-            'form'=>$form,
-            'entry'=>$entry
-        ]);
-
-    }
-
     /**
      * Display the specified resource.
      *
@@ -144,6 +135,29 @@ class FormController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function thankYou(Entry $entry, Request $request){
+        //dd($entry, $request->all());
+        if($entry && $request->has('uuid') && $request->uuid==$entry->uuid){
+            $form=Form::find($entry->form_id);
+            return Inertia::render('Form/Thanks',[
+                'form'=>$form,
+                'entry'=>$entry
+            ]);
+        }
+        return redirect()->route('forms.index');
+    }
+
+    public function receipt(Entry $entry, Request $request){
+        if($entry && $request->has('uuid') && $request->uuid==$entry->uuid){
+            //dd($entry->load(['form','records']));
+            return view('Form/EntryReceipt', [
+                'entry' => $entry->load(['form','records']),
+            ]);
+
+        }
+        return redirect()->route('forms.index');
     }
 
 }

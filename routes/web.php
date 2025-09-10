@@ -77,6 +77,7 @@ Route::resource('forms',\App\Http\Controllers\FormController::class)->names('for
 // Route::post('forms',\App\Http\Controllers\FormController::class)->names('form.clone');
 
 Route::get('form/entry/{entry}/thank_you',[\App\Http\Controllers\FormController::class,'thankYou'])->name('form.entry.thankYou');
+Route::get('form/entry/{entry}/receipt',[\App\Http\Controllers\FormController::class,'receipt'])->name('form.entry.receipt');
 
 
 

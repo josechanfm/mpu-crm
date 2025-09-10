@@ -23,12 +23,12 @@
       <template #bodyCell="{ column, text, record, index }">
         <template v-if="column.dataIndex == 'operation'">
           <a-button @click="editRecord(record)">Edit</a-button>
-          <a
+          <a-button
             :href="route('manage.form.entry.success', { form: form, entry: record.id })"
             target="_blank"
             class="ant-btn"
-            >receipt</a
-          >
+            >receipt
+          </a-button>
           <a-popconfirm
             title="Confirm to delete therecord?"
             ok-text="Yes"
