@@ -12,7 +12,7 @@
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
               <a-button :href="route('manage.form.entries.index',record.id)">
-                  {{ $t('response') }}
+                  {{ $t('form_entries') }}
               </a-button>
               <a-button :href="route('manage.entry.export', { form: record.id })">
                 {{ $t('export') }}
