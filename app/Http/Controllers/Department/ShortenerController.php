@@ -107,6 +107,7 @@ class ShortenerController extends Controller
      */
     public function destroy(Shortener $shortener)
     {
-        dd($shortener);
+        $shortener->delete();
+        return redirect()->back();
     }
 }
