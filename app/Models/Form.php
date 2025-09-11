@@ -173,16 +173,17 @@ class Form extends Model implements HasMedia
                         return $item->value === $entry_record?->field_value;
                     });
                     $table_data[$field->field_label] = reset($value)->label ?? '';
-                } else if ($field->type == 'checkbox') {
-                    $value = array_filter(json_decode($field->options), function ($item) use ($entry_record) {
-                        return in_array($item->value, json_decode($entry_record->field_value));
-                    });
-                    $labels = [];
-                    foreach ($value as $item) {
-                        $labels[] = $item->label;
-                    }
-                    $result = implode(',', $labels);
-                    $table_data[$field->field_label] = $result;
+                // } else if ($field->type == 'checkbox') {
+                //     //dd($entry_records, $field, $field->options);
+                //     $value = array_filter(json_decode($field->options), function ($item) use ($entry_record) {
+                //         return in_array($item->value, json_decode($entry_record->field_value));
+                //     });
+                //     $labels = [];
+                //     foreach ($value as $item) {
+                //         $labels[] = $item->label;
+                //     }
+                //     $result = implode(',', $labels);
+                //     $table_data[$field->field_label] = $result;
                 } else {
                     $table_data[$field->field_label] = $entry_record?->field_value;
                 };
