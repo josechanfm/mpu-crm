@@ -47,7 +47,7 @@ class ShortenerController extends Controller
         //dd($request->all());
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            'link' => 'required|url',
+            'url' => 'required|url',
             'valid_at' => 'nullable|date',
             'expire_at' => 'nullable|date|after_or_equal:valid_at', // Ensure expire_at is after or equal to valid_at
             'remark' => 'nullable|string|max:500',
@@ -90,7 +90,7 @@ class ShortenerController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            'link' => 'required|url',
+            'url' => 'required|url',
             'valid_at' => 'nullable|date',
             'expire_at' => 'nullable|date|after_or_equal:valid_at', // Ensure expire_at is after or equal to valid_at
             'remark' => 'nullable|string|max:500',
