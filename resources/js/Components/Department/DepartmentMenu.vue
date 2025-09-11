@@ -100,6 +100,18 @@
           </inertia-link>
         </span>
       </a-menu-item>
+
+      <a-menu-item key="shortener">
+        <template #icon>
+          <InboxOutlined />
+        </template>
+        <span>
+          <inertia-link :href="route('manage.shorteners.index')">
+            URL Shortener
+          </inertia-link>
+        </span>
+      </a-menu-item>
+
     </a-menu>
   </div>
 </template>
