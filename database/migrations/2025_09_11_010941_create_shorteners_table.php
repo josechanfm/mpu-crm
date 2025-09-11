@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('token')->uniqid();
             $table->string('title');
-            $table->text('link');
+            $table->text('url');
             $table->date('valid_at')->nullable();
             $table->date('expire_at')->nullable();
             $table->foreignId('admin_user_id');

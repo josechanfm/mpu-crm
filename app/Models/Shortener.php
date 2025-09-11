@@ -9,7 +9,7 @@ class Shortener extends Model
 {
     use HasFactory;
 
-    protected $fillable=['token','title','link','valid_at', 'expire_at','admin_user_id','remark'];
+    protected $fillable=['token','title','url','valid_at', 'expire_at','admin_user_id','remark'];
 
     protected static $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
