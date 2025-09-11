@@ -79,7 +79,15 @@
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button @click="openQrCodeModal(record)">Show QR Code</a-button>
-                            <a-button @click="editRecord(record)">Edit</a-button>
+                            <a-button type="primary" ghost @click="editRecord(record)">Edit</a-button>
+                            <a-popconfirm
+                                title="Confirm to delete ther ecord?"
+                                ok-text="Yes"
+                                cancel-text="No"
+                                @confirm="deleteRecord(record)"
+                            >
+                                <a-button danger>Delete</a-button>
+                            </a-popconfirm>
                         </template>
                         <template v-else-if="column.dataIndex=='buyer' && record.user">
                             <span>{{ record.user.netid }}</span>
@@ -258,7 +266,6 @@ export default {
                     title: "Operation",
                     dataIndex: "operation",
                     key: "operation",
-                    width: 240,
                 },
             ]
         },
@@ -304,12 +311,14 @@ export default {
             this.modal.mode = "EDIT";
             this.modal.title = "Edit Record";
             this.modal.isOpen = true;
+            this.loading=false;
         },
         createRecord() {
             this.modal.data = {};
             this.modal.mode = "CREATE";
             this.modal.title = "Create new URL shortener";
             this.modal.isOpen = true;
+            this.loading=false;
         },
         storeRecord() {
             this.loading=true
@@ -342,6 +351,9 @@ export default {
                     this.loading=false
                 }
             });
+        },
+        deleteRecord(record){
+            this.$inertia.delete(route('manage.shorteners.destroy', record.id));
         },
         clearMyFilter(){
             this.myFilter.search.column = null;

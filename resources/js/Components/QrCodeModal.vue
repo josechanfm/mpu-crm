@@ -14,7 +14,7 @@
           :imageOptions="{ hideBackgroundDots: true, imageSize: 0.4, margin: 0 }"
           :dotsOptions="{
               type: 'dots',
-              color: '#26249a',
+              color: qrCodeStyle[defaultStyle].dotColor,
               gradient: {
                 type: 'linear',
                 rotation: 0,
@@ -25,8 +25,8 @@
               },
             }"
           :backgroundOptions="{ color: '#ffffff' }"
-          :cornersSquareOptions="{ type: 'square', color: '#008000' }"
-          :cornersDotOptions="{ type: undefined, color: '#000000' }"
+          :cornersSquareOptions="{ type: qrCodeStyle[defaultStyle].squareType, color: qrCodeStyle[defaultStyle].squareColor }"
+          :cornersDotOptions="{ type:  qrCodeStyle[defaultStyle].connerDotType, color:  qrCodeStyle[defaultStyle].connerDotColor }"
         />
       </div>
         <a-button 
@@ -62,6 +62,28 @@ export default {
       type: Boolean,
       required: true,
     },
+  },
+  data() {
+      return {
+        defaultStyle:'style1',
+        qrCodeStyle:{
+          'style1':{
+            squareType:'square',
+            squareColor: '#26249a',
+            connerDotType: 'square',
+            connerDotColor: '#26249a',
+            dotColor: '#26249a'
+          },
+          'style2':{
+            squareType:'square',
+            squareColor: '#008000',
+            connerDotType: 'dot',
+            connerDotColor: '#26249a',
+            dotColor: '#000000'
+          }
+
+        }
+      }
   },
   methods: {
     closeModal() {

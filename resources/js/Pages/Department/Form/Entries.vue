@@ -28,12 +28,12 @@
             >Receipt
           </a-button>
           <a-popconfirm
-            title="Confirm to delete therecord?"
+            title="Confirm to delete the record?"
             ok-text="Yes"
             cancel-text="No"
             @confirm="deleteRecord(record)"
           >
-            <a-button>Delete</a-button>
+            <a-button danger>Delete</a-button>
           </a-popconfirm>
         </template>
         <template v-else-if="column.dataIndex=='net_id' && record.admin_user">
