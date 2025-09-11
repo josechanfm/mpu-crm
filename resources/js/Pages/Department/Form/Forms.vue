@@ -11,19 +11,10 @@
           </template>
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
-             
-              <a-button :href="route('manage.form.entries.index',record.id)">
-                  {{ $t('form_entries') }}
-              </a-button>
-              <a-button :href="route('manage.entry.export', { form: record.id })">
-                {{ $t('export') }}
-              </a-button>
-              <a-button :href="route('manage.form.fields.index', { form: record.id })">
-                  {{ $t('data_field') }}
-              </a-button>
-              <a-button :href="route('manage.forms.edit',record.id)">
-                  {{ $t('edit') }}
-              </a-button>
+              <a-button :href="route('manage.form.entries.index', record.id)">{{ $t('form_entries') }}</a-button>
+              <a-button :href="route('manage.entry.export', { form: record.id })">{{ $t('export') }}</a-button>
+              <a-button :href="route('manage.form.fields.index', { form: record.id })">{{ $t('data_field') }}</a-button>
+              <a-button :href="route('manage.forms.edit', record.id)">{{ $t('edit') }}</a-button>
               <a-popconfirm
                 title="Confirm Delete"
                 ok-text="Yes"
@@ -34,10 +25,10 @@
                 <a-button :disabled="record.entries_count > 0">{{ $t('delete') }}</a-button>
               </a-popconfirm>
               <br>
-              <qr-code-modal ref="qrCodeModal" :fullUrl="fullUrl(record)" :title="record.title"/>
+              <a-button @click="openQrCodeModal(record)">Show QR Code</a-button>
               <a-button @click="cloneForm(record)">Clone</a-button>
               <a-button @click="backupRecords(record)" v-if="record.entries_count > 0">Backup</a-button>
-              <a-button :href="route('forms.show',{form: record.id, view:record.uuid})" target="_blank">Link</a-button>
+              <a-button :href="route('forms.show', { form: record.id, view: record.uuid })" target="_blank">Link</a-button>
             </template>
             <template v-else-if="column.type == 'yesno'">
               <span v-if="record[column.dataIndex] == 1">Yes</span>
@@ -52,8 +43,16 @@
           </template>
         </a-table>
       </div>
-      <p>From CAN NOT be delete, if form FIELD created.</p>
+      <p>Form CAN NOT be deleted if form FIELD created.</p>
     </div>
+
+    <!-- QR Code Modal -->
+    <qr-code-modal 
+      :fullUrl="qrCodeModal.url" 
+      :title="qrCodeModal.title" 
+      :isModalOpen="qrCodeModal.isOpen" 
+      @update:isModalOpen="updateQrCodeModalOpen" 
+    />
   </DepartmentLayout>
 </template>
 
@@ -93,6 +92,11 @@ export default {
         data: {},
         title: "Modal",
         mode: "",
+      },
+      qrCodeModal:{
+        isOpen: false,
+        title:'Qr Code',
+        url: 'https://venus.mpu.edu.mo'
       },
       columns: [
         {
@@ -157,10 +161,14 @@ export default {
         },
       });
     },
-    fullUrl(record) {
-      return `${window.location.origin}/forms/${record.id}`; // Construct the full URL
+    openQrCodeModal(record) {
+      this.qrCodeModal.title = record.title;
+      this.qrCodeModal.url = `${window.location.origin}/forms/${record.id}`;
+      this.qrCodeModal.isOpen = true; 
     },
-
+    updateQrCodeModalOpen(value) {
+      this.qrCodeModal.isOpen = value; // Update the modal open state
+    },
   },
 };
 </script>

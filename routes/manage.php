@@ -111,6 +111,9 @@ Route::group([
     // Route::get('demoPdf',[  App\Http\Controllers\Department\ReportController::class,'viewPdf']   )->name('viewPdf');
     Route::get('actionHandbook',[ App\Http\Controllers\Department\EbookController::class,'create_hand_book']   )->name('test2');
 
+    Route::resource('shorteners',\App\Http\Controllers\Department\ShortenerController::class)->names('manage.shorteners');
+
+
 });
 
 // Route::middleware([

@@ -74,6 +74,7 @@ Route::prefix('enquiry')->group(function(){
 });
 Route::resource('enquiry',App\Http\Controllers\EnquiryController::class)->names('enquiry');
 Route::resource('forms',\App\Http\Controllers\FormController::class)->names('forms');
+Route::get('s/{token}',[\App\Http\Controllers\ShortenerController::class,'index']);
 // Route::post('forms',\App\Http\Controllers\FormController::class)->names('form.clone');
 
 Route::get('form/entry/{entry}/thank_you',[\App\Http\Controllers\FormController::class,'thankYou'])->name('form.entry.thankYou');
