@@ -149,8 +149,8 @@ export default {
                 console.log(error)
             }
         },
-        getFullDate(){
-            return dayjs(order.updated_at).format('YYYY-MM-DD HH:mm:ss');
+        getFullDate(date){
+            return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
         },
         getOrderNum(order){
             return dayjs(order.updated_at).year().toString().slice(-2) +"-"+ String(order.id).padStart(6,'0');
