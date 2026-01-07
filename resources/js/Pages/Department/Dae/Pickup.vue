@@ -15,6 +15,7 @@
                 </div>
                 <hr>
                 <h2 class="text-lg font-semibold">Buyer Info</h2>
+                {{  decodedData }}
                 <div class="mt-5" v-if="scannerActive">
                     <QrcodeStream @decode="onDecode" @error="onError" />
                     <QrcodeDropZone @decode="onDecode" @error="onError" />
@@ -105,6 +106,7 @@ export default {
             this.responseData=null;
         },
         async onDecode(data) {
+
             this.decodedData = data; // Store decoded data
             this.errorMessage = ''; // Clear any previous error
 

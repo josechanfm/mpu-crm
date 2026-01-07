@@ -31,8 +31,7 @@ class PickupController extends Controller
                 ], 404);
             }
             // Fetch the user based on your business logic; for testing, we'll just get the first user
-            $user = SouvenirUser::find($codeParts[0])->with('orders')->first();
-
+            $user = SouvenirUser::with('orders')->find($codeParts[0]);
             // Check if user exists
             if (!$user) {
                 return response()->json([
