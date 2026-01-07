@@ -5,7 +5,6 @@
                 <a-button :href="route('dae.dashboard')">Back</a-button>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                {{ myFilter }}
                 <div class="flex flex-wrap p-5 gap-4">
                     <div class="flex items-center space-x-2">
                         <label>Filter:</label>
