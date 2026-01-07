@@ -20,13 +20,13 @@
                     <QrcodeDropZone @decode="onDecode" @error="onError" />
                     <QrcodeCapture @decode="onDecode" @error="onError" />
                 </div>
-                {{ responseData }}
+                {{ responseData.user.ordres }}
                 <div v-if="responseData">
                     <div>{{ responseData.user.netid }}</div>
                     <div>{{ responseData.user.phone }}</div>
                     <h3 class="text-md font-bold">Pickup items: </h3>
                     <hr>
-                    <div v-for="order in responseData.user.orders.filter(o=>o.status==2)">
+                    <div v-for="order in responseData.user.orders.filter(o=>o.status==1)">
                         <div>Order # / 單號：{{ String(order.id).padStart(6,'0') }}</div>
                         <div>Date / 日期：{{ order.created_at }}</div>
                         <div>
