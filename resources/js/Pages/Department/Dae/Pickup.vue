@@ -20,7 +20,6 @@
                     <QrcodeDropZone @decode="onDecode" @error="onError" />
                     <QrcodeCapture @decode="onDecode" @error="onError" />
                 </div>
-                {{ responseData?.user?.orders[0].items }}
                 <div v-if="responseData">
                     <div>{{ responseData.user.netid }}</div>
                     <div>{{ responseData.user.phone }}</div>
@@ -42,7 +41,7 @@
                         <hr>
                     </div>
                     <div class="flex justify-between items-center pt-4">
-                        <a-button type="primary" @click="pickupConfirm" :disabled="responseData.user.orders.find(p=>p.status==2)==null">Confirm</a-button>
+                        <a-button type="primary" @click="pickupConfirm" :disabled="responseData.user.orders.find(p=>p.status==1)==null">Confirm</a-button>
                         <a-button @click="showAll = !showAll">{{ showAll ? 'Hide All' : '>Show All' }}</a-button>
                         <a-button @click="clearData">Clear</a-button>
                     </div>
