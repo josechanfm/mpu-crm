@@ -15,12 +15,12 @@
                 </div>
                 <hr>
                 <h2 class="text-lg font-semibold">Buyer Info</h2>
-                {{  decodedData }}
                 <div class="mt-5" v-if="scannerActive">
                     <QrcodeStream @decode="onDecode" @error="onError" />
                     <QrcodeDropZone @decode="onDecode" @error="onError" />
                     <QrcodeCapture @decode="onDecode" @error="onError" />
                 </div>
+                {{ responseData }}
                 <div v-if="responseData">
                     <div>{{ responseData.user.netid }}</div>
                     <div>{{ responseData.user.phone }}</div>
