@@ -30,7 +30,7 @@ class SouvenirController extends Controller
         }else{
             $souvenirs = Souvenir::orderBy('created_at', 'desc');
         }
-
+        //dd($souvenirs->paginate());
         if ($request->has('search_column') && !is_null($request->search_column) && $request->has('search_text') && !is_null($request->search_text)) {
             $souvenirs = $souvenirs->where($request->search_column,'LIKE', '%'.$request->search_text.'%');
         }

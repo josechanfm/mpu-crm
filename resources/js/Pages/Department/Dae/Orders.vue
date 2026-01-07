@@ -5,7 +5,7 @@
                 <a-button :href="route('dae.dashboard')">Back</a-button>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-
+                {{ myFilter }}
                 <div class="flex flex-wrap p-5 gap-4">
                     <div class="flex items-center space-x-2">
                         <label>Filter:</label>
@@ -181,10 +181,10 @@ export default {
             myFilter :{
                 filter:{
                     options:[
-                        { value: "null", label: "未支付" },
-                        { value: "0", label: "支付失敗" },
-                        { value: "1", label: "己支付" },
-                        { value: "2", label: "己領取" },
+                        { value: null, label: "未支付" },
+                        { value: 0, label: "支付失敗" },
+                        { value: 1, label: "己支付" },
+                        { value: 2, label: "己領取" },
                     ],
                     column:'status',
                     value: 2
@@ -302,7 +302,7 @@ export default {
         },
 
         onPaginationChange(page, filters, sorter) {
-            console.log(page, filters, sorter);
+            console.log(this.myFilter, page, filters, sorter);
             this.$inertia.get(
                 route("dae.souvenir.orders.index"),
                 {

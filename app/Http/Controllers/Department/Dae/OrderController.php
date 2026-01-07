@@ -16,7 +16,6 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        //  dd($request->all());
          $orders = SouvenirOrder::query();
         if ($request->has('filter_column') && !is_null($request->filter_column && $request->has('filter_value') && !is_null($request->filter_value))) {
             if($request->filter_value=='null'){
@@ -40,7 +39,7 @@ class OrderController extends Controller
         //    $orders = $orders->where('is_available', true);
         // }
         return Inertia::render('Department/Dae/Orders',[
-            "orders"=>$orders->with('user')->paginate($request->per_page??5),
+            "orders"=>$orders->orderBy('id','desc')->with('user')->paginate($request->per_page??5),
         ]);
     }
 

@@ -124,7 +124,7 @@ class PaymentController extends Controller
 
         //dd($systemCode, $mercOrderNo, $parts, (int)$parts[0], $order);
         $order->payment_status=$request->responseStatus;
-        $order->status=$request->status=='SUCCESS'?config('constants.ORDER_PAID'):config('constants.ORDER_PAY_FAIL');
+        $order->status=$request->responseStatus=='SUCCESS'?config('constants.ORDER_PAID'):config('constants.ORDER_PAY_FAIL');
         $order->save();
 
         $payment->order_id=$order->id;
