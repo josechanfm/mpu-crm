@@ -17,6 +17,7 @@
                     <div v-if="user">
                         <h3 class="text-lg font-semibold">{{ user.netid }}</h3>
                     </div>
+                    {{ pickupCode }}
                     <hr class="my-4"/>
                     <h4 class="text-lg font-semibold">Your Pickup Code:</h4>
                     <div v-if="pickupCode" class="flex flex-col items-center gap-4">

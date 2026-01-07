@@ -20,9 +20,18 @@ class PickupController extends Controller
             $request->validate([
                 'code' => 'required|string|max:255', // Ensure 'code' is present and is a string
             ]);
+            $codeParts = explode('-', $request->code);
 
+            $salt=env('SALT','dae-souvenir');
+            $hash=hash('sha256',$codeParts[0].$salt); //$codePart[0]== souvenirUser->id;
+            if($hash!==$codeParts[1]){
+                return response()->json([
+                    'message'=>'Invalid access...',
+                    'request'=> $request->all(),
+                ], 404);
+            }
             // Fetch the user based on your business logic; for testing, we'll just get the first user
-            $user = SouvenirUser::with('orders')->first();
+            $user = SouvenirUser::find($codeParts[0])->with('orders')->first();
 
             // Check if user exists
             if (!$user) {
