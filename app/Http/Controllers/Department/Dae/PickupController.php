@@ -11,6 +11,10 @@ use App\Models\SouvenirUser;
 class PickupController extends Controller
 {
     public function index(){
+        $codeParts[0]=3;
+        $user = SouvenirUser::with('orders')->find($codeParts[0]);
+        dd($user->orders[0]->items);
+
         return Inertia::render('Department/Dae/Pickup',[
             'department'=>session('department')
         ]);
