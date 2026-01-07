@@ -10,7 +10,6 @@
                 <inertia-link :href="route('dae.dashboard')" class="float-right">
                 <a-button type="primary" danger ghost>返回學生事務處首頁</a-button>
             </inertia-link>
-
                     <a-button type="primary" ghost @click="toggleSanner">{{ scannerActive ? 'Turn Off Scanner' : 'Turn On Scanner' }}</a-button>
                 </div>
                 <hr>
@@ -26,7 +25,7 @@
                     <h3 class="text-md font-bold">Pickup items: </h3>
                     <hr>
                     <div v-for="order in responseData.user.orders.filter(o=>o.status==1)">
-                        <div>Order # / 單號：{{ String(order.id).padStart(6,'0') }}</div>
+                        <div>Order # / 單號： {{ getYear(order.updated_at) }} {{ String(order.id).padStart(6,'0') }}</div>
                         <div>Date / 日期：{{ order.created_at }}</div>
                         <div>
                             <span v-if="order.status==null" class="text-yellow-500">未支付</span>
@@ -49,7 +48,7 @@
                     <div v-if="showAll">
                         <h2 class="text-lg font-bold pt-5">Order History</h2>
                         <div v-for="order in responseData.user.orders">
-                            <div>Order # / 單號：{{ String(order.id).padStart(6,'0') }}</div>
+                            <div>Order # / 單號：{{ getOrderNum(order) }}}</div>
                             <div>Date / 日期：{{ order.created_at }}</div>
                             <div>
                                 <span v-if="order.status==null" class="text-yellow-500">未支付</span>
@@ -74,6 +73,7 @@
 import WebLayout from '@/Layouts/WebLayout.vue';
 import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'qrcode-reader-vue3';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 export default {
     components: {
@@ -148,7 +148,11 @@ export default {
                 });    
                 console.log(error)
             }
+        },
+        getOrderNum(order){
+            return dayjs(order.updated_at).year().toString().slice(-2) +"-"+ String(order.id).padStart(6,'0');
         }
+
     },
 }
 </script>
