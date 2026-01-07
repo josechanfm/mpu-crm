@@ -25,8 +25,8 @@
                     <h3 class="text-md font-bold">Pickup items: </h3>
                     <hr>
                     <div v-for="order in responseData.user.orders.filter(o=>o.status==1)">
-                        <div>Order # / 單號： {{ getYear(order.updated_at) }} {{ String(order.id).padStart(6,'0') }}</div>
-                        <div>Date / 日期：{{ order.created_at }}</div>
+                        <div>Order # / 單號： {{ getOrderNum(order) }} </div>
+                        <div>Date / 日期：{{ getFullDate(order.created_at) }}</div>
                         <div>
                             <span v-if="order.status==null" class="text-yellow-500">未支付</span>
                             <span v-else-if="order.status==0" class="text-red-500">支付失敗</span>
@@ -48,8 +48,8 @@
                     <div v-if="showAll">
                         <h2 class="text-lg font-bold pt-5">Order History</h2>
                         <div v-for="order in responseData.user.orders">
-                            <div>Order # / 單號：{{ getOrderNum(order) }}}</div>
-                            <div>Date / 日期：{{ order.created_at }}</div>
+                            <div>Order # / 單號：{{ getOrderNum(order) }}</div>
+                            <div>Date / 日期：{{ getFullDate(order.created_at) }}</div>
                             <div>
                                 <span v-if="order.status==null" class="text-yellow-500">未支付</span>
                                 <span v-else-if="order.status==0" class="text-red-500">支付失敗</span>
@@ -148,6 +148,9 @@ export default {
                 });    
                 console.log(error)
             }
+        },
+        getFullDate(){
+            return dayjs(order.updated_at).format('YYYY-MM-DD HH:mm:ss');
         },
         getOrderNum(order){
             return dayjs(order.updated_at).year().toString().slice(-2) +"-"+ String(order.id).padStart(6,'0');
