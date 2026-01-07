@@ -238,8 +238,9 @@ export default {
             return new URLSearchParams(window.location.search);
         },
         pagination() {
-            console.log('comput page', this.urlParams.get('filter_value'))
-            this.myFilter.filter.value = this.urlParams.get('filter_value')??2;
+            //console.log('comput page', this.urlParams.get('filter_value'))
+            //this.myFilter.filter.value = this.urlParams.get('filter_value')??2;
+            this.myFilter.filter.value = parseInt(this.urlParams.get('filter_value')) || 2;
             this.myFilter.search.column = this.urlParams.get('search_column');
             this.myFilter.search.text = this.urlParams.get('search_text');
             return {
@@ -295,13 +296,13 @@ export default {
                 this.myFilter.sort.column=this.urlParams.get('sort_column')
             }
             if(this.urlParams.get('sort_order')){
-                console.log('sort_order')
+                //console.log('sort_order')
                 this.myFilter.sort.order=this.urlParams.get('sort_order')
             }
         },
 
         onPaginationChange(page, filters, sorter) {
-            console.log(this.myFilter, page, filters, sorter);
+            //console.log(this.myFilter, page, filters, sorter);
             this.$inertia.get(
                 route("dae.souvenir.orders.index"),
                 {
