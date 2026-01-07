@@ -122,7 +122,6 @@
                         <span @click="deleteImage(modal.data, idx)">Delete</span>
                     </span>
                 </div>
-
            </a-form-item>
             <a-form-item label="Images">
             <a-upload
@@ -137,7 +136,9 @@
             >
                 <UploadOutlined /> Upload
             </a-upload>
+            <p>圖片建議尺寸: 640 x 400, 800 x 500 像素</p>
             </a-form-item>
+            
       </a-form>
       <template #footer>
         <a-button key="back" @click="handleModalClose">{{ $t('close')}}</a-button>

@@ -14,7 +14,6 @@
                 <a-button type="primary" @click="createRecord">Create</a-button>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-
                 <div class="flex flex-wrap p-5 gap-4">
                     <div class="flex items-center space-x-2">
                         <label>Filter:</label>
@@ -26,22 +25,6 @@
                             placeholder="Select sort column"
                         />
                     </div>
-<!-- 
-                    <div class="flex items-center space-x-2">
-                        <label>Sort By:</label>
-                        <a-select 
-                            type="input" 
-                            v-model:value="myFilter.sort.column" 
-                            :options="myFilter.sort.options" 
-                            class="w-32" 
-                            placeholder="Select sort column"
-                        />
-                        <a-select 
-                            v-model:value="myFilter.sort.order" 
-                            :options="[{label:'Ascending', value:'asc'}, {label:'Descending', value:'desc'}]" 
-                            class="w-32"
-                        />
-                    </div> -->
                     <div class="flex items-center space-x-2">
                         <label>Search:</label>
                         <a-select 
@@ -57,20 +40,28 @@
                             class="w-32"
                         />
                     </div>
-                    <!-- <div class="flex items-center">
-                        <a-switch 
-                            v-model:checked="myFilter.show_all" 
-                            checkedChildren="Only Available" 
-                            unCheckedChildren="Show All" 
-                        />
-                    </div> -->
                     <div class="flex items-center space-x-2">
                         <a-button type="primary" @click="onClickFilter">Filter</a-button>
                         <a-button @click="clearMyFilter">Clear</a-button>
                     </div>
                 </div>
                 
-                <a-table :dataSource="users.data" :columns="columns" :pagination="pagination" @change="onPaginationChange">
+                <!-- Show selected items -->
+                <div v-if="selectedRowKeys.length > 0" class="p-3 bg-blue-50 border-b">
+                    <span class="text-blue-600 font-medium">{{ selectedRowKeys.length }} item(s) selected</span>
+                    <a-button size="small" @click="clearSelection" class="ml-3">Clear Selection</a-button>
+                    <a-button size="small" @click="batchModalVisible=true">Batch action</a-button>
+                </div>
+                <!-- Table with correct row-selection -->
+                <a-table 
+                    :dataSource="users.data" 
+                    :columns="columns" 
+                    :pagination="pagination" 
+                    @change="onPaginationChange" 
+                    :row-selection="rowSelectionConfig"
+                    :row-key="record => record.id"
+                    v-model:selectedRowKeys="selectedRowKeys"
+                >
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button @click="editRecord(record)">Edit</a-button>
@@ -93,31 +84,79 @@
             </div>
         </div>
 
-    <!-- Modal Start-->
-    <a-modal v-model:open="modal.isOpen" :title="modal.title" width="60%">
-      <a-form
-        :model="modal.data"
-        ref="modalRef"
-        name="default"
-        layout="horizontal"
-        :label-col="{ style:{width:'120px'}  }" :wrapper-col="{ span: 20 }"
-      >
-          <a-form-item label="Student No." name="netid" >
-            <a-input type="inpuut" v-model:value="modal.data.netid" />
-          </a-form-item>
+        <!-- Batch Actions Modal (Optional) -->
+        <a-modal 
+            v-model:open="batchModalVisible" 
+            title="Batch Actions" 
+            @ok="handleBatchAction"
+            @cancel="batchModalVisible = false"
+        >
+            <p>You have selected {{ selectedRowKeys.length }} items</p>
+            <p>What would you like to do with them?</p>
+            <a-select v-model:value="batchAction" class="w-full mt-4">
+                <a-select-option value="delete">Delete Selected</a-select-option>
+                <a-select-option value="export">Export Selected</a-select-option>
+                <a-select-option value="update">Update Status</a-select-option>
+            </a-select>
+            <a-form-item label="Set Selected items:" v-if="batchAction=='update'">
+                <a-switch v-model:checked="batchCanBuys"  checked-children="Can Buy" un-checked-children="Can NOT buy" />
+            </a-form-item>
+        </a-modal>
 
-          <a-form-item label="Method" >
-            {{ modal.data }}
-          </a-form-item>
-      </a-form>
-      <template #footer>
-        <a-button key="back" @click="handleModalClose">Close</a-button>
-        <a-button v-if="modal.mode=='EDIT'" key="submit" type="primary" @click="updateRecord" :loading="loading">Update</a-button>
-        <a-button v-if="modal.mode=='CREATE'" key="submit" type="primary" @click="storeRecord" :loading="loading">Save</a-button>
-      </template>
-    </a-modal>
-    <!-- Modal End-->
+        <!-- Modal Start-->
+        <a-modal v-model:open="modal.isOpen" :title="modal.title" width="60%">
+            <a-form
+                :model="modal.data"
+                ref="modalRef"
+                name="default"
+                layout="horizontal"
+                :rules="rules" 
+                :label-col="{ style:{width:'120px'}  }" :wrapper-col="{ span: 20 }"
+            >
+                <a-form-item label="Student No." name="netid" >
+                    <a-input type="input" v-model:value="modal.data.netid" />
+                </a-form-item>
+                <a-form-item label="Name (Chinese)" name="name_zh" >
+                    <a-input type="input" v-model:value="modal.data.name_zh" />
+                </a-form-item>
+                <a-form-item label="Name (English)." name="name_en" >
+                    <a-input type="input" v-model:value="modal.data.name_en" />
+                </a-form-item>
+                <a-form-item label="Email" name="email" >
+                    <a-input type="input" v-model:value="modal.data.email" />
+                </a-form-item>
+                <a-form-item label="Phone" name="phone" >
+                    <a-input type="input" v-model:value="modal.data.phone" />
+                </a-form-item>
+                <a-form-item label="Faculty" name="faculty_code">
+                    <a-select v-model:value="modal.data.faculty_code" placeholder="Select your faculty / 選擇您的系所">
+                        <template v-for="faculty in faculties" :key="faculty.value">
+                            <a-select-option :value="faculty.value">{{ faculty.label }}</a-select-option>
+                        </template>
+                        <!-- <a-select-option value="science">Science / 科學</a-select-option>
+                        <a-select-option value="arts">Arts / 人文</a-select-option>
+                        <a-select-option value="engineering">Engineering / 工程</a-select-option> -->
+                    </a-select>
+                </a-form-item>
+                <a-form-item label="Degree" name="degree_code">
+                    <a-select v-model:value="modal.data.degree_code" placeholder="Select your degree / 選擇您的學位">
+                        <a-select-option value="BACHALOR">Bachelor / 學士</a-select-option>
+                        <a-select-option value="MASTER">Master / 碩士</a-select-option>
+                        <a-select-option value="PHD">PhD / 博士</a-select-option>
+                    </a-select>
+                </a-form-item>
 
+                <a-form-item label="Can Buy" name="can_buy" >
+                    <a-switch v-model:checked="modal.data.can_buy" />
+                </a-form-item>
+            </a-form>
+            <template #footer>
+                <a-button key="back" @click="handleModalClose">Close</a-button>
+                <a-button v-if="modal.mode=='EDIT'" key="submit" type="primary" @click="updateRecord()" :loading="loading">Update</a-button>
+                <a-button v-if="modal.mode=='CREATE'" key="submit" type="primary" @click="storeRecord()" :loading="loading">Create</a-button>
+            </template>
+        </a-modal>
+        <!-- Modal End-->
     </DepartmentLayout>
 </template>
 
@@ -134,6 +173,7 @@ import Icon, { RestFilled } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
 import dayjs from 'dayjs';
 import axios from "axios";
+import { ref, computed, reactive } from 'vue';
 
 export default {
     components: {
@@ -144,6 +184,22 @@ export default {
         dayjs
     },
     props: ["users"],
+    setup() {
+        // Use reactive refs for Ant Design Vue 4
+        const selectedRowKeys = ref([]);
+        const selectedRows = ref([]);
+        const batchModalVisible = ref(false);
+        const batchCanBuys=ref(false);
+        const batchAction = ref('');
+        
+        return {
+            selectedRowKeys,
+            selectedRows,
+            batchModalVisible,
+            batchCanBuys,
+            batchAction
+        };
+    },
     data() {
         return {
             breadcrumb:[
@@ -155,8 +211,31 @@ export default {
             modal: {
                 isOpen: false,
                 data: {},
-                title: "Modal",
+                title: "Modal....",
                 mode: ""
+            },
+            faculties:[
+                { label: 'FAC / 應用科學學院', value: 'FCA' },
+                { label: 'FHSS / 健康科學及體育學院', value: 'FCSD' },
+                { label: 'FLT / 語言及翻譯學院', value: 'FLT' },
+                { label: 'FAD / 藝術及設計學院', value: 'FAD' },
+                { label: 'FHSS / 人文及社會科學學院', value: 'FCHS' },
+                { label: 'FB / 管理科學學院', value: 'FCG' },
+                { label: 'AE / 北京大學醫學部——澳門理工大學護理書院', value: 'AE' },
+            ],
+            rules: {
+                netid: [{ required: true, message: 'Please enter your NetID' }],
+                password: [{ required: true, message: 'Please enter your password' }],
+                faculty_code: [{ required: true, message: 'Please select your faculty' }],
+                degree_code: [{ required: true, message: 'Please select your degree' }],
+                phone: [
+                    { required: true, message: 'Please enter your phone number' },
+                    { pattern: /^[0-9]*$/, message: 'Phone number must contain only numbers' },
+                ],
+                email: [
+                    { required: true, type: 'email', message: 'Please enter a valid email address' },
+                ], 
+                
             },
             myFilter :{
                 filter:{
@@ -194,6 +273,79 @@ export default {
     mounted() {
     }, 
     computed: {
+        // Correct rowSelection configuration for Ant Design Vue 4
+        rowSelectionConfig() {
+            return {
+                selectedRowKeys: this.selectedRowKeys,
+                onChange: (selectedRowKeys, selectedRows) => {
+                    this.selectedRowKeys = selectedRowKeys;
+                    this.selectedRows = selectedRows;
+                    // You can call your custom handlers here
+                    this.onSelectionChange(selectedRowKeys, selectedRows);
+                },
+                onSelect: (record, selected, selectedRows, nativeEvent) => {
+                    console.log('onSelect - single record:', record);
+                    console.log('onSelect - selected:', selected);
+                    console.log('onSelect - all selected rows:', selectedRows);
+                    
+                    // Custom logic for single selection
+                    if (selected) {
+                        console.log(`Selected record with ID: ${record.id}`);
+                    } else {
+                        console.log(`Deselected record with ID: ${record.id}`);
+                    }
+                },
+                onSelectAll: (selected, selectedRows, changeRows) => {
+                    console.log('onSelectAll - selected:', selected);
+                    console.log('onSelectAll - selectedRows:', selectedRows);
+                    console.log('onSelectAll - changeRows:', changeRows);
+                    
+                    if (selected) {
+                        console.log('All rows on current page selected');
+                    } else {
+                        console.log('All rows on current page deselected');
+                    }
+                },
+                // Additional configuration options
+                checkStrictly: false,
+                type: 'checkbox', // 'checkbox' or 'radio'
+                // Column width for selection column
+                columnWidth: 60,
+                // Fixed column position
+                fixed: false,
+                // Hide selection column when false
+                hideDefaultSelections: false,
+                // Custom selections (for dropdown)
+                selections: [
+                    {
+                        key: 'all-current',
+                        text: 'Select All Current',
+                        onSelect: () => {
+                            const currentPageIds = this.users.data.map(item => item.id);
+                            this.selectedRowKeys = [...new Set([...this.selectedRowKeys, ...currentPageIds])];
+                        }
+                    },
+                    {
+                        key: 'invert-current',
+                        text: 'Invert Current',
+                        onSelect: () => {
+                            const currentPageIds = this.users.data.map(item => item.id);
+                            const newSelected = this.selectedRowKeys.filter(id => !currentPageIds.includes(id));
+                            const inverted = currentPageIds.filter(id => !this.selectedRowKeys.includes(id));
+                            this.selectedRowKeys = [...newSelected, ...inverted];
+                        }
+                    },
+                    {
+                        key: 'clear',
+                        text: 'Clear Selection',
+                        onSelect: () => {
+                            this.selectedRowKeys = [];
+                            this.selectedRows = [];
+                        }
+                    }
+                ]
+            };
+        },
         urlParams(){
             return new URLSearchParams(window.location.search);
         },
@@ -206,7 +358,6 @@ export default {
                 pageSize: this.users.per_page,
                 total: this.users.total,
                 showSizeChanger: true,
-                
                 showTotal: (total, range) => `Showing ${range[0]}-${range[1]} of ${total} items`,
             };
         },
@@ -215,9 +366,11 @@ export default {
                 {
                     title: "Student No.",
                     dataIndex: "netid",
+                    sorter: true,
                 }, {
                     title: "Email",
                     dataIndex: "email",
+                    sorter: true,
                 }, {
                     title: "Phone",
                     dataIndex: "phone",
@@ -230,14 +383,22 @@ export default {
                 }, {
                     title: "Can Buy",
                     dataIndex: "can_buy",
+                    filters: [
+                        { text: '可購買', value: 1 },
+                        { text: '不可購買', value: 0 },
+                    ],
+                    onFilter: (value, record) => record.can_buy == value,
                 }, {
                     title: "Updated At",
                     dataIndex: "updated_at",
-                // }, {
-                //     title: "Operation",
-                //     dataIndex: "operation",
-                //     key: "operation",
-                //     width: 240,
+                    sorter: (a, b) => {
+                        return new Date(a.updated_at) - new Date(b.updated_at);
+                    },
+                }, {
+                    title: "Operation",
+                    dataIndex: "operation",
+                    key: "operation",
+                    width: 240,
                 },
             ]
         },
@@ -248,12 +409,108 @@ export default {
             return dayjs(dateString).format('YYYY-MM-DD H:s');
         },
 
+        // Selection-related methods
+        onSelectionChange(selectedRowKeys, selectedRows) {
+            console.log(`Selected ${selectedRowKeys.length} items`);
+            
+            // You can trigger batch actions modal when selection changes
+            if (selectedRowKeys.length > 0) {
+                // Optional: Show batch action buttons or modal
+                // this.showBatchActions = true;
+            }
+        },
+        
+        clearSelection() {
+            this.selectedRowKeys = [];
+            this.selectedRows = [];
+            message.success('Selection cleared');
+        },
+        
+        handleBatchAction() {
+            if (!this.batchAction) {
+                message.warning('Please select an action');
+                return;
+            }
+            
+            switch (this.batchAction) {
+                case 'delete':
+                    this.deleteSelectedItems();
+                    break;
+                case 'export':
+                    this.exportSelectedItems();
+                    break;
+                case 'update':
+                    this.updateSelectedItems();
+                    break;
+            }
+            
+            this.batchModalVisible = false;
+            this.batchAction = '';
+        },
+        
+        deleteSelectedItems() {
+            if (this.selectedRowKeys.length === 0) {
+                message.warning('No items selected');
+                return;
+            }
+            
+            this.$confirm({
+                title: 'Confirm Deletion',
+                content: `Are you sure you want to delete ${this.selectedRowKeys.length} selected item(s)?`,
+                onOk: async () => {
+                    try {
+                        // Call your API to delete selected items
+                        this.$inertia.post(route('dae.souvenir.users.batchDelete'), {ids: this.selectedRowKeys})
+                        // const response = await axios.post(route('dae.souvenir.users.batchDelete'), {
+                        //     ids: this.selectedRowKeys
+                        // });
+                        
+                        message.success(response.data.message || 'Items deleted successfully');
+                        this.selectedRowKeys = [];
+                        this.selectedRows = [];
+                        
+                        // Refresh the table data
+                        this.$inertia.reload();
+                    } catch (error) {
+                        message.error('Failed to delete items');
+                    }
+                },
+                onCancel() {
+                    console.log('Cancelled');
+                },
+            });
+        },
+        
+        exportSelectedItems() {
+            console.log('exportSelectedItems')
+            if (this.selectedRowKeys.length === 0) {
+                message.warning('No items selected');
+                return;
+            }
+            
+            //this.$inertia.get(route('dae.souvenir.users.batchExport'), {ids: this.selectedRowKeys})
+            // Create export URL with selected IDs
+            const params = new URLSearchParams({
+                ids: this.selectedRowKeys.join(',')
+            });
+            console.log(params)
+            window.open(`${route('dae.souvenir.users.batchExport')}?${params.toString()}`, '_blank');
+        },
+        
+        updateSelectedItems() {
+            // Implement your update logic here
+            this.$inertia.post(route('dae.souvenir.users.batchUpdate'), {ids: this.selectedRowKeys, can_buy:this.batchCanBuys})
+            console.log('Update selected items:', this.selectedRowKeys);
+            // You might want to open a modal for bulk update
+        },
+        
         viewRecord(record) {
             this.modal.data = { ...record };
             this.modal.mode = "VIEW";
             this.modal.title = "View Record";
             this.modal.isOpen = true;
         },
+        
         clearMyFilter(){
             this.myFilter.search.column = null;
             this.myFilter.search.text = '';
@@ -262,6 +519,7 @@ export default {
             this.pagination.current = 1; // Reset to first page
             this.onPaginationChange(this.pagination);
         },
+        
         onClickFilter(){
             this.pagination.current = 1; // Reset to first page
             this.onPaginationChange(this.pagination);
@@ -298,13 +556,10 @@ export default {
                 {
                     page: page.current,
                     per_page: page.pageSize,
-                    // show_all: this.myFilter.show_all,
                     filter_column:this.myFilter.filter.column,
                     filter_value:this.myFilter.filter.value,
                     search_column:this.myFilter.search.column,
                     search_text:this.myFilter.search.text,
-                    // sort_column: this.myFilter.sort.column,
-                    // sort_order: this.myFilter.sort.order,
                 },
                 {
                 onSuccess: (page) => {
@@ -320,23 +575,34 @@ export default {
 
         createRecord() {
             this.modal.data = {
-                published:false  
+                can_buy:true
             };
             this.modal.mode = "CREATE";
             this.modal.title = "新增";
             this.modal.isOpen = true;
         },
+        
         editRecord(record) {
             this.modal.data = { ...record };
             this.modal.mode = "EDIT";
             this.modal.title = "修改";
             this.modal.isOpen = true;
         },
+        updateRecord(){
+            console.log('update record', this.modal.data)
+            this.$inertia.put(route('dae.souvenir.users.update', this.modal.data.id), this.modal.data)
+            this.modal.isOpen=false
+            //this.modal.data=null
+        },
+        storeRecord(){
+            this.$inertia.post(route('dae.souvenir.users.store'), this.modal.data)
+            this.modal.data=null
+            this.modal.isOpen=false
+        },
         handleModalClose(){
             this.modal.isOpen=false
             location.reload();
         },
-
 
         // method for excel file import
         beforeUpload(file) {
@@ -358,6 +624,7 @@ export default {
             this.uploadFile(file); // Immediately upload the file
             return false; // Prevent automatic upload
         },
+        
         async uploadFile(file) {
             console.log('Uploading file:', file);
             const formData = new FormData();
@@ -372,10 +639,22 @@ export default {
                     this.loading=false
                 }
             });
-
-
         },
-
     }
 };
 </script>
+
+<style scoped>
+/* Optional custom styles for selection */
+:deep(.ant-table-selection-column) {
+    min-width: 60px;
+}
+
+:deep(.ant-table-row-selected) {
+    background-color: #e6f7ff !important;
+}
+
+:deep(.ant-table-row-selected:hover) {
+    background-color: #d4edff !important;
+}
+</style>

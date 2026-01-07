@@ -9,6 +9,7 @@ use App\Models\SouvenirUser;
 use App\Imports\SouvenirUserImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Api\IdValidatorController;
+use App\Exports\SouvenirUserExport;
 
 class SouvenirUserController extends Controller
 {
@@ -31,7 +32,7 @@ class SouvenirUserController extends Controller
         }
 
         return Inertia::render('Department/Dae/SouvenirUsers',[
-            'users' => $users->paginate()
+            'users' => $users->paginate($request->per_page)
         ]);
     }
 
@@ -53,7 +54,20 @@ class SouvenirUserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'netid' => 'required|string|max:50',
+            'email' => 'required|email|max:100',
+            'phone' => 'nullable|string|max:20',
+            'faculty_code' => 'nullable|string|max:10',
+            'degree_code' => 'nullable|string|max:10',
+            'can_buy' => 'required|boolean',
+        ]);
+        SouvenirUser::upsert(
+            $request->all(),
+            ['netid'],
+            ['name_zh','name_en','email','phone','faculty_code','degree_code','can_buy']
+        );
+        return redirect()->back();
     }
 
     /**
@@ -92,7 +106,18 @@ class SouvenirUserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'netid' => 'required|string|max:50',
+            'email' => 'required|email|max:100',
+            'phone' => 'nullable|string|max:20',
+            'faculty_code' => 'nullable|string|max:10',
+            'degree_code' => 'nullable|string|max:10',
+            'can_buy' => 'required|boolean',
+        ]);
+        
+        //dd(SouvenirUser::find($id), $request->all());
+        SouvenirUser::find($id)->update($request->all());
+        return redirect()->back();
     }
 
     /**
@@ -205,4 +230,33 @@ class SouvenirUserController extends Controller
 
     }
 
+    public function batchDelete(Request $request){
+        SouvenirUser::whereIn('id',$request->ids)->delete();
+        return redirect()->back();
+        //return SouvenirUser::whereIn('id',$request->ids)->get();
+    }
+    public function batchExport(Request $request){
+        // dd('batchExport', $request->all());
+        // return SouvenirUser::whereIn('id',$request->ids)->get();
+        // return redirect()->back();
+        // Get IDs from request, default to empty array
+        $ids = $request->ids ?: [];
+        
+        // Convert string to array if needed
+        if (is_string($ids)) {
+            $ids = explode(',', $ids);
+        }
+        
+        // Generate filename
+        $filename = 'souvenir_users_' . now()->format('Ymd_His') . '.xlsx';
+        // Export
+        return Excel::download(new SouvenirUserExport($ids), $filename);
+        
+
+    }
+    public function batchUpdate(Request $request){
+        SouvenirUser::whereIn('id',$request->ids)->update(['can_buy'=>$request->can_buy]);
+        return redirect()->back();
+
+    }
 }

@@ -34,11 +34,11 @@
                 <div>MPU warmly invite you to participate in our "Graduation Gifts (Limited Edition)" pre-ordering! Our university has crafted 3 exclusive items for graduating students, capturing campus memories and celebrating the friendships formed here. We hope that the support from MPU carried in the gifts will accompany graduates all the time as they embrace new roles in life. For interested students, please fill out the pre-order form below. Last but not least, wishing you a smooth graduation and a bright future ahead!</div>
             </div>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-2">
-                    <div v-for="product in products" :key="product.id" class="flex flex-col md:flex-row bg-gray-100 rounded-lg mb-5">
-                        <div class="flex-shrink-0 w-full md:w-64 md:h-48">
+                    <div v-for="product in products" :key="product.id" class="flex flex-col md:flex-row bg-gray-100 rounded-lg mb-5 h-40">
+                        <div class="flex-shrink-0 w-full md:w-64 md:h-40">
                             <a-carousel :autoplay="true" dots>
                                 <div v-for="(image, index) in product.images" :key="index">
-                                    <img :src="image" alt="Product Image" class="object-cover w-full h-full rounded-md" />
+                                    <img :src="image" alt="Product Image" class="object-cover w-full h-full rounded-md h-40" />
                                 </div>
                             </a-carousel>
                         </div>
