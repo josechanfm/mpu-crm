@@ -20,7 +20,7 @@
                     <QrcodeDropZone @decode="onDecode" @error="onError" />
                     <QrcodeCapture @decode="onDecode" @error="onError" />
                 </div>
-                {{ responseData.user.ordres[0].items }}
+                {{ responseData.user.orders[0].items }}
                 <div v-if="responseData">
                     <div>{{ responseData.user.netid }}</div>
                     <div>{{ responseData.user.phone }}</div>
