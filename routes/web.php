@@ -52,11 +52,11 @@ Route::get('/language/{language}', function ($language) {
 })->name('language');
 
 Route::get('/manual', function (Request $request) {
-    $manual=App\Models\Manual::where('route',$request->route)->first();
+    $manual=App\Models\Manual::with('parent:id,route')->where('route',$request->route)->first();
     if(empty($manual)){
         $manual=App\Models\Manual::where('route','default')->first();
     }else if($manual->reroute){
-        $manual=App\Models\Manual::where('route',$manual->reroute)->first();
+        $manual=App\Models\Manual::with('parent:id,route')->where('route',$manual->reroute)->first();
     }
     return Inertia::render('Manual', [
         'manual' => $manual,

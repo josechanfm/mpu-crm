@@ -17,12 +17,16 @@ const markdown = (content) => {
 
 <template>
     <BlankLayout title="manual">
-        <template #header>
+    <template #header>
+        <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Manual
+                {{ manual.title }}
             </h2>
-        </template>
-
+            <div v-if="manual.parent" class="text-right">
+                <a :href="'/manual?route=' + manual.parent.route" class="text-blue-500 hover:underline">反回</a>
+            </div>
+        </div>
+    </template>
         <div>
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
                 <div id="pure-html" v-html="manual.content"/>

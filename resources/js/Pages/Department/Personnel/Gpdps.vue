@@ -1,15 +1,20 @@
 <template>
     <DepartmentLayout title="財產申報提示" :breadcrumb="breadcrumb">
-        <div class="flex-auto pb-3 text-right">
             <div class="mb-5">
                 <a-form ref="importlRef" action="personnel/gpdps/export">
                     <span v-if="is('admin')">
-                        <input type="file" id="import-file" hidden @change="onImport"/>
-                        <label for="import-file" class="ant-btn ant-btn-primary mr-5">
+                        <label for="import-file">
                                 匯入('admin only')
                         </label>
+                        <input type="file" id="import-file" hidden @change="onImport"/>
                     </span>
+                </a-form>
 
+            </div>
+
+        <div class="flex-auto pb-3 text-right">
+            <div class="mb-5">
+                <a-form ref="importlRef" action="personnel/gpdps/export">
                     <a-range-picker v-model:value="exportCriteria.period" :format="dateFormat" :valueFormat="dateFormat"/>
                     <a-button type="primary" html-type="submit" @click="onExport" class="ml-5">
                         滙出

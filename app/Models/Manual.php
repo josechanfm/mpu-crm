@@ -9,4 +9,8 @@ class Manual extends Model
 {
     use HasFactory;
     protected $fillable=['parent_id','route','reroute','title','content'];
+
+    public function parent(){
+        return $this->belongsTo(Manual::class, 'parent_id');
+    }
 }
