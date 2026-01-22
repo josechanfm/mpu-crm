@@ -30,6 +30,7 @@ class EnquiryController extends Controller
         $department=Department::where('abbr','DAMIA')->first();
         //dd($department->enquiriesStat());
         $enquiries=Enquiry::whereBelongsto($department);
+        
         if($request->has('filters')){
             $filters=$request->filters;
             if(!empty($filters['degree'])){

@@ -2,11 +2,11 @@
     <DepartmentLayout title="須回應提問" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                <a-table :dataSource="department.enquiry_questions_open" :columns="columns" :row-key="record => record.root_id">
+                <a-table :dataSource="questions.data" :columns="columns" :row-key="record => record.root_id" :pagination="pagination" @change="onPaginationChange">
                     <template #bodyCell="{column, text, record, index}" >
                         <template v-if="column.dataIndex=='operation'">
                             <a-button @click="viewRecord(record)">瀏覽</a-button>
-                            <inertia-link :href="route('registry.enquiry.questions.show', { question:record.id})" class="ant-btn">回應</inertia-link>
+                            <a-button @click="goToRecord(record.id)" type="default">回應</a-button>
                         </template>
                         <template v-else-if="column.dataIndex=='enquiry_id'">
                             {{ text }}
@@ -126,7 +126,7 @@ export default {
         DepartmentLayout,
         loadLanguageAsync
     },
-    props: ['department','configFields'],
+    props: ['department','questions','configFields'],
     data() {
         return {
             breadcrumb:[
@@ -140,6 +140,15 @@ export default {
                 title:"Modal",
                 mode:""
             },
+            pagination: {
+                total: this.questions.total,
+                current: this.questions.current_page,
+                pageSize: this.questions.per_page,
+                defaultPageSize:10,
+                showSizeChanger:true,
+                pageSizeOptions:['10','20','30','40','50']
+            },
+
         }
     },
     created(){       
@@ -274,7 +283,50 @@ export default {
         mapOptionsItem(options,item){
             const option = options.find(o=>o.value==item)
             return option?option['label_zh']:'--'
-        }
+        },
+        goToRecord(id) {
+            this.$inertia.visit(route('registry.enquiry.questions.show', { question: id }));
+        },
+        onPaginationChange(page, filters, sorter) {
+            console.log(page, filters, sorter);
+            // this.filters = {
+            //     ...this.filters,
+            //     ...filters
+            // };
+            // if (sorter.field) {
+            //     this.sorter = {
+            //         field: sorter.field,
+            //         order: sorter.order
+            //     };
+            // }
+            // if (sorter) {
+            //     this.sorter = {
+            //         ...this.sorter,
+            //         ...sorter
+            //     };
+            // }            
+            this.$inertia.get(
+                route("registry.enquiry.questions.index"),
+                {
+                    page: page.current,
+                    per_page: page.pageSize,
+                    // filters:filters,
+                    // sorter:sorter,
+                    // sort_field: this.sorter.field,
+                    // sort_order: this.sorter.order,
+                },
+                {
+                onSuccess: (page) => {
+                    console.log(page);
+                },
+                onError: (error) => {
+                    console.log(error);
+                },
+                }
+            );
+        },
+
+        
 
     },
 }

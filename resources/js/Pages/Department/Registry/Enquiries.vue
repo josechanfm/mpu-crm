@@ -137,7 +137,7 @@ export default {
             pagination: {
                 total: this.enquiries.total,
                 current: this.enquiries.current_page,
-                pageSize: this  .enquiries.per_page,
+                pageSize: this.enquiries.per_page,
                 defaultPageSize:40,
                 showSizeChanger:true,
                 pageSizeOptions:['10','20','30','40','50']
@@ -262,7 +262,7 @@ export default {
             return String(a).localeCompare(String(b));
         },
         onPaginationChange(page, filters, sorter) {
-
+            console.log(page, filters, sorter);
             this.filters = {
                 ...this.filters,
                 ...filters
@@ -279,25 +279,25 @@ export default {
             //         ...sorter
             //     };
             // }            
-            this.$inertia.get(
-                route("registry.enquiries.index"),
-                {
-                    page: page.current,
-                    per_page: page.pageSize,
-                    filters:filters,
-                    // sorter:sorter,
-                    sort_field: this.sorter.field,
-                    sort_order: this.sorter.order,
-                },
-                {
-                onSuccess: (page) => {
-                    console.log(page);
-                },
-                onError: (error) => {
-                    console.log(error);
-                },
-                }
-            );
+            // this.$inertia.get(
+            //     route("registry.enquiries.index"),
+            //     {
+            //         page: page.current,
+            //         per_page: page.pageSize,
+            //         filters:filters,
+            //         // sorter:sorter,
+            //         sort_field: this.sorter.field,
+            //         sort_order: this.sorter.order,
+            //     },
+            //     {
+            //     onSuccess: (page) => {
+            //         console.log(page);
+            //     },
+            //     onError: (error) => {
+            //         console.log(error);
+            //     },
+            //     }
+            // );
         },
         optionFind(options, item) {
             const option =options.find(o=>o.value==item)

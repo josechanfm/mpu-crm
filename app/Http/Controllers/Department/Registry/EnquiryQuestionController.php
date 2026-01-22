@@ -25,13 +25,14 @@ class EnquiryQuestionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //$department=session('department');
         $department=Department::where('abbr','DAMIA')->first();
-        $department->enquiryQuestionsOpen;
-        //dd($department);
+        //$department->enquiryQuestionsOpen;
+        //dd($department->enquiryQuestions()->paginate());
         return Inertia::render('Department/Registry/Questions',[
+            'questions'=>$department->enquiryQuestions()->orderBy('created_at','desc')->paginate(),
             'department'=>$department,
             'configFields'=>Config::enquiryFormFields(),
         ]);

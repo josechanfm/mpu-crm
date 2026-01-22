@@ -5,6 +5,7 @@
 /public/flipbooks
 /public/recruitment/academic
 /public/thumbnail
+/public/images
 /vendor
 .env
 .env.backup
