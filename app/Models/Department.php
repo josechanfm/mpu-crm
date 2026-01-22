@@ -38,7 +38,7 @@ class Department extends Model
     }
     public function enquiryQuestionsOpen(){
         return $this->hasManyThrough(EnquiryQuestion::class, Enquiry::class,'department_id','enquiry_id')
-            // ->where('enquiry_questions.is_closed',false)
+            ->where('enquiry_questions.is_closed',false)
             ->with('enquiry')
             ->with('lastResponse')
             ->orderBy('created_at','desc');
