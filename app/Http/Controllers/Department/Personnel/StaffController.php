@@ -64,7 +64,7 @@ class StaffController extends Controller
 
         return inertia('Department/Personnel/StaffEdit',[
             'staff'=>$staff->load('uploads'),
-            'families'=>$data['family']
+            'families'=>$data->family
         ]);
     }
 
