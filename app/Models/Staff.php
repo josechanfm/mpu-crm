@@ -29,9 +29,10 @@ class Staff extends Model
 		$ch = curl_init();
 		$url = "https://wapps2-local.ipm.edu.mo/banner/staffInfoService.ashx";
 		//echo $url;
+		
 		$dataArray=array(
 			'service'=>'family',
-			'token'=>$this->getToken($role),
+			'token'=>self::getToken($role),
 			//if super user, use 'super' as getToken netid, other use self netid
 			//'dept'=> 'IT', //only 'super' user
 		);
@@ -61,10 +62,11 @@ class Staff extends Model
 		 //echo "<p>".htmlspecialchars($response)."</p>";
 		curl_close($ch);
 		//echo "<p>".htmlspecialchars($response)."</p>";
+		dd($response);
 		return json_decode($response);
 	
 	}
-    function getToken($netid){
+    public static function  getToken($netid){
         $key= "YxIs2d62wScSqpL0";
         date_default_timezone_set("UTC");
         $datetime = time()*1000;
