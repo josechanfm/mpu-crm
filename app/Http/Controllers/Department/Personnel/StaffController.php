@@ -49,7 +49,7 @@ class StaffController extends Controller
      */
     public function show(Staff $staff)
     {
-        $data=Staff::get_remote_data('list', 'super', $staff->staff_num);
+        $data=Staff::get_remote_data('list', 'super');
         dd($data);
     }
 
