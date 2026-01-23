@@ -49,8 +49,9 @@ class StaffController extends Controller
      */
     public function show(Staff $staff)
     {
-        $data=Staff::get_remote_data('list', 'super');
-        dd($data);
+        $data=json_decode(Staff::get_remote_data('list', 'super'));
+
+        dd($data->staffs);
     }
 
     /**
@@ -61,7 +62,7 @@ class StaffController extends Controller
      */
     public function edit(Staff $staff)
     {
-        $data=Staff::get_remote_data('family', 'super', $staff->staff_num);
+        $data=json_decode(Staff::get_remote_data('family', 'super', $staff->staff_num));
 
         return inertia('Department/Personnel/StaffEdit',[
             'staff'=>$staff->load('uploads'),
