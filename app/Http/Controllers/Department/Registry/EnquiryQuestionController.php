@@ -47,6 +47,7 @@ class EnquiryQuestionController extends Controller
             if(!empty($filters['status'])){
                 $questions->where('enquiry_questions.is_closed',$filters['status'][0]=='true'?1:0);
             }
+            
         //dd($filters['status'][0]=='true'?1:0, $questions->paginate());
         }else{
             $questions->where('enquiry_questions.is_closed',0);

@@ -164,8 +164,9 @@ export default {
     mounted(){
         const urlParams = new URLSearchParams(window.location.search);
         urlParams.forEach((value, key) => {
-            if (key.startsWith('filters[')) {
-                const filterKey = key.replace('filters[', '').replaceAll(']', '').replaceAll('[', '');
+            if (key.startsWith('filters[status][')) {
+                //const filterKey = key.replace('filters[', '').replaceAll(']', '').replaceAll('[', '');
+                const filterKey='status';
                 // Initialize filter with the first value or keep its existing value
                 this.filters[filterKey] = this.filters[filterKey] || [];
                 this.filters[filterKey].push(value);
