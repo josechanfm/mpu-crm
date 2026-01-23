@@ -32,6 +32,20 @@
                         </li>
                     </ol>
                 </div>
+                <div>
+                    <ol>
+                        <li v-for="family in families" :key="family.id">
+                            Name_zh: {{ family.name_zh }}<br>
+                            Name_pt: {{ family.name_pt }}<br>
+                            Medical_num: {{ family.medial_num }}<br>
+                            Relationship: {{ family.relationship }} <br>
+                            Allowend_type: {{ family.allowend_type }}<br>
+                            DOB: {{ family.dob }}<br>
+                            id_num: {{ family.id_num }}<br>
+                            medical_type: {{ family.medical_type }}
+                        </li>
+                    </ol>
+                </div>
             </a-form>
         </div>
     </DepartmentLayout>
@@ -45,6 +59,7 @@ export default {
     components: { DepartmentLayout },
     props: {
         staff: Object,  // Assuming this is passed as a prop from Laravel
+        families: Object,  // Assuming this is passed as a prop from Laravel
     },
     data() {
         return {

@@ -61,10 +61,10 @@ class StaffController extends Controller
     public function edit(Staff $staff)
     {
         $data=Staff::get_remote_data('super',$staff->staff_num);
-        dd($staff);
 
         return inertia('Department/Personnel/StaffEdit',[
             'staff'=>$staff->load('uploads'),
+            'families'=>$data['family']
         ]);
     }
 
