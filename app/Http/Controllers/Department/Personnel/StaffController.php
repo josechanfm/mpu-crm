@@ -97,25 +97,26 @@ class StaffController extends Controller
 
     public function refreshStaffRecords()
     {
-        $data=Staff::get_remote_data('list', 'super');
-        foreach($data as $item){
+        $data = Staff::get_remote_data('list', 'super');
+        foreach ($data as $item) {
+            // Assuming $item is now an associative array
             $staff = Staff::updateOrCreate(
-                ['staff_num' => $item->staff_num, 'username'=>$item->netid],
+                ['staff_num' => $item['staff_num'], 'username' => $item['netid']],
                 [
-                    'name_zh'=>$item->name_zh, 
-                    'name_pt'=>$item->name_pt, 
-                    'email' => $item->email, 
-                    'staff_num'=>$item->staff_num,
-                    'phone'=>$item->office_tel,
-                    'fullpart'=>$item->fullpart,
-                    'cat_group'=>$item->cat_group,
-                    'lecturer'=>$item->lecturer,
-                    'medical_num'=>$item->medical_num,
-                    'medical_type'=>$item->medical_type,
-                    'library_num'=>$item->library_num,
-                    'register_date'=>$item->register_date,
-                    'dept'=>$item->dept_code,
-                    //'register_date'=>$item->register_date
+                    'name_zh' => $item['name_zh'], 
+                    'name_pt' => $item['name_pt'], 
+                    'email' => $item['email'], 
+                    'staff_num' => $item['staff_num'],
+                    'phone' => $item['office_tel'],
+                    'fullpart' => $item['fullpart'],
+                    'cat_group' => $item['cat_group'],
+                    'lecturer' => $item['lecturer'],
+                    'medical_num' => $item['medical_num'],
+                    'medical_type' => $item['medical_type'],
+                    'library_num' => $item['library_num'],
+                    'register_date' => $item['register_date'],
+                    'dept' => $item['dept_code'],
+                    //'register_date' => $item['register_date']
                 ]
             );
         }
