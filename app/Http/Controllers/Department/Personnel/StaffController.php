@@ -105,7 +105,7 @@ class StaffController extends Controller
                 [
                     'name_zh'=>$item->name_zh, 
                     'name_pt'=>$item->name_pt, 
-                    'email' => $item->email, 
+                    'email' => $item->netid.'@mpu.edu.mo', 
                     'staff_num'=>$item->staff_num,
                     'phone'=>$item->office_tel,
                     'fullpart'=>$item->fullpart,
