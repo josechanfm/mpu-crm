@@ -34,7 +34,8 @@ class EnquiryQuestionController extends Controller
         if ($department) {
             $questions = EnquiryQuestion::with('lastResponse')->with('enquiry')->join('enquiries', 'enquiry_questions.enquiry_id', '=', 'enquiries.id')
                 ->where('enquiries.department_id', $department->id) // Use the correct foreign key
-                ->select('enquiry_questions.*');// Select the enquiry question fields
+                ->select('enquiry_questions.*')// Select the enquiry question fields
+                ->orderBy('enquiry_questions.created_at','desc');
                 //->paginate();
 
         } else {
