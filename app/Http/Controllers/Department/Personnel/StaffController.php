@@ -109,7 +109,7 @@ class StaffController extends Controller
 
         $data=Staff::get_remote_data('list', 'super');
 
-        dd('staff data',$data, json_decode($data));
+        dd('staff data',$data);
     }
 
     /**
