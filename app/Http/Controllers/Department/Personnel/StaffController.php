@@ -44,14 +44,70 @@ class StaffController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $i d
      * @return \Illuminate\Http\Response
      */
     public function show(Staff $staff)
     {
-        $data=json_decode(Staff::get_remote_data('list', 'super'));
 
-        dd($data->staffs);
+        //$data=json_decode(Staff::get_remote_data('list', 'super'));
+        $data='{
+            "family":[
+                {
+                    "has_allowance":1,
+                    "has_medical":1,
+                    "medical_num":"MPU/1199/F",
+                    "staff_num":"1199",
+                    "name_zh":"謝竣揚",
+                    "name_pt":"CHE CHON IEONG",
+                    "relationship":"親生子女",
+                    "allowance_type":"卑親屬",
+                    "dob":"24-09-2021",
+                    "id_num":"16966517",
+                    "medical_type":"A"
+                },
+                {
+                    "has_allowance":1,
+                    "has_medical":1,
+                    "medical_num":"MPU/1199/F",
+                    "staff_num":"1199",
+                    "name_zh":"謝竣丞",
+                    "name_pt":"CHE CHON SENG",
+                    "relationship":"親生子女",
+                    "allowance_type":"卑親屬",
+                    "dob":"28-05-2013",
+                    "id_num":"15747827",
+                    "medical_type":"A"
+                },
+                {
+                    "has_allowance":1,
+                    "has_medical":1,
+                    "medical_num":"MPU/1199/F",
+                    "staff_num":"1199",
+                    "name_zh":"鄭敬棠",
+                    "name_pt":"CHIANG KENG TONG",
+                    "relationship":"父母",
+                    "allowance_type":"尊親屬",
+                    "dob":"15-04-1955",
+                    "id_num":"72822117",
+                    "medical_type":"A"
+                },
+                {
+                    "has_allowance":1,
+                    "has_medical":1,
+                    "medical_num":"MPU/1199/F",
+                    "staff_num":"1199",
+                    "name_zh":"黃少梅",
+                    "name_pt":"WONG SIO MUI",
+                    "relationship":"父母",
+                    "allowance_type":"尊親屬",
+                    "dob":"16-11-1960",
+                    "id_num":"73319980",
+                    "medical_type":"A"
+                }
+            ]
+        }';
+        dd('staff data',$data, json_decode($data)->family);
     }
 
     /**
@@ -63,7 +119,7 @@ class StaffController extends Controller
     public function edit(Staff $staff)
     {
         $data=Staff::get_remote_data('family', 'super', $staff->staff_num);
-        dd($data, json_decode($data));
+        dd($data);
 
         return inertia('Department/Personnel/StaffEdit',[
             'staff'=>$staff->load('uploads'),
