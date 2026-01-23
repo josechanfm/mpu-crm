@@ -98,6 +98,7 @@ class StaffController extends Controller
     public function refreshStaffRecords()
     {
         $data = Staff::get_remote_data('list', 'super');
+        dd($data);
         foreach ($data as $item) {
             // Assuming $item is now an associative array
             dd($item);
