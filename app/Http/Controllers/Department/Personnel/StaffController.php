@@ -50,7 +50,6 @@ class StaffController extends Controller
     public function show(Staff $staff)
     {
 
-        //$data=json_decode(Staff::get_remote_data('list', 'super'));
         $data='{
             "family":[
                 {
@@ -107,7 +106,10 @@ class StaffController extends Controller
                 }
             ]
         }';
-        dd('staff data',$data, json_decode($data)->family);
+
+        $data=Staff::get_remote_data('list', 'super');
+
+        dd('staff data',$data, json_decode($data));
     }
 
     /**
