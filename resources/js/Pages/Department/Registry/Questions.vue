@@ -134,7 +134,7 @@ export default {
                 {label:"須回應提問" ,url:null},
             ],
             filters:{
-                status:[]
+                status:['false']
             },
             sorter: {
                 field: null,

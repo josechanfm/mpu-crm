@@ -48,6 +48,8 @@ class EnquiryQuestionController extends Controller
                 $questions->where('enquiry_questions.is_closed',$filters['status'][0]=='true'?1:0);
             }
         //dd($filters['status'][0]=='true'?1:0, $questions->paginate());
+        }else{
+            $questions->where('enquiry_questions.is_closed',0);
         }
         // Apply sorting
         // if ($request->has('sort_field') && $request->has('sort_order')) {
