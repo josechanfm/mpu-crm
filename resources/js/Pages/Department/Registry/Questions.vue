@@ -2,7 +2,6 @@
     <DepartmentLayout title="須回應提問" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                {{ filters }}                
                 <a-table :dataSource="questions.data" :columns="columns" :row-key="record => record.root_id" :pagination="pagination" @change="onPaginationChange">
                     <template #bodyCell="{column, text, record, index}" >
                         <template v-if="column.dataIndex=='operation'">
