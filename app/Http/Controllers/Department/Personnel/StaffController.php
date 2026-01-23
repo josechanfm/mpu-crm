@@ -120,6 +120,6 @@ class StaffController extends Controller
                 ]
             );
         }
-        return count($data);
+        return count($data->staffs);
     }
 }
