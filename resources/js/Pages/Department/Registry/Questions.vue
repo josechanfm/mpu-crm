@@ -2,6 +2,7 @@
     <DepartmentLayout title="須回應提問" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+
                 <a-table :dataSource="questions.data" :columns="columns" :row-key="record => record.root_id" :pagination="pagination" @change="onPaginationChange">
                     <template #bodyCell="{column, text, record, index}" >
                         <template v-if="column.dataIndex=='operation'">
@@ -134,7 +135,7 @@ export default {
                 {label:"須回應提問" ,url:null},
             ],
             filters:{
-                status:['false']
+                status:[]
             },
             sorter: {
                 field: null,
@@ -160,25 +161,10 @@ export default {
     },
     created(){       
         this.fields=this.configFields
-        // const urlParams = new URLSearchParams(window.location.search);
-
-        // urlParams.forEach((value, key) => {
-        //     if (key.startsWith('filters[')) {
-        //         const filterKey = key.replace('filters[', '').replaceAll(']', '').replaceAll('[', '');
-        //         // Initialize the filter if it doesn't exist
-        //         console.log('filterKey',filterKey)
-        //         if (!this.filters[filterKey]) {
-        //             this.filters[filterKey] = [];
-        //         }
-                
-        //          this.filters[filterKey]=[value]
-        //         console.log('value, key fitler',this.filters )
-        //     }
-        // });
     },
     mounted(){
         const urlParams = new URLSearchParams(window.location.search);
-
+        console.log('params', urlParams);
         urlParams.forEach((value, key) => {
             if (key.startsWith('filters[')) {
                 const filterKey = key.replace('filters[', '').replaceAll(']', '').replaceAll('[', '');
@@ -187,6 +173,11 @@ export default {
                 this.filters[filterKey].push(value);
             }
         });
+        if (!urlParams.has('filters')) { //default filter
+            console.log('URL parameters are empty.');
+            this.filters.status.push('false');
+        }
+
     },
     computed:{
         columns(){
