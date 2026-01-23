@@ -47,9 +47,10 @@ class StaffController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Staff $staff)
     {
-        //
+        $data=Staff::get_remote_data('list', 'super', $staff->staff_num);
+        dd($data);
     }
 
     /**
@@ -60,7 +61,7 @@ class StaffController extends Controller
      */
     public function edit(Staff $staff)
     {
-        $data=Staff::get_remote_data('super',$staff->staff_num);
+        $data=Staff::get_remote_data('family', 'super', $staff->staff_num);
 
         return inertia('Department/Personnel/StaffEdit',[
             'staff'=>$staff->load('uploads'),

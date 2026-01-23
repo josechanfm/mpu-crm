@@ -43,6 +43,7 @@
                             DOB: {{ family.dob }}<br>
                             id_num: {{ family.id_num }}<br>
                             medical_type: {{ family.medical_type }}
+                            <hr>
                         </li>
                     </ol>
                 </div>

@@ -25,13 +25,13 @@ class Staff extends Model
         return $this->hasMany(StaffUpload::class);
     }
 
-    public static function get_remote_data($role='super',$staffNum=null){
+    public static function get_remote_data($service='list', $role='super', $staffNum=null){
 		$ch = curl_init();
 		$url = "https://wapps2-local.ipm.edu.mo/banner/staffInfoService.ashx";
 		//echo $url;
 		
 		$dataArray=array(
-			'service'=>'family',
+			'service'=>$service,
 			'token'=>self::getToken($role),
 			//if super user, use 'super' as getToken netid, other use self netid
 			//'dept'=> 'IT', //only 'super' user
