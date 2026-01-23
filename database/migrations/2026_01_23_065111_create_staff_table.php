@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('staffs', function (Blueprint $table) {
             $table->id();
-            $table->id(); // auto-incrementing id
             $table->string('ip_address', 15)->nullable();
             $table->string('username', 100)->unique()->nullable();
             $table->string('password', 255)->nullable();

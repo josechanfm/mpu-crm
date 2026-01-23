@@ -64,8 +64,6 @@ class StaffController extends Controller
     public function edit(Staff $staff)
     {
         $data=Staff::get_remote_data('family', 'super', $staff->staff_num);
-        dd($data, $data->family);
-
         return inertia('Department/Personnel/StaffEdit',[
             'staff'=>$staff->load('uploads'),
             'families'=>$data->family
@@ -119,6 +117,25 @@ class StaffController extends Controller
                     //'register_date'=>$item->register_date
                 ]
             );
+            $famliy=Staff::get_remote_data('family', 'super', $item->staff_num);
+            foreach($famliy->family as $relative){
+                $staff->relatives()->updateOrCreate(
+                    ['staff_num'=>$relative->staff_num, 'id_num'=>$relative->id_num],
+                    [
+                        'has_allowance'=>$relative->has_allowance,
+                        'has_medical'=>$relative->has_medical,
+                        'mecical_num'=>$relative->medical_num,
+                        // 'staff_num'=>$relative->staff_num,
+                        'name_zh'=>$relative->name_zh,
+                        'name_pt'=>$relative->name_pt,
+                        'relationship'=>$relative->relationship,
+                        'allowaance_type'=>$relative->allowance_type,
+                        'dob'=>$relative->dob,
+                        // 'id_num'=>$relative->id_num,
+                        'medical_type'=>$relative->medical_type,
+                    ]
+                );
+            }
         }
         return count($data->staffs);
     }
