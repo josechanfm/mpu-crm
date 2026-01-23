@@ -100,6 +100,7 @@ class StaffController extends Controller
         $data = Staff::get_remote_data('list', 'super');
         foreach ($data->staffs as $item) {
             // Assuming $item is now an associative array
+            dd($item);
             $staff = Staff::updateOrCreate(
                 ['staff_num' => $item['staff_num'], 'username' => $item['netid']],
                 [
