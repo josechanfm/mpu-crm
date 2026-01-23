@@ -130,7 +130,7 @@ class StaffController extends Controller
                         'name_pt'=>$relative->name_pt,
                         'relationship'=>$relative->relationship,
                         'allowaance_type'=>$relative->allowance_type,
-                        'dob'=>$relative->dob,
+                        'dob'=>str_replace(' ', '',$relative->dob),
                         // 'id_num'=>$relative->id_num,
                         'medical_type'=>$relative->medical_type,
                     ]
