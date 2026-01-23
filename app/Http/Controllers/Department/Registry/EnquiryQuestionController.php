@@ -31,8 +31,33 @@ class EnquiryQuestionController extends Controller
         $department=Department::where('abbr','DAMIA')->first();
         //$department->enquiryQuestionsOpen;
         //dd($department->enquiryQuestions()->paginate());
+        if ($department) {
+            $questions = EnquiryQuestion::with('lastResponse')->with('enquiry')->join('enquiries', 'enquiry_questions.enquiry_id', '=', 'enquiries.id')
+                ->where('enquiries.department_id', $department->id) // Use the correct foreign key
+                ->select('enquiry_questions.*');// Select the enquiry question fields
+                //->paginate();
+
+        } else {
+            $questions = collect(); // Return an empty collection if department is not found
+        }
+        
+        //dd($department, $questions, $request->all(), $request->filters['status'][0]);
+        if($request->has('filters')){
+            $filters=$request->filters;
+            if(!empty($filters['status'])){
+                $questions->where('enquiry_questions.is_closed',$filters['status'][0]=='true'?1:0);
+            }
+        //dd($filters['status'][0]=='true'?1:0, $questions->paginate());
+        }
+        // Apply sorting
+        // if ($request->has('sort_field') && $request->has('sort_order')) {
+        //     $sortField = $request->input('sort_field');
+        //     $sortOrder = $request->input('sort_order') === 'ascend' ? 'asc' : 'desc';
+        //     $questions->orderBy($sortField, $sortOrder);
+        // }
+
         return Inertia::render('Department/Registry/Questions',[
-            'questions'=>$department->enquiryQuestions()->orderBy('created_at','desc')->paginate(),
+            'questions'=>$questions->paginate(),
             'department'=>$department,
             'configFields'=>Config::enquiryFormFields(),
         ]);

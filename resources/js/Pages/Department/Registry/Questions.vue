@@ -133,6 +133,13 @@ export default {
                 {label:"招生注冊處" ,url:route('registry.dashboard')},
                 {label:"須回應提問" ,url:null},
             ],
+            filters:{
+                status:[]
+            },
+            sorter: {
+                field: null,
+                order: null // 'ascend' or 'descend'
+            },
             fields:[],
             modal:{
                 isOpen:false,
@@ -153,9 +160,33 @@ export default {
     },
     created(){       
         this.fields=this.configFields
+        // const urlParams = new URLSearchParams(window.location.search);
+
+        // urlParams.forEach((value, key) => {
+        //     if (key.startsWith('filters[')) {
+        //         const filterKey = key.replace('filters[', '').replaceAll(']', '').replaceAll('[', '');
+        //         // Initialize the filter if it doesn't exist
+        //         console.log('filterKey',filterKey)
+        //         if (!this.filters[filterKey]) {
+        //             this.filters[filterKey] = [];
+        //         }
+                
+        //          this.filters[filterKey]=[value]
+        //         console.log('value, key fitler',this.filters )
+        //     }
+        // });
     },
     mounted(){
-        //loadLanguageAsync(this.$page.props.lang)
+        const urlParams = new URLSearchParams(window.location.search);
+
+        urlParams.forEach((value, key) => {
+            if (key.startsWith('filters[')) {
+                const filterKey = key.replace('filters[', '').replaceAll(']', '').replaceAll('[', '');
+                // Initialize filter with the first value or keep its existing value
+                this.filters[filterKey] = this.filters[filterKey] || [];
+                this.filters[filterKey].push(value);
+            }
+        });
     },
     computed:{
         columns(){
@@ -163,36 +194,36 @@ export default {
                 {
                     title: '日期',
                     dataIndex: 'created_at',
-                    sorter: (a, b) => {
-                        return new Date(a.enquiry.created_at).getTime() > new Date(b.enquiry.created_at).getTime()
-                        //a.enquiry.phone.localeCompare(b.enquiry.)
-                    },
+                    // sorter: (a, b) => {
+                    //     return new Date(a.enquiry.created_at).getTime() > new Date(b.enquiry.created_at).getTime()
+                    //     //a.enquiry.phone.localeCompare(b.enquiry.)
+                    // },
                 },{
                     title: '查詢編號',
                     dataIndex: 'enquiry_id',
                 },{
                     title: '證件類別('+this.configFields.origin.short+')',
                     dataIndex: 'origin',
-                    sorter: (a, b) => a.enquiry.origin.localeCompare(b.enquiry.origin),
-                    filters: this.configFields.origin.options.map(option=>({
-                        text:option['label_'+this.$t('lang')],
-                        value: option.value
-                    })),
-                    filterMultiple: false,
-                    onFilter: (value, record) => record.enquiry.origin == value
+                    // sorter: (a, b) => a.enquiry.origin.localeCompare(b.enquiry.origin),
+                    // filters: this.configFields.origin.options.map(option=>({
+                    //     text:option['label_'+this.$t('lang')],
+                    //     value: option.value
+                    // })),
+                    // filterMultiple: false,
+                    // onFilter: (value, record) => record.enquiry.origin == value
 
                 },{
                     title: this.configFields.admission.short,
                     dataIndex: 'admission',
-                    sorter: (a, b) => a.enquiry.admission.localeCompare(b.enquiry.admission)
+                    //sorter: (a, b) => a.enquiry.admission.localeCompare(b.enquiry.admission)
                 },{
                     title: this.configFields.degree.short,
                     dataIndex: 'degree',
-                    sorter: (a, b) => a.enquiry.degree.localeCompare(b.enquiry.degree)
+                    //sorter: (a, b) => a.enquiry.degree.localeCompare(b.enquiry.degree)
                 },{
                     title: '姓, 名',
                     dataIndex: 'fullname',
-                    sorter: (a, b) => a.enquiry.surname.localeCompare(b.enquiry.surename)
+                    //sorter: (a, b) => a.enquiry.surname.localeCompare(b.enquiry.surename)
                 // },{
                 //     title: this.fields.email.short,
                 //     dataIndex: 'email',
@@ -210,11 +241,11 @@ export default {
                 },{
                     title: '跟進情況',
                     dataIndex: 'status',
-                    sorter: (a, b) => a.is_closed > b.is_closed,
-                    filters: [{value:true,text:'完成'},{value:false,text:'跟進中'}],
+                    //sorter: (a, b) => a.is_closed > b.is_closed,
+                    filters: [{value:false,text:'跟進中'},{value:true,text:'完成'}],
                     filterMultiple: false,
+                    defaultFilteredValue: this.filters['status'], // Default selected filter value
                     onFilter: (value, record) => record.is_closed == value
-
                 },{
                     title: '操作',
                     dataIndex: 'operation',
@@ -289,31 +320,31 @@ export default {
         },
         onPaginationChange(page, filters, sorter) {
             console.log(page, filters, sorter);
-            // this.filters = {
-            //     ...this.filters,
-            //     ...filters
-            // };
-            // if (sorter.field) {
-            //     this.sorter = {
-            //         field: sorter.field,
-            //         order: sorter.order
-            //     };
-            // }
-            // if (sorter) {
-            //     this.sorter = {
-            //         ...this.sorter,
-            //         ...sorter
-            //     };
-            // }            
+            this.filters = {
+                ...this.filters,
+                ...filters
+            };
+            if (sorter.field) {
+                this.sorter = {
+                    field: sorter.field,
+                    order: sorter.order
+                };
+            }
+            if (sorter) {
+                this.sorter = {
+                    ...this.sorter,
+                    ...sorter
+                };
+            }            
             this.$inertia.get(
                 route("registry.enquiry.questions.index"),
                 {
                     page: page.current,
                     per_page: page.pageSize,
-                    // filters:filters,
+                    filters: this.filters,
                     // sorter:sorter,
-                    // sort_field: this.sorter.field,
-                    // sort_order: this.sorter.order,
+                    sort_field: this.sorter.field,
+                    sort_order: this.sorter.order,
                 },
                 {
                 onSuccess: (page) => {
