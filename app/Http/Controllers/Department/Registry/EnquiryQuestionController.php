@@ -41,16 +41,16 @@ class EnquiryQuestionController extends Controller
             $questions = collect(); // Return an empty collection if department is not found
         }
         
-        //dd($department, $questions, $request->all(), $request->filters['status'][0]);
         if($request->has('filters')){
             $filters=$request->filters;
             if(!empty($filters['status'])){
                 $questions->where('enquiry_questions.is_closed',$filters['status'][0]=='true'?1:0);
             }
             
-        //dd($filters['status'][0]=='true'?1:0, $questions->paginate());
-        }else{
-            $questions->where('enquiry_questions.is_closed',0);
+        }else{ // both page and filters are not set, default to open questions
+            if(!$request->has('page')){
+                $questions->where('enquiry_questions.is_closed',0);
+            }
         }
         // Apply sorting
         // if ($request->has('sort_field') && $request->has('sort_order')) {
