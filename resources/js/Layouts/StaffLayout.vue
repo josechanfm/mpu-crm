@@ -1,6 +1,4 @@
 <script setup>
-import { ref } from 'vue';
-import { Inertia } from '@inertiajs/inertia';
 import StaffMenu from '@/Components/Staff/StaffMenu.vue';
 
 defineProps({
@@ -47,8 +45,12 @@ defineProps({
                                 class="text-center text-xl my-4  bg-white py-2 rounded-md border-b-2 cursor-pointer  text-gray-600">
                                 Service</h1>
                             <div class="bg-white rounded-md list-none  text-center ">
-                                <li class="py-3 border-b-2"><inertia-link
-                                        :href="route('staff.forms.index')">Forms</inertia-link></li>
+                                <li class="py-3 border-b-2">
+                                    <inertia-link :href="route('staff.forms.index')">Forms</inertia-link>
+                                </li>
+                                <li class="py-3 border-b-2">
+                                    <inertia-link :href="route('staff.cards')">Staff Cards</inertia-link>
+                                </li>
                                 <li class="py-3 border-b-2">
                                     <a href="https://teldir.mpu.edu.mo" target="_blank"
                                         class="list-none  hover:text-indigo-600">Phone Book</a>

@@ -40,6 +40,8 @@ Route::group([
         Route::get('/get-permissions', function () {
             return auth()->check()?auth()->user()->jsPermissions():0;
         });
+        Route::get('cards',[App\Http\Controllers\Staff\StaffCardController::class,'index'])->name('staff.cards');
+
 });
 
 
@@ -216,6 +218,10 @@ Route::group([
 
 
     Route::resource('/staffs',App\Http\Controllers\Department\Personnel\StaffController::class)->names('personnel.staffs');
+    Route::post('/staff/{staff}/avatar_upload',[App\Http\Controllers\Department\Personnel\StaffController::class,'avatarUpload'])->name('personnel.staff.avatarUpload');
+    Route::get('/staff/{staff}/card_print',[App\Http\Controllers\Department\Personnel\StaffController::class,'cardPrint'])->name('personnel.staff.cardPrint');
+    Route::resource('/staff/notices',App\Http\Controllers\Department\Personnel\StaffNoticeController::class)->names('personnel.staff.notices');
+    Route::get('/staff/migration',[App\Http\Controllers\Department\Personnel\StaffController::class,'migration'])->name('personnel.staff.migration');
 
 });
 

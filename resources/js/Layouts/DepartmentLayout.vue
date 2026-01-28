@@ -77,7 +77,7 @@
                     </nav>
                 </header>
 
-                <div class="mx-6">
+                <div class="mx-2 xl:mx-6">
                     <main>
                         <slot />
                     </main>

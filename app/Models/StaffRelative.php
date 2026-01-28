@@ -26,4 +26,7 @@ class StaffRelative extends Model
     {
         return $this->belongsTo(Staff::class);
     }
+    public function notices(){
+        return $this->hasMany(StaffNotice::class);
+    }
 }

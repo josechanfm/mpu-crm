@@ -10,10 +10,29 @@ class Staff extends Model
     use HasFactory;
     protected $table='staffs';
     protected $fillable=[
+		'username',
+		'email',
         'first_name',
         'last_name',
         'other_name',
+		'phone',
+		'name_zh',
+		'name_pt',
+		'staff_num',
+		'medical_type',
+		'medical_num',
+		'library_num',
+		'issue_date',
+		'employment',
+		'lecturer',
+		'dept',
+		'register_date',
+		'cat_group',
+		'avatar',
+		'active'
     ];
+
+					
     protected $hidden=['password'];
     
     public function relatives()
@@ -26,6 +45,7 @@ class Staff extends Model
     }
 
     public static function get_remote_data($service='list', $role='super', $staffNum=null){
+	    set_time_limit(0); 
 		$ch = curl_init();
 		$url = "https://wapps2-local.ipm.edu.mo/banner/staffInfoService.ashx";
 		//echo $url;
@@ -42,29 +62,29 @@ class Staff extends Model
 
 		$data = http_build_query($dataArray);
 
-		$options = array(
+        $options = array(
 			CURLOPT_URL            => $url."?".$data,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_POST		   =>false,
-			CURLOPT_TIMEOUT		   =>30
+			CURLOPT_TIMEOUT		   =>30,
+            CURLOPT_SSL_VERIFYPEER => false,
 		);
 
 		curl_setopt_array( $ch, $options );
-
-
 		$response = curl_exec($ch);
 		$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
 		if ( $httpCode != 200 ){
-		    echo "Return code is {$httpCode} <br/>"
-		        .curl_error($ch);
+			echo "Return code is {$httpCode} <br/>"
+				.curl_error($ch);
 		}
-		 //echo "<p>".htmlspecialchars($response)."</p>";
+		//echo "<p>".htmlspecialchars($response)."</p>";
 		curl_close($ch);
 		//echo "<p>".htmlspecialchars($response)."</p>";
+
 		return json_decode($response);
 	
 	}
+
     public static function  getToken($netid){
         $key= "YxIs2d62wScSqpL0";
         date_default_timezone_set("UTC");

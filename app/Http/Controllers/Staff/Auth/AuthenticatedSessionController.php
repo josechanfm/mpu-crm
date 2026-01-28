@@ -50,7 +50,6 @@ class AuthenticatedSessionController extends Controller
         $guard = $request->local ? 'admin_local' : 'admin';
         Auth::shouldUse($guard);
         $request->session()->flush();
-
         if ($guard === 'admin') {
             // Attempt LDAP authentication using LdapRecord
             dd($this->attemptLdapAuthentication($guard, $credentials));

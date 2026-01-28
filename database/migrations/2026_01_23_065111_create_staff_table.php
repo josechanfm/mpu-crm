@@ -34,12 +34,12 @@ return new class extends Migration
             $table->string('name_zh', 45)->nullable();
             $table->string('name_pt', 255)->nullable();
             $table->string('staff_num', 45)->nullable();
-            $table->char('medical_type', 1);
-            $table->string('medical_num', 12);
-            $table->string('library_num', 255);
-            $table->date('issue_date');
-            $table->char('employment', 1);
-            $table->boolean('lecturer');
+            $table->char('medical_type', 1)->nullable();
+            $table->string('medical_num', 12)->nullable();
+            $table->string('library_num', 255)->nullable();
+            $table->date('issue_date')->nullable();
+            $table->char('employment', 1)->nullable();
+            $table->boolean('lecturer')->nullable();
             $table->string('dept', 45)->nullable();            
             $table->timestamps();
         });

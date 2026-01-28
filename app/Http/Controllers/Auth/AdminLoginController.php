@@ -35,7 +35,7 @@ class AdminLoginController extends Controller
         ]);
         $credentials = $request->only('username', 'password');
         $isLocalUser = $request->input('local');
-        
+        //dd($request->all(), $isLocalUser, $credentials);
         if ($isLocalUser) {
             $adminUser=AdminUser::where('username',$request->username)->first();
             $credentials = [
@@ -65,7 +65,6 @@ class AdminLoginController extends Controller
                 //dd($connection, $credentials, Auth::guard('ldap')->attempt($credentials));
                 //dd($credentials, Auth::guard('ldap')->attempt($credentials));
                 if (Auth::guard('ldap')->attempt($credentials)) {
-                    //dd('ldap', Auth::guard('ldap')->user());
                     // If you want to synchronize LDAP user with local database
                     $ldapUser = Auth::guard('ldap')->user();
                     $adminUser = AdminUser::firstOrCreate(
@@ -86,7 +85,6 @@ class AdminLoginController extends Controller
                 \Log::error('LDAP Login Error: '.$e->getMessage());
             }
         }
-
         return redirect()->back()
             ->withInput($request->only('email', 'remember'))
             ->withErrors(['email' => 'These credentials do not match our records.']);

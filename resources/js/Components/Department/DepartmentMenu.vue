@@ -19,7 +19,7 @@
 
       <a-sub-menu key="enquiry" v-if="is('DAMIA | admin | master')">
         <template #icon>
-          <MailOutlined />
+          <QuestionCircleOutlined />
         </template>
         <template #title>問題查詢</template>
         <a-menu-item key="enquriy_1">
@@ -43,9 +43,28 @@
           </inertia-link>
         </a-menu-item>
       </a-sub-menu>
+
+
+        <a-sub-menu key="staff_card" v-if="is('PES | admin | master')">
+        <template #icon>
+          <IdcardOutlined  />
+        </template>
+        <template #title>員工卡</template>
+        <a-menu-item key="staff_card_1">
+          <inertia-link :href="route('personnel.staffs.index')">
+            員工名單
+          </inertia-link>
+        </a-menu-item>
+        <a-menu-item key="staff_card_2">
+          <inertia-link :href="route('personnel.staff.notices.index')">
+            電邸自動通知
+          </inertia-link>
+        </a-menu-item>
+      </a-sub-menu>
+
       <a-menu-item key="personnel" v-if="is('PES | admin | master')">
         <template #icon>
-          <InboxOutlined />
+          <MoneyCollectOutlined />
         </template>
         <span>
           <inertia-link :href="route('personnel.gpdps.index')">
@@ -53,9 +72,10 @@
           </inertia-link>
         </span>
       </a-menu-item>
+
       <a-sub-menu key="recruitment" v-if="is('PES| admin | master')">
         <template #icon>
-          <MailOutlined />
+          <SolutionOutlined />
         </template>
         <template #title>職位招聘</template>
         <!-- <a-menu-item key="recruitment_0">
@@ -81,7 +101,7 @@
       </a-sub-menu>
       <a-menu-item key="personnel" v-if="is('DAE | admin | master')">
         <template #icon>
-          <InboxOutlined />
+          <TrophyOutlined />
         </template>
         <span>
           <inertia-link :href="route('dae.dashboard')">
@@ -92,7 +112,7 @@
         
       <a-menu-item key="forms">
         <template #icon>
-          <InboxOutlined />
+          <FormOutlined />
         </template>
         <span>
           <inertia-link :href="route('manage.forms.index')">
@@ -103,7 +123,7 @@
 
       <a-menu-item key="shortener">
         <template #icon>
-          <InboxOutlined />
+          <LinkOutlined />
         </template>
         <span>
           <inertia-link :href="route('manage.shorteners.index')">
@@ -117,7 +137,7 @@
 </template>
 <script>
 import { defineComponent, onMounted, reactive, toRefs, watch } from 'vue';
-import { MenuFoldOutlined, MenuUnfoldOutlined, PieChartOutlined, MailOutlined, DesktopOutlined, InboxOutlined, AppstoreOutlined } from '@ant-design/icons-vue';
+import { MenuFoldOutlined, MenuUnfoldOutlined, PieChartOutlined, MailOutlined, DesktopOutlined, InboxOutlined, AppstoreOutlined, QuestionCircleOutlined, MoneyCollectOutlined, SolutionOutlined, TrophyOutlined, LinkOutlined, FormOutlined, IdcardOutlined  } from '@ant-design/icons-vue';
 
 export default defineComponent({
   components: {
@@ -128,6 +148,13 @@ export default defineComponent({
     DesktopOutlined,
     InboxOutlined,
     AppstoreOutlined,
+    QuestionCircleOutlined,
+    MoneyCollectOutlined,
+    SolutionOutlined,
+    TrophyOutlined,
+    FormOutlined,
+    LinkOutlined,
+    IdcardOutlined 
   },
   props: [],
   setup() {
