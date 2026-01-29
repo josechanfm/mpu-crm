@@ -2,6 +2,50 @@
     <DepartmentLayout title="財產申報提示" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+
+<div class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+  <h3 class="text-lg font-semibold text-gray-800">Staff Management</h3>
+  
+  <div class="flex items-center gap-2">
+    <span>Filter:</span>
+    <a-select v-model:value="filterSelection.status" :options="filterOptions.status" style="width: 200px;" @change="onFilterChange"/>
+    <span>Search:</span>
+    <a-select
+      v-model:value="search.field"
+      :options="searchOptions"
+      style="width: 150px"
+      size="middle"
+      placeholder="Field"
+    />
+    
+    <a-input
+      v-model:value="search.value"
+      placeholder="Search..."
+      style="width: 200px"
+      size="middle"
+      allow-clear
+      @press-enter="searchNotices()"
+    />
+    
+    <a-button 
+      type="primary" 
+      @click="searchNotices()"
+      size="middle"
+      class="ml-2"
+    >
+      Search
+    </a-button>
+    
+    <a-button 
+      type="default" 
+      @click="searchNoticeClear()"
+      size="middle"
+    >
+      Reset
+    </a-button>
+  </div>
+</div>                
+
                 <div>
                     <a-select v-model:value="filterSelection.status" :options="filterOptions.status" style="width: 200px;" @change="onFilterChange"/>
                 </div>
@@ -115,12 +159,23 @@ export default {
                 status:[
                     {value:'ALL', label:'全部'},
                     {value:'N', label:'未發出'},
-                    {value:'S', label:'己發出'},
+                    {value:'S', label:'已發出'},
                 ],
             },
             filterSelection:{
                 status:'N'
             },
+            searchOptions:[
+                {value: null , label:'None'},
+                {value:'email', label:'電郵'},
+                {value:'age', label:'年齡限'},
+                {value:'date',label:'預設發出日'},
+            ],
+            search:{
+                field:null,
+                value:null
+            },
+
             modal: {
                 isOpen: false,
                 data: {},
@@ -217,6 +272,24 @@ export default {
             this.modal.data=record
             this.modal.isOpen=true
         },
+
+        searchNotices(){
+            const page={
+                current:1,
+                per_page:this.notices.per_page,
+            }
+            this.onPaginationChange(page)
+        },
+        searchNoticeClear(){
+            this.search.field=null
+            this.search.value=null
+            const page={
+                current:1,
+                per_page:this.notices.per_page,
+            }
+            this.onPaginationChange(page)
+        },
+
         onFilterChange(target){
             this.$inertia.get(
                 route("personnel.staff.notices.index"),
@@ -242,7 +315,9 @@ export default {
                 {
                     page: page.current,
                     per_page: page.pageSize,
-                    filter:this.filterSelection.status
+                    filter:this.filterSelection.status,
+                    search_field: this.search.field,
+                    search_value: this.search.value,
                 },
                 {
                 onSuccess: (page) => {

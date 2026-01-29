@@ -17,11 +17,17 @@ class StaffNoticeController extends Controller
     {
 
         $notices=StaffNotice::with(['staff:staffs.id,staffs.staff_num,staffs.name_zh,staffs.name_pt','relative:staff_relatives.id,staff_relatives.name_zh,staff_relatives.name_pt']);
+        if($request->has('search_field') && $request->has('search_value') && $request->search_field!=null && $request->search_value!=null){
+            $notices->where($request->search_field, 'like', '%'.$request->search_value.'%');
+        }
+        //dd($request->all(), $notices->orderBy('date','asc')->paginate($request->get('per_page',$request->per_page)));
+
         if($request->has('filter')){
             if($request->filter!='ALL'){
                 $notices->where('status',$request->filter);
             }
         };
+        //dd($notices->orderBy('date','asc')->paginate(0));
         //dd($notices->paginate($request->get('per_page',$request->per_page)));
         return inertia('Department/Personnel/StaffNotices',[
             'notices'=>$notices->orderBy('date','asc')->paginate($request->get('per_page',$request->per_page))

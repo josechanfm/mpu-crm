@@ -52,10 +52,9 @@
                                     <h3 class="text-xl font-semibold mt-2">{{ staff.name_zh }}</h3>
                                     <h3 class="text-lg text-gray-600">{{ staff.name_pt }}</h3>
                                     <h4 class="text-md text-gray-500">{{ staff.netid }}</h4>
-                                    <form v-if="staff.avatar" @submit.prevent="printProfile">
-                                        <input type="hidden" name="staff_num" :value="staff.staff_num">
+                                    <form>
                                         <div class="pt-5 flex gap-2">
-                                            <a-button type="primary" @click="cardPrint(0)">Print</a-button>
+                                            <a-button v-if="avatars[0].image" type="primary" @click="cardPrint(0)">Print</a-button>
                                             <a-button @click="openCropModel(0)">選擇相片</a-button>
                                             <a-button v-if="avatars[0].upload" @click="uploadAvatar(0)">上戴相片</a-button>
                                         </div>
@@ -87,10 +86,9 @@
                                         <h3 class="text-xl font-semibold mt-2">{{ relative.name_zh }}</h3>
                                         <h3 class="text-lg text-gray-600">{{ relative.name_pt }}</h3>
                                         <h4 class="text-md text-gray-500">{{ relative.netid }}</h4>
-                                        <form v-if="relative.avatar" @submit.prevent="printProfile">
-                                            <input type="hidden" name="staff_num" :value="relative.id_num">
+                                        <form>
                                             <div class="pt-5 flex gap-2">
-                                                <a-button type="primary" @click="cardPrint(i+1)">Print</a-button>
+                                                <a-button v-if="avatars[i+1].image" type="primary" @click="cardPrint(i+1)">Print</a-button>
                                                 <a-button @click="openCropModel(i+1)">選擇相片</a-button>
                                                 <a-button v-if="avatars[i+1].upload" @click="uploadAvatar(i+1)">上戴相片</a-button>
                                             </div>

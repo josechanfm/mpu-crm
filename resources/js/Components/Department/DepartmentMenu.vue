@@ -45,24 +45,31 @@
       </a-sub-menu>
 
 
-        <a-sub-menu key="staff_card" v-if="is('PES | admin | master')">
-        <template #icon>
-          <IdcardOutlined  />
-        </template>
-        <template #title>員工卡</template>
-        <a-menu-item key="staff_card_1">
-          <inertia-link :href="route('personnel.staffs.index')">
-            員工名單
-          </inertia-link>
-        </a-menu-item>
-        <a-menu-item key="staff_card_2">
-          <inertia-link :href="route('personnel.staff.notices.index')">
-            電邸自動通知
-          </inertia-link>
-        </a-menu-item>
-      </a-sub-menu>
 
       <a-menu-item key="personnel" v-if="is('PES | admin | master')">
+        <template #icon>
+          <MoneyCollectOutlined />
+        </template>
+        <span>
+          <inertia-link :href="route('personnel.staffs.index')">
+            員工及親屬卡
+          </inertia-link>
+        </span>
+      </a-menu-item>
+
+      <a-menu-item key="personne2" v-if="is('PES | admin | master')">
+        <template #icon>
+          <MoneyCollectOutlined />
+        </template>
+        <span>
+          <inertia-link :href="route('personnel.staff.notices.index')">
+            家津電郵通知
+          </inertia-link>
+        </span>
+      </a-menu-item>
+
+
+      <a-menu-item key="personne3" v-if="is('PES | admin | master')">
         <template #icon>
           <MoneyCollectOutlined />
         </template>

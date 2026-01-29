@@ -121,6 +121,7 @@ export default {
             },
             searchOptions:[
                 {value: null , label:'None'},
+                {value:'staff_num', label:'員工編呢'},
                 {value:'name_zh', label:'中文姓名'},
                 {value:'name_pt',label:'外文姓名'},
                 {value:'username',label:'NetId'},
