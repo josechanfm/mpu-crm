@@ -23,7 +23,8 @@ class FormController extends Controller
         // }else{
         //     $forms=Form::where('published',1)->where('for_staff',0)->get();
         // }
-        $forms=Form::where('published',true)->where('for_staff',true)->orWhere('require_login',false)->get();
+        //$forms=Form::where('published',true)->where('for_staff',true)->orWhere('require_login',false)->get();
+        $forms=Form::where('published',true)->orWhere('for_staff',true)->get();
         return Inertia::render('Staff/Form/Forms',[
             'forms'=>$forms
         ]);
