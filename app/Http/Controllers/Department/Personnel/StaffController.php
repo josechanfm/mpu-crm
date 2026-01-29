@@ -111,59 +111,6 @@ class StaffController extends Controller
     }
 
 
-    public function createNotices(){
-
-        $relatives = StaffRelative::with(['staff:id,email'])
-            ->where('relationship', '親生子女')
-            ->get(); // Optionally, specify other columns
-        foreach ($relatives as $relative) {
-            // Create a Carbon instance for the dob
-            $dob = Carbon::parse($item->dob);
-
-            // Calculate the age
-            $age = $dob->age; // Carbon provides the age property directly
-
-            // Check if the age is under 18
-            if ($age < 24) {
-                // Calculate the date when they turn 18
-                $turning18Date = $dob->addYears(18);
-                // Create a new StaffNotice record
-                $item->notices()->firstOrCreate([
-                    'date' => $turning18Date->format('Y-m-d'), // Use the date they turn 18 as part of the uniqueness condition
-                ],[
-                    'email'=>$item->staff->email,
-                    'age'=>'18',
-                    'date' => $turning18Date->format('Y-m-d'), // Format to 'Y-m-d'
-                    'status'=>'N'
-                ]);
-                // Calculate the date when they turn 22
-                $turning18Date = $dob->addYears(4);
-                // Create a new StaffNotice record
-                $item->notices()->firstOrCreate([
-                    'date' => $turning18Date->format('Y-m-d'), // Use the date they turn 18 as part of the uniqueness condition
-                ],[
-                    'email'=>$item->staff->email,
-                    'age'=>'22',
-                    'date' => $turning18Date->format('Y-m-d'), // Format to 'Y-m-d'
-                    'status'=>'N'
-                ]);
-                // Calculate the date when they turn 24
-                $turning18Date = $dob->addYears(2);
-                // Create a new StaffNotice record
-                $item->notices()->firstOrCreate([
-                    'date' => $turning18Date->format('Y-m-d'), // Use the date they turn 18 as part of the uniqueness condition
-                ],[
-                    'email'=>$item->staff->email,
-                    'age'=>'24',
-                    'date' => $turning18Date->format('Y-m-d'), // Format to 'Y-m-d'
-                    'status'=>'N'
-                ]);
-
-            
-            }
-        }
-    }
-
 
 
     public function avatarUpload(Request $request, Staff $staff)
@@ -399,6 +346,9 @@ class StaffController extends Controller
                 case 'staff':
                     $this->fetchStaff($request->staff_num);
                     break;
+                case 'create_notices':
+                    $this->createNotices();
+                    break;
                 default:
             }
         }
@@ -479,6 +429,65 @@ class StaffController extends Controller
         }
         //dd(Staff::all());
         return count($data->allstaffinfo);
+    }
+
+
+    public function createNotices(){
+        $relatives = StaffRelative::with(['staff:id,email'])
+            ->where('relationship', '親生子女')
+            ->where('dob', '>=', Carbon::now()->subYears(18)) // Filter DOB for 18 years old or younger
+            ->get(); // Optionally, specify other columns
+        $now = Carbon::now();
+        foreach ($relatives as $item) {
+            // Create a Carbon instance for the dob
+            $dob = Carbon::parse($item->dob);
+
+            // Calculate the age
+            $age = $dob->age; // Carbon provides the age property directly
+            // Check if the age is under 18
+            if ($dob->year >= ($now->year-18)) {
+               //dd($age,$dob->year, $now->year, ($now->year-18));
+                // Calculate the date when they turn 18
+                $turningDate = $dob->addYears(18);
+                //dd($turningDate, $turningDate->format('Y-m-d'), $item);
+                // Create a new StaffNotice record
+                $item->notices()->firstOrCreate([
+                    'staff_relative_id' => $item->id,
+                    'date' => $turningDate->format('Y-m-d'), 
+                ],[
+                    'email'=>$item->staff->email,
+                    'age'=>'18',
+                    'date' => $turningDate->format('Y-m-d'), // Format to 'Y-m-d'
+                    'status'=>'N'
+                ]);
+                // Calculate the date when they turn 22
+                $turningDate = $dob->addYears(4);
+                // Create a new StaffNotice record
+                $item->notices()->firstOrCreate([
+                    'staff_relative_id' => $item->id,
+                    'date' => $turningDate->format('Y-m-d'),
+                ],[
+                    'email'=>$item->staff->email,
+                    'age'=>'22',
+                    'date' => $turningDate->format('Y-m-d'), // Format to 'Y-m-d'
+                    'status'=>'N'
+                ]);
+                // Calculate the date when they turn 24
+                $turningDate = $dob->addYears(2);
+                // Create a new StaffNotice record
+                $item->notices()->firstOrCreate([
+                    'staff_relative_id' => $item->id,
+                    'date' => $turningDate->format('Y-m-d'),
+                ],[
+                    'email'=>$item->staff->email,
+                    'age'=>'24',
+                    'date' => $turningDate->format('Y-m-d'), // Format to 'Y-m-d'
+                    'status'=>'N'
+                ]);
+
+            
+            }
+        }
     }
 
 
