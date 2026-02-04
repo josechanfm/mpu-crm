@@ -71,15 +71,16 @@ class SouvenirOrderExport implements FromCollection, WithHeadings
 
             ];
             foreach($order->form_meta->cartItems as $item){
-                if(isset($item->count)){
+                if(isset($item->qty)){
                     $modifiedOrder['item_name_'.$item->id]=$item->name;
-                    $modifiedOrder['item_'.$item->id]=$item->count;
+                    $modifiedOrder['item_'.$item->id]=$item->qty;
                 }
                 
                 //$this->heading[]='item_'.$item->id;
             }
             $this->modifiedOrders->push($modifiedOrder);
         }
+        //dd($this->modifiedOrders);
         // Return the modified collection
         return $this->modifiedOrders;
     }
