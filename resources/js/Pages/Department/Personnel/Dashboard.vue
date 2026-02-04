@@ -6,6 +6,9 @@
                 Personnel department Dashboard
             </div>
             <div v-html="department.landing_page"></div>
+            <div v-if="is('admin | master')">
+                <div><a href="/personnel/staff/migration">員工及家屬卡及家津通知, jupiter WMS舊系統資料遷移到新系統注意事項。</a></div>
+            </div>
         </div>
     </DepartmentLayout>
 </template>

@@ -16,6 +16,7 @@
                             <th>Phone</th>
                             <th>Faculty</th>
                             <th>Degree</th>
+                            <th>Grad Year</th>
                             <th>Can Buy</th>
                         </tr>
                     </thead>
@@ -39,6 +40,7 @@
                             <th>Phone</th>
                             <th>Faculty</th>
                             <th>Degree</th>
+                            <th>Grad Year</th>
                             <th>Can Buy</th>
                         </tr>
                     </thead>
@@ -62,6 +64,7 @@
                             <th>Phone</th>
                             <th>Faculty</th>
                             <th>Degree</th>
+                            <th>Grad Year</th>
                             <th>Can Buy</th>
                         </tr>
                     </thead>

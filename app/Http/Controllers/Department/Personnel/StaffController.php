@@ -343,15 +343,17 @@ class StaffController extends Controller
                 case 'copy_avatars':
                     $this->migrateAvatars();
                     break;
-                case 'staff':
-                    $this->fetchStaff($request->staff_num);
-                    break;
                 case 'create_notices':
                     $this->createNotices();
                     break;
+                case 'staff':
+                    $this->fetchStaff($request->staff_num);
+                    break;
                 default:
+                    return inertia('Department/Personnel/StaffMigration');
             }
         }
+        return inertia('Department/Personnel/StaffMigration');
     }
     public function fetchStaff($staffNum){
         $data = Staff::get_remote_data('list', 'super', $staffNum);

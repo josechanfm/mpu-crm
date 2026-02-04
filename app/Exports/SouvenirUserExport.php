@@ -18,6 +18,7 @@ class SouvenirUserExport implements FromCollection, WithHeadings
     public function collection()
     {
         if (empty($this->userIds)) { 
+            // dd(SouvenirUser::all());
             return SouvenirUser::all();
         }
         $data = [];

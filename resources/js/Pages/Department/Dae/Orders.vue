@@ -2,6 +2,7 @@
     <DepartmentLayout title="Souvenir orders" >
         <div class="mx-auto pt-5">
             <div class="flex flex-justify justify-end pb-3 gap-5">
+                <a-button>滙出</a-button>
                 <a-button :href="route('dae.dashboard')">Back</a-button>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">

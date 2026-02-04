@@ -152,14 +152,19 @@ class SouvenirUserController extends Controller
             foreach ($data[0] as $row) {
                 //echo $row[0];
                 // Define the allowed values for each row index
-
                 // Check if $row[5] is not in the valid faculties
+                // faculty column
                 if (!in_array($row[5], $validFaculties)) {
                     $row[5] = null; // Set to null if not valid
                 }
 
                 // Check if $row[6] is not in the valid degrees
-                if (!in_array($row[6], $validDegrees)) {
+                // degree column
+                // if (!in_array($row[6], $validDegrees)) {
+                //     $row[6] = null; // Set to null if not valid
+                // } 
+                //grad_year column
+                if (!in_array($row[7], $validDegrees)) {
                     $row[6] = null; // Set to null if not valid
                 }
                 if($idValidator->_ipm_student_id_version_1_1($row[0])) {
@@ -207,7 +212,8 @@ class SouvenirUserController extends Controller
                     'phone'=>$update[4],
                     'faculty_code'=>$update[5],
                     'degree_code'=>$update[6],
-                    'can_buy'=>$update[7]==1?true:false
+                    'grad_year'=>$update[7],
+                    'can_buy'=>$update[8]==1?true:false
                 ]);
             }
         }
@@ -222,7 +228,8 @@ class SouvenirUserController extends Controller
                     'phone'=>$create[4],
                     'faculty_code'=>$create[5],
                     'degree_code'=>$create[6],
-                    'can_buy'=>$create[7]==1?true:false
+                    'grad_year'=>$update[7],
+                    'can_buy'=>$create[8]==1?true:false
                 ]);
             }
         }
@@ -250,6 +257,8 @@ class SouvenirUserController extends Controller
         // Generate filename
         $filename = 'souvenir_users_' . now()->format('Ymd_His') . '.xlsx';
         // Export
+        // $users=new SouvenirUserExport($ids);
+        // dd($users);
         return Excel::download(new SouvenirUserExport($ids), $filename);
         
 

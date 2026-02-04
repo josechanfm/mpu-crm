@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('faculty_code')->nullable();
             $table->string('degree_code')->nullable();
+            $table->integer('grad_year')->nullable();
             $table->text('remark')->nullable();
             $table->boolean('can_buy')->default(false);
             $table->timestamps();

@@ -45,8 +45,15 @@
                         <div class="p-1 bg-white rounded-lg shadow-lg">
                             <div class="flex items-center bg-yellow-300 p-2 rounded-t-lg">
                                 <div class="relative">
-                                    <img :src="'/images/staffs/' + staff.avatar" alt="User Avatar"
-                                        class="w-28 h-28 object-cover w-20">
+                                    <template v-if="staff.avatar">
+                                        <img :src="'/images/staffs/' + staff.avatar" alt="User Avatar"
+                                            class="w-28 h-28 object-cover">
+                                        </template>
+                                    <template v-else>
+                                        <div class="w-28 h-28 bg-white flex justify-center items-center">
+                                            No Photo<br>未上載相片
+                                        </div>
+                                    </template>
                                 </div>
                                 <div class="ml-4">
                                     <h3 class="text-xl font-semibold mt-2">{{ staff.name_zh }}</h3>
@@ -79,8 +86,15 @@
                             <div class="p-1 bg-white rounded-lg shadow-lg">
                                 <div class="flex items-center bg-teal-300 p-2 rounded-t-lg">
                                     <div class="relative">
-                                        <img :src="'/images/staffs/' + relative.avatar" alt="User Avatar"
-                                            class="w-28 h-28 object-cover w-20">
+                                        <template v-if="relative.avatar">
+                                            <img :src="'/images/staffs/' + relative.avatar" alt="User Avatar"
+                                                class="w-28 h-28 object-cover">
+                                            </template>
+                                        <template v-else>
+                                            <div class="w-28 h-28 bg-white flex justify-center items-center">
+                                                No Photo<br>未上載相片
+                                            </div>
+                                        </template>
                                     </div>
                                     <div class="ml-4">
                                         <h3 class="text-xl font-semibold mt-2">{{ relative.name_zh }}</h3>

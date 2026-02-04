@@ -8,7 +8,7 @@
     >
       <a-menu-item key="1">
         <template #icon>
-          <PieChartOutlined />
+          <HomeOutlined  />
         </template>
         <span>
           <inertia-link :href="route('manage.dashboard')">
@@ -24,31 +24,29 @@
         <template #title>問題查詢</template>
         <a-menu-item key="enquriy_1">
           <inertia-link :href="route('registry.enquiries.index')">
-            所有查詢
+            - 所有查詢
           </inertia-link>
         </a-menu-item>
         <a-menu-item key="enquiry_2">
           <inertia-link :href="route('registry.enquiry.questions.index')">
-            須回應提問
+            - 須回應提問
           </inertia-link>
         </a-menu-item>
         <a-menu-item key="enqriry_3" >
           <inertia-link :href="route('registry.faqs.index')">
-            常見問題
+            - 常見問題
           </inertia-link>
         </a-menu-item>
         <a-menu-item key="enqriry_4" >
           <inertia-link :href="route('registry.report.index')">
-            統計及報告
+            - 統計及報告
           </inertia-link>
         </a-menu-item>
       </a-sub-menu>
 
-
-
       <a-menu-item key="personnel" v-if="is('PES | admin | master')">
         <template #icon>
-          <MoneyCollectOutlined />
+          <IdcardOutlined />
         </template>
         <span>
           <inertia-link :href="route('personnel.staffs.index')">
@@ -59,7 +57,7 @@
 
       <a-menu-item key="personne2" v-if="is('PES | admin | master')">
         <template #icon>
-          <MoneyCollectOutlined />
+          <MailOutlined />
         </template>
         <span>
           <inertia-link :href="route('personnel.staff.notices.index')">
@@ -92,17 +90,17 @@
         </a-menu-item> -->
         <a-menu-item key="recruitment_1">
           <inertia-link :href="route('personnel.recruitment.tasks.index')">
-            標準流程
+            - 標準流程
           </inertia-link>
         </a-menu-item>
         <a-menu-item key="recruitment_2">
           <inertia-link :href="route('personnel.recruitment.workflows.index')">
-            招聘流程
+            - 招聘流程
           </inertia-link>
         </a-menu-item>
         <a-menu-item key="recruitment_2">
           <inertia-link :href="route('personnel.recruitment.vacancies.index')">
-            職位空缺
+            - 職位空缺
           </inertia-link>
         </a-menu-item>
       </a-sub-menu>
@@ -144,13 +142,13 @@
 </template>
 <script>
 import { defineComponent, onMounted, reactive, toRefs, watch } from 'vue';
-import { MenuFoldOutlined, MenuUnfoldOutlined, PieChartOutlined, MailOutlined, DesktopOutlined, InboxOutlined, AppstoreOutlined, QuestionCircleOutlined, MoneyCollectOutlined, SolutionOutlined, TrophyOutlined, LinkOutlined, FormOutlined, IdcardOutlined  } from '@ant-design/icons-vue';
+import { MenuFoldOutlined, MenuUnfoldOutlined, HomeOutlined , MailOutlined, DesktopOutlined, InboxOutlined, AppstoreOutlined, QuestionCircleOutlined, MoneyCollectOutlined, SolutionOutlined, TrophyOutlined, LinkOutlined, FormOutlined, IdcardOutlined  } from '@ant-design/icons-vue';
 
 export default defineComponent({
   components: {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
-    PieChartOutlined,
+    HomeOutlined ,
     MailOutlined,
     DesktopOutlined,
     InboxOutlined,

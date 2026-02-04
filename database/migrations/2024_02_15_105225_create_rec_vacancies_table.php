@@ -33,7 +33,7 @@ return new class extends Migration
             $table->string('attach_zh')->nullable();
             $table->string('attach_en')->nullable();
             $table->string('attach_pt')->nullable();
-            $table->boolean('progress')->nullable();
+            $table->boolean('process')->nullable();
             $table->boolean('active')->nullable();
             $table->integer('fee')->nullable();
             $table->timestamps();

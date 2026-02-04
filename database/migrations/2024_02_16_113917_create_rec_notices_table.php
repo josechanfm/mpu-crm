@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('rec_notices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('rec_vacancy_id');
+            $table->string('category_code');
             $table->string('title_zh');
             $table->string('title_en')->nullable();
             $table->string('title_pt')->nullable();
@@ -25,8 +26,9 @@ return new class extends Migration
             $table->string('file_en')->nullable();
             $table->string('file_pt')->nullable();
             $table->boolean('can_download')->default(false);
-            $table->boolean('can_apply')->default(false);
+            $table->boolean('apply_button')->default(false);
             $table->boolean('published')->default(false);
+            $table->foreignId('user_id')->nullalbe();
             $table->timestamps();
         });
     }

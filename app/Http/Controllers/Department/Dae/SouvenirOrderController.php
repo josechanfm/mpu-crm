@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\SouvenirOrder;
+use App\Exports\SouvenirOrderExport;
+use Maatwebsite\Excel\Facades\Excel;
 
-class OrderController extends Controller
+class SouvenirOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -107,5 +109,21 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function export(Request $request){
+        //dd('order export', $request->all());
+        $ids=[];
+        // $ids = $request->ids ?: [];
+        
+        // // Convert string to array if needed
+        // if (is_string($ids)) {
+        //     $ids = explode(',', $ids);
+        // }
+        
+        // Generate filename
+        $filename = 'souvenir_orders_' . now()->format('Ymd_His') . '.xlsx';
+        // Export
+        return Excel::download(new SouvenirOrderExport($ids), $filename);
+
     }
 }

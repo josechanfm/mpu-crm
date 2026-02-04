@@ -14,8 +14,8 @@ class RecNotice extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
 
-    protected $fillable=['rec_vacancy_id','title_zh','title_en','title_pt','date_start','date_end','can_download','can_apply','published'];
-    protected $casts=['can_download'=>'boolean','can_apply'=>'boolean','published'=>'boolean'];
+    protected $fillable=['rec_vacancy_id','title_zh','title_en','title_pt','date_start','date_end','can_download','apply_button','published','user_id'];
+    protected $casts=['can_download'=>'boolean','apply_button'=>'boolean','published'=>'boolean'];
     // protected $appends=['file_zh','file_en','file_pt'];
 
     // public function getFileZhAttribute(){

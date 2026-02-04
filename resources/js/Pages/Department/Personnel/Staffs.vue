@@ -1,5 +1,5 @@
 <template>
-    <DepartmentLayout title="財產申報提示" :breadcrumb="breadcrumb">
+    <DepartmentLayout title="員工卡及家屬醫療卡" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
 <div class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b">

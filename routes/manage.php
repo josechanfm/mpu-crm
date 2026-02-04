@@ -215,7 +215,8 @@ Route::group([
 
     Route::get('/recruitment/application/check_id_num',[App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class,'checkIdNum'])->name('personnel.recruitment.application.checkIdNum');
     Route::get('/recruitment/application/check_email',[App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class,'checkEmail'])->name('personnel.recruitment.application.checkEmail');
-
+    
+    Route::get('/recruitment/migration',[App\Http\Controllers\Department\Personnel\Recruitment\MigrationController::class,'index'])->name('personnel.recruitment.migration');
 
     Route::resource('/staffs',App\Http\Controllers\Department\Personnel\StaffController::class)->names('personnel.staffs');
     Route::post('/staff/{staff}/avatar_upload',[App\Http\Controllers\Department\Personnel\StaffController::class,'avatarUpload'])->name('personnel.staff.avatarUpload');
@@ -243,7 +244,9 @@ Route::group([
     Route::post('souvenir/user/import',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'import'])->name('dae.souvenir.user.import');
     Route::post('souvenir/user/import/confirm',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'importConfirm'])->name('dae.souvenir.user.import.confirm');
     Route::resource('souvenirs',App\Http\Controllers\Department\Dae\SouvenirController::class)->names('dae.souvenirs');
-    Route::resource('souvenir/orders',App\Http\Controllers\Department\Dae\OrderController::class)->names('dae.souvenir.orders');
+    Route::resource('souvenir/orders',App\Http\Controllers\Department\Dae\SouvenirOrderController::class)->names('dae.souvenir.orders');
+    Route::get('souvenir/order/export',[App\Http\Controllers\Department\Dae\SouvenirOrderController::class,'export'])->name('dae.souvenir.order.export');
+
     Route::post('souvenir/remove_image/{souvenir}/{imageId}',[App\Http\Controllers\Department\Dae\SouvenirController::class,'removeImage'])->name('dae.souvenir.removeImage');
     Route::get('souvenir/pickup',[App\Http\Controllers\Department\Dae\PickupController::class,'index'])->name('dae.souvenir.pickup');
     Route::get('souvenir/pickup_code',[App\Http\Controllers\Department\Dae\PickupController::class,'pickupCode'])->name('dae.souvenir.pickupCode');
