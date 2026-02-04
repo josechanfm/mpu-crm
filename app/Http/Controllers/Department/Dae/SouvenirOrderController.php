@@ -40,7 +40,7 @@ class SouvenirOrderController extends Controller
         // }else{
         //    $orders = $orders->where('is_available', true);
         // }
-        return Inertia::render('Department/Dae/Orders',[
+        return Inertia::render('Department/Dae/SouvenirOrders',[
             "orders"=>$orders->orderBy('id','desc')->with('user')->paginate($request->per_page??5),
         ]);
     }

@@ -47,11 +47,7 @@ class SouvenirOrderExport implements FromCollection, WithHeadings
         } else {
             $souvenirOrders = SouvenirOrder::with('user')->whereIn('id', $this->orderIds)->get();
         }
-
-
-
         foreach ($souvenirOrders as $order) {
-            //dd($order->form_meta->cartItems);
             $modifiedOrder = [
                 'netid'=>$order->user->netid,
                 'name_en'=>$order->user->name_en,
@@ -75,12 +71,10 @@ class SouvenirOrderExport implements FromCollection, WithHeadings
                     $modifiedOrder['item_name_'.$item->id]=$item->name;
                     $modifiedOrder['item_'.$item->id]=$item->qty;
                 }
-                
                 //$this->heading[]='item_'.$item->id;
             }
             $this->modifiedOrders->push($modifiedOrder);
         }
-        //dd($this->modifiedOrders);
         // Return the modified collection
         return $this->modifiedOrders;
     }

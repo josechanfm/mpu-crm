@@ -13,6 +13,7 @@ class StaffRelative extends Model
         'has_allowance',
         'has_medical',
         'medical_num',
+        'medical_type',
         'staff_num',
         'name_zh',
         'name_pt',
@@ -20,7 +21,7 @@ class StaffRelative extends Model
         'allowance_type',
         'dob',
         'id_num',
-        'medical_type',
+        'issue_date'
     ];
     public function staff()
     {

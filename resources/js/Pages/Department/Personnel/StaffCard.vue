@@ -61,9 +61,10 @@
                                     <h4 class="text-md text-gray-500">{{ staff.netid }}</h4>
                                     <form>
                                         <div class="pt-5 flex gap-2">
-                                            <a-button v-if="avatars[0].image" type="primary" @click="cardPrint(0)">Print</a-button>
                                             <a-button @click="openCropModel(0)">選擇相片</a-button>
                                             <a-button v-if="avatars[0].upload" @click="uploadAvatar(0)">上戴相片</a-button>
+                                            <a-date-picker v-model:value="avatars[0].issue_date"/>
+                                            <a-button v-if="avatars[0].image" type="primary" @click="cardPrint(0)">Print</a-button>
                                         </div>
                                     </form>
 
@@ -100,14 +101,15 @@
                                         <h3 class="text-xl font-semibold mt-2">{{ relative.name_zh }}</h3>
                                         <h3 class="text-lg text-gray-600">{{ relative.name_pt }}</h3>
                                         <h4 class="text-md text-gray-500">{{ relative.netid }}</h4>
-                                        <form>
+                                        <form v-if="relative.has_medical">
                                             <div class="pt-5 flex gap-2">
-                                                <a-button v-if="avatars[i+1].image" type="primary" @click="cardPrint(i+1)">Print</a-button>
                                                 <a-button @click="openCropModel(i+1)">選擇相片</a-button>
                                                 <a-button v-if="avatars[i+1].upload" @click="uploadAvatar(i+1)">上戴相片</a-button>
+                                                <a-date-picker v-model:value="avatars[+1].issue_date"/>
+                                                <a-button v-if="avatars[i+1].image" type="primary" @click="cardPrint(i+1)">Print</a-button>
                                             </div>
-
                                         </form>
+                                        <div v-else>No Medical</div>
                                     </div>
                                 </div>
                             </div>
@@ -126,12 +128,13 @@
 
                     </a-col>
                 </a-row>
-
-                            <CropperModal v-if="showCropModal" :minAspectRatioProp="{ width: 8, height: 8 }"
-                                :maxAspectRatioProp="{ width: 8, height: 8 }" @croppedImageData="setCroppedImageData"
-                                @showModal="closeCropModel()" />
-
-
+                <CropperModal 
+                    v-if="showCropModal" 
+                    :minAspectRatioProp="{ width: 8, height: 8 }"
+                    :maxAspectRatioProp="{ width: 8, height: 8 }" 
+                    @croppedImageData="setCroppedImageData"
+                    @showModal="closeCropModel()" 
+                />
         </div>
     </DepartmentLayout>
 </template>
@@ -176,9 +179,23 @@ export default {
         };
     },
     created(){
-        this.avatars.push({model:'staff',id:this.staff.id, image:this.staff.avatar, upload:null, showCropModal:false})
+        this.avatars.push({
+            model:'staff',
+            id:this.staff.id, 
+            image:this.staff.avatar, 
+            upload:null, 
+            showCropModal:false,
+            issue_date:null
+        });
         this.staff.relatives.forEach(r=>{
-            this.avatars.push({model:'relative',id:r.id, image:r.avatar, upload:null, showCropModal:false});
+            this.avatars.push({
+                model:'relative',
+                id:r.id, 
+                image:r.avatar, 
+                upload:null, 
+                showCropModal:false,
+                issue_date:null
+            });
         });
     },
     methods: {
@@ -234,10 +251,10 @@ export default {
             this.avatars[selectedId].upload=null
         },
         cardPrint(selectedId){
-            console.log(this.avatars[selectedId])
+            console.log(selectedId, this.avatars);
             const url = route("personnel.staff.cardPrint", this.staff.id);
-                // Use window.location to trigger the PDF download
-            window.location.href = `${url}?model=${this.avatars[selectedId].model}&id=${this.avatars[selectedId].id}`;
+            // Use window.location to trigger the PDF download
+            window.location.href = `${url}?model=${this.avatars[selectedId].model}&id=${this.avatars[selectedId].id}&issue_date=${this.avatars[selectedId].issue_date}`;
 
             // this.$inertia.get(route("personnel.staff.cardPrint", this.staff.id), this.avatars[selectedId], {
             //     onSuccess: (page) => {

@@ -26,6 +26,7 @@ class SouvenirUserExport implements FromCollection, WithHeadings
 
         foreach ($souvenirUsers as $user) {
             foreach ($user->orders()->get() as $order) {
+                dd($order);
                 // Combine user and order data
                 $o=$order->toArray();
                 $o['form_meta']=json_encode($o['form_meta'], JSON_UNESCAPED_UNICODE);

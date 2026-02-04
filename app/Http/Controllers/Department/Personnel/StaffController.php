@@ -10,6 +10,7 @@ use App\Models\StaffNotice;
 use App\Models\StaffUpload;
 use Carbon\Carbon;
 use TCPDF;
+use Exception; // Import the Exception class
 
 
 
@@ -175,6 +176,11 @@ class StaffController extends Controller
 
     public function cardPrint(Request $request, $staffId)
     {
+        $request->validate([
+            'model' => 'required|in:staff,relative', // model must be either 'staff' or 'relative'
+            'id' => 'required|integer'               // id must be an integer
+        ]);
+
 		$pdf = new TCPDF('L', 'mm', array(54,85)); 
         // Set custom font directory
         // $pdf->setFontSubsetting(true);
@@ -189,19 +195,33 @@ class StaffController extends Controller
         
         if($request->has('model') && $request->model=='staff'){
             $staff=Staff::find($request->id);
+            $this->getIssueDate($staff, $request->issue_date);
             $this->printStaffCard($pdf,(object)$staff);	
         }
         if($request->has('model') && $request->model=='relative'){
             $relative=StaffRelative::find($request->id);
+            $this->getIssueDate($relative, $request->issue_date);
             $this->printRelativeCard($pdf,(object)$relative);	
         }
+
 		// foreach($cards as $card){
 		// 	$this->print_card($pdf,(object)$card);	
 		// }
 		
 		//Close and output PDF document
 		$pdf->Output('example.pdf', 'I');
+    }
+    private function getIssueDate($model, $issueDate){
+        try {
+            // Try to parse the provided date
+            $date = Carbon::parse($issueDate);
+        } catch (Exception $e) {
+            // If parsing fails, set $date to the current date in 'd-m-Y' format
+            $date = Carbon::now(); // You can format it as needed later
+        }
 
+        $model->issue_date=$date->format('Y-m-d');
+        $model->save();
     }
 
     private function printStaffCard($pdf, $card){
