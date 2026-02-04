@@ -97,10 +97,19 @@
                                             </div>
                                         </template>
                                     </div>
-                                    <div class="ml-4">
-                                        <h3 class="text-xl font-semibold mt-2">{{ relative.name_zh }}</h3>
-                                        <h3 class="text-lg text-gray-600">{{ relative.name_pt }}</h3>
-                                        <h4 class="text-md text-gray-500">{{ relative.netid }}</h4>
+                                    <div class="ml-4  w-full">
+                                        <div class="flex items-center justify-between">  <!-- Flex container for alignment -->
+                                            <div>
+                                                <h3 class="text-xl font-semibold mt-2">{{ relative.name_zh }}<span class="ml-10">({{ relative.relationship }})</span></h3>
+                                                
+                                                <h3 class="text-lg text-gray-600">{{ relative.name_pt }}</h3>
+                                                <h4 class="text-md text-gray-500">{{ relative.netid }}</h4>
+                                            </div>
+                                            <div class="ml-4">
+                                                <a-tag color="#f50" v-if="relative.has_allowance">家律</a-tag> <!-- Add your tag -->
+                                                <a-tag color="#2E8B57" v-if="relative.has_medical">醫療卡</a-tag> <!-- Add your tag -->
+                                            </div>
+                                        </div>
                                         <form v-if="relative.has_medical">
                                             <div class="pt-5 flex gap-2">
                                                 <a-button @click="openCropModel(i+1)">選擇相片</a-button>
