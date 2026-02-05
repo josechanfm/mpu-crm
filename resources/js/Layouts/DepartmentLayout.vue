@@ -63,9 +63,9 @@
                                     </inertia-link>
                                 </span>
                             </li>
-                            <li>
+                            <li v-if="breadcrumb.length>1">
                                 <span class="pl-2 pr-2">|</span>
-                                <a href="javascript:history.back();" class="inline">{{ $t('back') }}</a>
+                                <a @click="routeBack()" class="inline">{{ $t('back') }}</a>
                             </li>
                             <li>
                                 <a :href="route('manual',{route:route().current()})" target="_blank">
@@ -91,7 +91,6 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
-import PageHeader from '@/Components/Department/PageHeader.vue';
 import DepartmentMenu from '@/Components/Department/DepartmentMenu.vue';
 import { QuestionCircleOutlined } from '@ant-design/icons-vue';
 import {
@@ -99,7 +98,7 @@ import {
     MenuFoldOutlined,
 } from '@ant-design/icons-vue';
 
-defineProps({
+const props = defineProps({
     title: String,
     department: Object,
     breadcrumb: Object,
@@ -125,6 +124,22 @@ const switchToTeam = (team) => {
 onMounted(() => {
 });
 
+const routeBack = ()=>{
+    const breadcrumbLength = props.breadcrumb.length;
+    if (breadcrumbLength >= 2) {
+        // Get the second-to-last item
+        const secondLastItem = props.breadcrumb[breadcrumbLength - 2];
+        console.log(props.breadcrumb, secondLastItem);
+        if (secondLastItem && secondLastItem.url) {
+            // Navigate to the URL of the second-to-last breadcrumb
+            window.location.href = secondLastItem.url; // Replace with the URL path
+        } else {
+            console.warn('Second last breadcrumb does not have a valid URL:', secondLastItem);
+        }
+    } else {
+        console.warn('Not enough breadcrumb items to go back:', props.breadcrumb);
+    }
+};
 const logout = () => {
     Inertia.post(route('staff.logout'));
 };

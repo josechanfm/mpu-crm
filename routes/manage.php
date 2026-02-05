@@ -54,11 +54,13 @@ Route::group([
     ]
 ], function () {
     Route::get('/',[App\Http\Controllers\Master\DashboardController::class,'index'])->name('master');
+    Route::resource('/configs',App\Http\Controllers\Master\ConfigController::class)->names('master.configs');
     Route::resource('/admin_users',App\Http\Controllers\Master\AdminUserController::class)->names('master.adminUsers');
     Route::resource('/departments',App\Http\Controllers\Master\DepartmentController::class)->names('master.departments');
     Route::resource('/articles',App\Http\Controllers\Master\ArticleController::class)->names('master.articles');
     Route::resource('/medias',App\Http\Controllers\Master\MediaController::class)->names('master.medias');
     Route::resource('/manuals',App\Http\Controllers\Master\ManualController::class)->names('master.manuals');
+    Route::get('/schedulers',[App\Http\Controllers\Master\SchedulerController::class,'index'])->name('master.schedulers.index');
 
 });
 // Route::middleware([

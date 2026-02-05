@@ -9,10 +9,10 @@
       >
         <a-menu-item key="1">
           <template #icon>
-            <PieChartOutlined />
+            <DesktopOutlined />
           </template>
           <span>
-            <inertia-link :href="route('master.adminUsers.index')">Admin Users</inertia-link>
+            <inertia-link :href="route('master.departments.index')">Departments</inertia-link>
           </span>
         </a-menu-item>
         <a-menu-item key="2">
@@ -20,23 +20,15 @@
             <DesktopOutlined />
           </template>
           <span>
-            <inertia-link :href="route('master.departments.index')">Departments</inertia-link>
+            <inertia-link :href="route('master.configs.index')">Configs</inertia-link>
           </span>
         </a-menu-item>
         <a-menu-item key="3">
           <template #icon>
-            <InboxOutlined />
+            <DesktopOutlined />
           </template>
           <span>
-            ccc
-          </span>
-        </a-menu-item>
-        <a-menu-item key="3">
-          <template #icon>
-            <InboxOutlined />
-          </template>
-          <span>
-            <inertia-link :href="route('master.departments.index')">forms</inertia-link>
+            <inertia-link :href="route('master.adminUsers.index')">Admin Users</inertia-link>
           </span>
         </a-menu-item>
         <a-menu-item key="4">
@@ -44,7 +36,7 @@
             <InboxOutlined />
           </template>
           <span>
-            <inertia-link :href="route('master.articles.index')">Articles</inertia-link>
+            <inertia-link :href="route('master.manuals.index')">Manual</inertia-link>
           </span>
         </a-menu-item>
         <a-menu-item key="5">
@@ -52,7 +44,15 @@
             <InboxOutlined />
           </template>
           <span>
-            <inertia-link @click="logout">Logout</inertia-link>
+            <inertia-link :href="route('master.schedulers.index')">Scheduler</inertia-link>
+          </span>
+        </a-menu-item>
+        <a-menu-item key="6">
+          <template #icon>
+            <InboxOutlined />
+          </template>
+          <span>
+            <inertia-link :href="route('master.articles.index')">Articles</inertia-link>
           </span>
         </a-menu-item>
 
@@ -78,6 +78,16 @@
             <a-menu-item key="12">Option 12</a-menu-item>
           </a-sub-menu>
         </a-sub-menu>
+
+        <a-menu-item key="logout">
+          <template #icon>
+            <InboxOutlined />
+          </template>
+          <span>
+            <inertia-link @click="logout">Logout</inertia-link>
+          </span>
+        </a-menu-item>
+
       </a-menu>
     </div>
   </template>

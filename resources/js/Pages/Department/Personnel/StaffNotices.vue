@@ -140,7 +140,7 @@ export default {
         return {
             breadcrumb:[
                 {label:"人事處首頁" ,url:route('personnel.dashboard')},
-                {label:"財產申報" ,url:null},
+                {label:"家津電郵通知" ,url:null},
             ],
             loading: false,
             imageUrl: null,

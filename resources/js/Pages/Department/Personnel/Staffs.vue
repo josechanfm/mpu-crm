@@ -117,7 +117,7 @@ export default {
         return {
             breadcrumb:[
                 {label:"人事處首頁" ,url:route('personnel.dashboard')},
-                {label:"財產申報" ,url:null},
+                {label:"員工卡及家屬醫療卡" ,url:null},
             ],
             isLoading: false, // Track loading state
             imageUrl: null,
@@ -129,7 +129,7 @@ export default {
             },
             searchOptions:[
                 {value: null , label:'None'},
-                {value:'staff_num', label:'員工編呢'},
+                {value:'staff_num', label:'員工編號'},
                 {value:'name_zh', label:'中文姓名'},
                 {value:'name_pt',label:'外文姓名'},
                 {value:'username',label:'NetId'},
@@ -228,8 +228,6 @@ export default {
         dateStartChange(){
             this.modal.data.date_remind=dayjs(this.modal.data.date_start).add(60,'days').format(this.dateFormat)
             this.modal.data.date_due=dayjs(this.modal.data.date_start).add(90,'days').format(this.dateFormat)
-            console.log(dayjs(this.modal.data.date_start).add(30,'days'))
-            console.log(this.modal.data.date_start)
         }, 
         searchStaff(){
             const page={
