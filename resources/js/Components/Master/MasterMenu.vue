@@ -9,7 +9,7 @@
       >
         <a-menu-item key="1">
           <template #icon>
-            <DesktopOutlined />
+            <AppstoreOutlined />
           </template>
           <span>
             <inertia-link :href="route('master.departments.index')">Departments</inertia-link>
@@ -17,7 +17,7 @@
         </a-menu-item>
         <a-menu-item key="2">
           <template #icon>
-            <DesktopOutlined />
+            <SettingOutlined />
           </template>
           <span>
             <inertia-link :href="route('master.configs.index')">Configs</inertia-link>
@@ -25,7 +25,7 @@
         </a-menu-item>
         <a-menu-item key="3">
           <template #icon>
-            <DesktopOutlined />
+            <TeamOutlined />
           </template>
           <span>
             <inertia-link :href="route('master.adminUsers.index')">Admin Users</inertia-link>
@@ -33,7 +33,7 @@
         </a-menu-item>
         <a-menu-item key="4">
           <template #icon>
-            <InboxOutlined />
+            <BookOutlined />
           </template>
           <span>
             <inertia-link :href="route('master.manuals.index')">Manual</inertia-link>
@@ -41,7 +41,7 @@
         </a-menu-item>
         <a-menu-item key="5">
           <template #icon>
-            <InboxOutlined />
+            <CalendarOutlined />
           </template>
           <span>
             <inertia-link :href="route('master.schedulers.index')">Scheduler</inertia-link>
@@ -49,7 +49,7 @@
         </a-menu-item>
         <a-menu-item key="6">
           <template #icon>
-            <InboxOutlined />
+            <FileTextOutlined />
           </template>
           <span>
             <inertia-link :href="route('master.articles.index')">Articles</inertia-link>
@@ -92,7 +92,13 @@
     </div>
   </template>
   <script>
-import { MenuFoldOutlined, MenuUnfoldOutlined, PieChartOutlined, MailOutlined, DesktopOutlined, InboxOutlined, AppstoreOutlined } from '@ant-design/icons-vue';
+import { MenuFoldOutlined, MenuUnfoldOutlined, PieChartOutlined, MailOutlined, DesktopOutlined, InboxOutlined, AppstoreOutlined,  TeamOutlined,
+    SettingOutlined,
+    UserOutlined,
+    BookOutlined,
+    CalendarOutlined,
+    FileTextOutlined    
+ } from '@ant-design/icons-vue';
 
 export default {
   components: {
@@ -103,6 +109,12 @@ export default {
     DesktopOutlined,
     InboxOutlined,
     AppstoreOutlined,
+    TeamOutlined,
+    SettingOutlined,
+    UserOutlined,
+    BookOutlined,
+    CalendarOutlined,
+    FileTextOutlined    
   },
   data() {
     return {
