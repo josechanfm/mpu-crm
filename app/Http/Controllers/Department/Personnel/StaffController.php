@@ -358,26 +358,26 @@ class StaffController extends Controller
         if($request->has('action')){
             switch ($request->action) {
                 case 'fetch_remote_data':
-                    $this->fetchRemoteStaffRecords();
+                    //$this->fetchRemoteStaffRecords();
+                    Staff::fetchRemoteStaffRecords();
                     break;
                 case 'copy_avatars':
                     $this->migrateAvatars();
                     break;
                 case 'create_notices':
-                    $this->createNotices();
+                    //$this->createNotices();
+                    Staff::createNotices();
                     break;
                 case 'staff':
-                    $this->fetchStaff($request->staff_num);
+                    $data = Staff::get_remote_data('list', 'super', $request->staff_num);
+                    dd($data);
                     break;
                 default:
                     return inertia('Department/Personnel/StaffMigration');
             }
         }
-        return inertia('Department/Personnel/StaffMigration');
-    }
-    public function fetchStaff($staffNum){
-        $data = Staff::get_remote_data('list', 'super', $staffNum);
-        dd($data);
+        return redirect()->back();
+        //return inertia('Department/Personnel/StaffMigration');
     }
 
     //copy StaffUpload avatar filename to Staff and Staff_relatives table accordingly
@@ -395,123 +395,6 @@ class StaffController extends Controller
         }
 
     }
-
-    //get remote data sna save to Staff and Staff_relative table
-    public function fetchRemoteStaffRecords()
-    {
-        //Staff::where('active',true)->update(['active' => false]);
-        $data = Staff::get_remote_data('list-full', 'super');
-
-        foreach ($data->allstaffinfo as $item) {
-            // Assuming $item is now an associative array
-
-            $staff = Staff::updateOrCreate(
-                ['staff_num' => $item->staffinfo->staff_num, 'username'=>$item->staffinfo->netid],
-                [
-                    'username'=>$item->staffinfo->netid,
-                    'name_zh'=>$item->staffinfo->name_zh, 
-                    'name_pt'=>$item->staffinfo->name_pt, 
-                    'email' => $item->staffinfo->netid.'@mpu.edu.mo', 
-                    'staff_num'=>$item->staffinfo->staff_num,
-                    'phone'=>$item->staffinfo->office_tel,
-                    'employment'=>$item->staffinfo->fullpart,
-                    'cat_group'=>$item->staffinfo->cat_group,
-                    'lecturer'=>$item->staffinfo->lecturer,
-                    'medical_num'=>$item->staffinfo->medical_num,
-                    'medical_type'=>$item->staffinfo->medical_type,
-                    'library_num'=>$item->staffinfo->library_num,
-                    'register_date' => isset($item->staffinfo->register_date) && $item->staffinfo->register_date !== '' ? $item->staffinfo->register_date : null,
-                    'dept'=>$item->staffinfo->dept_code,
-                    'active'=>true,
-                    //'register_date'=>$item->register_date
-                ]
-            );
-
-            if(isset($item->familylist->family)){
-                foreach($item->familylist?->family as $item){
-                    $staff->relatives()->updateOrCreate(
-                        ['staff_num'=>$item->staff_num, 'id_num'=>$item->id_num],
-                        [
-                            'has_allowance'=>$item->has_allowance,
-                            'has_medical'=>$item->has_medical,
-                            'mecical_num'=>$item->medical_num,
-                            //'staff_num'=>$item->staff_num,
-                            'name_zh'=>$item->name_zh,
-                            'name_pt'=>$item->name_pt,
-                            'relationship'=>$item->relationship,
-                            'allowaance_type'=>$item->allowance_type,
-                            'dob'=>date('Y-m-d', strtotime($item->dob)),
-                            //'dob'=>$dobDateTime->format('Y-m-d'),
-                            //'id_num'=>$item->id_num,
-                            'medical_type'=>$item->medical_type,
-                        ]
-                    );
-                }
-            }
-        }
-        //dd(Staff::all());
-        return count($data->allstaffinfo);
-    }
-
-
-    public function createNotices(){
-        $relatives = StaffRelative::with(['staff:id,email'])
-            ->where('relationship', '親生子女')
-            ->where('dob', '>=', Carbon::now()->subYears(18)) // Filter DOB for 18 years old or younger
-            ->get(); // Optionally, specify other columns
-        $now = Carbon::now();
-        foreach ($relatives as $item) {
-            // Create a Carbon instance for the dob
-            $dob = Carbon::parse($item->dob);
-
-            // Calculate the age
-            $age = $dob->age; // Carbon provides the age property directly
-            // Check if the age is under 18
-            if ($dob->year >= ($now->year-18)) {
-               //dd($age,$dob->year, $now->year, ($now->year-18));
-                // Calculate the date when they turn 18
-                $turningDate = $dob->addYears(18);
-                //dd($turningDate, $turningDate->format('Y-m-d'), $item);
-                // Create a new StaffNotice record
-                $item->notices()->firstOrCreate([
-                    'staff_relative_id' => $item->id,
-                    'date' => $turningDate->format('Y-m-d'), 
-                ],[
-                    'email'=>$item->staff->email,
-                    'age'=>'18',
-                    'date' => $turningDate->format('Y-m-d'), // Format to 'Y-m-d'
-                    'status'=>'N'
-                ]);
-                // Calculate the date when they turn 22
-                $turningDate = $dob->addYears(4);
-                // Create a new StaffNotice record
-                $item->notices()->firstOrCreate([
-                    'staff_relative_id' => $item->id,
-                    'date' => $turningDate->format('Y-m-d'),
-                ],[
-                    'email'=>$item->staff->email,
-                    'age'=>'22',
-                    'date' => $turningDate->format('Y-m-d'), // Format to 'Y-m-d'
-                    'status'=>'N'
-                ]);
-                // Calculate the date when they turn 24
-                $turningDate = $dob->addYears(2);
-                // Create a new StaffNotice record
-                $item->notices()->firstOrCreate([
-                    'staff_relative_id' => $item->id,
-                    'date' => $turningDate->format('Y-m-d'),
-                ],[
-                    'email'=>$item->staff->email,
-                    'age'=>'24',
-                    'date' => $turningDate->format('Y-m-d'), // Format to 'Y-m-d'
-                    'status'=>'N'
-                ]);
-
-            
-            }
-        }
-    }
-
 
 
 }

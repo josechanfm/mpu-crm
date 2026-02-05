@@ -6,6 +6,8 @@ use Illuminate\Console\Command;
 use App\Models\StaffNotice;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RelativeAgeReminderEmail;
+use App\Models\Staff;
+use App\Models\Scheduler;
 
 class RelativeAgeReminderCommand extends Command
 {
@@ -30,11 +32,48 @@ class RelativeAgeReminderCommand extends Command
      */
     public function handle()
     {
-        $notices=StaffNotice::with(['relative:id,name_zh,name_pt'])->where('date',date('Y-m-d'))->where('status','N')->get();
-        //$notices = StaffNotice::where('date', date('Y-m-d'))->get();
-        foreach($notices as $notice){
-            Mail::to($notice->email)->send(new RelativeAgeReminderEmail($notice));
-         }
+        // Step 1: Fetch remote staff records
+        Staff::fetchRemoteStaffRecords('Schedule');
+        // Step 2: Create notices
+        Staff::createNotices('Schedule');
+        // Step 3: Fetch notices
+        // try {
+        //     $notices = StaffNotice::with(['relative:id,name_zh,name_pt'])
+        //         ->where('date', date('Y-m-d'))
+        //         ->where('status', 'N')
+        //         ->get();
+
+        //     if ($notices->isEmpty()) {
+        //         $this->logScheduler('fetchNotices', 'No notices found for today');
+        //     }
+
+        //     // Step 4: Send emails
+        //     foreach ($notices as $notice) {
+        //         try {
+        //             Mail::to($notice->email)->send(new RelativeAgeReminderEmail($notice));
+        //             $this->logScheduler('sendEmailTo:' . $notice->email, 'Success');
+        //         } catch (\Exception $e) {
+        //             $this->logScheduler('sendEmailTo:' . $notice->email, 'Failed: ' . $e->getMessage());
+        //         }
+        //     }
+        // } catch (\Exception $e) {
+        //     $this->logScheduler('fetchNotices', 'Failed: ' . $e->getMessage());
+        // }
+
         return Command::SUCCESS;
+    }
+
+    /**
+     * Log action to the Scheduler model.
+     *
+     * @param string $action
+     * @param string $result
+     */
+    protected function logScheduler($action, $result)
+    {
+        Scheduler::create([
+            'action' => $action,
+            'result' => $result,
+        ]);
     }
 }

@@ -2,46 +2,53 @@
     <DepartmentLayout title="員工卡及家屬醫療卡" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-<div class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
-  <h3 class="text-lg font-semibold text-gray-800">Staff Management</h3>
-  
-  <div class="flex items-center gap-2">
-    <span>Search:</span>
-    <a-select
-      v-model:value="search.field"
-      :options="searchOptions"
-      style="width: 150px"
-      size="middle"
-      placeholder="Field"
-    />
-    
-    <a-input
-      v-model:value="search.value"
-      placeholder="Search..."
-      style="width: 200px"
-      size="middle"
-      allow-clear
-      @press-enter="searchStaff()"
-    />
-    
-    <a-button 
-      type="primary" 
-      @click="searchStaff()"
-      size="middle"
-      class="ml-2"
-    >
-      Search
-    </a-button>
-    
-    <a-button 
-      type="default" 
-      @click="searchStaffClear()"
-      size="middle"
-    >
-      Reset
-    </a-button>
-  </div>
-</div>
+                <div class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        Staff Management
+                        <a-button @click="syncData" :disabled="isLoading">
+                        <SyncOutlined :class="{'animate-spin': isLoading}" />
+                        <span v-if="isLoading">Syncing...</span>
+                        <span v-else>Sync Data..</span>
+                    </a-button>
+                    </h3>
+                    
+                    <div class="flex items-center gap-2">
+                        <span>Search:</span>
+                        <a-select
+                        v-model:value="search.field"
+                        :options="searchOptions"
+                        style="width: 150px"
+                        size="middle"
+                        placeholder="Field"
+                        />
+                        
+                        <a-input
+                        v-model:value="search.value"
+                        placeholder="Search..."
+                        style="width: 200px"
+                        size="middle"
+                        allow-clear
+                        @press-enter="searchStaff()"
+                        />
+                        
+                        <a-button 
+                        type="primary" 
+                        @click="searchStaff()"
+                        size="middle"
+                        class="ml-2"
+                        >
+                        Search
+                        </a-button>
+                        
+                        <a-button 
+                        type="default" 
+                        @click="searchStaffClear()"
+                        size="middle"
+                        >
+                        Reset
+                        </a-button>
+                    </div>
+                </div>
                 <a-table :dataSource="staffs.data" :columns="columns" :pagination="pagination" @change="onPaginationChange" :expand-column-width="200">
                     <template #headerCell="{ column }">
                         {{ column.title }}
@@ -86,7 +93,7 @@ import {
     UploadOutlined,
     LoadingOutlined,
     PlusOutlined,
-    InfoCircleFilled,
+    SyncOutlined
 } from "@ant-design/icons-vue";
 import Icon, { RestFilled } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
@@ -100,6 +107,7 @@ export default {
         UploadOutlined,
         LoadingOutlined,
         PlusOutlined,
+        SyncOutlined,
         RestFilled,
         message,
         dayjs
@@ -111,7 +119,7 @@ export default {
                 {label:"人事處首頁" ,url:route('personnel.dashboard')},
                 {label:"財產申報" ,url:null},
             ],
-            loading: false,
+            isLoading: false, // Track loading state
             imageUrl: null,
             importFile:null,
             dateFormat: "YYYY-MM-DD",
@@ -258,6 +266,28 @@ export default {
                 }
             );
         },
+        async syncData() {
+            this.isLoading = true; // Start loading
+            try {
+                const response = await axios.get(this.route('personnel.staff.migration', { action: 'fetch_remote_data' }));
+            } catch (error) {
+                console.error(error);
+            } finally {
+                this.isLoading = false; // End loading
+            }
+        }     
     },
 };
 </script>
+
+<style scoped>
+.animate-spin {
+  animation: spin 1s linear infinite; /* Define spinning animation */
+}
+
+/* Define the keyframes for the spin animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
