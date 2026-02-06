@@ -87,7 +87,7 @@
                         <div v-for="(relative, i) in staff.relatives" class="mb-4">
                             <div class="p-1 bg-white rounded-lg shadow-lg">
                                 <div class="flex items-center bg-teal-300 p-2 rounded-t-lg">
-                                    <div class="relative">
+                                    <div class="relative flex-shrink-0">
                                         <template v-if="relative.avatar">
                                             <img :src="'/images/staffs/' + relative.avatar" alt="User Avatar"
                                                 class="w-28 h-28 object-cover">
@@ -98,11 +98,10 @@
                                             </div>
                                         </template>
                                     </div>
-                                    <div class="ml-4  w-full">
+                                    <div class="ml-4 w-full">
                                         <div class="flex items-center justify-between">  <!-- Flex container for alignment -->
                                             <div>
                                                 <h3 class="text-xl font-semibold mt-2">{{ relative.name_zh }}<span class="ml-10">({{ relative.relationship }})</span></h3>
-                                                
                                                 <h3 class="text-lg text-gray-600">{{ relative.name_pt }}</h3>
                                                 <h4 class="text-md text-gray-500">{{ relative.netid }}</h4>
                                             </div>
