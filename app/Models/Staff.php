@@ -116,7 +116,7 @@ class Staff extends Model
                         [
                             'has_allowance'=>$item->has_allowance,
                             'has_medical'=>$item->has_medical,
-                            'mecical_num'=>$item->medical_num,
+                            'medical_num'=>$item->medical_num,
                             'name_zh'=>$item->name_zh,
                             'name_pt'=>$item->name_pt,
                             'relationship'=>$item->relationship,
