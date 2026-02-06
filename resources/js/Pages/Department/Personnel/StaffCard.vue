@@ -115,7 +115,7 @@
                                             <div class="pt-5 flex gap-2">
                                                 <a-button @click="openCropModel(i+1)">選擇相片</a-button>
                                                 <!-- <a-button v-if="avatars[i+1].upload" @click="uploadAvatar(i+1)">上戴相片</a-button> -->
-                                                <a-date-picker v-model:value="avatars[+1].issue_date"/>
+                                                <a-date-picker v-model:value="avatars[i+1].issue_date"/>
                                                 <a-button v-if="avatars[i+1].image" type="primary" @click="cardPrint(i+1)">Print</a-button>
                                             </div>
                                         </form>
