@@ -237,7 +237,7 @@ export default {
             console.log('upload avatar', selectedId, this.avatars[selectedId])
             this.$inertia.post(route("personnel.staff.avatarUpload", this.staff.id), this.avatars[selectedId], {
                 onSuccess: (page) => {
-                    this.avatars[selectedId].image=page.avatar
+                    this.avatars[selectedId].image=this.avatars[selectedId].upload
                     console.log(page);
                     this.avatars[selectedId].upload=null
                 },
