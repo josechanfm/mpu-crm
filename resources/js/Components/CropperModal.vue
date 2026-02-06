@@ -24,19 +24,6 @@
                             <div class="mt-3 text-left">
                                 <h3 class="text-2xl font-medium leading-6 text-gray-900">裁切照片</h3>
                                 <div class="flex flex-wrap my-4">
-                                    <label
-                                        class="
-                                            block
-                                            uppercase
-                                            tracking-wide
-                                            text-gray-700
-                                            text-xs
-                                            font-bold
-                                            mb-2
-                                        "
-                                    >
-                                    選擇照片
-                                    </label>
                                     <div class="mb-3 w-full">
                                         <a-upload
                                             id="avatar"
@@ -48,7 +35,7 @@
                                         >
                                             <a-button>
                                             <upload-outlined></upload-outlined>
-                                            上載照片
+                                            選擇上載的照片
                                             </a-button>
                                         </a-upload>
                                         <!--
@@ -85,7 +72,6 @@
                                         -->
                                     </div>
                                 </div>
-
                                 <div class="flex justify-center max-w-2xl">
                                     <Cropper
                                         ref="cropper"
@@ -94,6 +80,8 @@
                                             minAspectRatio: minAspectRatioProp.width/minAspectRatioProp.height,
                                             maxAspectRatio: maxAspectRatioProp.width/maxAspectRatioProp.height,
                                         }"
+                                        :default-position="defaultCroppePosition"
+                                        :default-size="defaultCroppeSize"
                                         @change="change"
                                     />
                                 </div>
@@ -197,7 +185,14 @@
         top: null,
         blob:null,
     }
-
+    let defaultCroppeSize={
+        width:500,
+        height:500
+    }
+    let defaultCroppePosition={
+        top:0,
+        left:100
+    }
     const getUploadedImage = (e) => {
         //const file = e.target.files[0]
         //uploadedImage.value = URL.createObjectURL(file) 
@@ -220,6 +215,9 @@
                 var scaleFactor = resize_width / el.target.width;
                 elem.width = resize_width;
                 elem.height = el.target.height * scaleFactor;
+                defaultCroppeSize.width=elem.height
+                defaultCroppeSize.height=elem.height
+                defaultCroppePosition.left=(elem.width-elem.height) /2
                 //draw in canvas
                 var ctx = elem.getContext('2d');
                 ctx.drawImage(el.target, 0, 0, elem.width, elem.height);

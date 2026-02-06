@@ -131,7 +131,7 @@ class Staff extends Model
         Scheduler::create([
             'action' => $action,
             'result' => 'SUCCESS',
-            'remark' => count($data->allstaffinfo)
+            'remark' => count($data->allstaffinfo) . ' Staff records'
         ]);
 
         return count($data->allstaffinfo);
@@ -191,7 +191,7 @@ class Staff extends Model
         Scheduler::create([
             'action' => $action,
             'result' => 'SUCCESS',
-            'remark' => count($relatives)
+            'remark' => count($relatives).' Notice records'
         ]);
 
     }

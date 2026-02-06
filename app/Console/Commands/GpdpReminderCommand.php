@@ -35,6 +35,20 @@ class GpdpReminderCommand extends Command
         foreach($gpdps as $gpdp){
             Mail::to($gpdp->email)->send(new GpdpReminderEmail($gpdp));
         }
+        if ($gpdps->count()>0) {
+            $this->logScheduler('gpdp', 'SUCCESS', $gpdps->count().' Gpdp records');
+        }else{
+            $this->logScheduler('gpdp', 'No records found for today');
+        }
         return Command::SUCCESS;
+    }
+
+    protected function logScheduler($action, $result, $remark)
+    {
+        Scheduler::create([
+            'action' => $action,
+            'result' => $result,
+            'remarks'=> $remark
+        ]);
     }
 }

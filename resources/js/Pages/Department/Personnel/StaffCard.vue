@@ -62,7 +62,7 @@
                                     <form>
                                         <div class="pt-5 flex gap-2">
                                             <a-button @click="openCropModel(0)">選擇相片</a-button>
-                                            <a-button v-if="avatars[0].upload" @click="uploadAvatar(0)">上戴相片</a-button>
+                                            <!-- <a-button v-if="avatars[0].upload" @click="uploadAvatar(0)">上戴相片</a-button> -->
                                             <a-date-picker v-model:value="avatars[0].issue_date"/>
                                             <a-button v-if="avatars[0].image" type="primary" @click="cardPrint(0)">Print</a-button>
                                         </div>
@@ -71,10 +71,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-wrap mt-4 mb-6">
+                        <div v-if="avatars[0].upload" class="flex flex-wrap mt-4 mb-6">
                             <div class="w-full md:w-1/2 px-3">
-                                <div v-if="avatars[0].upload" class="flex items-end">
+                                <div class="flex items-end gap-5">
                                     <img :src="avatars[0].upload" class="w-64 h-56 object-cover mr-2" alt="Avatar Preview" />
+                                    <a-button v-if="avatars[0].upload" @click="uploadAvatar(0)">上戴相片</a-button>
                                     <a class="text-red-500 cursor-pointer" @click="clearUploadAvatar(0)">
                                         <DeleteOutlined />
                                     </a>
@@ -113,7 +114,7 @@
                                         <form v-if="relative.has_medical">
                                             <div class="pt-5 flex gap-2">
                                                 <a-button @click="openCropModel(i+1)">選擇相片</a-button>
-                                                <a-button v-if="avatars[i+1].upload" @click="uploadAvatar(i+1)">上戴相片</a-button>
+                                                <!-- <a-button v-if="avatars[i+1].upload" @click="uploadAvatar(i+1)">上戴相片</a-button> -->
                                                 <a-date-picker v-model:value="avatars[+1].issue_date"/>
                                                 <a-button v-if="avatars[i+1].image" type="primary" @click="cardPrint(i+1)">Print</a-button>
                                             </div>
@@ -124,8 +125,9 @@
                             </div>
                         <div v-if="avatars[i+1].upload" class="flex flex-wrap mt-4 mb-6">
                             <div class="w-full md:w-1/2 px-3">
-                                <div class="flex items-end">
+                                <div class="flex items-end gap-5">
                                     <img :src="avatars[i+1].upload" class="w-64 h-56 object-cover mr-2" alt="Avatar Preview" />
+                                    <a-button @click="uploadAvatar(i+1)">上戴相片</a-button>
                                     <a class="text-red-500 cursor-pointer" @click="clearUploadAvatar(i+1)">
                                         <DeleteOutlined />
                                     </a>
@@ -138,6 +140,7 @@
                     </a-col>
                 </a-row>
                 <CropperModal 
+                    class="cropper"
                     v-if="showCropModal" 
                     :minAspectRatioProp="{ width: 8, height: 8 }"
                     :maxAspectRatioProp="{ width: 8, height: 8 }" 
@@ -281,4 +284,9 @@ export default {
 
 <style scoped>
 /* You can add your custom styles here */
+.cropper {
+	height: 600px;
+	width: 600px;
+	background: #DDD;
+}
 </style>

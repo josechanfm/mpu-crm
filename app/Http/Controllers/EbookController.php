@@ -16,7 +16,6 @@ class EbookController extends Controller
      */
     public function index()
     {
-    
        return Inertia::render('EbookShelf',[
         'ebooks'=>Ebook::where('published',true)->orderBy('date_start','desc')->get()
        ]);
