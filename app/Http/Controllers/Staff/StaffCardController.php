@@ -10,7 +10,6 @@ class StaffCardController extends Controller
 {
     public function index(){
         $staff=Staff::where('username',auth()->user()->username)->first();
-        $staff=Staff::where('id',535)->first();
         return inertia('Staff/StaffCard',[
             'staff'=>$staff->load('relatives')
         ]);
