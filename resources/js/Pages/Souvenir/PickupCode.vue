@@ -17,7 +17,6 @@
                     <div v-if="user">
                         <h3 class="text-lg font-semibold">{{ user.netid }}</h3>
                     </div>
-                    {{ pickupCode }}
                     <hr class="my-4"/>
                     <h4 class="text-lg font-semibold">Your Pickup Code:</h4>
                     <div v-if="pickupCode" class="flex flex-col items-center gap-4">
@@ -27,6 +26,7 @@
                             :value="pickupCode"
                             icon="/storage/images/mpu_logo.png"
                         />
+                        <div>{{ pickupCode.length > 10 ? pickupCode.slice(0, 20) + '...' : pickupCode }} </div>
                         <a-button :href="route('souvenir')">Back to Main page</a-button>
                     </div>
             </div>
