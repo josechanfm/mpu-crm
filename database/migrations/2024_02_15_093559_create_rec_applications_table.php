@@ -22,25 +22,26 @@ return new class extends Migration
             $table->string('name_full_zh')->nullable();
             $table->string('name_family_zh')->nullable();
             $table->string('name_given_zh')->nullable();
-            $table->string('name_full_fn')->nullable();
-            $table->string('name_family_fn')->nullable();
-            $table->string('name_given_fn')->nullable();
+            $table->string('name_full_en')->nullable();
+            $table->string('name_family_en')->nullable();
+            $table->string('name_given_en')->nullable();
             $table->char('gender',1);
-            $table->char('pob',3); //CHN,MAC,HKG,OTH
+            $table->char('pob',3)->nullable(); //CHN,MAC,HKG,OTH
             $table->string('pob_oth')->nullable();
             $table->date('dob');
-            $table->string('id_type'); //MAC_RST,MAC_TMP,HKG_RES,CHN_IDC,PPT_INT,OTH_DOC
-            $table->string('id_type_name'); //MAC_RST,MAC_TMP,HKG_RES,CHN_IDC,PPT_INT,OTH_DOC
+            $table->string('id_type')->nullable(); //MAC_RST,MAC_TMP,HKG_RES,CHN_IDC,PPT_INT,OTH_DOC
+            $table->string('id_type_name')->nullable(); //MAC_RST,MAC_TMP,HKG_RES,CHN_IDC,PPT_INT,OTH_DOC
             $table->string('id_num');
-            $table->date('id_issue')->nullable();
+            $table->string('id_issue')->nullable();
             $table->string('nationality');  //CHN,PPT,OTH
             $table->string('nationality_oth')->nullable();
-            $table->string('language')->nullable();
+            $table->text('language')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('supplement')->nullable();
             $table->string('status')->nullable();
+            $table->date('submit_at')->nullable();
             $table->string('submitted')->nullable();
             $table->foreignId('admin_id')->nullable();
             $table->string('payment')->nullable();

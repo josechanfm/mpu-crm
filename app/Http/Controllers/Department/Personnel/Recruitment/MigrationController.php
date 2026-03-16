@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\RecVacancy;
 use App\Models\RecNotice;
 use App\Models\RecApplication;
+use Illuminate\Support\Facades\Schema;
 
 class MigrationController extends Controller
 {
@@ -24,7 +25,7 @@ class MigrationController extends Controller
                 case 'academic':
                     $this->copyAcademics(); 
                     break;
-                case 'adminitratiion':
+                case 'administration':
                     $this->copyAdministration(); 
                     break;
                 default:
@@ -34,8 +35,84 @@ class MigrationController extends Controller
         echo 'Recruitment Data Migration<br>';
         echo 'Vacancies table to rec_vacancies<br>';
         echo '\personnel\recruitment\migration\action?=vacancy<br>';
+        echo '<a href="\personnel\recruitment\migration?action=vacancy">Vacancy</a><br>';
+        echo '<a href="\personnel\recruitment\migration?action=notice">Notice</a><br>';
+        echo '<a href="\personnel\recruitment\migration?action=academic">Academic Applications</a><br>';
+        echo '<a href="\personnel\recruitment\migration?action=administration">Admin Applications</a><br>';
         return true;
     }
+    public function copyAdministration(){
+        $administrations=DB::table('administration_applications')->get();
+        RecApplication::truncate();
+        foreach($administrations as $admin){
+            $vacancy=RecVacancy::where('code',$admin->vacancy_code)->first();
+            if(empty($vacancy)) continue;
+
+            //dd($vacancy, $admin, $administrations);
+            $application = $vacancy->applications()->create([
+                "exam_lang" => $admin->vacancy_lang,
+                "education_reqired" => $admin->vacancy_edu,
+                "vehicle_required" => $admin->vacancy_required,
+                "name_full_zh" => $admin->name_c,
+                "name_full_en" => $admin->name_p,
+                "gender" => $admin->gender,
+                "id_num" => $admin->birm,
+                "dob" => $admin->dob,
+                "address" => $admin->address,
+                "email" => $admin->email,
+                "phone" => $admin->tel,
+                "language"=>$admin->language,
+                "timestamp" => $admin->timestamp,
+                "admin_id" => $admin->admin_id,
+                "submit_date" => $admin->submit_date,
+                "submitted" => $admin->submitted,
+                "status" => $admin->status,
+            ]);
+            $educations=json_decode($admin->part1_summary);
+            foreach($educations as $item){
+                $application->educations()->create([
+                    "school_name"=>$item->part1_school,
+                    "region" => $item->part1_country,
+                    "degree" => $item->part1_level,
+                    "qualification" => null,
+                    "major" => $item->part1_major,
+                    "subject" => $item->part1_subject,
+                    "language" => $item->part1_language,
+                    "date_start" => $item->part1_admission,
+                    "date_finish" => $item->part1_graduate,
+                ]);
+            }
+
+            $professionals=json_decode($admin->part2_summary);
+            foreach($professionals as $item){
+                $professional=$application->professionals()->create([
+                    "organization_name"=>$item->part2_organiza,
+                    "region" => null,
+                    "area" => null,
+                    "qualification" => $item->part2_course,
+                    "date_valid" => $item->part2_start,
+                    "date_expire" => $item->part2_finish,
+                    "hours" => $item->part2_start,
+                ]);
+            }
+
+            $experiences=json_decode($admin->part2_summary);
+            foreach($experiences as $item){
+                $experience=$application->experiences()->create([
+                    "company_name" => $item->part3_company,
+                    "region" => null,
+                    "position" => $item->part3_occupation,
+                    "salary" => $item->part3_anual,
+                    "employment" => $item->part3_type,
+                    "date_join" => $item->part2_start,
+                    "date_leave" => $item->part2_leave,
+                    "description" => $item->part3_description,
+                ]);
+            }
+
+        }
+    }
+
 
     public function copyAcademics(){
         // $model = new RecApplication();
@@ -43,44 +120,45 @@ class MigrationController extends Controller
         // $columns = $model->getConnection()->getSchemaBuilder()->getColumnListing($tableName);
         // dd('vacancy data columns: ',$columns);
         $academics=DB::table('academic_applications')->get();
+        RecApplication::truncate();
         foreach($academics as $academic){
             $vacancy=RecVacancy::where('code',$academic->vacancy_code)->first();
-            $vacancy->applications()->create([
+            if(empty($vacancy)) continue;
+            $application = $vacancy->applications()->create([
                 "address" => $academic->address,
                 "admin_id" => $academic->admin_id,
                 "created_at" => $academic->created_at,
-                "dob" => $academic->dob,
+                'dob' => $academic->dob === '0000-00-00' ? date('Y-m-d') : $academic->dob,
                 "email" => $academic->email,
-                "exam_lang" => $academic->exam_lang,
+                "exam_lang" => 'CH',
                 "gender" => $academic->gender,
                 "id" => $academic->id,
                 "id_issue" => $academic->id_issue,
                 "id_num" => $academic->id_num,
                 "id_type" => $academic->id_type,
                 "id_type_name" => $academic->id_type_name,
-                "language" => $academic->language,
-                "name_family_fn" => $academic->name_family_fn,
-                "name_family_zh" => $academic->name_family_zh,
-                "name_full_fn" => $academic->name_full_fn,
+                "language" => 'ZH',
+                "name_full_en" => $academic->name_full_en,
                 "name_full_zh" => $academic->name_full_zh,
-                "name_given_fn" => $academic->name_given_fn,
+                "name_family_en" => $academic->name_family_en,
+                "name_family_zh" => $academic->name_family_zh,
+                "name_given_en" => $academic->name_given_en,
                 "name_given_zh" => $academic->name_given_zh,
                 "nationality" => $academic->nationality,
                 "nationality_oth" => $academic->nationality_oth,
-                "obtain_info" => $academic->obtain_info,
-                "payment" => $academic->payment,
-                "payment_id" => $academic->payment_id,
-                "phone" => $academic->phone,
+                "obtain_info" => $academic->info_received,
+                // "payment" => $academic->payment,
+                // "payment_id" => $academic->payment_id,
+                "phone" => $academic->tel,
                 "pob" => $academic->pob,
                 "pob_oth" => $academic->pob_oth,
-                "quick_pay" => $academic->quick_pay,
-                "rec_vacancy_id" => $academic->rec_vacancy_id,
+                // "quick_pay" => $academic->quick_pay,
                 "status" => $academic->status,
                 "submitted" => $academic->submitted,
                 "supplement" => $academic->supplement,
                 "updated_at" => $academic->updated_at,
-                "user_id" => $academic->user_id,
-                "uuid" => $academic->uuid,
+                // "user_id" => $academic->user_id,
+                // "uuid" => $academic->uuid,
             ]);
         }
         
@@ -168,6 +246,7 @@ class MigrationController extends Controller
         // dd('vacancy data columns: ',$columns);
 
         $vacancies = DB::table('vacancies')->get();   
+        RecNotice::truncate();
         //dd($vacancies);
         foreach($vacancies as $vacancy){
             if(empty($vacancy->code)) continue;

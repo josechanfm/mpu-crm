@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('rec_education', function (Blueprint $table) {
+        Schema::create('rec_educations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('rec_application_id');
             $table->string('school_name');
             $table->string('region');
             $table->string('degree');
-            $table->string('qualification');
+            $table->string('qualification')->nullable();
+            $table->string('major')->nullable();
             $table->string('subject');
             $table->string('language');
             $table->string('date_start');
@@ -35,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rec_education');
+        Schema::dropIfExists('rec_educations');
     }
 };
