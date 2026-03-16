@@ -204,9 +204,9 @@ class OrderController extends Controller
         return $payment;
     }
     public function pickupCode(){
-        //dd(hash('sha256',session('souvenirUser')->id));
-        // $salt=env('SALT','dae-souvenir');
-        // $pickupCode=session('souvenirUser')->id.'-'.hash('sha256',session('souvenirUser')->id.$salt);
+        if (!session()->has('souvenirUser')) {
+            return redirect()->route('souvenir');
+        }        
         return Inertia::render('Souvenir/PickupCode',[
             'user'=>session('souvenirUser'),
             'pickupCode'=>$this->genPickupCode(session('souvenirUser')->id),
