@@ -12,15 +12,15 @@
     </div>
     
     
-    <a-row class="staff-dashboard pt-5">
-      <a-col :span="8">
+<a-row gutter={16} class="flex flex-wrap">
+    <a-col :xs="24" :sm="12" :md="8">
         <a-card
             title="Staff Cards"
             class="rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300"
             :style="{ padding: '16px' }"
         >
             <div class="card-content">
-                <p><strong>Your email:</strong> {{ $page.props.currentUser.email}}</p>
+                <p><strong>Your email:</strong> {{ $page.props.currentUser.email }}</p>
                 <p>Staff Card and Family Medical Card photo upload</p>
             </div>
             <div class="flex justify-end mt-4">
@@ -29,8 +29,8 @@
               </inertia-link>
             </div>
         </a-card>
-      </a-col>
-    </a-row>
+    </a-col>
+</a-row>
 
     
     <a-row class="pt-5">
