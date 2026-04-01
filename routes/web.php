@@ -140,4 +140,7 @@ Route::prefix('/recruitment')->group(function() {
     
 });
 
+Route::get('/learner/speaking', [App\Http\Controllers\LearnerController::class, 'speaking']);
+Route::get('/learner/get_material', [App\Http\Controllers\LearnerController::class, 'getMaterial']);
+
 require __DIR__ . '/auth.php';

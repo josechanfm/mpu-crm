@@ -1,0 +1,820 @@
+[
+  {
+    "title": "Student System Login",
+    "type": "speech",
+    "level": "A1",
+    "content": "Enter your student ID.",
+    "translation": "輸入你的學生證號。",
+    "tags": "tech, student system"
+  },
+  {
+    "title": "Student System Login",
+    "type": "speech",
+    "level": "A1",
+    "content": "Type your password.",
+    "translation": "輸入你的密碼。",
+    "tags": "tech, student system"
+  },
+  {
+    "title": "Student System Login",
+    "type": "speech",
+    "level": "A1",
+    "content": "Click the login button.",
+    "translation": "點擊登入按鈕。",
+    "tags": "tech, student system"
+  },
+  {
+    "title": "IT Help Desk",
+    "type": "speech",
+    "level": "A1",
+    "content": "My computer is slow.",
+    "translation": "我的電腦很慢。",
+    "tags": "tech, IT support"
+  },
+  {
+    "title": "IT Help Desk",
+    "type": "speech",
+    "level": "A1",
+    "content": "I need a new mouse.",
+    "translation": "我需要一個新滑鼠。",
+    "tags": "tech, IT support"
+  },
+  {
+    "title": "IT Help Desk",
+    "type": "speech",
+    "level": "A1",
+    "content": "Please fix the printer.",
+    "translation": "請修理印表機。",
+    "tags": "tech, IT support"
+  },
+  {
+    "title": "IT Help Desk",
+    "type": "speech",
+    "level": "A1",
+    "content": "The Wi-Fi is not working.",
+    "translation": "Wi-Fi 無法使用。",
+    "tags": "tech, network"
+  },
+  {
+    "title": "Email Communication",
+    "type": "speech",
+    "level": "A1",
+    "content": "Check your email.",
+    "translation": "查看你的電子郵件。",
+    "tags": "tech, admin"
+  },
+  {
+    "title": "Email Communication",
+    "type": "speech",
+    "level": "A1",
+    "content": "Send a message to the professor.",
+    "translation": "發送訊息給教授。",
+    "tags": "tech, admin"
+  },
+  {
+    "title": "Email Communication",
+    "type": "speech",
+    "level": "A1",
+    "content": "I have an attachment.",
+    "translation": "我有一個附件。",
+    "tags": "tech, admin"
+  },
+  {
+    "title": "Email Communication",
+    "type": "speech",
+    "level": "A1",
+    "content": "Reply to the email.",
+    "translation": "回覆這封電子郵件。",
+    "tags": "tech, admin"
+  },
+  {
+    "title": "Campus Network",
+    "type": "speech",
+    "level": "A1",
+    "content": "Connect to the campus Wi-Fi.",
+    "translation": "連接到校園 Wi-Fi。",
+    "tags": "tech, campus"
+  },
+  {
+    "title": "Campus Network",
+    "type": "speech",
+    "level": "A1",
+    "content": "The internet is fast here.",
+    "translation": "這裡的網路很快。",
+    "tags": "tech, campus"
+  },
+  {
+    "title": "Campus Network",
+    "type": "speech",
+    "level": "A1",
+    "content": "I have no signal.",
+    "translation": "我沒有訊號。",
+    "tags": "tech, campus"
+  },
+  {
+    "title": "Online Learning Platform",
+    "type": "speech",
+    "level": "A1",
+    "content": "Log in to the learning portal.",
+    "translation": "登入學習入口網站。",
+    "tags": "tech, academic"
+  },
+  {
+    "title": "Online Learning Platform",
+    "type": "speech",
+    "level": "A1",
+    "content": "Download the course materials.",
+    "translation": "下載課程教材。",
+    "tags": "tech, academic"
+  },
+  {
+    "title": "Online Learning Platform",
+    "type": "speech",
+    "level": "A1",
+    "content": "Upload your homework.",
+    "translation": "上傳你的作業。",
+    "tags": "tech, academic"
+  },
+  {
+    "title": "Online Learning Platform",
+    "type": "speech",
+    "level": "A1",
+    "content": "Watch the video lecture.",
+    "translation": "觀看影片講座。",
+    "tags": "tech, academic"
+  },
+  {
+    "title": "Administration Office",
+    "type": "speech",
+    "level": "A1",
+    "content": "I am a new student.",
+    "translation": "我是一名新生。",
+    "tags": "admin, enrollment"
+  },
+  {
+    "title": "Administration Office",
+    "type": "speech",
+    "level": "A1",
+    "content": "I need a student ID card.",
+    "translation": "我需要一張學生證。",
+    "tags": "admin, enrollment"
+  },
+  {
+    "title": "Administration Office",
+    "type": "speech",
+    "level": "A1",
+    "content": "Complete this form.",
+    "translation": "填寫這份表格。",
+    "tags": "admin, enrollment"
+  },
+  {
+    "title": "Administration Office",
+    "type": "speech",
+    "level": "A1",
+    "content": "Pay the tuition fee.",
+    "translation": "繳交學費。",
+    "tags": "admin, finance"
+  },
+  {
+    "title": "Course Registration",
+    "type": "speech",
+    "level": "A1",
+    "content": "Register for classes.",
+    "translation": "註冊課程。",
+    "tags": "admin, academic"
+  },
+  {
+    "title": "Course Registration",
+    "type": "speech",
+    "level": "A1",
+    "content": "Add a new course.",
+    "translation": "新增一門課程。",
+    "tags": "admin, academic"
+  },
+  {
+    "title": "Course Registration",
+    "type": "speech",
+    "level": "A1",
+    "content": "Drop a course.",
+    "translation": "退選一門課程。",
+    "tags": "admin, academic"
+  },
+  {
+    "title": "Course Registration",
+    "type": "speech",
+    "level": "A1",
+    "content": "This class is full.",
+    "translation": "這門課已滿。",
+    "tags": "admin, academic"
+  },
+  {
+    "title": "Classroom Technology",
+    "type": "speech",
+    "level": "A1",
+    "content": "Turn on the projector.",
+    "translation": "打開投影機。",
+    "tags": "tech, class"
+  },
+  {
+    "title": "Classroom Technology",
+    "type": "speech",
+    "level": "A1",
+    "content": "Use the smart board.",
+    "translation": "使用智慧白板。",
+    "tags": "tech, class"
+  },
+  {
+    "title": "Classroom Technology",
+    "type": "speech",
+    "level": "A1",
+    "content": "The screen is black.",
+    "translation": "螢幕是黑的。",
+    "tags": "tech, class"
+  },
+  {
+    "title": "Classroom Technology",
+    "type": "speech",
+    "level": "A1",
+    "content": "Connect the laptop to the TV.",
+    "translation": "將筆電連接到電視。",
+    "tags": "tech, class"
+  },
+  {
+    "title": "Library Technology",
+    "type": "speech",
+    "level": "A1",
+    "content": "Use the library computer.",
+    "translation": "使用圖書館的電腦。",
+    "tags": "tech, library"
+  },
+  {
+    "title": "Library Technology",
+    "type": "speech",
+    "level": "A1",
+    "content": "Scan this document.",
+    "translation": "掃描這份文件。",
+    "tags": "tech, library"
+  },
+  {
+    "title": "Library Technology",
+    "type": "speech",
+    "level": "A1",
+    "content": "Print your file.",
+    "translation": "列印你的檔案。",
+    "tags": "tech, library"
+  },
+  {
+    "title": "Library Technology",
+    "type": "speech",
+    "level": "A1",
+    "content": "Make a photocopy.",
+    "translation": "影印。",
+    "tags": "tech, library"
+  },
+  {
+    "title": "Digital Security",
+    "type": "speech",
+    "level": "A1",
+    "content": "Do not share your password.",
+    "translation": "不要分享你的密碼。",
+    "tags": "tech, security"
+  },
+  {
+    "title": "Digital Security",
+    "type": "speech",
+    "level": "A1",
+    "content": "Log out of the computer.",
+    "translation": "登出電腦。",
+    "tags": "tech, security"
+  },
+  {
+    "title": "Digital Security",
+    "type": "speech",
+    "level": "A1",
+    "content": "Lock your screen.",
+    "translation": "鎖定你的螢幕。",
+    "tags": "tech, security"
+  },
+  {
+    "title": "Digital Security",
+    "type": "speech",
+    "level": "A1",
+    "content": "Do not click the link.",
+    "translation": "不要點擊連結。",
+    "tags": "tech, security"
+  },
+  {
+    "title": "Research and Data",
+    "type": "speech",
+    "level": "A1",
+    "content": "Save your data.",
+    "translation": "儲存你的資料。",
+    "tags": "tech, research"
+  },
+  {
+    "title": "Research and Data",
+    "type": "speech",
+    "level": "A1",
+    "content": "Make a backup.",
+    "translation": "製作備份。",
+    "tags": "tech, research"
+  },
+  {
+    "title": "Research and Data",
+    "type": "speech",
+    "level": "A1",
+    "content": "Create a new folder.",
+    "translation": "建立一個新資料夾。",
+    "tags": "tech, research"
+  },
+  {
+    "title": "Research and Data",
+    "type": "speech",
+    "level": "A1",
+    "content": "Name the file.",
+    "translation": "為檔案命名。",
+    "tags": "tech, research"
+  },
+  {
+    "title": "Virtual Meetings",
+    "type": "speech",
+    "level": "A1",
+    "content": "Join the online meeting.",
+    "translation": "加入線上會議。",
+    "tags": "tech, meeting"
+  },
+  {
+    "title": "Virtual Meetings",
+    "type": "speech",
+    "level": "A1",
+    "content": "Turn on your camera.",
+    "translation": "打開你的攝影機。",
+    "tags": "tech, meeting"
+  },
+  {
+    "title": "Virtual Meetings",
+    "type": "speech",
+    "level": "A1",
+    "content": "Mute your microphone.",
+    "translation": "將你的麥克風靜音。",
+    "tags": "tech, meeting"
+  },
+  {
+    "title": "Virtual Meetings",
+    "type": "speech",
+    "level": "A1",
+    "content": "Share your screen.",
+    "translation": "分享你的螢幕。",
+    "tags": "tech, meeting"
+  },
+  {
+    "title": "Campus Facilities",
+    "type": "speech",
+    "level": "A1",
+    "content": "Where is the IT center?",
+    "translation": "資訊中心在哪裡？",
+    "tags": "campus, tech"
+  },
+  {
+    "title": "Campus Facilities",
+    "type": "speech",
+    "level": "A1",
+    "content": "Use the charging station.",
+    "translation": "使用充電站。",
+    "tags": "campus, tech"
+  },
+  {
+    "title": "Campus Facilities",
+    "type": "speech",
+    "level": "A1",
+    "content": "Book a study room.",
+    "translation": "預約一間討論室。",
+    "tags": "campus, academic"
+  },
+  {
+    "title": "Campus Facilities",
+    "type": "speech",
+    "level": "A1",
+    "content": "Show your student card.",
+    "translation": "出示你的學生證。",
+    "tags": "campus, admin"
+  },
+  {
+    "title": "Software Basics",
+    "type": "speech",
+    "level": "A1",
+    "content": "Open Microsoft Word.",
+    "translation": "打開 Microsoft Word。",
+    "tags": "tech, software"
+  },
+  {
+    "title": "Software Basics",
+    "type": "speech",
+    "level": "A1",
+    "content": "Write a report.",
+    "translation": "寫一份報告。",
+    "tags": "tech, academic"
+  },
+  {
+    "title": "Software Basics",
+    "type": "speech",
+    "level": "A1",
+    "content": "Create a spreadsheet.",
+    "translation": "建立一個試算表。",
+    "tags": "tech, software"
+  },
+  {
+    "title": "Software Basics",
+    "type": "speech",
+    "level": "A1",
+    "content": "Make a presentation.",
+    "translation": "製作一份簡報。",
+    "tags": "tech, software"
+  },
+  {
+    "title": "Software Basics",
+    "type": "speech",
+    "level": "A1",
+    "content": "Insert a picture.",
+    "translation": "插入圖片。",
+    "tags": "tech, software"
+  },
+  {
+    "title": "Software Basics",
+    "type": "speech",
+    "level": "A1",
+    "content": "Format the text.",
+    "translation": "設定文字格式。",
+    "tags": "tech, software"
+  },
+  {
+    "title": "Software Basics",
+    "type": "speech",
+    "level": "A1",
+    "content": "Use the spell check.",
+    "translation": "使用拼字檢查。",
+    "tags": "tech, software"
+  },
+  {
+    "title": "Academic Calendar",
+    "type": "speech",
+    "level": "A1",
+    "content": "Check the academic calendar.",
+    "translation": "查看校曆。",
+    "tags": "admin, academic"
+  },
+  {
+    "title": "Academic Calendar",
+    "type": "speech",
+    "level": "A1",
+    "content": "The semester starts in September.",
+    "translation": "學期從九月開始。",
+    "tags": "admin, academic"
+  },
+  {
+    "title": "Academic Calendar",
+    "type": "speech",
+    "level": "A1",
+    "content": "Final exams are in December.",
+    "translation": "期末考在十二月。",
+    "tags": "admin, academic"
+  },
+  {
+    "title": "Academic Calendar",
+    "type": "speech",
+    "level": "A1",
+    "content": "There is a holiday next week.",
+    "translation": "下週有假期。",
+    "tags": "admin, academic"
+  },
+  {
+    "title": "Student Services",
+    "type": "speech",
+    "level": "A1",
+    "content": "Talk to your advisor.",
+    "translation": "與你的指導老師談談。",
+    "tags": "admin, support"
+  },
+  {
+    "title": "Student Services",
+    "type": "speech",
+    "level": "A1",
+    "content": "Get a transcript.",
+    "translation": "申請成績單。",
+    "tags": "admin, support"
+  },
+  {
+    "title": "Student Services",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ask for a scholarship.",
+    "translation": "申請獎學金。",
+    "tags": "admin, finance"
+  },
+  {
+    "title": "Student Services",
+    "type": "speech",
+    "level": "A1",
+    "content": "Visit the career center.",
+    "translation": "拜訪就業輔導中心。",
+    "tags": "admin, support"
+  },
+  {
+    "title": "Hardware Issues",
+    "type": "speech",
+    "level": "A1",
+    "content": "The keyboard is broken.",
+    "translation": "鍵盤壞了。",
+    "tags": "tech, IT support"
+  },
+  {
+    "title": "Hardware Issues",
+    "type": "speech",
+    "level": "A1",
+    "content": "My laptop battery is low.",
+    "translation": "我的筆電電池電量低。",
+    "tags": "tech, IT support"
+  },
+  {
+    "title": "Hardware Issues",
+    "type": "speech",
+    "level": "A1",
+    "content": "I forgot my charger.",
+    "translation": "我忘了我的充電器。",
+    "tags": "tech, IT support"
+  },
+  {
+    "title": "Hardware Issues",
+    "type": "speech",
+    "level": "A1",
+    "content": "The headphone jack is loose.",
+    "translation": "耳機插孔鬆了。",
+    "tags": "tech, IT support"
+  },
+  {
+    "title": "Digital Communication",
+    "type": "speech",
+    "level": "A1",
+    "content": "Send a calendar invite.",
+    "translation": "發送日曆邀請。",
+    "tags": "tech, meeting"
+  },
+  {
+    "title": "Digital Communication",
+    "type": "speech",
+    "level": "A1",
+    "content": "Set a reminder.",
+    "translation": "設定提醒。",
+    "tags": "tech, daily"
+  },
+  {
+    "title": "Digital Communication",
+    "type": "speech",
+    "level": "A1",
+    "content": "Use the group chat.",
+    "translation": "使用群組聊天。",
+    "tags": "tech, meeting"
+  },
+  {
+    "title": "Digital Communication",
+    "type": "speech",
+    "level": "A1",
+    "content": "I will send you the link.",
+    "translation": "我會把連結傳給你。",
+    "tags": "tech, meeting"
+  },
+  {
+    "title": "Enrollment Process",
+    "type": "speech",
+    "level": "A1",
+    "content": "Fill in your address.",
+    "translation": "填寫你的地址。",
+    "tags": "admin, enrollment"
+  },
+  {
+    "title": "Enrollment Process",
+    "type": "speech",
+    "level": "A1",
+    "content": "Select your major.",
+    "translation": "選擇你的主修科系。",
+    "tags": "admin, enrollment"
+  },
+  {
+    "title": "Enrollment Process",
+    "type": "speech",
+    "level": "A1",
+    "content": "Submit the application.",
+    "translation": "提交申請書。",
+    "tags": "admin, enrollment"
+  },
+  {
+    "title": "Enrollment Process",
+    "type": "speech",
+    "level": "A1",
+    "content": "Wait for approval.",
+    "translation": "等待審核。",
+    "tags": "admin, enrollment"
+  },
+  {
+    "title": "Assessment and Grades",
+    "type": "speech",
+    "level": "A1",
+    "content": "Check your grades online.",
+    "translation": "在線上查看你的成績。",
+    "tags": "tech, academic"
+  },
+  {
+    "title": "Assessment and Grades",
+    "type": "speech",
+    "level": "A1",
+    "content": "I got an A.",
+    "translation": "我得了 A。",
+    "tags": "academic, admin"
+  },
+  {
+    "title": "Assessment and Grades",
+    "type": "speech",
+    "level": "A1",
+    "content": "Take an online quiz.",
+    "translation": "參加線上測驗。",
+    "tags": "tech, academic"
+  },
+  {
+    "title": "Assessment and Grades",
+    "type": "speech",
+    "level": "A1",
+    "content": "Submit your assignment.",
+    "translation": "繳交你的作業。",
+    "tags": "academic, tech"
+  },
+  {
+    "title": "Equipment Checkout",
+    "type": "speech",
+    "level": "A1",
+    "content": "Borrow a laptop.",
+    "translation": "借用筆記型電腦。",
+    "tags": "tech, library"
+  },
+  {
+    "title": "Equipment Checkout",
+    "type": "speech",
+    "level": "A1",
+    "content": "Return the device.",
+    "translation": "歸還設備。",
+    "tags": "tech, library"
+  },
+  {
+    "title": "Equipment Checkout",
+    "type": "speech",
+    "level": "A1",
+    "content": "Is the camera available?",
+    "translation": "這台相機可以借用嗎？",
+    "tags": "tech, library"
+  },
+  {
+    "title": "Equipment Checkout",
+    "type": "speech",
+    "level": "A1",
+    "content": "I need a voice recorder.",
+    "translation": "我需要一台錄音筆。",
+    "tags": "tech, library"
+  },
+  {
+    "title": "Data Management",
+    "type": "speech",
+    "level": "A1",
+    "content": "Organize your files.",
+    "translation": "整理你的檔案。",
+    "tags": "tech, research"
+  },
+  {
+    "title": "Data Management",
+    "type": "speech",
+    "level": "A1",
+    "content": "Delete the old files.",
+    "translation": "刪除舊檔案。",
+    "tags": "tech, research"
+  },
+  {
+    "title": "Data Management",
+    "type": "speech",
+    "level": "A1",
+    "content": "Search for a document.",
+    "translation": "搜尋一份文件。",
+    "tags": "tech, research"
+  },
+  {
+    "title": "Data Management",
+    "type": "speech",
+    "level": "A1",
+    "content": "Rename this folder.",
+    "translation": "重新命名這個資料夾。",
+    "tags": "tech, research"
+  },
+  {
+    "title": "Tech Support Request",
+    "type": "speech",
+    "level": "A1",
+    "content": "Submit a help ticket.",
+    "translation": "提交幫助工單。",
+    "tags": "tech, IT support"
+  },
+  {
+    "title": "Tech Support Request",
+    "type": "speech",
+    "level": "A1",
+    "content": "Describe the problem.",
+    "translation": "描述問題。",
+    "tags": "tech, IT support"
+  },
+  {
+    "title": "Tech Support Request",
+    "type": "speech",
+    "level": "A1",
+    "content": "Wait for assistance.",
+    "translation": "等待協助。",
+    "tags": "tech, IT support"
+  },
+  {
+    "title": "Tech Support Request",
+    "type": "speech",
+    "level": "A1",
+    "content": "Restart the computer.",
+    "translation": "重新啟動電腦。",
+    "tags": "tech, IT support"
+  },
+  {
+    "title": "Campus Card",
+    "type": "speech",
+    "level": "A1",
+    "content": "Tap your card here.",
+    "translation": "在這裡刷卡。",
+    "tags": "campus, tech"
+  },
+  {
+    "title": "Campus Card",
+    "type": "speech",
+    "level": "A1",
+    "content": "Add money to your card.",
+    "translation": "儲值你的卡片。",
+    "tags": "campus, admin"
+  },
+  {
+    "title": "Campus Card",
+    "type": "speech",
+    "level": "A1",
+    "content": "Report a lost card.",
+    "translation": "掛失卡片。",
+    "tags": "campus, admin"
+  },
+  {
+    "title": "Campus Card",
+    "type": "speech",
+    "level": "A1",
+    "content": "Use the card to open the door.",
+    "translation": "用卡片開門。",
+    "tags": "campus, tech"
+  },
+  {
+    "title": "Cooking Dinner",
+    "type": "speach",
+    "level": "A2",
+    "content": "Last night, I invited my sister for dinner. We prepared pasta with tomato sauce and a fresh salad. Cooking together is a great way to spend time and talk about our day.",
+    "translation": "昨晚，我邀請我姐姐來吃晚餐。我們準備了番茄醬意大利麵和新鮮沙拉。一起做飯是度過時光和談論我們一天的絕佳方式。"
+  },
+  {
+    "title": "Learning a New Language",
+    "type": "speach",
+    "level": "A2",
+    "content": "Learning a language is difficult but rewarding. I try to practice every day for thirty minutes. Listening to songs and watching movies helps me understand how people really speak.",
+    "translation": "學習語言很困難，但很有價值。我嘗試每天練習三十分鐘。聽歌和看電影可以幫助我理解人們真實的說話方式。"
+  },
+  {
+    "title": "The Benefits of Exercise",
+    "type": "speach",
+    "level": "B1",
+    "content": "Regular exercise is essential for maintaining physical and mental health. Whether it is swimming, running, or simply walking in the woods, staying active reduces stress and improves your overall mood.",
+    "translation": "定期運動對於維持身心健康至關重要。無論是游泳、跑步，還是僅僅在林中散步，保持活躍都能減輕壓力並改善你的整體情緒。"
+  },
+  {
+    "title": "Digital Nomads",
+    "type": "speach",
+    "level": "B1",
+    "content": "Many people nowadays choose to work remotely while traveling the world. These digital nomads often stay in different cities for a few months at a time, balancing their professional responsibilities with cultural exploration.",
+    "translation": "現今許多人選擇在環遊世界的同時遠程工作。這些數位遊民通常一次在不同的城市待上幾個月，在職業責任與文化探索之間取得平衡。"
+  },
+  {
+    "title": "Sustainable Living",
+    "type": "speach",
+    "level": "B2",
+    "content": "Adopting a sustainable lifestyle requires a conscious effort to minimize one's carbon footprint. This involves not only recycling and reducing energy consumption but also supporting ethical brands that prioritize environmental conservation over short-term profits.",
+    "translation": "採取永續的生活方式需要自覺努力以減少個人的碳足跡。這不僅涉及回收和減少能源消耗，還涉及支持那些優先考慮環境保護而非短期利潤的道德品牌。"
+  },
+  {
+    "title": "Artificial Intelligence in Society",
+    "type": "speach",
+    "level": "B2",
+    "content": "The rapid advancement of artificial intelligence presents both unprecedented opportunities and significant ethical challenges. As AI systems become more integrated into our daily lives, it is crucial to establish regulations that ensure transparency and prevent algorithmic bias.",
+    "translation": "人工智能的快速發展既帶來了前所未有的機遇，也帶來了重大的倫理挑戰。隨著 AI 系統更深入地融入我們的日常生活，建立確保透明度並防止算法偏見的法規至關重要。"
+  }
+]
