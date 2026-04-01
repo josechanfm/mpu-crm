@@ -32,13 +32,15 @@
       </div>
 
       <div class="absolute -top-3 right-4 flex gap-2">
-        <button 
-          @click="playReference"
-          :disabled="loading"
-          class="flex items-center gap-2 px-3 py-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white text-xs font-bold rounded-full shadow-sm transition-all"
-        >
-          <span class="text-sm">🔊</span> LISTEN
-        </button>
+<button 
+  @click="playReference"
+  :disabled="loading || isPlaying"
+  class="flex items-center gap-2 px-3 py-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white text-xs font-bold rounded-full shadow-sm transition-all"
+>
+  <span v-if="isPlaying">⏳ SPEAKING...</span>
+  <span v-else-if="playCount === 0">🔊 LISTEN (NORMAL)</span>
+  <span v-else>🐌 LISTEN (SLOW)</span>
+</button>
       </div>
     </div>
 
@@ -61,7 +63,7 @@
 
         <button 
           @click="fetchNewMaterial"
-          class="p-3 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-colors"
+          class="p-3 text-gray-400 hover:text-blue-600 bg-gray-200 hover:bg-blue-100 rounded-xl transition-colors"
           title="Next Material"
         >
           <span class="text-xl">⏭️</span>
@@ -105,7 +107,11 @@ export default {
       isListening: false,
       accuracy: null,
       loading: false,
-      recognition: null
+      recognition: null,
+      silenceTimer: null,
+      silenceDuration: 5000, // 5 seconds of silence before auto-stop
+      playCount: 0,
+      isPlaying: false // New state to disable button while speaking
     };
   },
 
@@ -128,7 +134,8 @@ export default {
       this.loading = true;
       this.resetDemo();
       this.showTranslation = false; // Reset translation visibility for new content
-      
+      this.playCount = 0; // RESET HERE
+
       try {
         const response = await axios.get('/learner/get_material', {
           params: { type: 'speech', level: this.level }
@@ -155,25 +162,59 @@ export default {
       this.recognition.interimResults = true;
       this.recognition.lang = 'en-US';
 
+      // Triggered when the browser stops the microphone (due to silence or manual stop)
+      this.recognition.onend = () => {
+        this.isListening = false;
+        this.clearSilenceTimer();
+      };
+
       this.recognition.onresult = (event) => {
+        // RESET TIMER: The user is speaking
+        this.resetSilenceTimer();
+
         let finalTranscript = '';
         for (let i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
             finalTranscript += event.results[i][0].transcript;
           }
         }
+
         if (finalTranscript) {
           this.transcript = finalTranscript;
           this.calculateAccuracy();
+          
+          // OPTIONAL: If it's a short A1 sentence, stop immediately after first final result
+          //this.toggleListening(); 
         }
       };
     },
 
     playReference() {
+      if (this.isPlaying) return; // Prevent overlapping clicks
+
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(this.targetText);
       utterance.lang = 'en-US';
-      utterance.rate = 0.9;
+
+      // Set speed based on current playCount
+      utterance.rate = this.playCount === 0 ? 1.0 : 0.3;
+      
+      // Start state
+      this.isPlaying = true;
+
+      // IMPORTANT: The "Switch" happens here
+      utterance.onend = () => {
+        this.isPlaying = false;
+        // Only increment after the first successful play
+        if (this.playCount === 0) {
+          this.playCount = 1; 
+        }
+      };
+
+      utterance.onerror = () => {
+        this.isPlaying = false;
+      };
+
       window.speechSynthesis.speak(utterance);
     },
 
@@ -208,8 +249,49 @@ export default {
       });
 
       this.accuracy = Math.round((matchCount / targetWords.length) * 100);
-    }
+    },
+
+    resetSilenceTimer() {
+        this.clearSilenceTimer();
+        this.silenceTimer = setTimeout(() => {
+          if (this.isListening) {
+            console.log("Auto-stopping due to silence...");
+            this.toggleListening();
+          }
+        }, this.silenceDuration);
+      },
+
+    clearSilenceTimer() {
+      if (this.silenceTimer) {
+        clearTimeout(this.silenceTimer);
+        this.silenceTimer = null;
+      }
+    },
+
+    // Update toggleListening to start the timer
+    toggleListening() {
+      if (!this.recognition) return alert("Browser not supported.");
+      
+      if (this.isListening) {
+        this.recognition.stop();
+        this.clearSilenceTimer();
+        this.isListening = false;
+      } else {
+        this.transcript = "";
+        this.accuracy = null;
+        this.recognition.start();
+        this.isListening = true;
+        this.resetSilenceTimer(); // Start the countdown immediately
+      }
+    },
+    
+    // Ensure we clean up if the user leaves the page
+    beforeUnmount() {
+      this.clearSilenceTimer();
+      if (this.recognition) this.recognition.stop();
+    }    
   }
+
 };
 </script>
 
