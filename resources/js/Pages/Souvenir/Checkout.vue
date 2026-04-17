@@ -16,11 +16,11 @@
     <div>
             <div class="max-w-3xl mx-auto sm:px-6 p-4">
                 <div class="bg-white shadow-md rounded-lg p-4">
-                    <div v-if="order.items.length === 0" class="text-center text-red-600">
+                    <div v-if="`order.cardItems`.length === 0" class="text-center text-red-600">
                         <p class="text-lg">You don't have any items selected. / 你沒有選擇任何項目。</p>
                     </div>
                     <ul v-else class="divide-gray-200">
-                        <li v-for="item in order.items" :key="item.id" class="flex items-center justify-between py-4">
+                        <li v-for="item in order.cardItems" :key="item.id" class="flex items-center justify-between py-4">
                             <span class="w-3/4 text-gray-700 font-medium truncate">{{ item.name }} ( x {{ item.qty }} )</span>
                             <span class="w-1/4 text-gray-800 font-semibold">MOP${{ (item.amount).toFixed(2) }} </span>
                         </li>

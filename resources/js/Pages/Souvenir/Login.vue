@@ -50,8 +50,7 @@ const submit = () => {
 
         <div class="flex justify-center items-center pb-10">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight text-center">
-                預購畢業生限量專屬紀念品<br>
-                Pre-order of Graduation Gifts
+                “澳理大小熊”購買專頁<br>MPU Bear Order Form
             </h2>
         </div>
 

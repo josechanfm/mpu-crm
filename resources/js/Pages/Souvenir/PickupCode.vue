@@ -3,8 +3,8 @@
         <template #header>
             <div class="flex justify-between items-center">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    預購畢業生限量專屬紀念品<br>
-                    Pre-order of Graduation Gifts
+                    “澳理大小熊”購買專頁<br>
+                    MPU Bear Order Form
                 </h2>
                 <div class="flex justify-end gap-2">
                     <div v-if="user" @click="logout">Logout<br>登出</div>

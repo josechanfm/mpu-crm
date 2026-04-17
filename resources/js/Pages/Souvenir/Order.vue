@@ -3,8 +3,8 @@
         <template #header>
             <div class="flex justify-between items-center">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    預購畢業生限量專屬紀念品<br>
-                    Pre-order of Graduation Gifts
+                    “澳理大小熊”購買專頁<br>
+                    MPU Bear Order Form
                 </h2>
                 <div class="flex justify-end gap-2">
                     <button v-if="user" @click="logout"
@@ -47,16 +47,8 @@
 
         <div class="py-4 sm:py-6">
             <div class="mx-4 mb-6 text-sm sm:text-base text-gray-600 space-y-2">
-                <p>歡迎參與"畢業生限量專屬紀念品"預購活動！本校特意為準畢業生製作了3款專屬紀念品，濃縮校園記憶，注入點滴情誼，期望澳理大的關懷能陪伴畢業生走過更多的人生角色與秋冬。本次預購活動純屬自願性質，收益將全數作為大學收入用於母校發展。有興趣的同學可填寫下表，並繳付預購金額，支持本次活動。在此，祝願同學順利畢業，前程錦繡！
-                </p>
-                <p>MPU warmly invite you to participate in our "Graduation Gifts (Limited Edition)" pre-ordering! Our
-                    university
-                    has crafted 3 exclusive items for graduating students, capturing campus memories and celebrating the
-                    friendships formed here. We hope that the support from MPU carried in the gifts will accompany
-                    graduates all
-                    the time as they embrace new roles in life. For interested students, please fill out the pre-order
-                    form
-                    below. Last but not least, wishing you a smooth graduation and a bright future ahead!</p>
+                <p>歡迎購買 “澳理大小熊”！本校特意為準畢業生製作了“澳理大小熊”，濃縮校園記憶，注入點滴情誼，期望澳理大的關懷能陪伴準畢業生走過更多的人生角色與秋冬。是次銷售只向本校準畢業生開放，收益將全數作為大學收入用於母校發展。欲選購的同學可先憑學生帳號登入本購買專頁，將小熊商品加至購買車，並提交支付。<strong>購買前請務必閱讀 “購買須知”</strong>。在此，祝願同學順利畢業，前程似錦！</p>
+                <p>Welcome! We have created a special MPU Bear just for you (graduating students) to capture your memories here and carry the University's warmth into your future. The ordering of the bear is now only open to MPU’s graduating students, with all proceeds supporting our alma mater’s development. To buy one, please log in with your student account, add the bear to the cart, and proceed to payment. <strong>You should also read “Purchase Note” before the purchase.</strong> Last but not least, we wish you a smooth graduation and a bright future ahead!</p>
             </div>
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-3 sm:p-4">
@@ -98,37 +90,20 @@
             <!-- Terms and Conditions -->
             <div class="p-5 bg-gray-50 mt-6 rounded-lg">
                 <h4 class="font-bold text-gray-800 mb-2">預購須知：</h4>
-                <p class="text-sm text-gray-600 mb-4">本人(即購買人)已知悉並接受 (1) 此預購商品及款項一經付款，不能更改或退款；(2) 小心保管付款/領取憑證，於簽領時出示；(3)
-                    由他人代簽領，毋需事先申請，但代領人須出示簽領憑證，因此購買人將自行承擔因轉發憑證所衍生之風險及或有之損失；(4)
-                    按照簽領指引及時間領取預購貨品，不得另約時間領取，逾期未領者，不設補領，不設退款；(5)
-                    簽領紀念品時，當場檢查貨品，若有明顯質量問題，可即場更換，若完成簽領，則不能以任何理由提出更換；(6) 詳情可細閱 "畢業生須知"。</p>
+                <p class="text-sm text-gray-600 mb-4">
+                    本人(即購買人)已知悉並接受 (1) 此商品一經付款，不能更改或退款；(2) 小心保管系統自動生成的單據及領取二維碼，於簽領時出示；(3) 商品只作線下領取，不設寄送服務；(4) 按照簽領指引及時間領取商品，不得另約時間領取，逾期未領者，不設補領，不設退款；(5) 領取時，應當場檢查商品，貨品出門恕不退換；(6) 由他人代領時，毋需事先申請，唯代領人須出示領取二維碼，因此本人(購買人)將自行承擔因轉發單據或領取二維碼所衍生之風險及或有之損失。
+                </p>
 
-                <h4 class="font-bold text-gray-800 mb-2">Note：</h4>
-                <p class="text-sm text-gray-600">I (the buyer) understand and agree to the following (1) Once the
-                    payment is
-                    made, the order cannot be changed or refunded; (2) I will keep my payment/collection receipt and
-                    present it
-                    when picking up my item(s); (3) Collection by a third party does not require prior application, but
-                    they
-                    must present the collection receipt. In this case, the buyer will bear any risks and losses
-                    associated with
-                    forwarding the receipt or related proof to the third party; (4) Items must be collected according to
-                    the
-                    provided guidelines and schedule. No alternative collection times will be accommodated, and items
-                    not
-                    collected by the deadline will not be eligible for re-collection or refunds; (5) Check my items on
-                    the spot
-                    upon collection. If there is a clear quality issue, I may request an immediate exchange. Otherwise,
-                    no
-                    exchanges can be made for any reason once the collection is accepted; (6) For more details, I shall
-                    refer to
-                    the "Graduates' Information Kit".</p>
+                <h4 class="font-bold text-gray-800 mb-2">Purchase Note:</h4>
+                <p class="text-sm text-gray-600">
+                    I (the buyer) understand and agree to the following: (1) Once the payment is made, the order cannot be reverted or refunded; (2) I will keep my payment receipt and the item collection QR code on my own, and present them to the staff when picking up my item; (3) No shipping services will be offered and all items must be collected in person; (4) All items are to be collected according to the instructions and schedule. No alternative collection timeslots will be accommodated. Items not collected by the deadline will be forfeited, and no refunds will be issued; (5) I will inspect my items on the spot upon collection. No exchanges thereafter; (6) Prior application is not required for collection by a third party; however, the proxy must present the collection QR code. Therefore, the buyer assumes full responsibility for any risks or losses arising from sharing the receipt or QR code.                    
+                </p>
             </div>
         </div>
 
         <!-- Checkout drawer - Mobile optimized -->
         <a-drawer :title="$t('cart.title')" :visible="selectedIsOpen" @close="selectedIsOpen = false" placement="right"
-            :width="windowWidth <= 640 ? '100%' : '400px'">
+            :width="windowWidth <= 640 ? '100%' : '400px' ">
             <div v-if="cartItems.length === 0" class="text-center py-8">
                 <p class="text-gray-500">You don't have any item selected.</p>
                 <p class="text-gray-500 mb-6">您尚未選擇任何商品。</p>
@@ -161,7 +136,7 @@
                     </ul>
 
                     <!-- Order Form -->
-                    <a-form :model="orderForm" layout="vertical" :rules="rules" @finish="handleOrderFinish"
+                    <a-form ref="orderForm" :model="orderForm" layout="vertical" :rules="rules" @finish="handleOrderFinish"
                         class="mt-6 space-y-3">
 
                         <a-form-item label="Faculty / 系所" name="faculty" class="mb-0">
@@ -184,14 +159,18 @@
                         </a-form-item>
 
                         <a-form-item label="Contact Phone Number / 聯絡電話" name="phone" class="mb-0">
-                            <a-input v-model:value="orderForm.phone" placeholder="Enter your phone number / 輸入您的電話號碼"
+                            <a-input type="input" v-model:value="orderForm.phone" placeholder="Enter your phone number / 輸入您的電話號碼"
                                 class="w-full" />
                         </a-form-item>
 
                         <a-form-item label="Personal Email (optional) / 個人電子郵件（可選）" name="email" class="mb-0">
-                            <a-input v-model:value="orderForm.email" placeholder="Enter your email / 輸入您的電子郵件"
+                            <a-input type="input" v-model:value="orderForm.email" placeholder="Enter your email / 輸入您的電子郵件"
                                 class="w-full" />
                         </a-form-item>
+                        <a-form-item label="Acknowledgement / 知悉" name="acknowledge" class="mb-0">
+                            <a-checkbox v-model:checked="orderForm.acknowledge">本人已知悉並接受 “購買須知”之內容</a-checkbox>
+                        </a-form-item>
+                        
                     </a-form>
                 </div>
 
@@ -297,6 +276,7 @@ export default {
                 degree: '',
                 phone: '',
                 email: '',
+                acknowledge:false
             },
             faculties: [
                 { label: 'FAC / 應用科學學院', value: 'FCA' },
@@ -317,6 +297,12 @@ export default {
                 email: [
                     { type: 'email', message: 'Please enter a valid email address' },
                 ],
+                acknowledge: [{ 
+                    required: true, 
+                    message: 'You must agree to the terms!',
+                    validator: (_, value) => 
+                    value ? Promise.resolve() : Promise.reject('Please check the box')
+                }]
             },
         };
     },
@@ -408,26 +394,30 @@ export default {
                 this.$message.warning('Your cart is empty / 購物車是空的');
                 return;
             }
+            this.$refs.orderForm.validate().then(() => {
+                this.orderForm.cartItems = this.cartItems;
 
-            this.orderForm.cartItems = this.cartItems;
-
-            this.$inertia.post(route('souvenir.checkout'), this.orderForm, {
-                onSuccess: () => {
-                    this.cartItems = [];
-                    this.cartItemCount = 0;
-                    this.selectedIsOpen = false;
-                    this.orderForm = {
-                        faculty: '',
-                        degree: '',
-                        phone: '',
-                        email: '',
-                    };
-                    this.$message.success('Order placed successfully!');
-                },
-                onError: (errors) => {
-                    console.error('Order error:', errors);
-                },
-            });
+                this.$inertia.post(route('souvenir.checkout'), this.orderForm, {
+                    onSuccess: () => {
+                        this.cartItems = [];
+                        this.cartItemCount = 0;
+                        this.selectedIsOpen = false;
+                        this.orderForm = {
+                            faculty: '',
+                            degree: '',
+                            phone: '',
+                            email: '',
+                        };
+                        this.$message.success('Order placed successfully!');
+                    },
+                    onError: (errors) => {
+                        console.error('Order error:', errors);
+                    },
+                });
+            }).catch(() => {
+                // Validation failed – show a user-friendly message
+                this.$message.error('Please fill in all required fields correctly / 請正確填寫所有必填欄位');
+            });                
         },
         triggerAnimation() {
             const cartIcon = this.cartIconRef;

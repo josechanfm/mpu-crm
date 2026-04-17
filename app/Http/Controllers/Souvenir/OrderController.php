@@ -103,6 +103,7 @@ class OrderController extends Controller
         //
     }
     public function checkout(Request $request){
+        // dd($request->all(), session()->has('souvenirUser'));
         if(!session()->has('souvenirUser')){
             return to_route("souvenir.login");
         }
@@ -111,6 +112,7 @@ class OrderController extends Controller
     }
     public function checkoutOrder(Request $request){
         $cart=session('cart');
+
         if($cart==null){
             return redirect()->route('souvenir');
         }
@@ -119,10 +121,11 @@ class OrderController extends Controller
         $cart['netid']=session('souvenirUser')->netid;
         $order=$this->storeToOrder(session('souvenirUser'), $cart);
 
-
         //$paymentData=$this->writePaymentData(session('souvenirUser'), $order, $cart['client_ip']);
         //$order->payment_meta=json_encode($paymentData);
         //$order->save();
+        //dd($request->all(), $order, $cart);
+        
         return Inertia::render("Souvenir/Checkout",[
             "user"=>session("souvenirUser"),
             "order"=>$order,
