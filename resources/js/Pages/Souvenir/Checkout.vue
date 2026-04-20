@@ -3,12 +3,20 @@
         <template #header>
             <div class="flex justify-between items-center">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    預購畢業生限量專屬紀念品<br>
-                    Pre-order of Graduation Gifts
+                    “澳理大小熊”購買專頁<br>
+                    MPU Bear Order Form
                 </h2>
                 <div class="flex justify-end gap-2">
-                    <div v-if="user" @click="logout">Logout<br>登出</div>
-                    <div v-else @click="login">Login<br>登入</div>
+                    <button v-if="user" @click="logout"
+                        class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors duration-200 font-medium text-sm shadow-sm hover:shadow-md flex items-center justify-center min-w-[100px]">
+                        <span>Logout</span>
+                        <span class="ml-1 text-red-100">/ 登出</span>
+                    </button>
+                    <button v-else @click="login"
+                        class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 font-medium text-sm shadow-sm hover:shadow-md flex items-center justify-center min-w-[100px]">
+                        <span>Login</span>
+                        <span class="ml-1 text-blue-100">/ 登入</span>
+                    </button>
                 </div>
             </div>
         </template>
@@ -16,11 +24,11 @@
     <div>
             <div class="max-w-3xl mx-auto sm:px-6 p-4">
                 <div class="bg-white shadow-md rounded-lg p-4">
-                    <div v-if="`order.cardItems`.length === 0" class="text-center text-red-600">
+                    <div v-if="`order.items`.length === 0" class="text-center text-red-600">
                         <p class="text-lg">You don't have any items selected. / 你沒有選擇任何項目。</p>
                     </div>
                     <ul v-else class="divide-gray-200">
-                        <li v-for="item in order.cardItems" :key="item.id" class="flex items-center justify-between py-4">
+                        <li v-for="item in order.items" :key="item.id" class="flex items-center justify-between py-4">
                             <span class="w-3/4 text-gray-700 font-medium truncate">{{ item.name }} ( x {{ item.qty }} )</span>
                             <span class="w-1/4 text-gray-800 font-semibold">MOP${{ (item.amount).toFixed(2) }} </span>
                         </li>
@@ -42,10 +50,10 @@
                     <form method="get" :action="route('souvenir.payment.confirm')" class="mt-6 flex justify-between">
                         <input type="hidden" name="order_uuid" :value="order.uuid" />
                         <div class="flex justify-between w-full">
-                            <a :href="route('souvenir')" class="bg-gray-300 text-gray-800 hover:bg-gray-400 w-full mr-2 text-center">
+                            <a :href="route('souvenir')" class="rounded-md bg-gray-300 text-gray-800 hover:bg-gray-400 w-full mr-2 text-center">
                                 Back to Main Page <br> 返回主頁
                             </a>
-                            <button type="submit" class="bg-blue-600 text-white hover:bg-blue-700 w-full">
+                            <button type="submit" class="rounded-md bg-blue-600 text-white hover:bg-blue-700 w-full">
                                 Confirm to Pay <br> 確認付款
                             </button>
                         </div>

@@ -3,7 +3,8 @@
         <template #header>
             <div class="flex justify-between items-center">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Souvenir Order Form
+                    “澳理大小熊”購買專頁<br>
+                    MPU Bear Order Form
                 </h2>
             </div>
         </template>
@@ -22,7 +23,9 @@
                 <div class="font-bold float-right">Total / 總計: ${{ order.amount.toFixed(2) }}</div>
             </div>
             <div class="text-center p-5">
-                <a-button :href="route('souvenir.order.receipt',{id:order.id, uuid:order.uuid})">Receipt / 收據</a-button>
+                <a-button type="primary" :href="route('souvenir.order.receipt',{id:order.id, uuid:order.uuid})">
+                    Receipt & QR code / 單據及領取二維碼
+                </a-button>
             </div>
             <div class="text-center p-5"><a-button :href="route('souvenir')">Back to Main Page / 返回主要</a-button></div>
         </div>

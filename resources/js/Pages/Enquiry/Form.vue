@@ -147,7 +147,11 @@
                         </a-row>
                         <a-form-item name="email" 
                             :label="fields.email['question_' + lang.lang]"
-                            :rules="{required:true, message:fields.email['question_' + lang.lang] + lang.is_required}">
+                            :rules="[
+                                { required: true, message: fields.email['question_' + lang.lang] + lang.is_required },
+                                { type: 'email', message: fields.email['format_error_' + lang.lang] } 
+                                ]"
+                            >
                             <a-input type="input" v-model:value="enquiry.email" />
                         </a-form-item>
                         <label>{{ fields.contact_number['question_' + lang.lang] }}</label>
@@ -170,6 +174,7 @@
                             </a-col>
                         </a-row>
                     </template>
+
                     <a-form-item name="subjects" 
                         v-if="enquiry.apply != null"
                         :label="fields.subjects['question_' + lang.lang]"
@@ -305,15 +310,20 @@ export default {
     },
     methods: {
         onFinish() {
-            this.$inertia.post(route('enquiry.store'), this.enquiry, {
-                onSuccess: (page) => {
-                    this.enquiry = {}
-                    console.log(page);
-                },
-                onError: (err) => {
-                    console.log(err);
-                }
-            });
+            this.$refs.refEnquiry.validate().then(() => {
+                this.$inertia.post(route('enquiry.store'), this.enquiry, {
+                    onSuccess: (page) => {
+                        this.enquiry = {}
+                        console.log(page);
+                    },
+                    onError: (err) => {
+                        console.log(err);
+                    }
+                });
+            }).catch((err) => {
+                // Validation failed – show a user-friendly message
+            });     
+
         },
         onChangeDegree() {
             delete this.enquiry.admission

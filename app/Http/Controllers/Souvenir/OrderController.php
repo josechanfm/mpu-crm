@@ -124,7 +124,7 @@ class OrderController extends Controller
         //$paymentData=$this->writePaymentData(session('souvenirUser'), $order, $cart['client_ip']);
         //$order->payment_meta=json_encode($paymentData);
         //$order->save();
-        //dd($request->all(), $order, $cart);
+        // dd($request->all(), $order, $cart);
         
         return Inertia::render("Souvenir/Checkout",[
             "user"=>session("souvenirUser"),
@@ -136,7 +136,6 @@ class OrderController extends Controller
     private function storeToOrder($souvenirUser, $cart){
         $orderItems=[];
         $totalAmount=0;
-        
         foreach($cart['cartItems'] as $item){
             $souvenir=Souvenir::find($item['id']);
             $souvenir->update(['stock' => $souvenir->stock - $item['qty']]);
@@ -160,7 +159,8 @@ class OrderController extends Controller
                 'amount'=>$totalAmount,
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
-            return redirect()->route('souvenir');
+            return false;
+            //return redirect()->route('souvenir');
             // Handle the exception (e.g., log it, return a message, etc.)
             // You can check for specific error codes if needed
         }
