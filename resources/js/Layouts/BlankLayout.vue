@@ -29,9 +29,8 @@ const logout = () => {
 <template>
     <!-- component -->
     <!-- Header -->
-    <header>
-        <!-- navbar and menu -->
-        <nav class="shadow fixed top-0 left-0 w-full bg-white z-10">
+    <header class="fixed-header">
+        <nav class="shadow top-0 left-0 w-full bg-white z-10">
             <div class="flex justify-between items-center py-6 px-10 container mx-auto">
                 <div class="shrink-0 flex items-center">
                     <Link :href="route('home')">
@@ -41,24 +40,20 @@ const logout = () => {
             </div>
         </nav>
     </header>
-    <!-- Page Heading -->
-    <header v-if="$slots.header" class="bg-gray-100 shadow mt-28">
-        <div class="mx-auto py-4 px-4 sm:px-6 lg:px-8">
-            <slot name="header" />
-        </div>
-    </header>
 
+    <!-- Page Content -->
     <main>
-        <!-- section hero -->
-        <section>
-            <!-- Page Content -->
-            <main>
-                <div class="">
-                    <div class="sm:px-6 lg:px-4">
-                        <slot />
-                    </div>
+        <div class="">
+            <!-- Page Heading -->
+            <header v-if="$slots.header" class="bg-gray-100 shadow">
+                <div class="mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                    <slot name="header" />
                 </div>
-            </main>
-        </section>
+            </header>
+
+            <div class="sm:px-6 lg:px-4">
+                <slot />
+            </div>
+        </div>
     </main>
 </template>
