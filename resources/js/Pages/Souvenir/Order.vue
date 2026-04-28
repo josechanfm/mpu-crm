@@ -67,10 +67,9 @@
                     <!-- Content Container -->
                     <div class="flex-grow p-4 sm:p-4">
                         <h3 class="text-lg font-semibold text-gray-800 mb-1">{{ product.name }}</h3>
-                        <p class="text-sm text-gray-600 mb-2 line-clamp-2 sm:line-clamp-none"
+                        <p class="text-sm text-gray-600 mb-2 line-clamp-none sm:line-clamp-2"
                             v-html="product.description" />
                         <p class="text-lg font-bold text-blue-600 mb-2">${{ product.price.toFixed(2) }}</p>
-
                         <a-button type="primary" @click="addToCart(product)"
                             :disabled="user == null || selectedProductCount(product.id) >= product.quota" :class="[
                                 'w-full sm:w-auto transition-all',
@@ -86,7 +85,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Terms and Conditions -->
             <div class="p-5 bg-gray-50 mt-6 rounded-lg">
                 <h4 class="font-bold text-gray-800 mb-2">預購須知：</h4>
