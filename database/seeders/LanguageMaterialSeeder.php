@@ -14,8 +14,8 @@ class LanguageMaterialSeeder extends Seeder
     public function run(): void
     {
         // 1. Get the path to the JSON file
-        //en-US, pt-PT
-        $lang='pt-PT';
+        //en-US, pt-PT, de-DE
+        $lang='de-DE';
         $jsonPath = database_path('data/language_materials_'.$lang.'.json');
         
         // 2. Check if file exists to avoid errors

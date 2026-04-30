@@ -1,0 +1,778 @@
+[
+  {
+    "title": "On Campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Wo ist die Universität?",
+    "translation": "Where is the university?",
+    "tags": "campus, orientation"
+  },
+  {
+    "title": "On Campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich bin ein Student.",
+    "translation": "I am a student (male).",
+    "tags": "campus, identity"
+  },
+  {
+    "title": "On Campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich bin eine Studentin.",
+    "translation": "I am a student (female).",
+    "tags": "campus, identity"
+  },
+  {
+    "title": "On Campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Das ist die Bibliothek.",
+    "translation": "This is the library.",
+    "tags": "campus, building"
+  },
+  {
+    "title": "On Campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Wo ist die Mensa?",
+    "translation": "Where is the cafeteria?",
+    "tags": "campus, food"
+  },
+  {
+    "title": "On Campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Das ist das Hörsaalgebäude.",
+    "translation": "This is the lecture hall building.",
+    "tags": "campus, building"
+  },
+  {
+    "title": "On Campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Hier ist das Sekretariat.",
+    "translation": "Here is the secretary's office.",
+    "tags": "campus, admin"
+  },
+  {
+    "title": "Classes",
+    "type": "speech",
+    "level": "A1",
+    "content": "Die Vorlesung beginnt um 10 Uhr.",
+    "translation": "The lecture starts at 10 AM.",
+    "tags": "campus, class"
+  },
+  {
+    "title": "Classes",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich habe heute zwei Kurse.",
+    "translation": "I have two courses today.",
+    "tags": "campus, class"
+  },
+  {
+    "title": "Classes",
+    "type": "speech",
+    "level": "A1",
+    "content": "Der Professor heißt Herr Schmidt.",
+    "translation": "The professor is Mr. Schmidt.",
+    "tags": "campus, teacher"
+  },
+  {
+    "title": "Classes",
+    "type": "speech",
+    "level": "A1",
+    "content": "Das Klassenzimmer ist im ersten Stock.",
+    "translation": "The classroom is on the first floor.",
+    "tags": "campus, class"
+  },
+  {
+    "title": "Classes",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich brauche ein Lehrbuch.",
+    "translation": "I need a textbook.",
+    "tags": "campus, materials"
+  },
+  {
+    "title": "Classes",
+    "type": "speech",
+    "level": "A1",
+    "content": "Hast du einen Stift?",
+    "translation": "Do you have a pen?",
+    "tags": "campus, materials"
+  },
+  {
+    "title": "Classes",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich habe einen Notizblock.",
+    "translation": "I have a notebook.",
+    "tags": "campus, materials"
+  },
+  {
+    "title": "Exam and study",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich lerne für die Prüfung.",
+    "translation": "I am studying for the exam.",
+    "tags": "campus, study"
+  },
+  {
+    "title": "Exam and study",
+    "type": "speech",
+    "level": "A1",
+    "content": "Die Prüfung ist schwer.",
+    "translation": "The exam is difficult.",
+    "tags": "campus, exam"
+  },
+  {
+    "title": "Exam and study",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich habe bestanden!",
+    "translation": "I passed!",
+    "tags": "campus, exam"
+  },
+  {
+    "title": "Exam and study",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich habe die Prüfung nicht bestanden.",
+    "translation": "I did not pass the exam.",
+    "tags": "campus, exam"
+  },
+  {
+    "title": "Library",
+    "type": "speech",
+    "level": "A1",
+    "content": "In der Bibliothek ist es ruhig.",
+    "translation": "It is quiet in the library.",
+    "tags": "campus, library"
+  },
+  {
+    "title": "Library",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich leihe ein Buch aus.",
+    "translation": "I borrow a book.",
+    "tags": "campus, library"
+  },
+  {
+    "title": "Library",
+    "type": "speech",
+    "level": "A1",
+    "content": "Wann ist die Bibliothek geöffnet?",
+    "translation": "When is the library open?",
+    "tags": "campus, library"
+  },
+  {
+    "title": "Library",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich muss das Buch zurückgeben.",
+    "translation": "I have to return the book.",
+    "tags": "campus, library"
+  },
+  {
+    "title": "Cafeteria (Mensa)",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich esse in der Mensa.",
+    "translation": "I eat in the cafeteria.",
+    "tags": "campus, food"
+  },
+  {
+    "title": "Cafeteria (Mensa)",
+    "type": "speech",
+    "level": "A1",
+    "content": "Das Essen ist gut.",
+    "translation": "The food is good.",
+    "tags": "campus, food"
+  },
+  {
+    "title": "Cafeteria (Mensa)",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich möchte einen Salat.",
+    "translation": "I would like a salad.",
+    "tags": "campus, food"
+  },
+  {
+    "title": "Cafeteria (Mensa)",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ein Wasser bitte.",
+    "translation": "A water please.",
+    "tags": "campus, food"
+  },
+  {
+    "title": "Cafeteria (Mensa)",
+    "type": "speech",
+    "level": "A1",
+    "content": "Bezahle ich mit Karte?",
+    "translation": "Do I pay by card?",
+    "tags": "campus, food"
+  },
+  {
+    "title": "Dormitory / Student housing",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich wohne im Studentenwohnheim.",
+    "translation": "I live in the student dormitory.",
+    "tags": "campus, housing"
+  },
+  {
+    "title": "Dormitory / Student housing",
+    "type": "speech",
+    "level": "A1",
+    "content": "Mein Zimmer ist klein.",
+    "translation": "My room is small.",
+    "tags": "campus, housing"
+  },
+  {
+    "title": "Dormitory / Student housing",
+    "type": "speech",
+    "level": "A1",
+    "content": "Meine Mitbewohnerin ist nett.",
+    "translation": "My roommate (female) is nice.",
+    "tags": "campus, housing"
+  },
+  {
+    "title": "Dormitory / Student housing",
+    "type": "speech",
+    "level": "A1",
+    "content": "Wir teilen die Küche.",
+    "translation": "We share the kitchen.",
+    "tags": "campus, housing"
+  },
+  {
+    "title": "Dormitory / Student housing",
+    "type": "speech",
+    "level": "A1",
+    "content": "Die Miete ist 300 Euro pro Monat.",
+    "translation": "The rent is 300 euros per month.",
+    "tags": "campus, housing"
+  },
+  {
+    "title": "Registration and admin",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich muss mich anmelden.",
+    "translation": "I have to register.",
+    "tags": "campus, admin"
+  },
+  {
+    "title": "Registration and admin",
+    "type": "speech",
+    "level": "A1",
+    "content": "Wo ist das Studentenbüro?",
+    "translation": "Where is the student office?",
+    "tags": "campus, admin"
+  },
+  {
+    "title": "Registration and admin",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich brauche die Immatrikulationsbescheinigung.",
+    "translation": "I need the enrollment certificate.",
+    "tags": "campus, admin"
+  },
+  {
+    "title": "Registration and admin",
+    "type": "speech",
+    "level": "A1",
+    "content": "Meine Studentenausweis ist abgelaufen.",
+    "translation": "My student ID has expired.",
+    "tags": "campus, admin"
+  },
+  {
+    "title": "Registration and admin",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich zahle den Semesterbeitrag.",
+    "translation": "I pay the semester fee.",
+    "tags": "campus, admin"
+  },
+  {
+    "title": "Transport to campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich fahre mit dem Bus zur Uni.",
+    "translation": "I take the bus to university.",
+    "tags": "campus, transport"
+  },
+  {
+    "title": "Transport to campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Das Semesterticket ist günstig.",
+    "translation": "The semester ticket is cheap.",
+    "tags": "campus, transport"
+  },
+  {
+    "title": "Transport to campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich gehe zu Fuß zur Uni.",
+    "translation": "I walk to university.",
+    "tags": "campus, transport"
+  },
+  {
+    "title": "Transport to campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Fährst du mit dem Fahrrad?",
+    "translation": "Do you go by bike?",
+    "tags": "campus, transport"
+  },
+  {
+    "title": "Laptop and tech",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich brauche einen Laptop.",
+    "translation": "I need a laptop.",
+    "tags": "campus, tech"
+  },
+  {
+    "title": "Laptop and tech",
+    "type": "speech",
+    "level": "A1",
+    "content": "Das WLAN ist langsam.",
+    "translation": "The Wi-Fi is slow.",
+    "tags": "campus, tech"
+  },
+  {
+    "title": "Laptop and tech",
+    "type": "speech",
+    "level": "A1",
+    "content": "Hast du das Passwort für das WLAN?",
+    "translation": "Do you have the Wi-Fi password?",
+    "tags": "campus, tech"
+  },
+  {
+    "title": "Laptop and tech",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich drucke im Computerraum.",
+    "translation": "I print in the computer room.",
+    "tags": "campus, tech"
+  },
+  {
+    "title": "Group work",
+    "type": "speech",
+    "level": "A1",
+    "content": "Wir arbeiten in einer Gruppe.",
+    "translation": "We work in a group.",
+    "tags": "campus, group"
+  },
+  {
+    "title": "Group work",
+    "type": "speech",
+    "level": "A1",
+    "content": "Wann treffen wir uns?",
+    "translation": "When shall we meet?",
+    "tags": "campus, group"
+  },
+  {
+    "title": "Group work",
+    "type": "speech",
+    "level": "A1",
+    "content": "Wir machen eine Präsentation.",
+    "translation": "We do a presentation.",
+    "tags": "campus, group"
+  },
+  {
+    "title": "Group work",
+    "type": "speech",
+    "level": "A1",
+    "content": "Wer schreibt das Protokoll?",
+    "translation": "Who takes the minutes?",
+    "tags": "campus, group"
+  },
+  {
+    "title": "Professors and staff",
+    "type": "speech",
+    "level": "A1",
+    "content": "Der Professor ist freundlich.",
+    "translation": "The professor is friendly.",
+    "tags": "campus, teacher"
+  },
+  {
+    "title": "Professors and staff",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich habe eine Frage an den Dozenten.",
+    "translation": "I have a question for the lecturer.",
+    "tags": "campus, teacher"
+  },
+  {
+    "title": "Professors and staff",
+    "type": "speech",
+    "level": "A1",
+    "content": "Die Tutorin hilft mir.",
+    "translation": "The tutor (female) helps me.",
+    "tags": "campus, teacher"
+  },
+  {
+    "title": "Campus facilities",
+    "type": "speech",
+    "level": "A1",
+    "content": "Wo ist die Toilette?",
+    "translation": "Where is the toilet?",
+    "tags": "campus, facilities"
+  },
+  {
+    "title": "Campus facilities",
+    "type": "speech",
+    "level": "A1",
+    "content": "Gibt es einen Kopierer?",
+    "translation": "Is there a photocopier?",
+    "tags": "campus, facilities"
+  },
+  {
+    "title": "Campus facilities",
+    "type": "speech",
+    "level": "A1",
+    "content": "Das Studentenwerk hilft bei Wohnungen.",
+    "translation": "The student services help with accommodation.",
+    "tags": "campus, facilities"
+  },
+  {
+    "title": "Time and schedule",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich habe einen Stundenplan.",
+    "translation": "I have a schedule.",
+    "tags": "campus, time"
+  },
+  {
+    "title": "Time and schedule",
+    "type": "speech",
+    "level": "A1",
+    "content": "Der Kurs dauert 90 Minuten.",
+    "translation": "The course lasts 90 minutes.",
+    "tags": "campus, time"
+  },
+  {
+    "title": "Time and schedule",
+    "type": "speech",
+    "level": "A1",
+    "content": "Pause ist um 11:15 Uhr.",
+    "translation": "Break is at 11:15 AM.",
+    "tags": "campus, time"
+  },
+  {
+    "title": "Events and parties",
+    "type": "speech",
+    "level": "A1",
+    "content": "Heute ist eine Studentenparty.",
+    "translation": "Today is a student party.",
+    "tags": "campus, social"
+  },
+  {
+    "title": "Events and parties",
+    "type": "speech",
+    "level": "A1",
+    "content": "Kommst du zur Party?",
+    "translation": "Are you coming to the party?",
+    "tags": "campus, social"
+  },
+  {
+    "title": "Events and parties",
+    "type": "speech",
+    "level": "A1",
+    "content": "Die Party war lustig.",
+    "translation": "The party was fun.",
+    "tags": "campus, social"
+  },
+  {
+    "title": "Events and parties",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich bleibe bis Mitternacht.",
+    "translation": "I stay until midnight.",
+    "tags": "campus, social"
+  },
+  {
+    "title": "Sports on campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich gehe ins Unisportzentrum.",
+    "translation": "I go to the university sports center.",
+    "tags": "campus, sports"
+  },
+  {
+    "title": "Sports on campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Wir spielen Fußball.",
+    "translation": "We play soccer.",
+    "tags": "campus, sports"
+  },
+  {
+    "title": "Sports on campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Magst du Basketball?",
+    "translation": "Do you like basketball?",
+    "tags": "campus, sports"
+  },
+  {
+    "title": "Sports on campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Der Yoga-Kurs ist montags.",
+    "translation": "The yoga class is on Mondays.",
+    "tags": "campus, sports"
+  },
+  {
+    "title": "Part-time job",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich arbeite neben dem Studium.",
+    "translation": "I work while studying.",
+    "tags": "campus, work"
+  },
+  {
+    "title": "Part-time job",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich jobbe in einer Bar.",
+    "translation": "I have a part-time job in a bar.",
+    "tags": "campus, work"
+  },
+  {
+    "title": "Part-time job",
+    "type": "speech",
+    "level": "A1",
+    "content": "Wie viel verdient man pro Stunde?",
+    "translation": "How much do you earn per hour?",
+    "tags": "campus, work"
+  },
+  {
+    "title": "Part-time job",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich suche einen Job als Tutor.",
+    "translation": "I am looking for a job as a tutor.",
+    "tags": "campus, work"
+  },
+  {
+    "title": "Money and budget",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich habe wenig Geld.",
+    "translation": "I have little money.",
+    "tags": "campus, money"
+  },
+  {
+    "title": "Money and budget",
+    "type": "speech",
+    "level": "A1",
+    "content": "Das Buch ist teuer.",
+    "translation": "The book is expensive.",
+    "tags": "campus, money"
+  },
+  {
+    "title": "Money and budget",
+    "type": "speech",
+    "level": "A1",
+    "content": "Kannst du mir etwas Geld leihen?",
+    "translation": "Can you lend me some money?",
+    "tags": "campus, money"
+  },
+  {
+    "title": "Money and budget",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich spare für ein neues Fahrrad.",
+    "translation": "I am saving for a new bicycle.",
+    "tags": "campus, money"
+  },
+  {
+    "title": "Health on campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Mir ist schlecht.",
+    "translation": "I feel sick.",
+    "tags": "campus, health"
+  },
+  {
+    "title": "Health on campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Wo ist die studentische Krankenversicherung?",
+    "translation": "Where is the student health insurance?",
+    "tags": "campus, health"
+  },
+  {
+    "title": "Health on campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich gehe zum Arzt auf dem Campus.",
+    "translation": "I go to the doctor on campus.",
+    "tags": "campus, health"
+  },
+  {
+    "title": "Health on campus",
+    "type": "speech",
+    "level": "A1",
+    "content": "Hast du Kopfschmerzen?",
+    "translation": "Do you have a headache?",
+    "tags": "campus, health"
+  },
+  {
+    "title": "Getting help",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich verstehe die Aufgabe nicht.",
+    "translation": "I don't understand the assignment.",
+    "tags": "campus, help"
+  },
+  {
+    "title": "Getting help",
+    "type": "speech",
+    "level": "A1",
+    "content": "Kannst du mir helfen?",
+    "translation": "Can you help me?",
+    "tags": "campus, help"
+  },
+  {
+    "title": "Getting help",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich brauche ein Beispiel.",
+    "translation": "I need an example.",
+    "tags": "campus, help"
+  },
+  {
+    "title": "Getting help",
+    "type": "speech",
+    "level": "A1",
+    "content": "Danke für deine Hilfe.",
+    "translation": "Thank you for your help.",
+    "tags": "campus, help"
+  },
+  {
+    "title": "International student",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich bin Austauschstudent.",
+    "translation": "I am an exchange student (male).",
+    "tags": "campus, international"
+  },
+  {
+    "title": "International student",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich lerne Deutsch.",
+    "translation": "I am learning German.",
+    "tags": "campus, international"
+  },
+  {
+    "title": "International student",
+    "type": "speech",
+    "level": "A1",
+    "content": "Sprichst du Englisch?",
+    "translation": "Do you speak English?",
+    "tags": "campus, international"
+  },
+  {
+    "title": "International student",
+    "type": "speech",
+    "level": "A1",
+    "content": "Wo ist das International Office?",
+    "translation": "Where is the International Office?",
+    "tags": "campus, international"
+  },
+  {
+    "title": "Study abroad",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich möchte ein Auslandssemester machen.",
+    "translation": "I want to do a semester abroad.",
+    "tags": "campus, international"
+  },
+  {
+    "title": "Study abroad",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich bewerbe mich für ein Stipendium.",
+    "translation": "I apply for a scholarship.",
+    "tags": "campus, international"
+  },
+  {
+    "title": "Moving in/out",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich ziehe am Wochenende um.",
+    "translation": "I am moving on the weekend.",
+    "tags": "campus, housing"
+  },
+  {
+    "title": "Moving in/out",
+    "type": "speech",
+    "level": "A1",
+    "content": "Hast du Kisten für den Umzug?",
+    "translation": "Do you have boxes for the move?",
+    "tags": "campus, housing"
+  },
+  {
+    "title": "Lost and found",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich habe meinen Schlüssel verloren.",
+    "translation": "I lost my key.",
+    "tags": "campus, lost"
+  },
+  {
+    "title": "Lost and found",
+    "type": "speech",
+    "level": "A1",
+    "content": "Wo ist das Fundbüro?",
+    "translation": "Where is the lost and found?",
+    "tags": "campus, lost"
+  },
+  {
+    "title": "Lost and found",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ich finde meine Tasche nicht.",
+    "translation": "I can't find my bag.",
+    "tags": "campus, lost"
+  },
+  {
+    "title": "Campus rules",
+    "type": "speech",
+    "level": "A1",
+    "content": "Rauchen ist auf dem Campus verboten.",
+    "translation": "Smoking is forbidden on campus.",
+    "tags": "campus, rules"
+  },
+  {
+    "title": "Campus rules",
+    "type": "speech",
+    "level": "A1",
+    "content": "Bitte leise sein in der Bibliothek.",
+    "translation": "Please be quiet in the library.",
+    "tags": "campus, rules"
+  },
+  {
+    "title": "Graduation",
+    "type": "speech",
+    "level": "A1",
+    "content": "Nächstes Jahr mache ich meinen Abschluss.",
+    "translation": "Next year I will graduate.",
+    "tags": "campus, graduation"
+  },
+  {
+    "title": "Graduation",
+    "type": "speech",
+    "level": "A1",
+    "content": "Die Abschlussfeier ist im Juni.",
+    "translation": "The graduation ceremony is in June.",
+    "tags": "campus, graduation"
+  }
+]
