@@ -97,12 +97,12 @@
 import axios from 'axios';
 
 export default {
+  props:['lang','level'],
   data() {
     return {
       targetText: "",
       translation: "",
       showTranslation: false, // Control for the hidden state
-      level: "A1",
       transcript: "",
       isListening: false,
       accuracy: null,
@@ -131,20 +131,20 @@ export default {
 
   methods: {
     async fetchNewMaterial() {
+      this.playCount = 0; // RESET HERE
       this.loading = true;
       this.resetDemo();
       this.showTranslation = false; // Reset translation visibility for new content
-      this.playCount = 0; // RESET HERE
 
       try {
         const response = await axios.get('/learner/get_material', {
-          params: { type: 'speech', level: this.level }
+          params: { type: 'speech', level: this.level, lang: this.lang}
         });
-        
+        console.log('reponse',  response.data)
         if (response.data) {
           this.targetText = response.data.content;
           this.translation = response.data.translation;
-          this.level = response.data.level;
+          //this.level = response.data.level;
         }
       } catch (error) {
         console.error("Error fetching material:", error);
@@ -160,7 +160,7 @@ export default {
       this.recognition = new SpeechRecognition();
       this.recognition.continuous = true;
       this.recognition.interimResults = true;
-      this.recognition.lang = 'en-US';
+      this.recognition.lang = this.lang;
 
       // Triggered when the browser stops the microphone (due to silence or manual stop)
       this.recognition.onend = () => {
@@ -194,7 +194,7 @@ export default {
 
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(this.targetText);
-      utterance.lang = 'en-US';
+      utterance.lang = this.lang;
 
       // Set speed based on current playCount
       utterance.rate = this.playCount === 0 ? 1.0 : 0.3;
@@ -214,7 +214,6 @@ export default {
       utterance.onerror = () => {
         this.isPlaying = false;
       };
-
       window.speechSynthesis.speak(utterance);
     },
 

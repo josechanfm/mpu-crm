@@ -1,0 +1,770 @@
+[
+  {
+    "title": "Greetings",
+    "type": "speech",
+    "level": "A1",
+    "content": "Olá, como está?",
+    "translation": "Hello, how are you?",
+    "tags": "daily, greeting"
+  },
+  {
+    "title": "Greetings",
+    "type": "speech",
+    "level": "A1",
+    "content": "Bom dia!",
+    "translation": "Good morning!",
+    "tags": "daily, greeting"
+  },
+  {
+    "title": "Greetings",
+    "type": "speech",
+    "level": "A1",
+    "content": "Boa tarde.",
+    "translation": "Good afternoon.",
+    "tags": "daily, greeting"
+  },
+  {
+    "title": "Greetings",
+    "type": "speech",
+    "level": "A1",
+    "content": "Boa noite.",
+    "translation": "Good evening / Good night.",
+    "tags": "daily, greeting"
+  },
+  {
+    "title": "Introductions",
+    "type": "speech",
+    "level": "A1",
+    "content": "Chamo-me Ana.",
+    "translation": "My name is Ana.",
+    "tags": "daily, introduction"
+  },
+  {
+    "title": "Introductions",
+    "type": "speech",
+    "level": "A1",
+    "content": "Qual é o seu nome?",
+    "translation": "What is your name?",
+    "tags": "daily, introduction"
+  },
+  {
+    "title": "Introductions",
+    "type": "speech",
+    "level": "A1",
+    "content": "Prazer em conhecê-lo.",
+    "translation": "Nice to meet you.",
+    "tags": "daily, introduction"
+  },
+  {
+    "title": "Politeness",
+    "type": "speech",
+    "level": "A1",
+    "content": "Por favor.",
+    "translation": "Please.",
+    "tags": "daily, polite"
+  },
+  {
+    "title": "Politeness",
+    "type": "speech",
+    "level": "A1",
+    "content": "Obrigado.",
+    "translation": "Thank you (male speaker).",
+    "tags": "daily, polite"
+  },
+  {
+    "title": "Politeness",
+    "type": "speech",
+    "level": "A1",
+    "content": "Obrigada.",
+    "translation": "Thank you (female speaker).",
+    "tags": "daily, polite"
+  },
+  {
+    "title": "Politeness",
+    "type": "speech",
+    "level": "A1",
+    "content": "De nada.",
+    "translation": "You're welcome.",
+    "tags": "daily, polite"
+  },
+  {
+    "title": "Politeness",
+    "type": "speech",
+    "level": "A1",
+    "content": "Com licença.",
+    "translation": "Excuse me.",
+    "tags": "daily, polite"
+  },
+  {
+    "title": "Politeness",
+    "type": "speech",
+    "level": "A1",
+    "content": "Desculpe.",
+    "translation": "Sorry.",
+    "tags": "daily, polite"
+  },
+  {
+    "title": "Daily routines",
+    "type": "speech",
+    "level": "A1",
+    "content": "Eu levanto-me às 7h.",
+    "translation": "I get up at 7 AM.",
+    "tags": "daily, routine"
+  },
+  {
+    "title": "Daily routines",
+    "type": "speech",
+    "level": "A1",
+    "content": "Tomo o pequeno-almoço.",
+    "translation": "I have breakfast.",
+    "tags": "daily, routine"
+  },
+  {
+    "title": "Daily routines",
+    "type": "speech",
+    "level": "A1",
+    "content": "Vou para o trabalho.",
+    "translation": "I go to work.",
+    "tags": "daily, routine"
+  },
+  {
+    "title": "Daily routines",
+    "type": "speech",
+    "level": "A1",
+    "content": "Almoço às 13h.",
+    "translation": "I have lunch at 1 PM.",
+    "tags": "daily, routine"
+  },
+  {
+    "title": "Daily routines",
+    "type": "speech",
+    "level": "A1",
+    "content": "Volto para casa às 18h.",
+    "translation": "I return home at 6 PM.",
+    "tags": "daily, routine"
+  },
+  {
+    "title": "Daily routines",
+    "type": "speech",
+    "level": "A1",
+    "content": "Janto com a família.",
+    "translation": "I have dinner with family.",
+    "tags": "daily, routine"
+  },
+  {
+    "title": "Daily routines",
+    "type": "speech",
+    "level": "A1",
+    "content": "Vejo televisão.",
+    "translation": "I watch TV.",
+    "tags": "daily, routine"
+  },
+  {
+    "title": "Daily routines",
+    "type": "speech",
+    "level": "A1",
+    "content": "Vou dormir às 23h.",
+    "translation": "I go to sleep at 11 PM.",
+    "tags": "daily, routine"
+  },
+  {
+    "title": "Food and drink",
+    "type": "speech",
+    "level": "A1",
+    "content": "Tenho fome.",
+    "translation": "I am hungry.",
+    "tags": "daily, food"
+  },
+  {
+    "title": "Food and drink",
+    "type": "speech",
+    "level": "A1",
+    "content": "Tenho sede.",
+    "translation": "I am thirsty.",
+    "tags": "daily, food"
+  },
+  {
+    "title": "Food and drink",
+    "type": "speech",
+    "level": "A1",
+    "content": "Quero um café.",
+    "translation": "I want a coffee.",
+    "tags": "daily, food"
+  },
+  {
+    "title": "Food and drink",
+    "type": "speech",
+    "level": "A1",
+    "content": "Vou ao supermercado.",
+    "translation": "I go to the supermarket.",
+    "tags": "daily, food"
+  },
+  {
+    "title": "Food and drink",
+    "type": "speech",
+    "level": "A1",
+    "content": "Compro pão.",
+    "translation": "I buy bread.",
+    "tags": "daily, food"
+  },
+  {
+    "title": "Food and drink",
+    "type": "speech",
+    "level": "A1",
+    "content": "Bebo água.",
+    "translation": "I drink water.",
+    "tags": "daily, food"
+  },
+  {
+    "title": "Family",
+    "type": "speech",
+    "level": "A1",
+    "content": "Tenho uma família pequena.",
+    "translation": "I have a small family.",
+    "tags": "daily, family"
+  },
+  {
+    "title": "Family",
+    "type": "speech",
+    "level": "A1",
+    "content": "A minha mãe chama-se Maria.",
+    "translation": "My mother is called Maria.",
+    "tags": "daily, family"
+  },
+  {
+    "title": "Family",
+    "type": "speech",
+    "level": "A1",
+    "content": "O meu pai trabalha.",
+    "translation": "My father works.",
+    "tags": "daily, family"
+  },
+  {
+    "title": "Family",
+    "type": "speech",
+    "level": "A1",
+    "content": "Tenho um irmão.",
+    "translation": "I have one brother.",
+    "tags": "daily, family"
+  },
+  {
+    "title": "Family",
+    "type": "speech",
+    "level": "A1",
+    "content": "Tenho uma irmã.",
+    "translation": "I have one sister.",
+    "tags": "daily, family"
+  },
+  {
+    "title": "House and home",
+    "type": "speech",
+    "level": "A1",
+    "content": "A minha casa é pequena.",
+    "translation": "My house is small.",
+    "tags": "daily, house"
+  },
+  {
+    "title": "House and home",
+    "type": "speech",
+    "level": "A1",
+    "content": "O quarto é grande.",
+    "translation": "The bedroom is big.",
+    "tags": "daily, house"
+  },
+  {
+    "title": "House and home",
+    "type": "speech",
+    "level": "A1",
+    "content": "A cozinha está limpa.",
+    "translation": "The kitchen is clean.",
+    "tags": "daily, house"
+  },
+  {
+    "title": "House and home",
+    "type": "speech",
+    "level": "A1",
+    "content": "O sofá é vermelho.",
+    "translation": "The sofa is red.",
+    "tags": "daily, house"
+  },
+  {
+    "title": "Weather",
+    "type": "speech",
+    "level": "A1",
+    "content": "Está sol.",
+    "translation": "It's sunny.",
+    "tags": "daily, weather"
+  },
+  {
+    "title": "Weather",
+    "type": "speech",
+    "level": "A1",
+    "content": "Está frio.",
+    "translation": "It's cold.",
+    "tags": "daily, weather"
+  },
+  {
+    "title": "Weather",
+    "type": "speech",
+    "level": "A1",
+    "content": "Está calor.",
+    "translation": "It's hot.",
+    "tags": "daily, weather"
+  },
+  {
+    "title": "Weather",
+    "type": "speech",
+    "level": "A1",
+    "content": "Chove muito.",
+    "translation": "It rains a lot.",
+    "tags": "daily, weather"
+  },
+  {
+    "title": "Transport",
+    "type": "speech",
+    "level": "A1",
+    "content": "Onde é a estação de comboio?",
+    "translation": "Where is the train station?",
+    "tags": "daily, transport"
+  },
+  {
+    "title": "Transport",
+    "type": "speech",
+    "level": "A1",
+    "content": "Vou de autocarro.",
+    "translation": "I go by bus.",
+    "tags": "daily, transport"
+  },
+  {
+    "title": "Transport",
+    "type": "speech",
+    "level": "A1",
+    "content": "Quanto custa o bilhete?",
+    "translation": "How much is the ticket?",
+    "tags": "daily, transport"
+  },
+  {
+    "title": "Shops and services",
+    "type": "speech",
+    "level": "A1",
+    "content": "Onde fica o banco?",
+    "translation": "Where is the bank?",
+    "tags": "daily, shops"
+  },
+  {
+    "title": "Shops and services",
+    "type": "speech",
+    "level": "A1",
+    "content": "Preciso de um médico.",
+    "translation": "I need a doctor.",
+    "tags": "daily, health"
+  },
+  {
+    "title": "Shops and services",
+    "type": "speech",
+    "level": "A1",
+    "content": "Vou à farmácia.",
+    "translation": "I go to the pharmacy.",
+    "tags": "daily, health"
+  },
+  {
+    "title": "Numbers and time",
+    "type": "speech",
+    "level": "A1",
+    "content": "Que horas são?",
+    "translation": "What time is it?",
+    "tags": "daily, time"
+  },
+  {
+    "title": "Numbers and time",
+    "type": "speech",
+    "level": "A1",
+    "content": "São 10 horas.",
+    "translation": "It's 10 o'clock.",
+    "tags": "daily, time"
+  },
+  {
+    "title": "Work and study",
+    "type": "speech",
+    "level": "A1",
+    "content": "Sou estudante.",
+    "translation": "I am a student.",
+    "tags": "daily, work"
+  },
+  {
+    "title": "Work and study",
+    "type": "speech",
+    "level": "A1",
+    "content": "Trabalho num escritório.",
+    "translation": "I work in an office.",
+    "tags": "daily, work"
+  },
+  {
+    "title": "Work and study",
+    "type": "speech",
+    "level": "A1",
+    "content": "Aprendo português.",
+    "translation": "I learn Portuguese.",
+    "tags": "daily, study"
+  },
+  {
+    "title": "Feelings",
+    "type": "speech",
+    "level": "A1",
+    "content": "Estou cansado.",
+    "translation": "I am tired (male).",
+    "tags": "daily, feelings"
+  },
+  {
+    "title": "Feelings",
+    "type": "speech",
+    "level": "A1",
+    "content": "Estou contente.",
+    "translation": "I am happy.",
+    "tags": "daily, feelings"
+  },
+  {
+    "title": "Feelings",
+    "type": "speech",
+    "level": "A1",
+    "content": "Estou triste.",
+    "translation": "I am sad.",
+    "tags": "daily, feelings"
+  },
+  {
+    "title": "Phone and internet",
+    "type": "speech",
+    "level": "A1",
+    "content": "Onde está o meu telemóvel?",
+    "translation": "Where is my mobile phone?",
+    "tags": "daily, tech"
+  },
+  {
+    "title": "Phone and internet",
+    "type": "speech",
+    "level": "A1",
+    "content": "A internet está lenta.",
+    "translation": "The internet is slow.",
+    "tags": "daily, tech"
+  },
+  {
+    "title": "Phone and internet",
+    "type": "speech",
+    "level": "A1",
+    "content": "Envio uma mensagem.",
+    "translation": "I send a message.",
+    "tags": "daily, tech"
+  },
+  {
+    "title": "Travel",
+    "type": "speech",
+    "level": "A1",
+    "content": "Gosto de viajar.",
+    "translation": "I like to travel.",
+    "tags": "daily, travel"
+  },
+  {
+    "title": "Travel",
+    "type": "speech",
+    "level": "A1",
+    "content": "Vou de férias.",
+    "translation": "I go on holiday.",
+    "tags": "daily, travel"
+  },
+  {
+    "title": "Hobbies",
+    "type": "speech",
+    "level": "A1",
+    "content": "Gosto de música.",
+    "translation": "I like music.",
+    "tags": "daily, hobby"
+  },
+  {
+    "title": "Hobbies",
+    "type": "speech",
+    "level": "A1",
+    "content": "Leio livros.",
+    "translation": "I read books.",
+    "tags": "daily, hobby"
+  },
+  {
+    "title": "Hobbies",
+    "type": "speech",
+    "level": "A1",
+    "content": "Pratico desporto.",
+    "translation": "I play sports.",
+    "tags": "daily, hobby"
+  },
+  {
+    "title": "Restaurant",
+    "type": "speech",
+    "level": "A1",
+    "content": "Quero a ementa, por favor.",
+    "translation": "I want the menu, please.",
+    "tags": "daily, restaurant"
+  },
+  {
+    "title": "Restaurant",
+    "type": "speech",
+    "level": "A1",
+    "content": "Vou pedir uma sopa.",
+    "translation": "I will order a soup.",
+    "tags": "daily, restaurant"
+  },
+  {
+    "title": "Restaurant",
+    "type": "speech",
+    "level": "A1",
+    "content": "A conta, se faz favor.",
+    "translation": "The bill, please.",
+    "tags": "daily, restaurant"
+  },
+  {
+    "title": "Health",
+    "type": "speech",
+    "level": "A1",
+    "content": "Estou doente.",
+    "translation": "I am sick.",
+    "tags": "daily, health"
+  },
+  {
+    "title": "Health",
+    "type": "speech",
+    "level": "A1",
+    "content": "Hoje estou melhor.",
+    "translation": "Today I am better.",
+    "tags": "daily, health"
+  },
+  {
+    "title": "Workplace",
+    "type": "speech",
+    "level": "A1",
+    "content": "Hoje tenho uma reunião.",
+    "translation": "Today I have a meeting.",
+    "tags": "daily, work"
+  },
+  {
+    "title": "Workplace",
+    "type": "speech",
+    "level": "A1",
+    "content": "Preciso de ajuda.",
+    "translation": "I need help.",
+    "tags": "daily, work"
+  },
+  {
+    "title": "Tasks",
+    "type": "speech",
+    "level": "A1",
+    "content": "Já terminei.",
+    "translation": "I have finished.",
+    "tags": "daily, task"
+  },
+  {
+    "title": "Tasks",
+    "type": "speech",
+    "level": "A1",
+    "content": "Ainda não está pronto.",
+    "translation": "It's not ready yet.",
+    "tags": "daily, task"
+  },
+  {
+    "title": "Shopping",
+    "type": "speech",
+    "level": "A1",
+    "content": "Quanto custa isto?",
+    "translation": "How much is this?",
+    "tags": "daily, shopping"
+  },
+  {
+    "title": "Shopping",
+    "type": "speech",
+    "level": "A1",
+    "content": "Aceita cartão?",
+    "translation": "Do you accept card?",
+    "tags": "daily, shopping"
+  },
+  {
+    "title": "Directions",
+    "type": "speech",
+    "level": "A1",
+    "content": "Vire à direita.",
+    "translation": "Turn right.",
+    "tags": "daily, directions"
+  },
+  {
+    "title": "Directions",
+    "type": "speech",
+    "level": "A1",
+    "content": "Vire à esquerda.",
+    "translation": "Turn left.",
+    "tags": "daily, directions"
+  },
+  {
+    "title": "Directions",
+    "type": "speech",
+    "level": "A1",
+    "content": "Siga em frente.",
+    "translation": "Go straight.",
+    "tags": "daily, directions"
+  },
+  {
+    "title": "School",
+    "type": "speech",
+    "level": "A1",
+    "content": "A aula começa às 9h.",
+    "translation": "The class starts at 9 AM.",
+    "tags": "daily, school"
+  },
+  {
+    "title": "School",
+    "type": "speech",
+    "level": "A1",
+    "content": "Tenho um exame amanhã.",
+    "translation": "I have an exam tomorrow.",
+    "tags": "daily, school"
+  },
+  {
+    "title": "School",
+    "type": "speech",
+    "level": "A1",
+    "content": "O professor explica bem.",
+    "translation": "The teacher explains well.",
+    "tags": "daily, school"
+  },
+  {
+    "title": "House chores",
+    "type": "speech",
+    "level": "A1",
+    "content": "Vou limpar a casa.",
+    "translation": "I will clean the house.",
+    "tags": "daily, chores"
+  },
+  {
+    "title": "House chores",
+    "type": "speech",
+    "level": "A1",
+    "content": "Lavo a loiça.",
+    "translation": "I wash the dishes.",
+    "tags": "daily, chores"
+  },
+  {
+    "title": "Invitations",
+    "type": "speech",
+    "level": "A1",
+    "content": "Quer jantar comigo?",
+    "translation": "Do you want to have dinner with me?",
+    "tags": "daily, social"
+  },
+  {
+    "title": "Invitations",
+    "type": "speech",
+    "level": "A1",
+    "content": "Vamos ao cinema?",
+    "translation": "Shall we go to the cinema?",
+    "tags": "daily, social"
+  },
+  {
+    "title": "Apologies",
+    "type": "speech",
+    "level": "A1",
+    "content": "Peço desculpa pelo atraso.",
+    "translation": "Sorry for the delay.",
+    "tags": "daily, polite"
+  },
+  {
+    "title": "Small talk",
+    "type": "speech",
+    "level": "A1",
+    "content": "Tem um bom dia!",
+    "translation": "Have a nice day!",
+    "tags": "daily, polite"
+  },
+  {
+    "title": "Small talk",
+    "type": "speech",
+    "level": "A1",
+    "content": "Até amanhã!",
+    "translation": "See you tomorrow!",
+    "tags": "daily, greeting"
+  },
+  {
+    "title": "Small talk",
+    "type": "speech",
+    "level": "A1",
+    "content": "Tudo bem?",
+    "translation": "Everything okay?",
+    "tags": "daily, greeting"
+  },
+  {
+    "title": "Small talk",
+    "type": "speech",
+    "level": "A1",
+    "content": "Mais ou menos.",
+    "translation": "So-so.",
+    "tags": "daily, greeting"
+  },
+  {
+    "title": "Emergency",
+    "type": "speech",
+    "level": "A1",
+    "content": "Preciso de um hospital.",
+    "translation": "I need a hospital.",
+    "tags": "daily, emergency"
+  },
+  {
+    "title": "Emergency",
+    "type": "speech",
+    "level": "A1",
+    "content": "Chame a polícia!",
+    "translation": "Call the police!",
+    "tags": "daily, emergency"
+  },
+  {
+    "title": "Date and time",
+    "type": "speech",
+    "level": "A1",
+    "content": "Hoje é segunda-feira.",
+    "translation": "Today is Monday.",
+    "tags": "daily, time"
+  },
+  {
+    "title": "Date and time",
+    "type": "speech",
+    "level": "A1",
+    "content": "Amanhã é feriado.",
+    "translation": "Tomorrow is a holiday.",
+    "tags": "daily, time"
+  },
+  {
+    "title": "Preferences",
+    "type": "speech",
+    "level": "A1",
+    "content": "Gosto mais de chá do que café.",
+    "translation": "I like tea more than coffee.",
+    "tags": "daily, preference"
+  },
+  {
+    "title": "Preferences",
+    "type": "speech",
+    "level": "A1",
+    "content": "Não gosto de barulho.",
+    "translation": "I don't like noise.",
+    "tags": "daily, preference"
+  },
+  {
+    "title": "Plans",
+    "type": "speech",
+    "level": "A1",
+    "content": "Vou viajar no sábado.",
+    "translation": "I will travel on Saturday.",
+    "tags": "daily, plans"
+  },
+  {
+    "title": "Plans",
+    "type": "speech",
+    "level": "A1",
+    "content": "Não tenho planos para hoje.",
+    "translation": "I have no plans for today.",
+    "tags": "daily, plans"
+  }
+]

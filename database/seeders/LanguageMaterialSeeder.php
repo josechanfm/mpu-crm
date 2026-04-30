@@ -14,7 +14,9 @@ class LanguageMaterialSeeder extends Seeder
     public function run(): void
     {
         // 1. Get the path to the JSON file
-        $jsonPath = database_path('data/language_materials.json');
+        //en-US, pt-PT
+        $lang='pt-PT';
+        $jsonPath = database_path('data/language_materials_'.$lang.'.json');
         
         // 2. Check if file exists to avoid errors
         if (!File::exists($jsonPath)) {
@@ -29,6 +31,7 @@ class LanguageMaterialSeeder extends Seeder
         // 4. Insert into database
         foreach ($materials as $material) {
             DB::table('language_materials')->insert([
+                'lang'        => $lang,
                 'title'       => $material['title'],
                 'level'       => $material['level'],
                 'content'     => $material['content'],

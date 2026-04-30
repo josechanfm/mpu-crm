@@ -15,6 +15,7 @@ class LanguageMaterial extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'lang',
         'title',
         'level',
         'content',
