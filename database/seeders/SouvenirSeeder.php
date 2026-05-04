@@ -22,6 +22,7 @@ class SouvenirSeeder extends Seeder
             "thumbnail"=>"/images/souvenirs/Phone_Strap.jpg",
             "stock"=>500,
             "price"=>100,
+            "available"=>500,
             "quota"=>3
         ]);
         Souvenir::create([
@@ -30,6 +31,7 @@ class SouvenirSeeder extends Seeder
             "thumbnail"=>"/images/souvenirs/Bear.jpg",
             "stock"=>500,
             "price"=>100,
+            "available"=>500,
             "quota"=>3
         ]);
         Souvenir::create([
@@ -38,6 +40,7 @@ class SouvenirSeeder extends Seeder
             "thumbnail"=>"/images/souvenirs/Cardholder_Lanyard.jpg",
             "stock"=>500,
             "price"=>100,
+            "available"=>500,
             "quota"=>3
         ]);
 

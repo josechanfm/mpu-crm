@@ -18,7 +18,7 @@ class SouvenirController extends Controller
     
     }
     /**
-     * Display a listing of the resource.
+
      *
      * @return \Illuminate\Http\Response
      */
@@ -47,7 +47,7 @@ class SouvenirController extends Controller
         // }
         // dd($request->sort_column, $request->sort_order, $request->search_column, $request->search_text);
         return Inertia::render("Department/Dae/Souvenirs",[
-            'souvenirs'=>$souvenirs=$souvenirs->paginate($request->per_page?? null),
+            'souvenirs'=>$souvenirs->paginate($request->per_page?? null),
         ]);
     }
 

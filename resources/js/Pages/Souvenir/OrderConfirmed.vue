@@ -1,9 +1,12 @@
 <template>
+    <div class="overlay">
+      <div class="spinner"></div>
+      <p class="text">Redirecting to payment gateway, please wait...</p>
+    </div>
     <div v-if="paymentData && Object.keys(paymentData).length">
-        <form id="paymentForm" :action="paymentUrl" method="POST">
+        <form id="paymentForm" :action="paymentUrl" method="POST"  style="display: none;">
             <div v-for="(value, field) in paymentData" :key="field">
-                {{ field }}:
-                <input :name="field" :value="value">
+                {{ field }}:<input :name="field" :value="value" type="hidden">
             </div>
         </form>
     </div>

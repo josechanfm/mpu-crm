@@ -70,10 +70,11 @@
                         <p class="text-sm text-gray-600 mb-2 line-clamp-none sm:line-clamp-2"
                             v-html="product.description" />
                         <p class="text-lg font-bold text-blue-600 mb-2">${{ product.price.toFixed(2) }}</p>
+
                         <a-button type="primary" @click="addToCart(product)"
-                            :disabled="user == null || selectedProductCount(product.id) >= product.quota" :class="[
+                            :disabled="user == null || !isAvailable(product)" :class="[
                                 'w-full sm:w-auto transition-all',
-                                user == null || selectedProductCount(product.id) >= product.quota
+                                user == null || !isAvailable(product)
                                     ? 'opacity-50 cursor-not-allowed'
                                     : 'hover:scale-105'
                             ]">
@@ -316,6 +317,12 @@ export default {
         window.removeEventListener('resize', this.handleResize);
     },
     methods: {
+        isAvailable(product){
+            if (product.user_quota_remaining==0) return false;
+            const now = new Date();
+            const expiry = new Date(product.available_to);
+            return expiry > now;
+        },
         handleResize() {
             this.windowWidth = window.innerWidth;
         },
@@ -335,10 +342,10 @@ export default {
         },
         getButtonText(product) {
             if (!this.user) return 'Login to buy / 登入購買';
-            if (this.selectedProductCount(product.id) >= product.quota) {
-                return `Max quota reached / 已達上限 (${product.quota})`;
+            if (this.selectedProductCount(product.id) >= product.user_quota_remaining) {
+                return `Max quota reached / 已達上限 (${product.user_quota_remaining})`;
             }
-            return `Add to cart / 加入購物車 (${this.selectedProductCount(product.id)}/${product.quota})`;
+            return `Add to cart / 加入購物車 (${this.selectedProductCount(product.id)}/${product.user_quota_remaining})`;
         },
         addToCart(product) {
             if (!this.user) {
@@ -349,12 +356,12 @@ export default {
             const existingItem = this.cartItems.find(item => item.id === product.id);
 
             if (existingItem) {
-                if (existingItem.qty < product.quota) {
+                if (existingItem.qty < product.user_quota_remaining) {
                     existingItem.qty += 1;
                     this.triggerAnimation();
                     this.$message.success(`Added ${product.name} to cart`);
                 } else {
-                    this.$message.warning(`Maximum quota of ${product.quota} reached for this item`);
+                    this.$message.warning(`Maximum quota of ${product.user_quota_remaining} reached for this item`);
                     return;
                 }
             } else {
@@ -362,7 +369,7 @@ export default {
                     id: product.id,
                     name: product.name,
                     price: product.price,
-                    quota: product.quota,
+                    user_quota_remaining: product.user_quota_remaining,
                     qty: 1
                 });
                 this.triggerAnimation();
@@ -372,11 +379,11 @@ export default {
             this.cartItemCount = this.cartItems.reduce((total, item) => total + item.qty, 0);
         },
         increaseCount(item) {
-            if (item.qty < item.quota) {
+            if (item.qty < item.user_quota_remaining) {
                 item.qty += 1;
                 this.cartItemCount = this.cartItems.reduce((total, item) => total + item.qty, 0);
             } else {
-                this.$message.warning(`Maximum quota of ${item.quota} reached`);
+                this.$message.warning(`Maximum quota of ${item.user_quota_remaining} reached`);
             }
         },
         decreaseCount(item) {
