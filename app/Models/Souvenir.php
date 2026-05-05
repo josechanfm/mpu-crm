@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Souvenir extends Model
 {
@@ -115,10 +116,11 @@ class Souvenir extends Model
             ];
             $totalAmount+=$souvenir->price*$item['qty'];
         }
+        // dd($cart, $user);
         try {
-            $order=$souvenirUser->orders()->firstOrCreate([
+            $order=$user->orders()->firstOrCreate([
                 'uuid'=>Str::uuid(),
-                'souvenir_user_id'=>$souvenirUser->id,
+                'souvenir_user_id'=>$user->id,
                 'form_meta'=>$cart,
                 'items'=>$orderItems,
                 'currency'=>'MOP',
