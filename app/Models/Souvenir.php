@@ -100,7 +100,6 @@ class Souvenir extends Model
         if(!$result['success']){
             return $result;
         }
-        dd($result);
         $orderItems=[];
         $totalAmount=0;
         foreach($cart['cartItems'] as $item){
