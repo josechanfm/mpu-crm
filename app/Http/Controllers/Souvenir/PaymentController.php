@@ -31,70 +31,74 @@ class PaymentController extends Controller
         }
         //dd(session('souvenirUser'));
         $order=SouvenirOrder::where('uuid',$request->order_uuid)->first();
-        $paymentData=$this->getPaymentData(session('souvenirUser'),$order, $request->getClientIp());
-        $failedItems = [];
-        foreach($order->items as $item){
-            $souvenir=Souvenir::find($item['souvenir_id']);
-            if (!$souvenir) {
-                $failedItems[] = [
-                    'souvenir_id'=>$souvenir->id,
-                    'name' => $souvenir->name,
-                    'reason' => 'Insufficient quota',
-                    'available' => $souvenir->quota,
-                    'requested' => $item['qty'],
-                    'error_code'=>'00', 
-                    'result' => 'Product not found'
-                ];
-                continue;
-            }
+        $cart['cartItems']=$order->items;
+        $result=Souvenir::deductAvailable(session('souvenirUser'), $cart);
+        //dd($order,$result['failedItems']);
+
+        // $failedItems = [];
+        // foreach($order->items as $item){
+        //     $souvenir=Souvenir::find($item['souvenir_id']);
+        //     if (!$souvenir) {
+        //         $failedItems[] = [
+        //             'souvenir_id'=>$souvenir->id,
+        //             'name' => $souvenir->name,
+        //             'reason' => 'Insufficient quota',
+        //             'available' => $souvenir->quota,
+        //             'requested' => $item['qty'],
+        //             'error_code'=>'00', 
+        //             'result' => 'Product not found'
+        //         ];
+        //         continue;
+        //     }
             
-            if (!$souvenir->is_available) {
-                $failedItems[] = [
-                    'souvenir_id'=>$souvenir->id,
-                    'name' => $souvenir->name,
-                    'reason' => 'Insufficient quota',
-                    'available' => $souvenir->quota,
-                    'requested' => $item['qty'],
-                    'error_code'=> '30', 
-                    'result' => 'Not available for order'
-                ];
-                continue;
-            }
-            if($item['qty'] > $souvenir->user_quota_remaining){
-                $failedItems[] = [
-                    'souvenir_id'=>$souvenir->id,
-                    'name' => $souvenir->name,
-                    'reason' => 'Insufficient quota',
-                    'available' => $souvenir->quota,
-                    'requested' => $item['qty'],
-                    'error_code'=>'10',
-                    'result'=> 'user quota existed!'
-                ];
-                continue;
-            }
-            if ($item['qty'] > $souvenir->available) {
-                $failedItems[] = [
-                    'souvenir_id'=>$souvenir->id,
-                    'name' => $souvenir->name,
-                    'reason' => 'Insufficient quota',
-                    'available' => $souvenir->quota,
-                    'requested' => $item['qty'],
-                    'error_code'=>'20',
-                    'result'=> 'Souvenir available existed!'
-                ];
-                continue;
-            }
-        }
+        //     if (!$souvenir->is_available) {
+        //         $failedItems[] = [
+        //             'souvenir_id'=>$souvenir->id,
+        //             'name' => $souvenir->name,
+        //             'reason' => 'Insufficient quota',
+        //             'available' => $souvenir->quota,
+        //             'requested' => $item['qty'],
+        //             'error_code'=> '30', 
+        //             'result' => 'Not available for order'
+        //         ];
+        //         continue;
+        //     }
+        //     if($item['qty'] > $souvenir->user_quota_remaining){
+        //         $failedItems[] = [
+        //             'souvenir_id'=>$souvenir->id,
+        //             'name' => $souvenir->name,
+        //             'reason' => 'Insufficient quota',
+        //             'available' => $souvenir->quota,
+        //             'requested' => $item['qty'],
+        //             'error_code'=>'10',
+        //             'result'=> 'user quota existed!'
+        //         ];
+        //         continue;
+        //     }
+        //     if ($item['qty'] > $souvenir->available) {
+        //         $failedItems[] = [
+        //             'souvenir_id'=>$souvenir->id,
+        //             'name' => $souvenir->name,
+        //             'reason' => 'Insufficient quota',
+        //             'available' => $souvenir->quota,
+        //             'requested' => $item['qty'],
+        //             'error_code'=>'20',
+        //             'result'=> 'Souvenir available existed!'
+        //         ];
+        //         continue;
+        //     }
+        // }
         // dd($failedItems);
-        if(!empty($failedItems)){
+        if(!$result['success']){
             return Inertia::render("Souvenir/CheckoutFaild",[
                 "user"=>session("souvenirUser"),
                 "order"=>$order,
-                "failedItems"=>$failedItems
+                "failedItems"=>$result['failedItems']
                 //"payment"=>$paymentData,
             ]);
 
         }
+        $paymentData=$this->getPaymentData(session('souvenirUser'),$order, $request->getClientIp());
 
         return Inertia::render('Souvenir/OrderConfirmed', [
             'paymentData' => $paymentData,

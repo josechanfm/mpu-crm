@@ -31,7 +31,7 @@ class Souvenir extends Model
             ->sum(function ($order) {
                 $items = is_string($order->items) ? json_decode($order->items, true) : $order->items;
                 foreach ($items as $item) {
-                    if (isset($item['souvenir_id']) && $item['souvenir_id'] == $this->id) {
+                    if (isset($item['id']) && $item['id'] == $this->id) {
                         return $item['qty'];
                     }
                 }
@@ -108,7 +108,7 @@ class Souvenir extends Model
             // $souvenir->update(['available' => $souvenir->available - $item['qty']]);
             // $souvenir->save();
             $orderItems[]=[
-                'souvenir_id'=> $souvenir->id,
+                'id'=> $souvenir->id,
                 'name'=> $souvenir->name,
                 'qty'=>$item['qty'],
                 'price'=>$souvenir->price,
@@ -133,6 +133,26 @@ class Souvenir extends Model
 
     }
     public static function deductAvailable($user, $cart){
+        $result=self::checkAvailable($user, $cart);
+        if(!$result['success']){
+            return $result;
+        }
+        // $orderItems=[];
+        $totalAmount=0;        
+        foreach($cart['cartItems'] as $item){
+            $souvenir=Souvenir::find($item['id']);
+            $souvenir->update(['available' => $souvenir->available - $item['qty']]);
+            $souvenir->save();
+            // $orderItems[]=[
+            //     'id'=> $souvenir->id,
+            //     'name'=> $souvenir->name,
+            //     'qty'=>$item['qty'],
+            //     'price'=>$souvenir->price,
+            //     'amount'=>$souvenir->price*$item['qty'],
+            // ];
+            $totalAmount+=$souvenir->price*$item['qty'];
+        }
+        return ['success' => true, 'order' => $cart];
 
     }
 

@@ -19,6 +19,12 @@ class SouvenirOrderExport implements FromCollection, WithHeadings
         $this->heading=[
             'NetId',
             'Name (en)',
+            'Name (zh)',
+            'user email',
+            'user phone',
+            'user faculty',
+            'user degree',
+            'user grad year',
             'Receipt Num',
             'Payment Method',
             'Payment Amount',
@@ -51,6 +57,12 @@ class SouvenirOrderExport implements FromCollection, WithHeadings
             $modifiedOrder = [
                 'netid'=>$order->user->netid,
                 'name_en'=>$order->user->name_en,
+                'name_zh'=>$order->user->name_zh,
+                'user_email'=>$order->user->email,
+                'user_phone'=>$order->user->phone,
+                'user_faculty_code'=>$order->user->faculty_code,
+                'user_degree_code'=>$order->user->degree_code,
+                'user_grad_year'=>$order->user->grad_year,
                 'receipt_num'=>$order->receipt_no,
                 'payment_ethod'=>'online',
                 'payment_amount'=>$order->amount,
@@ -74,6 +86,7 @@ class SouvenirOrderExport implements FromCollection, WithHeadings
                 //$this->heading[]='item_'.$item->id;
             }
             $this->modifiedOrders->push($modifiedOrder);
+            dd($this->modifiedOrders, $modifiedOrder);
         }
         // Return the modified collection
         return $this->modifiedOrders;

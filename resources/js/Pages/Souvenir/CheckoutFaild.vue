@@ -67,7 +67,7 @@
                                 </div>
                                 <!-- Out of stock badge (optional indicator) -->
                                 <div class="text-red-500 text-xs bg-red-50 px-2 py-1 rounded-full">
-                                    <span>{{ failedTag(failedItems.find(i=>i.souvenir_id==item.souvenir_id)) }}</span>
+                                    <span>{{ failedTag(failedItems.find(i=>i.id==item.id)) }}</span>
                                 </div>
                             </div>
                         </div>
