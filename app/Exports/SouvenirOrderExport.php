@@ -41,6 +41,8 @@ class SouvenirOrderExport implements FromCollection, WithHeadings
             'item_1_count',
             'item_2_name',
             'item_2_count',
+            'item_3_name',
+            'item_3_count',
         ];
     }
 
