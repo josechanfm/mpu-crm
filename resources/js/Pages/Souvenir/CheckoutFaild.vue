@@ -41,7 +41,7 @@
                 <!-- User greeting -->
                 <div class="px-6 pt-5 pb-2 bg-white">
                     <p class="text-gray-700">
-                        Dear <span class="font-semibold text-gray-900">{{ cart.netid }}</span>,
+                        Dear <span class="font-semibold text-gray-900">{{ order.form_meta.netid }}</span>,
                     </p>
                     <p class="text-red-600 font-medium mt-1 flex items-center gap-2">
                         <span class="inline-block w-2 h-2 bg-red-500 rounded-full"></span>
@@ -56,7 +56,7 @@
                             Your cart items
                         </h3>
                         <div class="space-y-3">
-                            <div v-for="item in cart.cartItems" :key="item.id" 
+                            <div v-for="item in order.items" :key="item.id" 
                                 class="flex justify-between items-center border-b border-gray-200 pb-2 last:border-0">
                                 <div class="flex-1">
                                     <p class="font-medium text-gray-800">{{ item.name }}</p>
@@ -67,7 +67,7 @@
                                 </div>
                                 <!-- Out of stock badge (optional indicator) -->
                                 <div class="text-red-500 text-xs bg-red-50 px-2 py-1 rounded-full">
-                                    <span v-if="result.failedItems.find(i=>i.id==item.id)">Out of stock</span>
+                                    <span>{{ failedTag(failedItems.find(i=>i.souvenir_id==item.souvenir_id)) }}</span>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
 
                 <!-- Action buttons -->
                 <div class="px-6 pb-6 pt-2 bg-white">
-                    <div class="flex flex-col sm:flex-row gap-3">
+                    <div class="flex flex-col justify-center sm:flex-row gap-3">
                         <a :href="route('souvenir')"
                         class="inline-flex justify-center items-center gap-2 px-5 py-2.5 bg-gray-800 hover:bg-gray-900 text-white font-medium rounded-xl transition duration-200 shadow-sm hover:shadow">
                             <!-- Arrow left icon -->
@@ -123,11 +123,11 @@ export default {
             type: Object,
             required: false,
         },
-        cart: {
+        order: {
             type: Object,
             required: true,
         },
-        result:{
+        failedItems:{
             type: Object,
             required: true,
         }
@@ -161,7 +161,20 @@ export default {
             this.$emit('clear-cart');
             // Then redirect to souvenir page
             window.location.href = this.route('souvenir');
-        }        
+        },
+        failedTag(failedItem){
+            console.log(failedItem)
+            if(failedItem['error_code']=='10'){
+                return 'User Quota Exceeded '
+            }else if(failedItem['error_code']=='20'){
+                return 'Out of Stock'
+            }else if(failedItem['error_code']=='30'){
+                return 'Not available for order'
+            }else{
+                return 'error';
+            }
+            return failedItem['error_code']
+        }
 
     },
 };

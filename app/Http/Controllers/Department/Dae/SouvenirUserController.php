@@ -228,7 +228,7 @@ class SouvenirUserController extends Controller
                     'phone'=>$create[4],
                     'faculty_code'=>$create[5],
                     'degree_code'=>$create[6],
-                    'grad_year'=>$update[7],
+                    'grad_year'=>$create[7],
                     'can_buy'=>$create[8]==1?true:false
                 ]);
             }

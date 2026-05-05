@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Souvenir;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Models\Souvenir;
 use App\Models\SouvenirUser;
 use App\Models\SouvenirOrder;
 use App\Models\SouvenirPayment;
@@ -21,12 +22,80 @@ class PaymentController extends Controller
     
     //
     public function confirm(Request $request){
-        //dd($request->all());
+        // dd($request->all());
         $request->validate([
             'order_uuid'=>'required'
         ]);
+        if (!session()->has('souvenirUser')) {
+            return redirect()->route('souvenir');
+        }
+        //dd(session('souvenirUser'));
         $order=SouvenirOrder::where('uuid',$request->order_uuid)->first();
         $paymentData=$this->getPaymentData(session('souvenirUser'),$order, $request->getClientIp());
+        $failedItems = [];
+        foreach($order->items as $item){
+            $souvenir=Souvenir::find($item['souvenir_id']);
+            if (!$souvenir) {
+                $failedItems[] = [
+                    'souvenir_id'=>$souvenir->id,
+                    'name' => $souvenir->name,
+                    'reason' => 'Insufficient quota',
+                    'available' => $souvenir->quota,
+                    'requested' => $item['qty'],
+                    'error_code'=>'00', 
+                    'result' => 'Product not found'
+                ];
+                continue;
+            }
+            
+            if (!$souvenir->is_available) {
+                $failedItems[] = [
+                    'souvenir_id'=>$souvenir->id,
+                    'name' => $souvenir->name,
+                    'reason' => 'Insufficient quota',
+                    'available' => $souvenir->quota,
+                    'requested' => $item['qty'],
+                    'error_code'=> '30', 
+                    'result' => 'Not available for order'
+                ];
+                continue;
+            }
+            if($item['qty'] > $souvenir->user_quota_remaining){
+                $failedItems[] = [
+                    'souvenir_id'=>$souvenir->id,
+                    'name' => $souvenir->name,
+                    'reason' => 'Insufficient quota',
+                    'available' => $souvenir->quota,
+                    'requested' => $item['qty'],
+                    'error_code'=>'10',
+                    'result'=> 'user quota existed!'
+                ];
+                continue;
+            }
+            if ($item['qty'] > $souvenir->available) {
+                $failedItems[] = [
+                    'souvenir_id'=>$souvenir->id,
+                    'name' => $souvenir->name,
+                    'reason' => 'Insufficient quota',
+                    'available' => $souvenir->quota,
+                    'requested' => $item['qty'],
+                    'error_code'=>'20',
+                    'result'=> 'Souvenir available existed!'
+                ];
+                continue;
+            }
+        }
+        // dd($failedItems);
+        if(!empty($failedItems)){
+            return Inertia::render("Souvenir/CheckoutFaild",[
+                "user"=>session("souvenirUser"),
+                "order"=>$order,
+                "failedItems"=>$failedItems
+                //"payment"=>$paymentData,
+            ]);
+
+        }
+
         return Inertia::render('Souvenir/OrderConfirmed', [
             'paymentData' => $paymentData,
             'paymentUrl' => 'https://epay.mpu.edu.mo/bocpaytest/ipm/cashier',

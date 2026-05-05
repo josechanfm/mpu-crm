@@ -30,9 +30,9 @@ class OrderController extends Controller
     {
         
         $user=session("souvenirUser");
-        $products=Souvenir::where('is_available', true)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        // $products=Souvenir::where('is_available', true)
+        //     ->orderBy('created_at', 'desc')
+        //     ->get();
         //dd($products[0]->user_quota_remaining);
         return Inertia::render("Souvenir/Order",[
             "user"=>$user?->load(['orders' => function ($query) {
@@ -127,24 +127,25 @@ class OrderController extends Controller
         $cart['client_ip']=$request->getClientIp();
         $cart['netid']=session('souvenirUser')->netid;
         //$order=$this->storeToOrder(session('souvenirUser'), $cart);
-        $result = $this->storeToOrder(session('souvenirUser'), $cart);
+        $result=Souvenir::createOrder(session("souvenirUser"), $cart);
+        // dd($checkAvailable);
+        //$result = $this->storeToOrder(session('souvenirUser'), $cart);
+        $cart['form_meta']=$cart;
+        $cart['items']=$cart['cartItems'];
+
+        // dd($cart);
         if (!$result['success']) {
             return Inertia::render("Souvenir/CheckoutFaild",[
                 "user"=>session("souvenirUser"),
-                "cart"=>$cart,
-                "result"=>$result
+                "order"=>$cart,
+                "failedItems"=>$result['failedItems']
                 //"payment"=>$paymentData,
             ]);
         }
-        
-        //$paymentData=$this->writePaymentData(session('souvenirUser'), $order, $cart['client_ip']);
-        //$order->payment_meta=json_encode($paymentData);
-        //$order->save();
-        // dd($request->all(), $order, $cart);
-        
         return Inertia::render("Souvenir/Checkout",[
             "user"=>session("souvenirUser"),
             "order"=>$result['order'],
+            "failedItems"=>$result['failedItems']
             //"payment"=>$paymentData,
         ]);
     }
@@ -165,28 +166,38 @@ class OrderController extends Controller
                 $failedItems[] = ['name' => $souvenir->name, 'reason' => 'Not available for order'];
                 continue;
             }
-            if ($item['qty'] > $souvenir->available) {
+            if($item['qty'] > $souvenir->user_quota_remaining){
                 $failedItems[] = [
-                    'id'=>$souvenir->id,
+                    'souvenir_id'=>$souvenir->id,
                     'name' => $souvenir->name,
                     'reason' => 'Insufficient quota',
                     'available' => $souvenir->quota,
-                    'requested' => $item['qty']
+                    'requested' => $item['qty'],
+                    'error_code'=>'10',
+                    'result'=> 'user quota existed!'
                 ];
                 continue;
             }
-        }
-        
-        if (!empty($failedItems)) {
-            return ['success' => false, 'failedItems' => $failedItems];
+            if ($item['qty'] > $souvenir->available) {
+                $failedItems[] = [
+                    'souvenir_id'=>$souvenir->id,
+                    'name' => $souvenir->name,
+                    'reason' => 'Insufficient quota',
+                    'available' => $souvenir->quota,
+                    'requested' => $item['qty'],
+                    'error_code'=>'20',
+                    'result'=> 'Souvenir available existed!'
+                ];
+                continue;
+            }
         }
         
         $orderItems=[];
         $totalAmount=0;
         foreach($cart['cartItems'] as $item){
             $souvenir=Souvenir::find($item['id']);
-            $souvenir->update(['available' => $souvenir->available - $item['qty']]);
-            $souvenir->save();
+            // $souvenir->update(['available' => $souvenir->available - $item['qty']]);
+            // $souvenir->save();
             $orderItems[]=[
                 'souvenir_id'=> $souvenir->id,
                 'name'=> $souvenir->name,
@@ -207,6 +218,10 @@ class OrderController extends Controller
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
             return false;
+        }
+
+        if (!empty($failedItems)) {
+            return ['success' => false, 'order'=>$order, 'failedItems' => $failedItems];
         }
         return ['success' => true, 'order' => $order];
         //return $order;

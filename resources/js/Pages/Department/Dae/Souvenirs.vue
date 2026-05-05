@@ -99,16 +99,26 @@
                 style="min-height: 200px"
             />
           </a-form-item>
-          <a-form-item label="Stock" name="stock" >
-            <a-input-number v-model:value="modal.data.stock" />
-          </a-form-item>
-          <a-form-item label="price" name="price" >
+          <a-form-item label="Price" name="price" tooltip="定價, 澳門元MOP.">
             <a-input-number v-model:value="modal.data.price" />
           </a-form-item>
-          <a-form-item label="Quota" name="quota" >
+          <a-form-item label="Quota" name="quota" tooltip="每名用戶限購此產品的數量.">
             <a-input-number v-model:value="modal.data.quota" />
           </a-form-item>
-           <a-form-item label="Available" name="available" >
+          <a-form-item label="Stock" name="stock" tooltip="倉存的初始數量.">
+            <a-input-number v-model:value="modal.data.stock" />
+          </a-form-item>
+          <a-form-item label="Available" name="available" tooltip="可供購買的現有存貨數量.">
+            <a-input-number v-model:value="modal.data.available" />
+          </a-form-item>
+          <a-form-item label="Available To" name="available_to" tooltip="停止售賣之時期及時間.">
+            <a-date-picker 
+                v-model:value="modal.data.available_to" 
+                show-time 
+                placeholder="Select Date & Time"
+            />
+           </a-form-item>
+           <a-form-item label="Is Available" name="is_available" tooltip="發佈產品供用戶購買.">
             <a-switch v-model:checked="modal.data.is_available"/>
            </a-form-item>
            <a-form-item label="Uploaded Images">
@@ -393,6 +403,8 @@ export default {
         },
         editRecord(record) {
             this.modal.data = { ...record };
+            this.modal.data.available_to=record.available_to ? dayjs(record.available_to) : null;
+
             this.modal.mode = "EDIT";
             this.modal.title = "Edit item";
             this.modal.isOpen = true;
