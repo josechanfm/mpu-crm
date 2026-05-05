@@ -37,7 +37,6 @@ class SouvenirOrderExport implements FromCollection, WithHeadings
             'Phone',
             'Faculty',
             'Degree',
-            'Grad Year',
             'item_1_name',
             'item_1_count',
             'item_2_name',
@@ -75,7 +74,6 @@ class SouvenirOrderExport implements FromCollection, WithHeadings
                 'phone'=>$order->form_meta->phone,
                 'faculty'=>$order->form_meta->faculty,
                 'degree'=>$order->form_meta->degree,
-                'grad_Year'=>$order->updated_at->format('Y'),
 
             ];
             foreach($order->form_meta->cartItems as $item){

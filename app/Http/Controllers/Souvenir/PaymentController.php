@@ -165,6 +165,7 @@ class PaymentController extends Controller
         $parts=explode('-',$mercOrderNo);
         $order=SouvenirOrder::find($parts[0]);
         // $order->payment_notify=$request->all();
+        $order->payment_meta=json_encode($request->all());
         $order->payment_status=$request->status;
         $order->status=$request->status=='SUCCESS'?config('constants.ORDER_PAID'):config('constants.ORDER_PAY_FAIL');
         $order->save();
@@ -172,30 +173,32 @@ class PaymentController extends Controller
     }
 
     public function result(Request $request){
-        // $test='daesp18-1756268443-379201';
-        // $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
-        // $mercOrderNo=substr(str_replace($systemCode,'',$test),0,-2);
-        // $parts=explode('-',$mercOrderNo);
-        // $order=SouvenirOrder::find($parts[0]);
-        // dd($test, $systemCode, $mercOrderNo, $parts[0], $order);
         if ($request->has('test')) {
+            $test='daesp18-1756268443-379201';
+            $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
+            $mercOrderNo=substr(str_replace($systemCode,'',$test),0,-2);
+            $parts=explode('-',$mercOrderNo);
+            $order=SouvenirOrder::find($parts[0]);
+            //dd($test, $systemCode, $mercOrderNo, $parts[0], $order);
             return Inertia::render('Souvenir/PaymentResult',[
                     'order'=>SouvenirOrder::latest()->first()
                 ]);
         }
+
         $payment=SouvenirPayment::create([
             'type'=>'result',
             'meta_data'=>$request->all(),
             'status'=>$request->responseStatus
         ]);
 
-        $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
-        $mercOrderNo=substr(str_replace($systemCode,'',$request->merchantOrderNo),0,-2);
-        $parts=explode('-',$mercOrderNo);
-        $order=SouvenirOrder::find((int)$parts[0]);
+        // $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
+        // $mercOrderNo=substr(str_replace($systemCode,'',$request->merchantOrderNo),0,-2);
+        // $parts=explode('-',$mercOrderNo);
+        // $order=SouvenirOrder::find((int)$parts[0]);
 
 
         //dd($systemCode, $mercOrderNo, $parts, (int)$parts[0], $order);
+        $order->payment_result=$request->all();
         $order->payment_status=$request->responseStatus;
         $order->status=$request->responseStatus=='SUCCESS'?config('constants.ORDER_PAID'):config('constants.ORDER_PAY_FAIL');
         $order->save();
