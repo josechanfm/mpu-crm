@@ -150,7 +150,6 @@ class SouvenirUserController extends Controller
             // Loop through the imported data if needed
             // $data[0] is sheet 1
             foreach ($data[0] as $row) {
-                //echo $row[0];
                 // Define the allowed values for each row index
                 // Check if $row[5] is not in the valid faculties
                 // faculty column
@@ -178,9 +177,11 @@ class SouvenirUserController extends Controller
                     // Process each row as needed
                     // You can access columns via $row['column_name'] based on your Excel structure
                 }else{
+                    // dd($row);
                     $wrongs[]=$row;
                 }
             }
+            //dd($wrongs, $updates, $creates);
             // Optionally, return a success response
             return Inertia::render('Department/Dae/SouvenirUserImport', [
                 'records' => [

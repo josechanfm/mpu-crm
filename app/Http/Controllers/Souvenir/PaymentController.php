@@ -196,7 +196,6 @@ class PaymentController extends Controller
         // $parts=explode('-',$mercOrderNo);
         // $order=SouvenirOrder::find((int)$parts[0]);
 
-
         //dd($systemCode, $mercOrderNo, $parts, (int)$parts[0], $order);
         $order->payment_result=$request->all();
         $order->payment_status=$request->responseStatus;

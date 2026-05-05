@@ -3,8 +3,11 @@
         <div class="mx-auto pt-5">
             <div class="flex flex-justify justify-end pb-3 gap-5">
             </div>
-            <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                <div class="font-bold text-red-500 text-xl mt-10">錯過名單</div>
+            <div class="p-2 bg-white relative shadow rounded-lg overflow-x-auto">
+                <div>
+                    <span class="font-bold text-red-500 text-xl mt-10">錯誤名單</span>
+                    <span>一般情況下是NetID不正確.</span>
+                </div>
                 <hr>
                 <table width="100%">
                     <thead>
@@ -52,7 +55,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="font-bold text-blue-500 text-xl mt-10">正確名單</div>
+                <div class="font-bold text-blue-500 text-xl mt-10">新增名單</div>
                 <hr>
                 <table width="100%">
                     <thead>

@@ -29,8 +29,8 @@
               <a-typography-title :level="3" class="!text-gray-800 !mb-0">完整使用者操作手冊</a-typography-title>
             </div>
             <a-typography-paragraph class="text-gray-600 text-base leading-relaxed">
-              <strong>我的紀念品購買系統</strong> 提供澳門理工大學社群（學生、教師、職員）以 <strong>NetId</strong> 整合購買校園紀念品。
-              管理員可透過靈活的匯入機制、完整歷史紀錄、庫存與限額控制以及 QR Code 領取驗證，輕鬆管理整個購買流程。
+              <strong>我的紀念品購買系統</strong> 提供澳門理工大學有NetId的用戶（（學生、教師、職員）購買校園紀念品。
+              管理員可透過靈活的匯入機制、新增用戶名單或修改購買權限。系統同時提供有庫存、限額及期限等控制以及提供掃描 QR Code 領取驗證，輕鬆管理整個購買流程。
               本章節詳述 <strong>使用者管理、紀念品庫存、訂單歷程、領取作業及購買操作流程</strong>。
             </a-typography-paragraph>
             <a-divider class="!my-3" />
@@ -90,8 +90,8 @@
                   <p class="text-sm text-gray-500">該紀念品可供購買的最後日期／時間。</p>
                 </div>
                 <div>
-                  <span class="font-bold text-gray-800">🔘 Is Available（開放購買與否）</span>
-                  <p class="text-sm text-gray-500">全域開關，管理員可手動強制開啟或關閉銷售（不受庫存與限額影響）。</p>
+                  <span class="font-bold text-gray-800">🔘 Is Available（上架供購買與否）</span>
+                  <p class="text-sm text-gray-500">管理員可手動開啟或關閉銷售（不受庫存與限額影響）。</p>
                 </div>
               </div>
               <a-divider class="!my-3" />
@@ -161,8 +161,15 @@
                 </a-steps>
               </div>
               <div class="bg-white p-4 rounded-xl shadow-sm">
-                <p class="font-semibold text-gray-800 flex items-center gap-1"><span>✅</span> 前端即時驗證邏輯</p>
+                <p class="font-semibold text-gray-800 flex items-center gap-1">
+                  <span>✅</span> 前端即時驗證邏輯
+                </p>
                 <p class="text-sm text-gray-600 mt-2">若使用者的 NetId 被標記為 <code class="bg-gray-100 px-1 rounded">can_buy = 0</code>，或該紀念品已超過個人限額／庫存不足／超過銷售期限，購買按鈕將顯示為不可操作。系統會根據 <strong>訂單歷史＋限額＋庫存</strong> 即時更新按鈕狀態，確保公平購買。</p>
+                <p class="font-semibold text-gray-800 flex items-center gap-1"> 
+                  <span>✅</span> 雙重確保機制（購買前存量與限額再驗證）
+                </p>
+                <p class="text-sm text-gray-600 mt-2"> 第一次確認：使用者在購物車中確認購買紀念品後，系統會立即檢查該品項的當前可供購買數量（available）以及使用者個人的限購額度（quota）。若條件符合，系統才會跳轉至付款確認頁面，讓使用者清楚知悉購買項目、數量及總金額。 </p>
+                <p class="text-sm text-gray-600 mt-2"> 第二次確認：使用者確認付款、即將跳轉至銀行支付平台之前，系統會再次核對，確認剩餘存量是否足夠、採購數量是否仍在限額內。唯有二次條件皆符合，才會正式導向銀行支付介面。 </p> <p class="text-sm text-gray-600 mt-2"> 不論第一次或第二次核對過程中，若有任一條件不符合（存量不足、超過限額、商品已下架等），系統將直接跳轉至「購買不成功」的提示頁面。 </p><!-- ，並保留購物車內容供使用者調整 -->
                 <div class="mt-3 text-xs text-gray-500 border-t pt-2">📌 管理員可隨時調整「是否開放購買」開關或匯入新名單，無需重新部署系統。</div>
               </div>
             </div>
