@@ -86,7 +86,6 @@ class SouvenirOrderExport implements FromCollection, WithHeadings
                 //$this->heading[]='item_'.$item->id;
             }
             $this->modifiedOrders->push($modifiedOrder);
-            dd($this->modifiedOrders, $modifiedOrder);
         }
         // Return the modified collection
         return $this->modifiedOrders;
