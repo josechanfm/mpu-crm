@@ -78,11 +78,49 @@ const submit = () => {
                 />
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
+            <div class="mt-4">
+                <InputLabel for="confirm" value="Acknoledge / 已知悉" />
+                <Checkbox id="confirm" v-model:checked="form.confirm" class="" required
+                />
+                <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                <InputError class="mt-2" :message="form.errors.confirm" />
+            </div>
             <div class="flex items-center justify-end mt-4">
                 <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Log in / 登入
                 </PrimaryButton>
             </div>
         </form>
+
+        <template #footer>
+            <div class="max-w-94 bg-white px-2">
+                <ul class="list-disc">
+                    <li>
+                        對象：澳門理工大學2025/2026學年準畢業生<br>
+                        Eligibility: Prospective graduates of Macao Polytechnic University (Academic Year 2025/2026)
+                    </li>
+                    <li>
+                        認購期：由即日起至2026年5月25日 23:00時止(數量有限，售完即止)<br>
+                        Subscription Period: From now until 23:00 on 2026/05/25. (Limited quantities available; while stocks last)
+                    </li>
+                    <li>
+                        領取期：2026年6月上旬，以電郵通知為準<br>
+                        Pick-up Period: Early June 2026. (Exact details will be notified via email.)
+                    </li>
+                    <li>
+                        每位準畢業生之帳號只能限購1隻<br>
+                        Limited to one bear per prospective graduate account
+                    </li>
+                    <li>
+                        付款後，請點開收據及領取二維碼頁面，保存支付憑證<br>
+                        After payment, please access the page displaying your receipt and pick-up QR code, and save this proof for collection
+                    </li>
+                </ul>
+            </div>
+            
+        </template>
+
     </AuthenticationCard>
+
+
 </template>

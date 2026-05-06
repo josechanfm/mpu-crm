@@ -42,24 +42,36 @@
     </style>
 </head>
 <body>
+    <?php
+        $faculties = [
+            'FCA' => 'Faculty of Applied Sciences / 應用科學學院',
+            'FCSD' => 'Faculty of Health Sciences and Sports / 健康科學及體育學院',
+            'FLT' => 'Faculty of Languages and Translation / 語言及翻譯學院',
+            'FAD' => 'Faculty of Arts and Design / 藝術及設計學院',
+            'FCHS' => 'Faculty of Humanities and Social Sciences / 人文及社會科學學院',
+            'FCG' => 'Faculty of Business / 管理科學學院',
+            'AE' => 'Peking University Health Science Center – Macao Polytechnic University Nursing Academy / 北京大學醫學部——澳門理工大學護理書院',
+        ];
+    ?>
+
     <div>
         <img src="{{ public_path('/storage/images/mpu_banner.png') }}" alt="MPU Logo" style="display: block; margin: 0 auto 20px; height: 80px;" />
     </div>
     <div>
-        <div style="font-size:20px; text-align: center; color: #2c3e50;">Official Receipt / 官方收據</div>
+        <div style="font-size:20px; text-align: center; color: #2c3e50;">Receipt / 收據</div>
         <p></p>
 
         <div style="float:right">
-            <div>Pickup Code / 取件碼</div>
+            <div>Pick-up Code / 取件碼</div>
             <img style="float:right" width="150" src="{{ $pickupQrcodePath }}" alt="QR Code" />
         </div>
-        <div>Receipt No. / 收據編號: {{ $order->updated_at->format('y') }}-{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</div>
-        <div>Faculty/學院: {{ strtoupper($order->form_meta->faculty)  }}</div>
-        <div>Degree/學位: {{ ucfirst($order->form_meta->degree)  }}</div>
-        <div>Phone/電話: {{ $order->form_meta->phone }}</div>
-        <div>Email/電郵: {{ $order->form_meta->email  }}</div>
-        <div>Payment Date / 支付日期: {{ $order->created_at->format('Y-m-d') }}</div>
-        <div>Payment Method/支付方式: GOVPAY online (BOC) / 線上政付通(BOC)</div>
+        <div>Número de Recebio / 收據編號: {{ $order->updated_at->format('y') }}-{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</div>
+        <div>Unidade académica / 學術單位: {{ $faculties[strtoupper($order->form_meta->faculty)] }}</div>
+        <div>Grau / 學位: {{ ucfirst($order->form_meta->degree)  }}</div>
+        <div>Telephone / 電話: {{ $order->form_meta->phone }}</div>
+        <div>Email / 電郵: {{ $order->form_meta->email  }}</div>
+        <div>Data de Pagamento / 付款日期: {{ $order->created_at->format('Y-m-d') }}</div>
+        <div>Forma de Pagamento / 付款方式: GOVPAY online (BOC) / 線上政付通(BOC)</div>
         <p></p>
     </div>
     <table>

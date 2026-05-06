@@ -47,8 +47,8 @@
 
         <div class="py-4 sm:py-6">
             <div class="mx-4 mb-6 text-sm sm:text-base text-gray-600 space-y-2">
-                <p>歡迎購買 “澳理大小熊”！本校特意為準畢業生製作了“澳理大小熊”，濃縮校園記憶，注入點滴情誼，期望澳理大的關懷能陪伴準畢業生走過更多的人生角色與秋冬。是次銷售只向本校準畢業生開放，收益將全數作為大學收入用於母校發展。欲選購的同學可先憑學生帳號登入本購買專頁，將小熊商品加至購買車，並提交支付。<strong>購買前請務必閱讀 “購買須知”</strong>。在此，祝願同學順利畢業，前程似錦！</p>
-                <p>Welcome! We have created a special MPU Bear just for you (graduating students) to capture your memories here and carry the University's warmth into your future. The ordering of the bear is now only open to MPU’s graduating students, with all proceeds supporting our alma mater’s development. To buy one, please log in with your student account, add the bear to the cart, and proceed to payment. <strong>You should also read “Purchase Note” before the purchase.</strong> Last but not least, we wish you a smooth graduation and a bright future ahead!</p>
+                <p>澳門理工大學推出“澳理大小熊”！歡迎2025/2026學年準畢業生購買，濃縮校園記憶，注入點滴情誼，期望澳理大的關懷能陪伴準畢業生走過更多的人生角色與秋冬。銷售收益將全數用於母校發展。有興趣的準畢業生可將小熊商品加至購買車，提交支付，並保存收據。購買前請務必閱讀 “購買須知”。在此，祝願同學順利畢業，前程似錦！</p>
+                <p>The MPU Bear is now available for our prospective graduates of academic year 2025/2026. May this bear serve as a token of campus memories and friendship, accompanying you with the University's care through your future journeys. All proceeds will be directed to the University to support its development. To buy one, simply add the item to your cart, proceed to payment and save your receipt. Please ensure you read the "Purchase Note" before completing your order. Last but not least, we wish you a smooth graduation and a bright future ahead!</p>
             </div>
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-3 sm:p-4">
@@ -91,7 +91,7 @@
         </div>
 
         <!-- Checkout drawer - Mobile optimized -->
-        <a-drawer title="Shopping Cart / 賟物車 " :visible="selectedIsOpen" @close="selectedIsOpen = false" placement="right"
+        <a-drawer title="Shopping Cart / 購物車 " :visible="selectedIsOpen" @close="selectedIsOpen = false" placement="right"
             :width="windowWidth <= 640 ? '100%' : '400px' "   :body-style="{ padding: '10px' }">
             <div v-if="cartItems.length === 0" class="text-center py-8">
                 <p class="text-gray-500">You don't have any item selected.</p>
@@ -128,8 +128,8 @@
                     <a-form ref="orderForm" :model="orderForm" layout="vertical" :rules="rules" @finish="handleOrderFinish"
                         class="mt-6 space-y-3">
 
-                        <a-form-item label="Faculty / 系所" name="faculty" class="mb-0">
-                            <a-select v-model:value="orderForm.faculty" placeholder="Select your faculty / 選擇您的系所"
+                        <a-form-item label="Academic Unit / 學術單位" name="faculty" class="mb-0">
+                            <a-select v-model:value="orderForm.faculty" placeholder="Select your academic Unit / 選擇您的系所"
                                 class="w-full">
                                 <a-select-option v-for="faculty in faculties" :key="faculty.value"
                                     :value="faculty.value">
@@ -156,11 +156,14 @@
                             <a-input type="input" v-model:value="orderForm.email" placeholder="Enter your email / 輸入您的電子郵件"
                                 class="w-full" />
                         </a-form-item>
-                        <a-form-item label="Acknowledgement / 知悉" name="acknowledge" class="mb-0">
-                            <a-checkbox v-model:checked="orderForm.acknowledge">本人已知悉並接受 <span class="text-blue-500">“購買須知”</span>之內容</a-checkbox><a class="text-blue-500" @click="orderForm.purchaseNote=!orderForm.purchaseNote">全文</a>
+                        <a-form-item label="Purchase Note / 購買須知" name="acknowledge" class="mb-0">
+                            <a-checkbox v-model:checked="orderForm.acknowledge">
+                                I acknowledge and accept the "Purchase Note".<br>
+                                本人已知悉並接受 <span class="text-blue-500">“購買須知”</span>之內容。
+                            </a-checkbox>
                         </a-form-item>
                     </a-form>
-                <PurchaseNote v-if="orderForm.acknowledge || orderForm.purchaseNote"/>
+                <PurchaseNote/>
                 </div>
 
                 <div class="border-t pt-4 mt-4 space-y-3">
@@ -271,13 +274,13 @@ export default {
                 acknowledge:false
             },
             faculties: [
-                { label: 'FAC / 應用科學學院', value: 'FCA' },
-                { label: 'FHSS / 健康科學及體育學院', value: 'FCSD' },
-                { label: 'FLT / 語言及翻譯學院', value: 'FLT' },
-                { label: 'FAD / 藝術及設計學院', value: 'FAD' },
-                { label: 'FHSS / 人文及社會科學學院', value: 'FCHS' },
-                { label: 'FB / 管理科學學院', value: 'FCG' },
-                { label: 'AE / 北京大學醫學部——澳門理工大學護理書院', value: 'AE' },
+                { label: 'Faculty of Applied Sciences / 應用科學學院', value: 'FCA' },
+                { label: 'Faculty of Health Sciences and Sports / 健康科學及體育學院', value: 'FCSD' },
+                { label: 'Faculty of Languages and Translation / 語言及翻譯學院', value: 'FLT' },
+                { label: 'Faculty of Arts and Design / 藝術及設計學院', value: 'FAD' },
+                { label: 'Faculty of Humanities and Social Sciences / 人文及社會科學學院', value: 'FCHS' },
+                { label: 'Faculty of Business / 管理科學學院', value: 'FCG' },
+                { label: 'Peking University Health Science Center – Macao Polytechnic University Nursing Academy / 北京大學醫學部——澳門理工大學護理書院', value: 'AE' },
             ],
             rules: {
                 faculty: [{ required: true, message: 'Please select your faculty' }],

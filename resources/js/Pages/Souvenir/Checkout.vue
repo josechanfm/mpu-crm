@@ -24,6 +24,19 @@
     <div>
             <div class="max-w-3xl mx-auto sm:px-6 p-4">
                 <div class="bg-white shadow-md rounded-lg p-4">
+
+                    <div class="mt-10">
+                        <h3 class="font-semibold text-lg text-gray-800">
+                            Contact Info: / 聯絡資訊：
+                        </h3>
+                            <div class="mt-2">
+                                <div><strong>NetId / 學生號碼: </strong>{{ user.netid }}</div>
+                                <div><strong>Academic Unit / 學術單位: </strong>{{ order.form_meta.faculty }}</div>
+                                <div><strong>Degree / 學位: </strong>{{ order.form_meta.degree }}</div>
+                                <div><strong>Phone / 電話: </strong>{{ order.form_meta.phone }}</div>
+                                <div><strong>Email / 電郵: </strong>{{ order.form_meta.email }}</div>
+                            </div>
+                    </div>
                     <div v-if="`order.items`.length === 0" class="text-center text-red-600">
                         <p class="text-lg">You don't have any items selected. / 你沒有選擇任何項目。</p>
                     </div>
@@ -34,24 +47,12 @@
                         </li>
                     </ul>
                     <div class="font-bold float-right">Total / 總計: MOP${{ order.amount.toFixed(2) }}</div>
-                    <div class="mt-10">
-                        <h3 class="font-semibold text-lg text-gray-800">
-                            Contact Info: / 聯絡資訊：
-                        </h3>
-                            <div class="mt-2">
-                                <div><strong>NetId / 學生號碼: </strong>{{ user.netid }}</div>
-                                <div><strong>Faculty / 學院: </strong>{{ order.form_meta.faculty }}</div>
-                                <div><strong>Degree / 學位: </strong>{{ order.form_meta.degree }}</div>
-                                <div><strong>Phone / 電話: </strong>{{ order.form_meta.phone }}</div>
-                                <div><strong>Email / 電郵: </strong>{{ order.form_meta.email }}</div>
-                            </div>
-                    </div>
 
                     <form method="get" :action="route('souvenir.payment.confirm')" class="mt-6 flex justify-between">
                         <input type="hidden" name="order_uuid" :value="order.uuid" />
                         <div class="flex justify-between w-full">
                             <a :href="route('souvenir')" class="rounded-md bg-gray-300 text-gray-800 hover:bg-gray-400 w-full mr-2 text-center">
-                                Back to Main Page <br> 返回主頁
+                                Cancel & Back to Main Page <br> 取消訂單並返回
                             </a>
                             <button type="submit" class="rounded-md bg-blue-600 text-white hover:bg-blue-700 w-full">
                                 Confirm to Pay <br> 確認付款

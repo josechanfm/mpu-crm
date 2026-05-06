@@ -254,6 +254,21 @@ Route::group([
     Route::get('souvenir/pickup_code',[App\Http\Controllers\Department\Dae\PickupController::class,'pickupCode'])->name('dae.souvenir.pickupCode');
     Route::post('souvenir/pickup_confirm',[App\Http\Controllers\Department\Dae\PickupController::class,'pickupConfirm'])->name('dae.souvenir.pickupConfirm');
 });
+
+
+Route::group([
+    'prefix' => '/saf',
+    'middleware' => [
+        'auth:admin',
+        // 'checkInternalIP',
+        'role:SAF|admin|master'
+    ]
+], function () {
+    Route::get('/',[App\Http\Controllers\Department\Saf\DashboardController::class,'index'])->name('saf.dashboard');
+    Route::get('payments',[App\Http\Controllers\Department\Saf\PaymentController::class,'index'])->name('saf.payments');
+    Route::get('payment/souvenir_orders',[App\Http\Controllers\Department\Saf\PaymentController::class,'souvenirOrders'])->name('saf.payment.souvenirOrders');
+    Route::get('payment/souvenir_export',[App\Http\Controllers\Department\Saf\PaymentController::class,'souvenirExport'])->name('saf.payment.souvenir_export');
+});
 // Route::middleware([
 //     'auth:admin',
 //     config('jetstream.auth_session'),

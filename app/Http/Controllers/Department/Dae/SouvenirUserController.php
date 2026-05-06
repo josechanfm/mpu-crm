@@ -166,7 +166,7 @@ class SouvenirUserController extends Controller
                 if (!in_array($row[7], $validDegrees)) {
                     $row[6] = null; // Set to null if not valid
                 }
-                if($idValidator->_ipm_student_id_version_1_1($row[0])) {
+                if(!empty($row[0]) && $idValidator->_ipm_student_id_version_1_1($row[0])) {
                     $user=SouvenirUser::where('netid', $row[0])->first();
                     //dd($user, $row, $row[0]);
                     if($user) {
@@ -177,8 +177,18 @@ class SouvenirUserController extends Controller
                     // Process each row as needed
                     // You can access columns via $row['column_name'] based on your Excel structure
                 }else{
-                    // dd($row);
-                    $wrongs[]=$row;
+                    if(!empty($row[3])){
+                        $user=SouvenirUser::where('email', $row[3])->first();
+                        //dd($user, $row, $row[0]);
+                        if($user) {
+                            $updates[]=$row;
+                        }else{
+                            $creates[]=$row;
+                        }
+
+                    }else{
+                        $wrongs[]=$row;
+                    }
                 }
             }
             //dd($wrongs, $updates, $creates);

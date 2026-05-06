@@ -12,10 +12,10 @@
                 <table width="100%">
                     <thead>
                         <tr>
-                            <th>Netid</th>
+                            <th>Netid #</th>
                             <th>Name (zh)</th>
                             <th>Name (en)</th>
-                            <th>Email</th>
+                            <th>Email *</th>
                             <th>Phone</th>
                             <th>Faculty</th>
                             <th>Degree</th>
@@ -36,10 +36,10 @@
                 <table width="100%">
                     <thead>
                         <tr>
-                            <th>Netid</th>
+                            <th>Netid #</th>
                             <th>Name (zh)</th>
                             <th>Name (en)</th>
-                            <th>Email</th>
+                            <th>Email *</th>
                             <th>Phone</th>
                             <th>Faculty</th>
                             <th>Degree</th>
@@ -60,10 +60,10 @@
                 <table width="100%">
                     <thead>
                         <tr>
-                            <th>Netid</th>
+                            <th>Netid #</th>
                             <th>Name (zh)</th>
                             <th>Name (en)</th>
-                            <th>Email</th>
+                            <th>Email *</th>
                             <th>Phone</th>
                             <th>Faculty</th>
                             <th>Degree</th>
@@ -83,6 +83,10 @@
                     <a-button :href="route('dae.souvenir.users.index')">Back</a-button>
                     <a-button type="primary" @click="confirmImport">Confirm Import</a-button>
                 </div>
+            </div>
+            <div>
+                <p> # NetId 欄位，有效使用理電NetId帳號登入</p>
+                <p> * 必要欄位</p>
             </div>
         </div>
     </DepartmentLayout>
