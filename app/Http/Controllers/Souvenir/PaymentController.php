@@ -198,8 +198,8 @@ class PaymentController extends Controller
         // $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
         // $mercOrderNo=substr(str_replace($systemCode,'',$request->merchantOrderNo),0,-2);
         // $parts=explode('-',$mercOrderNo);
-        // $order=SouvenirOrder::find((int)$parts[0]);
-
+        $order=SouvenirOrder::find((int)$parts[0]);
+        dd($order, $request->all());
         //dd($systemCode, $mercOrderNo, $parts, (int)$parts[0], $order);
         $order->payment_result=$request->all();
         $order->payment_status=$request->responseStatus;
