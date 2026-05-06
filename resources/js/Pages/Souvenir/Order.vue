@@ -157,10 +157,10 @@
                                 class="w-full" />
                         </a-form-item>
                         <a-form-item label="Acknowledgement / 知悉" name="acknowledge" class="mb-0">
-                            <a-checkbox v-model:checked="orderForm.acknowledge">本人已知悉並接受 “購買須知”之內容</a-checkbox>
+                            <a-checkbox v-model:checked="orderForm.acknowledge">本人已知悉並接受 <span class="text-blue-500">“購買須知”</span>之內容</a-checkbox><a class="text-blue-500" @click="orderForm.purchaseNote=!orderForm.purchaseNote">全文</a>
                         </a-form-item>
                     </a-form>
-                <PurchaseNote/>
+                <PurchaseNote v-if="orderForm.acknowledge || orderForm.purchaseNote"/>
                 </div>
 
                 <div class="border-t pt-4 mt-4 space-y-3">

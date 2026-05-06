@@ -59,12 +59,25 @@ class Souvenir extends Model
             $souvenir = Souvenir::find($item['id']);
             
             if (!$souvenir) {
-                $failedItems[] = ['name' => $item['name'] ?? 'Unknown', 'reason' => 'Product not found'];
+                $failedItems[] = [
+                    'id'=>$souvenir->id,
+                    'name' => $souvenir->name,
+                    'available' => $souvenir->quota,
+                    'requested' => $item['qty'],
+                    'error_code'=>'00',
+                    'reason' => 'Product not found'];
                 continue;
             }
             
             if (!$souvenir->is_available) {
-                $failedItems[] = ['name' => $souvenir->name, 'reason' => 'Not available for order'];
+                $failedItems[] = [
+                    'id'=>$souvenir->id,
+                    'name' => $souvenir->name,
+                    'available' => $souvenir->quota,
+                    'requested' => $item['qty'],
+                    'error_code'=>'30',
+                    'reason' => 'Not available for order'
+                ];
                 continue;
             }
             if ($item['qty'] > $souvenir->user_quota_remaining) {

@@ -31,8 +31,12 @@ class PaymentController extends Controller
         }
         //dd(session('souvenirUser'));
         $order=SouvenirOrder::where('uuid',$request->order_uuid)->first();
+        if(empty($order)){
+            return redirect()->route('souvenir');
+        }
         $cart['cartItems']=$order->items;
         $result=Souvenir::deductAvailable(session('souvenirUser'), $cart);
+        //dd($order, session('souvenirUser'), $result);
         //dd($order,$result['failedItems']);
 
         // $failedItems = [];
