@@ -113,8 +113,8 @@
                 <div>Email: {{ modal.data.form_meta?.email }}</div>
             </div>
           </a-form-item>
-          <a-form-item label="Method" >
-            {{ modal.data.payment_method }}
+          <a-form-item label="Returned Result" >
+            {{ modal.data.payment_result }}
           </a-form-item>
           <a-form-item label="Amount" >
             {{ modal.data.amount }}
