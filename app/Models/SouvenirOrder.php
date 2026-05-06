@@ -10,7 +10,7 @@ class SouvenirOrder extends Model
     use HasFactory;
     
     protected $fillable = ['uuid','merc_order_no','sourvenir_user_id','form_meta','items','currency','amount','payment_result','payment_status','status'];
-    protected $casts = ['form_result'=>'object','items'=>'array'];
+    protected $casts = ['form_meta'=>'object', 'payment_result'=>'object','items'=>'array'];
     protected $appends=['receipt_no'];
     
     public function getReceiptNoAttribute(){
