@@ -177,6 +177,11 @@ class PaymentController extends Controller
     }
 
     public function result(Request $request){
+        // array:2 [ 
+        //   "responseStatus" => "SUCCESS"
+        //   "merchantOrderNo" => "daesp9-1778037464-882801"
+        // ]
+
         if ($request->has('test')) {
             $test='daesp18-1756268443-379201';
             $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
