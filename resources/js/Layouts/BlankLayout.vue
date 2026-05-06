@@ -31,7 +31,7 @@ const logout = () => {
     <!-- Header -->
     <header class="fixed-header">
         <nav class="shadow top-0 left-0 w-full bg-white z-10">
-            <div class="flex justify-between items-center py-6 px-10 container mx-auto">
+            <div class="flex justify-between items-center py-6 px-10 container">
                 <div class="shrink-0 flex items-center">
                     <Link :href="route('home')">
                         <ApplicationMark class="block h-14 w-auto" />

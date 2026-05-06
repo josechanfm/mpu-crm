@@ -70,12 +70,12 @@
                         <p class="text-sm text-gray-600 mb-2 line-clamp-none sm:line-clamp-2"
                             v-html="product.description" />
                         <p class="text-lg font-bold text-blue-600 mb-2">${{ product.price.toFixed(2) }}</p>
-
+                        
                         <a-button type="primary" @click="addToCart(product)"
                             :disabled="user == null || !isAvailable(product)" :class="[
                                 'w-full sm:w-auto transition-all',
                                 user == null || !isAvailable(product)
-                                    ? 'opacity-50 cursor-not-allowed'
+                                    ? 'text-red-800 cursor-not-allowed'
                                     : 'hover:scale-105'
                             ]">
                             <span class="flex items-center justify-center gap-2">
@@ -334,9 +334,15 @@ export default {
             });
         },
         getButtonText(product) {
+            console.log('get button text', dayjs(product.available_to).isBefore(dayjs()));
+
             if (!this.user) return 'Login to buy / 登入購買';
             if (this.selectedProductCount(product.id) >= product.user_quota_remaining) {
                 return `Max quota reached / 已達上限 (${product.user_quota_remaining})`;
+            }else if(product.available==0){
+                return `Out of stock / 已售罄`;
+            }else if(dayjs(product.available_to).isBefore(dayjs())){
+                return `Sales closed / 已停售`;
             }
             return `Add to cart / 加入購物車 (${this.selectedProductCount(product.id)}/${product.user_quota_remaining})`;
         },
