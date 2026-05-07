@@ -29,8 +29,13 @@ Route::get('/', function () {
 
 Route::prefix('souvenir')->group(function(){
     Route::get('/',[App\Http\Controllers\Souvenir\OrderController::class,'index'])->name('souvenir');
+    Route::get('/registration',[App\Http\Controllers\Souvenir\LoginController::class,'registration'])->name('souvenir.registration');
+    Route::post('/register',[App\Http\Controllers\Souvenir\LoginController::class,'register'])->name('souvenir.register');
+    Route::post('/send_reset_password_to_mail',[App\Http\Controllers\Souvenir\LoginController::class,'sendResetPasswordToEmail'])->name('souvenir.sendResetPasswordToEmail');
+    Route::get('/reset-password/{token}',[App\Http\Controllers\Souvenir\LoginController::class,'showResetPassword'])->name('souvenir.reset-password.show');
+    Route::post('/reset-password',[App\Http\Controllers\Souvenir\LoginController::class,'resetPassword'])->name('souvenir.reset-password');
     Route::get('/login',[App\Http\Controllers\Souvenir\LoginController::class,'login'])->name('souvenir.login');
-    Route::post('/login',[App\Http\Controllers\Souvenir\LoginController::class,'checker'])->name('souvenir.loginChecker');
+    Route::post('/login',[App\Http\Controllers\Souvenir\LoginController::class,'loginVarify'])->name('souvenir.loginVarify');
     Route::post('/logout',[App\Http\Controllers\Souvenir\LoginController::class,'logout'])->name('souvenir.logout');
     Route::post('checkout',[App\Http\Controllers\Souvenir\OrderController::class,'checkout'])->name('souvenir.checkout');
     Route::get('checkout_order',[App\Http\Controllers\Souvenir\OrderController::class,'checkoutOrder'])->name('souvenir.checkoutOrder');
@@ -94,9 +99,7 @@ Route::group([
     Route::get('/', [\App\Http\Controllers\Member\DashboardController::class,'index'])->name('member');
     Route::get('recruitment/notifications',[App\Http\Controllers\Member\RecruitmentController::class,'notifications'])->name('member.recruitment.notifications');
     Route::get('profile',[App\Http\Controllers\Member\ProfileController::class,'index'])->name('member.profile');
-
     Route::get('membership',[App\Http\Controllers\Member\MembershipController::class,'index'])->name('membership');
-
     Route::prefix('student')->group(function(){
         Route::get('/',[App\Http\Controllers\Student\DashboardController::class,'index'])->name('student.dashboard');
     })->name('student');

@@ -10,6 +10,7 @@ use App\Imports\SouvenirUserImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Api\IdValidatorController;
 use App\Exports\SouvenirUserExport;
+use App\Jobs\SendSouvenirNotification;
 
 class SouvenirUserController extends Controller
 {
@@ -130,8 +131,52 @@ class SouvenirUserController extends Controller
     {
         //
     }
+    public function import(Request $request){
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,csv,xls',
+        ]);
+        try {
+            // Import the file into an array
+            $data = Excel::toArray(new SouvenirUserImport, $request->file('file'));
+            $idValidator = new IdValidatorController();
+            $wrongs=[];
+            $updates=[];
+            $creates=[];
+            
+            $validFaculties=array_column(SouvenirUser::$faculties, 'value');
+            $validDegrees = array_column(SouvenirUser::$degrees, 'value');
+            
+            // Loop through the imported data if needed
+            // $data[0] is sheet 1
+            foreach ($data[0] as $row) {
+                if(empty($row[0])){
+                    $wrongs[]=$row;
+                }else{
+                    $user=SouvenirUser::where('email', $row[3])->first();
+                    //dd($user, $row, $row[0]);
+                    if($user) {
+                        $updates[]=$row;
+                    }else{
+                        $creates[]=$row;
+                    }
+                }
+            }
+            //dd($wrongs, $updates, $creates);
+            // Optionally, return a success response
+            return Inertia::render('Department/Dae/SouvenirUserImport', [
+                'records' => [
+                    'wrongs' => $wrongs,
+                    'updates' => $updates,
+                    'creates' => $creates
+                ]
+            ]);
+        } catch (\Exception $e) {
+            // Handle any exceptions that occur during the import
+            return response()->json(['error' => 'Failed to import file: ' . $e->getMessage()], 500);
+        }
 
-    public function import(Request $request)
+    }
+    public function import_old(Request $request)
     {
         // Validate the uploaded file
         $request->validate([
@@ -147,6 +192,7 @@ class SouvenirUserController extends Controller
             $creates=[];
             $validFaculties = ['FAC', 'FHSS', 'FLT', 'FAD', '', 'FB', 'AE'];
             $validDegrees = ['BACHALOR', 'MASTER', 'PHD'];
+            
             // Loop through the imported data if needed
             // $data[0] is sheet 1
             foreach ($data[0] as $row) {
@@ -216,15 +262,14 @@ class SouvenirUserController extends Controller
         if (isset($records['updates'])) {
             foreach ($records['updates'] as $update) {
                 // Assuming 'id' is the identifier for the souvenir user
-                SouvenirUser::where('netid', $update[0])->update([
-                    'name_zh'=>$update[1],
-                    'name_en'=>$update[2],
-                    'email'=>$update[3],
+                SouvenirUser::where('email', $update[0])->update([
+                    'can_buy'=>$update[1]==1?true:false,
+                    'netid'=>$update[2],
+                    'name'=>$update[3],
                     'phone'=>$update[4],
                     'faculty_code'=>$update[5],
                     'degree_code'=>$update[6],
-                    'grad_year'=>$update[7],
-                    'can_buy'=>$update[8]==1?true:false
+                    'grad_year'=>$update[7]
                 ]);
             }
         }
@@ -232,15 +277,14 @@ class SouvenirUserController extends Controller
         if (isset($records['creates'])) {
             foreach ($records['creates'] as $create) {
                 SouvenirUser::create([
-                    'netid'=>$create[0],
-                    'name_zh'=>$create[1],
-                    'name_en'=>$create[2],
-                    'email'=>$create[3],
+                    'notify_email'=>$create[0],
+                    'can_buy'=>$create[1]==1?true:false,
+                    'netid'=>$create[2],
+                    'name'=>$create[3],
                     'phone'=>$create[4],
                     'faculty_code'=>$create[5],
                     'degree_code'=>$create[6],
-                    'grad_year'=>$create[7],
-                    'can_buy'=>$create[8]==1?true:false
+                    'grad_year'=>$create[7]
                 ]);
             }
         }
@@ -278,5 +322,24 @@ class SouvenirUserController extends Controller
         SouvenirUser::whereIn('id',$request->ids)->update(['can_buy'=>$request->can_buy]);
         return redirect()->back();
 
+    }
+
+    public function emailNotification(Request $request){
+        $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'integer|exists:souvenir_users,id',
+        ]);
+
+        SouvenirUser::whereIn('id', $request->ids)
+            ->whereNotNull('notify_email')
+            ->where('notify_email', '!=', '')
+            ->chunk(50, function ($users) {
+                foreach ($users as $user) {
+                    $registrationUrl = route('souvenir.registration', ['uuid' => $user->uuid]);
+                    SendSouvenirNotification::dispatch($user, $registrationUrl);
+                }
+            });
+
+        return redirect()->back()->with('success', 'Notification emails have been queued for sending. / 通知郵件已排程發送。');
     }
 }

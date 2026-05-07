@@ -4,12 +4,72 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Support\Str;
 
-class SouvenirUser extends Model
+class SouvenirUser extends Model implements CanResetPasswordContract
 {
-    use HasFactory;
+    use HasFactory, Notifiable, CanResetPassword;
 
-    protected $fillable = ['netid','name_zh','name_en', 'email', 'phone', 'faculty_code', 'degree_code', 'can_buy', 'remark'];
+    protected $fillable = ['uuid', 'notify_email', 'netid', 'name', 'email', 'password', 'phone', 'faculty_code', 'degree_code', 'can_buy', 'token', 'notify_sent', 'remark'];
+    protected $hidden=['password'];
+
+    public static array $faculties = [
+        [
+            'label' => 'Faculty of Applied Sciences / 應用科學學院',
+            'value' => 'FCA',
+        ],
+        [
+            'label' => 'Faculty of Health Sciences and Sports / 健康科學及體育學院',
+            'value' => 'FCSD',
+        ],
+        [
+            'label' => 'Faculty of Languages and Translation / 語言及翻譯學院',
+            'value' => 'FLT',
+        ],
+        [
+            'label' => 'Faculty of Arts and Design / 藝術及設計學院',
+            'value' => 'FAD',
+        ],
+        [
+            'label' => 'Faculty of Humanities and Social Sciences / 人文及社會科學學院',
+            'value' => 'FCHS',
+        ],
+        [
+            'label' => 'Faculty of Business / 管理科學學院',
+            'value' => 'FCG',
+        ],
+        [
+            'label' => 'Peking University Health Science Center – Macao Polytechnic University Nursing Academy / 北京大學醫學部——澳門理工大學護理書院',
+            'value' => 'AE',
+        ],
+    ];
+
+    public static array $degrees = [
+        [
+            'label' => 'Bachelor / 學士',
+            'value' => 'BACHALOR',
+        ],
+        [
+            'label' => 'Master / 碩士',
+            'value' => 'MASTER',
+        ],
+        [
+            'label' => 'PhD / 博士',
+            'value' => 'PHD',
+        ],
+    ];
+
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            if (empty($user->uuid)) {
+                $user->uuid = (string) Str::uuid();
+            }
+        });
+    }
 
     public function orders(){
         return $this->hasMany(SouvenirOrder::class);

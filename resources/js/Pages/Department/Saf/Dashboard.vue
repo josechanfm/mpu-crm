@@ -7,6 +7,7 @@
                 <p class="text-gray-600">Welcome to the SAF department!</p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     SAF Dashboard
+                    <a-button :href="route('saf.payment.souvenirOrders')">Souvenior Orders</a-button>
                 </div>
             </div>
             <div v-html="department.landing_page" class="mb-6"></div>

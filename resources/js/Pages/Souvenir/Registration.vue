@@ -1,0 +1,211 @@
+<script setup>
+import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+import AuthenticationCard from '@/Components/AuthenticationCard.vue';
+import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
+import Checkbox from '@/Components/Checkbox.vue';
+import InputError from '@/Components/InputError.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import TextInput from '@/Components/TextInput.vue';
+import { message } from "ant-design-vue";
+
+const props = defineProps({
+    uuid: String,
+});
+
+const form = useForm({
+    uuid: props.uuid,
+    netId: '',
+    fullName: '',
+    phone: '',
+    faculty: '',
+    degree: '',
+    graduationYear: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+    terms: false,
+});
+
+const submit = () => {
+    form.post(route('souvenir.register'), {
+        onFinish: () => form.reset('password', 'password_confirmation'),
+        onError: (errors) => {
+            console.log('Registration failed:', errors);
+            message.error({
+                content: () => "Registration failed. Please check the errors.",
+                class: 'custom-class',
+                style: {
+                marginTop: '30vh',
+                },
+            });
+        },
+    });
+};
+
+const redirectToSouvenir = () => {
+    window.location.href = '/souvenir';
+};
+</script>
+
+<template>
+    <Head title="Register" />
+    <AuthenticationCard>
+        <template #logo>
+            <AuthenticationCardLogo />
+        </template>
+
+        <div class="flex justify-center items-center pb-10">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight text-center">
+                User Registration / 用戶註冊
+            </h2>
+        </div>
+
+        <form @submit.prevent="submit">
+            <div>
+                <InputLabel for="netId" value="NetId (Student ID of MPU) / 學生編號 (MPU 學生 ID)" required />
+                <TextInput
+                    id="netId"
+                    v-model="form.netId"
+                    class="mt-1 block w-full"
+                    required
+                    autofocus
+                />
+                <InputError class="mt-2" :message="form.errors.netId" />
+            </div>
+            <div class="mt-4">
+                <InputLabel for="fullName" value="Full Name / 全名" required />
+                <TextInput
+                    id="fullName"
+                    v-model="form.fullName"
+                    class="mt-1 block w-full"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.fullName" />
+            </div>
+            <div class="mt-4">
+                <InputLabel for="phone" value="Contact Phone Number / 聯絡電話號碼" required />
+                <TextInput
+                    id="phone"
+                    v-model="form.phone"
+                    class="mt-1 block w-full"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.phone" />
+            </div>
+            <div class="mt-4">
+                <InputLabel for="faculty" value="Faculty Belongs To / 所屬學院" required />
+                <TextInput
+                    id="faculty"
+                    v-model="form.faculty"
+                    class="mt-1 block w-full"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.faculty" />
+            </div>
+            <div class="mt-4">
+                <InputLabel for="degree" value="Degree of Study / 學位" required />
+                <TextInput
+                    id="degree"
+                    v-model="form.degree"
+                    class="mt-1 block w-full"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.degree" />
+            </div>
+            <div class="mt-4">
+                <InputLabel for="graduationYear" value="Graduation Year / 畢業年份" required />
+                <TextInput
+                    id="graduationYear"
+                    v-model="form.graduationYear"
+                    class="mt-1 block w-full"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.graduationYear" />
+            </div>
+            <div class="mt-4">
+                <InputLabel for="email" value="Email / 電子郵件" required />
+                <TextInput
+                    id="email"
+                    v-model="form.email"
+                    type="email"
+                    class="mt-1 block w-full"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.email" />
+            </div>
+            <div class="mt-4">
+                <InputLabel for="password" value="Password / 密碼" required />
+                <TextInput
+                    id="password"
+                    v-model="form.password"
+                    type="password"
+                    class="mt-1 block w-full"
+                    required
+                    @input="form.clearErrors('password')"
+                />
+                <InputError class="mt-2" :message="form.errors.password" />
+            </div>
+            <div class="mt-4">
+                <InputLabel for="password_confirmation" value="Confirm Password / 確認密碼" required />
+                <TextInput
+                    id="password_confirmation"
+                    v-model="form.password_confirmation"
+                    type="password"
+                    class="mt-1 block w-full"
+                    required
+                    @input="form.clearErrors('password_confirmation')"
+                />
+                <InputError class="mt-2" :message="form.errors.password_confirmation" />
+            </div>
+            <div class="mt-4">
+                <InputLabel for="terms" value="Acknowledgement for Terms and Conditions / 條款及條件確認" required />
+                <Checkbox id="terms" v-model:checked="form.terms" class="" required />
+                <span class="ml-2 text-sm text-gray-600">I agree to the terms and conditions / 我同意條款及條件</span>
+                <InputError class="mt-2" :message="form.errors.terms" />
+            </div>
+            <div class="flex items-center justify-between mt-4 gap-2">
+                <button
+                    type="button"
+                    class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-100"
+                    @click="redirectToSouvenir"
+                >
+                    Close / 關閉
+                </button>
+                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                    Register / 註冊
+                </PrimaryButton>
+            </div>
+        </form>
+
+        <template #footer>
+            <div class="max-w-94 bg-white px-2">
+                <ul class="list-disc">
+                    <li>
+                        對象：澳門理工大學2025/2026學年準畢業生<br>
+                        Eligibility: Prospective graduates of Macao Polytechnic University (Academic Year 2025/2026)
+                    </li>
+                    <li>
+                        認購期：由即日起至2026年5月25日 23:00時止(數量有限，售完即止)<br>
+                        Subscription Period: From now until 23:00 on 2026/05/25. (Limited quantities available; while stocks last)
+                    </li>
+                    <li>
+                        領取期：2026年6月上旬，以電郵通知為準<br>
+                        Pick-up Period: Early June 2026. (Exact details will be notified via email.)
+                    </li>
+                    <li>
+                        每位準畢業生之帳號只能限購1隻<br>
+                        Limited to one bear per prospective graduate account
+                    </li>
+                    <li>
+                        付款後，請點開收據及領取二維碼頁面，保存支付憑證<br>
+                        After payment, please access the page displaying your receipt and pick-up QR code, and save this proof for collection
+                    </li>
+                </ul>
+            </div>
+        </template>
+
+    </AuthenticationCard>
+
+
+</template>

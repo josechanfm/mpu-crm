@@ -97,6 +97,7 @@
                 <a-select-option value="delete">Delete Selected</a-select-option>
                 <a-select-option value="export">Export Selected</a-select-option>
                 <a-select-option value="update">Update Status</a-select-option>
+                <a-select-option value="notify_email">Send Notify Email</a-select-option>
             </a-select>
             <a-form-item label="Set Selected items:" v-if="batchAction=='update'">
                 <a-switch v-model:checked="batchCanBuys"  checked-children="Can Buy" un-checked-children="Can NOT buy" />
@@ -364,12 +365,20 @@ export default {
         columns(){
             return [
                 {
-                    title: "Student No.",
-                    dataIndex: "netid",
+                    title: "Notify Email",
+                    dataIndex: "notify_email",
                     sorter: true,
                 }, {
                     title: "Email",
                     dataIndex: "email",
+                    sorter: true,
+                }, {
+                    title: "NetId.",
+                    dataIndex: "netid",
+                    sorter: true,
+                }, {
+                    title: "Name",
+                    dataIndex: "name",
                     sorter: true,
                 }, {
                     title: "Phone",
@@ -380,6 +389,12 @@ export default {
                 }, {
                     title: "Degree",
                     dataIndex: "degree_code",
+                }, {
+                    title: "Grad Year",
+                    dataIndex: "grad_year",
+                }, {
+                    title: "Count Notify Sent",
+                    dataIndex: "notify_sent",
                 }, {
                     title: "Can Buy",
                     dataIndex: "can_buy",
@@ -442,12 +457,42 @@ export default {
                 case 'update':
                     this.updateSelectedItems();
                     break;
+                case 'notify_email':
+                    this.setNotifyEmails();
             }
             
             this.batchModalVisible = false;
             this.batchAction = '';
         },
-        
+        setNotifyEmails(){
+            if (this.selectedRowKeys.length === 0) {
+                message.warning('No items selected');
+                return;
+            }
+
+            this.$confirm({
+                title: 'Confirm Email Notification',
+                content: `Are you sure to Send Notify Emails to the selected users? ${this.selectedRowKeys.length} selected item(s)?`,
+                onOk: async () => {
+                    try {
+                        const response = await this.$inertia.post(route('dae.souvenir.users.emailNotification'), { ids: this.selectedRowKeys });
+                        message.success(response?.props?.flash?.message || 'Email successfully sent');
+                        this.selectedRowKeys = [];
+                        this.selectedRows = [];
+                        
+                        // Refresh the table data
+                        this.$inertia.reload();
+                    } catch (error) {
+                        message.error('Failed to send emails');
+                        console.log('error', error);
+                    }
+                },
+                onCancel() {
+                    console.log('Cancelled');
+                },
+            });
+
+        },        
         deleteSelectedItems() {
             if (this.selectedRowKeys.length === 0) {
                 message.warning('No items selected');
@@ -459,13 +504,9 @@ export default {
                 content: `Are you sure you want to delete ${this.selectedRowKeys.length} selected item(s)?`,
                 onOk: async () => {
                     try {
-                        // Call your API to delete selected items
-                        this.$inertia.post(route('dae.souvenir.users.batchDelete'), {ids: this.selectedRowKeys})
-                        // const response = await axios.post(route('dae.souvenir.users.batchDelete'), {
-                        //     ids: this.selectedRowKeys
-                        // });
+                        const response = await this.$inertia.post(route('dae.souvenir.users.batchDelete'), { ids: this.selectedRowKeys });
                         
-                        message.success(response.data.message || 'Items deleted successfully');
+                        message.success(response?.props?.flash?.message || 'Items deleted successfully');
                         this.selectedRowKeys = [];
                         this.selectedRows = [];
                         

@@ -141,9 +141,10 @@
                         <a-form-item label="Degree / 學位" name="degree" class="mb-0">
                             <a-select v-model:value="orderForm.degree" placeholder="Select your degree / 選擇您的學位"
                                 class="w-full">
-                                <a-select-option value="BACHALOR">Bachelor / 學士</a-select-option>
-                                <a-select-option value="MASTER">Master / 碩士</a-select-option>
-                                <a-select-option value="PHD">PhD / 博士</a-select-option>
+                                <a-select-option v-for="degree in degrees" :key="degree.value"
+                                    :value="degree.value">
+                                    {{ degree.label }}
+                                </a-select-option>
                             </a-select>
                         </a-form-item>
 
@@ -257,6 +258,16 @@ export default {
             type: Array,
             required: true,
         },
+        faculties: {
+            type: Array,
+            required: true,
+            default: () => []
+        },
+        degrees: {
+            type: Array,
+            required: true,
+            default: () => []
+        },
     },
     data() {
         return {
@@ -273,15 +284,6 @@ export default {
                 email: '',
                 acknowledge:false
             },
-            faculties: [
-                { label: 'Faculty of Applied Sciences / 應用科學學院', value: 'FCA' },
-                { label: 'Faculty of Health Sciences and Sports / 健康科學及體育學院', value: 'FCSD' },
-                { label: 'Faculty of Languages and Translation / 語言及翻譯學院', value: 'FLT' },
-                { label: 'Faculty of Arts and Design / 藝術及設計學院', value: 'FAD' },
-                { label: 'Faculty of Humanities and Social Sciences / 人文及社會科學學院', value: 'FCHS' },
-                { label: 'Faculty of Business / 管理科學學院', value: 'FCG' },
-                { label: 'Peking University Health Science Center – Macao Polytechnic University Nursing Academy / 北京大學醫學部——澳門理工大學護理書院', value: 'AE' },
-            ],
             rules: {
                 faculty: [{ required: true, message: 'Please select your faculty' }],
                 degree: [{ required: true, message: 'Please select your degree' }],

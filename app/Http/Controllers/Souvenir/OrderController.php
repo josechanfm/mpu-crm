@@ -35,10 +35,12 @@ class OrderController extends Controller
         //     ->get();
         //dd($products[0]->user_quota_remaining);
         return Inertia::render("Souvenir/Order",[
-            "user"=>$user?->load(['orders' => function ($query) {
+            "faculties" => SouvenirUser::$faculties,
+            "degrees" => SouvenirUser::$degrees,
+            "user" => $user?->load(['orders' => function ($query) {
                         $query->where('status', config('constants.ORDER_PAID'));
                     }]),
-            "products"=>Souvenir::where('is_available', true)
+            "products" => Souvenir::where('is_available', true)
                 //->where('available_to','>=',now())
                 ->orderBy('created_at', 'desc')
                 ->get()
@@ -227,102 +229,6 @@ class OrderController extends Controller
         //return $order;
         
 
-    }
-
-    private function storeToOrder2($souvenirUser, $cart)
-    {
-        // 1. Validate all items before any update
-        foreach ($cart['cartItems'] as $item) {
-            $souvenir = Souvenir::find($item['id']);
-            // Check if souvenir exists
-            if (!$souvenir) {
-                return false;
-            }
-            
-            // Check if item is published and available for order
-            if (!$souvenir->is_available) {
-                return false;
-            }
-            
-            // Check if requested quantity exceeds available quota
-            if ($item['qty'] > $souvenir->quota) {
-                return false;
-            }
-        }
-        dd($souvenirUser, $cart, $souvenir);
-
-        // 2. All valid → process inside transaction
-        DB::beginTransaction();
-        
-        try {
-            $orderItems = [];
-            $totalAmount = 0;
-            
-            foreach ($cart['cartItems'] as $item) {
-                $souvenir = Souvenir::find($item['id']);
-                
-                // Deduct from quota (available stock), not from stock
-                $souvenir->update(['quota' => $souvenir->quota - $item['qty']]);
-                // Optionally update stock if you want to keep original total untouched
-                // $souvenir->update(['stock' => $souvenir->stock - $item['qty']]);
-                
-                $orderItems[] = [
-                    'souvenir_id' => $souvenir->id,
-                    'name' => $souvenir->name,
-                    'qty' => $item['qty'],
-                    'price' => $souvenir->price,
-                    'amount' => $souvenir->price * $item['qty'],
-                ];
-                $totalAmount += $souvenir->price * $item['qty'];
-            }
-            
-            // Create order
-            $order = $souvenirUser->orders()->firstOrCreate([
-                'uuid' => Str::uuid(),
-                'souvenir_user_id' => $souvenirUser->id,
-                'form_meta' => $cart,
-                'items' => $orderItems,
-                'currency' => 'MOP',
-                'amount' => $totalAmount,
-            ]);
-            
-            DB::commit();
-            return $order;
-            
-        } catch (QueryException $e) {
-            DB::rollBack();
-            return false;
-        }
-    }
-    private function storeToOrder_old($souvenirUser, $cart){
-        $orderItems=[];
-        $totalAmount=0;
-        foreach($cart['cartItems'] as $item){
-            $souvenir=Souvenir::find($item['id']);
-            $souvenir->update(['stock' => $souvenir->stock - $item['qty']]);
-            $souvenir->save();
-            $orderItems[]=[
-                'souvenir_id'=> $souvenir->id,
-                'name'=> $souvenir->name,
-                'qty'=>$item['qty'],
-                'price'=>$souvenir->price,
-                'amount'=>$souvenir->price*$item['qty'],
-            ];
-            $totalAmount+=$souvenir->price*$item['qty'];
-        }
-        try {
-            $order=$souvenirUser->orders()->firstOrCreate([
-                'uuid'=>Str::uuid(),
-                'souvenir_user_id'=>$souvenirUser->id,
-                'form_meta'=>$cart,
-                'items'=>$orderItems,
-                'currency'=>'MOP',
-                'amount'=>$totalAmount,
-            ]);
-        } catch (\Illuminate\Database\QueryException $e) {
-            return false;
-        }
-        return $order;
     }
 
     private function writePaymentData(SouvenirUser $souvenirUser, $order, $clientIp){

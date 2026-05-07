@@ -12,15 +12,14 @@
                 <table width="100%">
                     <thead>
                         <tr>
-                            <th>Netid #</th>
-                            <th>Name (zh)</th>
-                            <th>Name (en)</th>
-                            <th>Email *</th>
+                            <th>Notify Email *</th>
+                            <th>Can Buy</th>
+                            <th>NetId</th>
+                            <th>Name</th>
                             <th>Phone</th>
                             <th>Faculty</th>
                             <th>Degree</th>
                             <th>Grad Year</th>
-                            <th>Can Buy</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,15 +35,14 @@
                 <table width="100%">
                     <thead>
                         <tr>
-                            <th>Netid #</th>
-                            <th>Name (zh)</th>
-                            <th>Name (en)</th>
-                            <th>Email *</th>
+                            <th>Notify Email *</th>
+                            <th>Can Buy</th>
+                            <th>NetId</th>
+                            <th>Name</th>
                             <th>Phone</th>
                             <th>Faculty</th>
                             <th>Degree</th>
                             <th>Grad Year</th>
-                            <th>Can Buy</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,15 +58,14 @@
                 <table width="100%">
                     <thead>
                         <tr>
-                            <th>Netid #</th>
-                            <th>Name (zh)</th>
-                            <th>Name (en)</th>
-                            <th>Email *</th>
+                            <th>Notify Email *</th>
+                            <th>Can Buy</th>
+                            <th>NetId</th>
+                            <th>Name</th>
                             <th>Phone</th>
                             <th>Faculty</th>
                             <th>Degree</th>
                             <th>Grad Year</th>
-                            <th>Can Buy</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -85,8 +82,7 @@
                 </div>
             </div>
             <div>
-                <p> # NetId 欄位，有效使用理電NetId帳號登入</p>
-                <p> * 必要欄位</p>
+                <p> * 必要欄位且唯一</p>
             </div>
         </div>
     </DepartmentLayout>

@@ -241,6 +241,7 @@ Route::group([
     Route::post('souvenir/users/batch_delete',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'batchDelete'])->name('dae.souvenir.users.batchDelete');
     Route::get('souvenir/users/batch_export',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'batchExport'])->name('dae.souvenir.users.batchExport');
     Route::post('souvenir/users/batch_update',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'batchUpdate'])->name('dae.souvenir.users.batchUpdate');
+    Route::post('souvenir/users/email_notification',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'emailNotification'])->name('dae.souvenir.users.emailNotification');
     Route::resource('souvenir/users',App\Http\Controllers\Department\Dae\SouvenirUserController::class)->names('dae.souvenir.users');
 
     Route::post('souvenir/user/import',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'import'])->name('dae.souvenir.user.import');
@@ -267,7 +268,7 @@ Route::group([
     Route::get('/',[App\Http\Controllers\Department\Saf\DashboardController::class,'index'])->name('saf.dashboard');
     Route::get('payments',[App\Http\Controllers\Department\Saf\PaymentController::class,'index'])->name('saf.payments');
     Route::get('payment/souvenir_orders',[App\Http\Controllers\Department\Saf\PaymentController::class,'souvenirOrders'])->name('saf.payment.souvenirOrders');
-    Route::get('payment/souvenir_export',[App\Http\Controllers\Department\Saf\PaymentController::class,'souvenirExport'])->name('saf.payment.souvenir_export');
+    Route::get('payment/souvenir_export',[App\Http\Controllers\Department\Saf\PaymentController::class,'souvenirExport'])->name('saf.payment.souvenirExport');
 });
 // Route::middleware([
 //     'auth:admin',
