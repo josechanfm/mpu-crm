@@ -13,7 +13,7 @@ class SouvenirUser extends Model implements CanResetPasswordContract
 {
     use HasFactory, Notifiable, CanResetPassword;
 
-    protected $fillable = ['uuid', 'notify_email', 'netid', 'name', 'email', 'password', 'phone', 'faculty_code', 'degree_code','grad_year', 'can_buy', 'token', 'notify_sent', 'remark', 'email_verification_code', 'email_verified_at', 'active','meta_data'];
+    protected $fillable = ['notify_email', 'netid', 'name', 'email', 'password', 'phone', 'faculty_code', 'degree_code','grad_year', 'can_buy', 'token', 'notify_sent', 'remark', 'email_verification_code', 'email_verified_at', 'active','meta_data'];
     protected $hidden=['password'];
     protected $casts = [
         'can_buy'=> 'boolean',

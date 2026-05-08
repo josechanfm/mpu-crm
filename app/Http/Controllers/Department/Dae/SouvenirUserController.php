@@ -108,7 +108,6 @@ class SouvenirUserController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'netid' => 'required|string|max:50',
             'email' => 'required|email|max:100',
             'phone' => 'nullable|string|max:20',
             'faculty_code' => 'nullable|string|max:10',
