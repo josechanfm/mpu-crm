@@ -262,9 +262,9 @@ class SouvenirUserController extends Controller
         if (isset($records['updates'])) {
             foreach ($records['updates'] as $update) {
                 // Assuming 'id' is the identifier for the souvenir user
-                SouvenirUser::where('email', $update[0])->update([
+                SouvenirUser::where('notify_email', $update[0])->update([
                     'can_buy'=>$update[1]==1?true:false,
-                    'netid'=>$update[2],
+                    //'netid'=>$update[2],
                     // 'name'=>$update[3],
                     // 'phone'=>$update[4],
                     // 'faculty_code'=>$update[5],
