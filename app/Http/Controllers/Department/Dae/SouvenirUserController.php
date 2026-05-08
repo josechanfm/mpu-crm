@@ -152,12 +152,12 @@ class SouvenirUserController extends Controller
                 if(empty($row[0])){
                     $wrongs[]=$row;
                 }else{
-                    $user=SouvenirUser::where('email', $row[3])->first();
+                    $user=SouvenirUser::where('notify_email', $row[0])->first();
                     //dd($user, $row, $row[0]);
-                    if($user) {
-                        $updates[]=$row;
-                    }else{
+                    if(empty($user)) {
                         $creates[]=$row;
+                    }else{
+                        $updates[]=$row;
                     }
                 }
             }
@@ -265,11 +265,11 @@ class SouvenirUserController extends Controller
                 SouvenirUser::where('email', $update[0])->update([
                     'can_buy'=>$update[1]==1?true:false,
                     'netid'=>$update[2],
-                    'name'=>$update[3],
-                    'phone'=>$update[4],
-                    'faculty_code'=>$update[5],
-                    'degree_code'=>$update[6],
-                    'grad_year'=>$update[7]
+                    // 'name'=>$update[3],
+                    // 'phone'=>$update[4],
+                    // 'faculty_code'=>$update[5],
+                    // 'degree_code'=>$update[6],
+                    // 'grad_year'=>$update[7]
                 ]);
             }
         }

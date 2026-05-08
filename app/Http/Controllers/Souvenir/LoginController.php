@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SouvenirUser;
 use App\Mail\SouvenirResetPasswordMail;
+use App\Mail\SouvenirEmailVerification;
 use Inertia\Inertia;
 use LdapRecord\Connection;
 use LdapRecord\Auth\BindException;
@@ -21,78 +22,120 @@ class LoginController extends Controller
             'uuid' => 'required|exists:souvenir_users,uuid',
         ]);
         $user = SouvenirUser::where('uuid', $request->uuid)->first();
-        if ($user->email) {
+        if ($user->email && $user->email_verified_at) {
             return redirect()->route('souvenir.login');
         }
+        $user->email=null;
+        $user->save();
         return Inertia::render('Souvenir/Registration',[
             'uuid'=>$user->uuid
         ]);
     }
     public function register(Request $request){
-        $rules = [
-            'uuid' => 'required|exists:souvenir_users,uuid', //uuid
-            'netId' => 'required|string|max:255',
-            'fullName' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'faculty' => 'required|string|max:255',
-            'degree' => 'required|string|max:255',
-            'graduationYear' => 'required|integer|min:1900|max:' . (date('Y') + 10),
-            'email' => 'required|email|unique:souvenir_users,email',
-            'password' => 'required|string|min:8|confirmed',
-            'terms' => 'required|accepted',
-        ];
+        try {
+            $rules = [
+                'uuid' => 'required|exists:souvenir_users,uuid',
+                'netId' => 'required|string|max:255',
+                'fullName' => 'required|string|max:255',
+                'phone' => 'required|string|max:20',
+                'faculty' => 'required|string|max:255',
+                'degree' => 'required|string|max:255',
+                'graduationYear' => 'required|integer|min:1900|max:' . (date('Y') + 10),
+                'email' => 'required|email|unique:souvenir_users,email',
+                'password' => 'required|string|min:8|confirmed',
+                'terms' => 'required|accepted',
+            ];
 
-        $messages = [
-            'uuid.required' => 'UUID is required. / UUID 是必需的。',
-            'uuid.uuid' => 'Invalid UUID format. / 無效的 UUID 格式。',
-            'uuid.exists' => 'UUID not found. / UUID 未找到。',
-            'netId.required' => 'NetId is required. / NetId 是必需的。',
-            'netId.string' => 'NetId must be text. / NetId 必須是文字。',
-            'netId.max' => 'NetId too long. / NetId 太長。',
-            'fullName.required' => 'Full name is required. / 全名是必需的。',
-            'fullName.string' => 'Full name must be text. / 全名必須是文字。',
-            'fullName.max' => 'Full name too long. / 全名太長。',
-            'phone.required' => 'Phone number is required. / 電話號碼是必需的。',
-            'phone.string' => 'Phone number must be text. / 電話號碼必須是文字。',
-            'phone.max' => 'Phone number too long. / 電話號碼太長。',
-            'faculty.required' => 'Faculty is required. / 學院是必需的。',
-            'faculty.string' => 'Faculty must be text. / 學院必須是文字。',
-            'faculty.max' => 'Faculty too long. / 學院太長。',
-            'degree.required' => 'Degree is required. / 學位是必需的。',
-            'degree.string' => 'Degree must be text. / 學位必須是文字。',
-            'degree.max' => 'Degree too long. / 學位太長。',
-            'graduationYear.required' => 'Graduation year is required. / 畢業年份是必需的。',
-            'graduationYear.integer' => 'Graduation year must be a number. / 畢業年份必須是數字。',
-            'graduationYear.min' => 'Graduation year too early. / 畢業年份太早。',
-            'graduationYear.max' => 'Graduation year too late. / 畢業年份太晚。',
-            'email.required' => 'Email is required. / 電子郵件是必需的。',
-            'email.email' => 'Invalid email format. / 無效的電子郵件格式。',
-            'email.unique' => 'Email already registered. / 電子郵件已註冊。',
-            'password.required' => 'Password is required. / 密碼是必需的。',
-            'password.string' => 'Password must be text. / 密碼必須是文字。',
-            'password.min' => 'Password must be at least 8 characters. / 密碼至少 8 個字符。',
-            'password.confirmed' => 'Password confirmation does not match. / 密碼確認不匹配。',
-            'terms.required' => 'You must accept the terms. / 您必須接受條款。',
-            'terms.accepted' => 'You must accept the terms. / 您必須接受條款。',
-        ];
+            $messages = [
+                'uuid.required' => 'UUID is required. / UUID 是必需的。',
+                'uuid.uuid' => 'Invalid UUID format. / 無效的 UUID 格式。',
+                'uuid.exists' => 'UUID not found. / UUID 未找到。',
+                'netId.required' => 'NetId is required. / NetId 是必需的。',
+                'netId.string' => 'NetId must be text. / NetId 必須是文字。',
+                'netId.max' => 'NetId too long. / NetId 太長。',
+                'fullName.required' => 'Full name is required. / 全名是必需的。',
+                'fullName.string' => 'Full name must be text. / 全名必須是文字。',
+                'fullName.max' => 'Full name too long. / 全名太長。',
+                'phone.required' => 'Phone number is required. / 電話號碼是必需的。',
+                'phone.string' => 'Phone number must be text. / 電話號碼必須是文字。',
+                'phone.max' => 'Phone number too long. / 電話號碼太長。',
+                'faculty.required' => 'Faculty is required. / 學院是必需的。',
+                'faculty.string' => 'Faculty must be text. / 學院必須是文字。',
+                'faculty.max' => 'Faculty too long. / 學院太長。',
+                'degree.required' => 'Degree is required. / 學位是必需的。',
+                'degree.string' => 'Degree must be text. / 學位必須是文字。',
+                'degree.max' => 'Degree too long. / 學位太長。',
+                'graduationYear.required' => 'Graduation year is required. / 畢業年份是必需的。',
+                'graduationYear.integer' => 'Graduation year must be a number. / 畢業年份必須是數字。',
+                'graduationYear.min' => 'Graduation year too early. / 畢業年份太早。',
+                'graduationYear.max' => 'Graduation year too late. / 畢業年份太晚。',
+                'email.required' => 'Email is required. / 電子郵件是必需的。',
+                'email.email' => 'Invalid email format. / 無效的電子郵件格式。',
+                'email.unique' => 'Email already registered. / 電子郵件已註冊。',
+                'password.required' => 'Password is required. / 密碼是必需的。',
+                'password.string' => 'Password must be text. / 密碼必須是文字。',
+                'password.min' => 'Password must be at least 8 characters. / 密碼至少 8 個字符。',
+                'password.confirmed' => 'Password confirmation does not match. / 密碼確認不匹配。',
+                'terms.required' => 'You must accept the terms. / 您必須接受條款。',
+                'terms.accepted' => 'You must accept the terms. / 您必須接受條款。',
+            ];
 
-        
-        $validate=$request->validate($rules, $messages);
+            $validate = $request->validate($rules, $messages);
 
-        $user = SouvenirUser::where('uuid', $request->uuid)->first();
-        $user->update([
-            'netId' => $request->netId,
-            'name' => $request->fullName,
-            'phone' => $request->phone,
-            'faculty' => $request->faculty,
-            'degree' => $request->degree,
-            'graduationYear' => $request->graduationYear,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
+            $code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
 
-        return redirect()->route('souvenir.login')->with('success', 'Registration successful! Please log in. / 註冊成功！請登入。');
+            $user = SouvenirUser::where('uuid', $request->uuid)->first();
+            $user->update([
+                'netId' => $request->netId,
+                'name' => $request->fullName,
+                'phone' => $request->phone,
+                'faculty' => $request->faculty,
+                'degree' => $request->degree,
+                'graduationYear' => $request->graduationYear,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'email_verification_code' => $code,
+            ]);
+
+            Mail::to($request->email)->send(new SouvenirEmailVerification($code, $user));
+
+            return response()->json(['message' => 'Verification email sent. Please check your email for the code.', 'uuid' => $user->uuid]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            \Log::error('Registration error: ' . $e->getMessage());
+            return response()->json(['message' => 'An unexpected error occurred. Please try again.'], 500);
+        }
     }
+
+    public function verifyEmail(Request $request){
+        try {
+            $request->validate([
+                'uuid' => 'required|exists:souvenir_users,uuid',
+                'code' => 'required|string|size:6',
+            ]);
+
+            $user = SouvenirUser::where('uuid', $request->uuid)->first();
+
+            if ($user->email_verification_code === $request->code) {
+                $user->update([
+                    'email_verified_at' => now(),
+                    'email_verification_code' => null,
+                    'active'=> true
+                ]);
+
+                return response()->json(['message' => 'Email verified successfully. Registration complete.']);
+            }
+
+            return response()->json(['message' => 'Invalid verification code.'], 400);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            \Log::error('Email verification error: ' . $e->getMessage());
+            return response()->json(['message' => 'An unexpected error occurred. Please try again.'], 500);
+        }
+    }
+
     public function sendResetPasswordToEmail(Request $request){
         $request->validate([
             'email' => 'required|email|exists:souvenir_users,email',

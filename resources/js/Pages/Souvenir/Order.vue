@@ -128,7 +128,7 @@
                     <a-form ref="orderForm" :model="orderForm" layout="vertical" :rules="rules" @finish="handleOrderFinish"
                         class="mt-6 space-y-3">
 
-                        <a-form-item label="Academic Unit / 學術單位" name="faculty" class="mb-0">
+                        <!-- <a-form-item label="Academic Unit / 學術單位" name="faculty" class="mb-0">
                             <a-select v-model:value="orderForm.faculty" placeholder="Select your academic Unit / 選擇您的系所"
                                 class="w-full">
                                 <a-select-option v-for="faculty in faculties" :key="faculty.value"
@@ -146,17 +146,17 @@
                                     {{ degree.label }}
                                 </a-select-option>
                             </a-select>
-                        </a-form-item>
+                        </a-form-item> -->
 
                         <a-form-item label="Contact Phone Number / 聯絡電話" name="phone" class="mb-0">
                             <a-input type="input" v-model:value="orderForm.phone" placeholder="Enter your phone number / 輸入您的電話號碼"
                                 class="w-full" />
                         </a-form-item>
 
-                        <a-form-item label="Personal Email (optional) / 個人電子郵件（可選）" name="email" class="mb-0">
+                        <!-- <a-form-item label="Personal Email (optional) / 個人電子郵件（可選）" name="email" class="mb-0">
                             <a-input type="input" v-model:value="orderForm.email" placeholder="Enter your email / 輸入您的電子郵件"
                                 class="w-full" />
-                        </a-form-item>
+                        </a-form-item> -->
                         <a-form-item label="Purchase Note / 購買須知" name="acknowledge" class="mb-0">
                             <a-checkbox v-model:checked="orderForm.acknowledge">
                                 I acknowledge and accept the "Purchase Note".<br>

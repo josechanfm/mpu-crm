@@ -145,6 +145,8 @@ class OrderController extends Controller
             ]);
         }
         return Inertia::render("Souvenir/Checkout",[
+            "faculties"=>SouvenirUser::$faculties,
+            "degrees"=>SouvenirUser::$degrees,
             "user"=>session("souvenirUser"),
             "order"=>$result['order'],
             "failedItems"=>$result['failedItems']

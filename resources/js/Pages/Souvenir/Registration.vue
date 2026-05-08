@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+import { Head } from '@inertiajs/inertia-vue3';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import Checkbox from '@/Components/Checkbox.vue';
@@ -7,13 +7,15 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { message } from "ant-design-vue";
+import { message, Modal } from "ant-design-vue";
+import { ref, reactive } from 'vue';
+import axios from 'axios';
 
 const props = defineProps({
     uuid: String,
 });
 
-const form = useForm({
+const form = reactive({
     uuid: props.uuid,
     netId: '',
     fullName: '',
@@ -27,25 +29,63 @@ const form = useForm({
     terms: false,
 });
 
-const submit = () => {
-    form.post(route('souvenir.register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
-        onError: (errors) => {
-            console.log('Registration failed:', errors);
-            message.error({
-                content: () => "Registration failed. Please check the errors.",
-                class: 'custom-class',
-                style: {
-                marginTop: '30vh',
-                },
-            });
-        },
-    });
+const errors = ref({});
+const processing = ref(false);
+const showModal = ref(false);
+const verificationCode = ref('');
+
+const submit = async () => {
+    processing.value = true;
+    errors.value = {};
+    console.log('form submit', form);
+    try {
+        const response = await axios.post(route('souvenir.register'), form);
+        console.log('submit response', response)
+
+        message.success(response.data.message);
+        showModal.value = true;
+        verificationCode.value = '';
+    } catch (error) {
+        if (error.response && error.response.data.errors) {
+            errors.value = Object.fromEntries(
+                Object.entries(error.response.data.errors).map(([key, value]) => [key, Array.isArray(value) ? value[0] : value])
+            );
+            message.error('Registration failed. Please check the errors.');
+        } else if (error.response && error.response.data.message) {
+            message.error(error.response.data.message);
+        } else {
+            message.error('An unexpected error occurred. Please try again.');
+        }
+        console.log('error', error)
+    } finally {
+        processing.value = false;
+    }
+};
+
+const verifyEmail = async () => {
+    try {
+        const response = await axios.post(route('souvenir.verifyEmail'), {
+            uuid: props.uuid,
+            code: verificationCode.value,
+        });
+        message.success(response.data.message);
+        showModal.value = false;
+        // Redirect to login or something
+        window.location.href = route('souvenir.login');
+    } catch (error) {
+        if (error.response && error.response.data.message) {
+            message.error(error.response.data.message);
+        } else {
+            message.error('Verification failed.');
+        }
+        console.log('verify error', error)
+    }
 };
 
 const redirectToSouvenir = () => {
     window.location.href = '/souvenir';
 };
+
 </script>
 
 <template>
@@ -71,7 +111,7 @@ const redirectToSouvenir = () => {
                     required
                     autofocus
                 />
-                <InputError class="mt-2" :message="form.errors.netId" />
+                <InputError class="mt-2" :message="errors.netId" />
             </div>
             <div class="mt-4">
                 <InputLabel for="fullName" value="Full Name / 全名" required />
@@ -81,7 +121,7 @@ const redirectToSouvenir = () => {
                     class="mt-1 block w-full"
                     required
                 />
-                <InputError class="mt-2" :message="form.errors.fullName" />
+                <InputError class="mt-2" :message="errors.fullName" />
             </div>
             <div class="mt-4">
                 <InputLabel for="phone" value="Contact Phone Number / 聯絡電話號碼" required />
@@ -91,7 +131,7 @@ const redirectToSouvenir = () => {
                     class="mt-1 block w-full"
                     required
                 />
-                <InputError class="mt-2" :message="form.errors.phone" />
+                <InputError class="mt-2" :message="errors.phone" /> 
             </div>
             <div class="mt-4">
                 <InputLabel for="faculty" value="Faculty Belongs To / 所屬學院" required />
@@ -101,7 +141,7 @@ const redirectToSouvenir = () => {
                     class="mt-1 block w-full"
                     required
                 />
-                <InputError class="mt-2" :message="form.errors.faculty" />
+                <InputError class="mt-2" :message="errors.faculty" />
             </div>
             <div class="mt-4">
                 <InputLabel for="degree" value="Degree of Study / 學位" required />
@@ -111,7 +151,7 @@ const redirectToSouvenir = () => {
                     class="mt-1 block w-full"
                     required
                 />
-                <InputError class="mt-2" :message="form.errors.degree" />
+                <InputError class="mt-2" :message="errors.degree" />
             </div>
             <div class="mt-4">
                 <InputLabel for="graduationYear" value="Graduation Year / 畢業年份" required />
@@ -121,7 +161,7 @@ const redirectToSouvenir = () => {
                     class="mt-1 block w-full"
                     required
                 />
-                <InputError class="mt-2" :message="form.errors.graduationYear" />
+                <InputError class="mt-2" :message="errors.graduationYear" />
             </div>
             <div class="mt-4">
                 <InputLabel for="email" value="Email / 電子郵件" required />
@@ -132,7 +172,7 @@ const redirectToSouvenir = () => {
                     class="mt-1 block w-full"
                     required
                 />
-                <InputError class="mt-2" :message="form.errors.email" />
+                <InputError class="mt-2" :message="errors.email" />
             </div>
             <div class="mt-4">
                 <InputLabel for="password" value="Password / 密碼" required />
@@ -142,9 +182,9 @@ const redirectToSouvenir = () => {
                     type="password"
                     class="mt-1 block w-full"
                     required
-                    @input="form.clearErrors('password')"
+                    @input="errors.password = ''"
                 />
-                <InputError class="mt-2" :message="form.errors.password" />
+                <InputError class="mt-2" :message="errors.password" />
             </div>
             <div class="mt-4">
                 <InputLabel for="password_confirmation" value="Confirm Password / 確認密碼" required />
@@ -154,15 +194,15 @@ const redirectToSouvenir = () => {
                     type="password"
                     class="mt-1 block w-full"
                     required
-                    @input="form.clearErrors('password_confirmation')"
+                    @input="errors.password_confirmation = ''"
                 />
-                <InputError class="mt-2" :message="form.errors.password_confirmation" />
+                <InputError class="mt-2" :message="errors.password_confirmation" />
             </div>
             <div class="mt-4">
                 <InputLabel for="terms" value="Acknowledgement for Terms and Conditions / 條款及條件確認" required />
                 <Checkbox id="terms" v-model:checked="form.terms" class="" required />
                 <span class="ml-2 text-sm text-gray-600">I agree to the terms and conditions / 我同意條款及條件</span>
-                <InputError class="mt-2" :message="form.errors.terms" />
+                <InputError class="mt-2" :message="errors.terms" />
             </div>
             <div class="flex items-center justify-between mt-4 gap-2">
                 <button
@@ -172,7 +212,7 @@ const redirectToSouvenir = () => {
                 >
                     Close / 關閉
                 </button>
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <PrimaryButton class="ml-4" :class="{ 'opacity-25': processing }" :disabled="processing">
                     Register / 註冊
                 </PrimaryButton>
             </div>
@@ -207,5 +247,13 @@ const redirectToSouvenir = () => {
 
     </AuthenticationCard>
 
+    <Modal v-model:open="showModal" title="Email Verification" @ok="verifyEmail" okText="Verify" cancelText="Cancel">
+        <p>Please enter the 6-digit verification code sent to your email.</p>
+        <TextInput
+            v-model="verificationCode"
+            placeholder="Enter code"
+            class="mt-2"
+        />
+    </Modal>
 
 </template>

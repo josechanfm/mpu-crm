@@ -83,6 +83,7 @@
             </div>
             <div>
                 <p> * 必要欄位且唯一</p>
+                <p> # 只更新Can_buy 欄位, 因其他欄位可以由用戶註冊時轉入.</p>
             </div>
         </div>
     </DepartmentLayout>
