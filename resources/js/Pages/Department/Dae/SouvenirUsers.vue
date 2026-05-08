@@ -117,11 +117,8 @@
                 <a-form-item label="Student No." name="netid" >
                     <a-input type="input" v-model:value="modal.data.netid" />
                 </a-form-item>
-                <a-form-item label="Name (Chinese)" name="name_zh" >
-                    <a-input type="input" v-model:value="modal.data.name_zh" />
-                </a-form-item>
-                <a-form-item label="Name (English)." name="name_en" >
-                    <a-input type="input" v-model:value="modal.data.name_en" />
+                <a-form-item label="Name (Chinese)" name="name" >
+                    <a-input type="input" v-model:value="modal.data.name" />
                 </a-form-item>
                 <a-form-item label="Email" name="email" >
                     <a-input type="input" v-model:value="modal.data.email" />
@@ -146,7 +143,9 @@
                         <a-select-option value="PHD">PhD / 博士</a-select-option>
                     </a-select>
                 </a-form-item>
-
+                <a-form-item label="Grade year" name="grade_year" >
+                    <a-input type="input" v-model:value="modal.data.grad_year" />
+                </a-form-item>
                 <a-form-item label="Can Buy" name="can_buy" >
                     <a-switch v-model:checked="modal.data.can_buy" />
                 </a-form-item>
