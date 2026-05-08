@@ -11,12 +11,21 @@
             font-weight: 400;
             src: url('{{ public_path('fonts/Noto/NotoSansTC-Regular.ttf') }}') format('truetype');
         }
-
+        @font-face {
+            font-family: 'NotoSansTC';
+            font-style: normal;
+            font-weight: 700;  /* or 800 if you have that weight */
+            src: url('{{ public_path('fonts/Noto/NotoSansTC-Bold.ttf') }}') format('truetype');
+        }
         body {
             margin: 30px;
             font-family: 'NotoSansTC', sans-serif;
         }
-
+        header {
+            font-family: 'NotoSansTC';
+            font-weight:800;
+            font-style: bold;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -65,13 +74,13 @@
             <div>Pick-up Code / 取件碼</div>
             <img style="float:right" width="150" src="{{ $pickupQrcodePath }}" alt="QR Code" />
         </div>
-        <div>Número de Recebio / 收據編號: {{ $order->updated_at->format('y') }}-{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</div>
-        <div>Unidade académica / 學術單位: {{ $faculties[strtoupper($order->form_meta->faculty)] }}</div>
-        <div>Grau / 學位: {{ ucfirst($order->form_meta->degree)  }}</div>
-        <div>Telephone / 電話: {{ $order->form_meta->phone }}</div>
-        <div>Email / 電郵: {{ $order->form_meta->email  }}</div>
-        <div>Data de Pagamento / 付款日期: {{ $order->created_at->format('Y-m-d') }}</div>
-        <div>Forma de Pagamento / 付款方式: GOVPAY online (BOC) / 線上政付通(BOC)</div>
+        <div><span style="font-weight:bold">Número de Recebio / 收據編號:</span> {{ $order->updated_at->format('y') }}-{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</div>
+        <div><span style="font-weight:bold">Unidade académica / 學術單位: </span><br><span style="margin-left: 20px;">{{ $faculties[strtoupper($order->user->faculty_code)] }}<span></div>
+        <div><span style="font-weight:bold">Grau / 學位:</span> {{ ucfirst($order->user->degree_code)  }}</div>
+        <div><span style="font-weight:bold">Email / 電郵:</span> {{ $order->user->email  }}</div>
+        <div><span style="font-weight:bold">Telephone / 電話:</span> {{ $order->user->phone }}</div>
+        <div><span style="font-weight:bold">Data de Pagamento / 付款日期:</span> {{ $order->created_at->format('Y-m-d') }}</div>
+        <div><span style="font-weight:bold">Forma de Pagamento / 付款方式:</span> GOVPAY online (BOC) / 線上政付通(BOC)</div>
         <p></p>
     </div>
     <table>

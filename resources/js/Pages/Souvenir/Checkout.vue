@@ -28,14 +28,12 @@
                         <h3 class="font-semibold text-lg text-gray-800">
                             Contact Info: / 聯絡資訊：
                         </h3>
-                        {{ faculties }}
-                        {{  degrees }}
                             <div class="mt-2">
                                 <div><strong>NetId / 學生號碼: </strong>{{ user.netid }}</div>
-                                <div><strong>Academic Unit / 學術單位: </strong>{{ faculties[order.form_meta.faculty] }}</div>
-                                <div><strong>Degree / 學位: </strong>{{ degrees[order.form_meta.degree] }}</div>
+                                <div><strong>Academic Unit / 學術單位: </strong>{{ getFacultyLable(user.faculty_code) }}</div>
+                                <div><strong>Degree / 學位: </strong>{{ getDegreeLable(user.degree_code) }}</div>
+                                <div><strong>Email / 電郵: </strong>{{ user.email }}</div>
                                 <div><strong>Phone / 電話: </strong>{{ order.form_meta.phone }}</div>
-                                <div><strong>Email / 電郵: </strong>{{ order.form_meta.email }}</div>
                             </div>
                     </div>
                     <div>
@@ -120,6 +118,12 @@ export default {
                 },
             });
         },
+        getFacultyLable(facultCode){
+            return this.faculties.find(f=>f.value==facultCode)?.label
+        },
+        getDegreeLable(degreeCode){
+            return this.degrees.find(f=>f.value==degreeCode)?.label
+        }
 
     },
 };

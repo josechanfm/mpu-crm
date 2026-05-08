@@ -10,21 +10,25 @@ import TextInput from '@/Components/TextInput.vue';
 import { message, Modal } from "ant-design-vue";
 import { ref, reactive } from 'vue';
 import axios from 'axios';
+import Dropdown from '../../Components/Dropdown.vue';
 
 const props = defineProps({
     uuid: String,
+    user: Object,
+    faculties: Object,
+    degrees: Object
 });
 
 const form = reactive({
     uuid: props.uuid,
-    netId: '',
-    fullName: '',
-    phone: '',
-    faculty: '',
-    degree: '',
-    graduationYear: '',
-    email: '',
-    password: '',
+    netId: props.user.netid,
+    fullName: props.user.name,
+    phone: props.user.phone,
+    faculty: props.user.faculty_code,
+    degree: props.user.degree_code,
+    graduationYear: props.user.grad_year,
+    email: props.user.email,
+    password: null,
     password_confirmation: '',
     terms: false,
 });
@@ -100,7 +104,6 @@ const redirectToSouvenir = () => {
                 User Registration / 用戶註冊
             </h2>
         </div>
-
         <form @submit.prevent="submit">
             <div>
                 <InputLabel for="netId" value="NetId (Student ID of MPU) / 學生編號 (MPU 學生 ID)" required />
@@ -134,22 +137,24 @@ const redirectToSouvenir = () => {
                 <InputError class="mt-2" :message="errors.phone" /> 
             </div>
             <div class="mt-4">
-                <InputLabel for="faculty" value="Faculty Belongs To / 所屬學院" required />
-                <TextInput
-                    id="faculty"
-                    v-model="form.faculty"
-                    class="mt-1 block w-full"
-                    required
+                <InputLabel for="faculty" value="Academic Unit / 學術機構" required />
+                <a-select
+                    v-model:value="form.faculty"
+                    style="width: 100%"
+                    placeholder="Select Academic Unit"
+                    :options="faculties"
+                    :disabled="user.faculty_code"
                 />
                 <InputError class="mt-2" :message="errors.faculty" />
             </div>
             <div class="mt-4">
                 <InputLabel for="degree" value="Degree of Study / 學位" required />
-                <TextInput
-                    id="degree"
-                    v-model="form.degree"
-                    class="mt-1 block w-full"
-                    required
+                <a-select
+                    v-model:value="form.degree"
+                    style="width: 100%"
+                    placeholder="Select Degree"
+                    :options="degrees"
+                    :disabled="user.degree_code"
                 />
                 <InputError class="mt-2" :message="errors.degree" />
             </div>

@@ -7,15 +7,25 @@
                     MPU Bear Order Form
                 </h2>
                 <div class="flex justify-end gap-2">
-                    <div v-if="user" @click="logout">Logout<br>登出</div>
-                    <div v-else @click="login">Login<br>登入</div>
+                    <button v-if="user" @click="logout"
+                        class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors duration-200 font-medium text-sm shadow-sm hover:shadow-md flex items-center justify-center min-w-[100px]">
+                        <span>Logout</span>
+                        <span class="ml-1 text-red-100">/ 登出</span>
+                    </button>
+                    <button v-else @click="login"
+                        class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 font-medium text-sm shadow-sm hover:shadow-md flex items-center justify-center min-w-[100px]">
+                        <span>Login</span>
+                        <span class="ml-1 text-blue-100">/ 登入</span>
+                    </button>
                 </div>
             </div>
         </template>
         <div class="py-0">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 p-5">
                     <div v-if="user">
-                        <h3 class="text-lg font-semibold">{{ user.netid }}</h3>
+                        <h3 class="text-lg font-semibold">NetId: {{ user.netid }}</h3>
+                        <h3 class="text-lg font-semibold">Name: {{ user.name }}</h3>
+                        <h3 class="text-lg font-semibold">Email: {{ user.email }}</h3>
                     </div>
                     <hr class="my-4"/>
                     <h4 class="text-lg font-semibold">Your Pickup Code:</h4>

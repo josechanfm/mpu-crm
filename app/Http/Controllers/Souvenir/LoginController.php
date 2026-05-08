@@ -28,7 +28,10 @@ class LoginController extends Controller
         $user->email=null;
         $user->save();
         return Inertia::render('Souvenir/Registration',[
-            'uuid'=>$user->uuid
+            'user'=>$user,
+            'uuid'=>$user->uuid,
+            'faculties'=>SouvenirUser::$faculties,
+            'degrees'=>SouvenirUser::$degrees,
         ]);
     }
     public function register(Request $request){
@@ -200,8 +203,9 @@ class LoginController extends Controller
             "email" => "required|email|exists:souvenir_users,email",
             "password" => "required",
         ]);
-        $user = SouvenirUser::where("email", $request->email)->first();
-       
+
+        $user = SouvenirUser::where("email", $request->email)->where('can_buy',true)->first();
+        //dd($user, $request->all(), \Hash::check($request->password, $user->password));
         if ($user && \Hash::check($request->password, $user->password)) {
             session()->put("souvenirUser", $user);
             return to_route('souvenir');
