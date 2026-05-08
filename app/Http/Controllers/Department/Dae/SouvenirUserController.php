@@ -270,6 +270,7 @@ class SouvenirUserController extends Controller
                     // 'faculty_code'=>$update[5],
                     // 'degree_code'=>$update[6],
                     // 'grad_year'=>$update[7]
+                    'meta_data'=>$update
                 ]);
             }
         }
@@ -279,15 +280,17 @@ class SouvenirUserController extends Controller
                 SouvenirUser::create([
                     'notify_email'=>$create[0],
                     'can_buy'=>$create[1]==1?true:false,
-                    'netid'=>$create[2],
-                    'name'=>$create[3],
-                    'phone'=>$create[4],
-                    'faculty_code'=>$create[5],
-                    'degree_code'=>$create[6],
-                    'grad_year'=>$create[7]
+                    // 'netid'=>$create[2],
+                    // 'name'=>$create[3],
+                    // 'phone'=>$create[4],
+                    // 'faculty_code'=>$create[5],
+                    // 'degree_code'=>$create[6],
+                    // 'grad_year'=>$create[7],
+                    'meta_data'=>$create
                 ]);
             }
         }
+
         return redirect()->route('dae.souvenir.users.index')->with('success', 'Import confirmed and processed successfully.');
 
     }

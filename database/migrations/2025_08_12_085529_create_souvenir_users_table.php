@@ -31,6 +31,8 @@ return new class extends Migration
             $table->integer('notify_sent')->default(0);
             $table->string('email_verification_code')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->boolean('active')->default(false);
+            $table->text('meta_data')->nullable();
             $table->timestamps();
         });
     }
