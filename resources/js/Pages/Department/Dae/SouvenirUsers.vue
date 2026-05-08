@@ -117,7 +117,7 @@
                 <a-form-item label="Student No." name="netid" >
                     <a-input type="input" v-model:value="modal.data.netid" />
                 </a-form-item>
-                <a-form-item label="Name (Chinese)" name="name" >
+                <a-form-item label="Full Name" name="name" >
                     <a-input type="input" v-model:value="modal.data.name" />
                 </a-form-item>
                 <a-form-item label="Email" name="email" >
