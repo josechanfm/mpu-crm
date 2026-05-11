@@ -18,8 +18,7 @@ class SouvenirOrderExport implements FromCollection, WithHeadings
         $this->orderIds = $orderIds;
         $this->heading=[
             'NetId',
-            'Name (en)',
-            'Name (zh)',
+            'Full Name',
             'user email',
             'user phone',
             'user faculty',
@@ -33,10 +32,7 @@ class SouvenirOrderExport implements FromCollection, WithHeadings
             'Transaction Time Stamp',
             'Purchase Year',
             'Purchase Month',
-            'Email',
             'Phone',
-            'Faculty',
-            'Degree',
             'item_1_name',
             'item_1_count',
             'item_2_name',
@@ -57,8 +53,7 @@ class SouvenirOrderExport implements FromCollection, WithHeadings
         foreach ($souvenirOrders as $order) {
             $modifiedOrder = [
                 'netid'=>$order->user->netid,
-                'name_en'=>$order->user->name_en,
-                'name_zh'=>$order->user->name_zh,
+                'name'=>$order->user->name,
                 'user_email'=>$order->user->email,
                 'user_phone'=>$order->user->phone,
                 'user_faculty_code'=>$order->user->faculty_code,
@@ -72,11 +67,7 @@ class SouvenirOrderExport implements FromCollection, WithHeadings
                 'transaction_time'=>$order->updated_at,
                 'purchase_year'=>$order->updated_at->format('Y'),
                 'purchase_month'=>$order->updated_at->format('m'),
-                'email'=>$order->form_meta->email,
-                'phone'=>$order->form_meta->phone,
-                'faculty'=>$order->form_meta->faculty,
-                'degree'=>$order->form_meta->degree,
-
+                'phone'=>$order->form_meta->phone??null,
             ];
             foreach($order->form_meta->cartItems as $item){
                 if(isset($item->qty)){
