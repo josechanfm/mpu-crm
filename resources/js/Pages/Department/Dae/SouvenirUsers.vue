@@ -149,6 +149,9 @@
                 <a-form-item label="Can Buy" name="can_buy" >
                     <a-switch v-model:checked="modal.data.can_buy" />
                 </a-form-item>
+                <a-form-item label="Imported Data" name="meta_data" >
+                    {{ modal.data.meta_data }}
+                </a-form-item>
             </a-form>
             <template #footer>
                 <a-button key="back" @click="handleModalClose">Close</a-button>
