@@ -70,7 +70,6 @@
                         <p class="text-sm text-gray-600 mb-2 line-clamp-none sm:line-clamp-2"
                             v-html="product.description" />
                         <p class="text-lg font-bold text-blue-600 mb-2">${{ product.price.toFixed(2) }}</p>
-                        
                         <a-button type="primary" @click="addToCart(product)"
                             :disabled="user == null || !isAvailable(product)" :class="[
                                 'w-full sm:w-auto transition-all',
@@ -78,6 +77,7 @@
                                     ? 'text-red-800 cursor-not-allowed'
                                     : 'hover:scale-105'
                             ]">
+                            
                             <span class="flex items-center justify-center gap-2">
                                 <ShoppingCartOutlined v-if="!user" class="text-base" />
                                 {{ getButtonText(product) }}
@@ -316,7 +316,7 @@ export default {
     },
     methods: {
         isAvailable(product){
-            //if (product.user_quota_remaining==0) return false;
+            if (product.user_quota_remaining==0) return false;
             const now = new Date();
             const expiry = new Date(product.available_to);
             return expiry > now;
