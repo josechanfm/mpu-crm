@@ -10,6 +10,8 @@ use App\Models\SouvenirUser;
 use App\Models\SouvenirOrder;
 use App\Models\SouvenirPayment;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Validator;
+
 
 class PaymentController extends Controller
 {
@@ -181,18 +183,27 @@ class PaymentController extends Controller
         //   "responseStatus" => "SUCCESS"
         //   "merchantOrderNo" => "daesp9-1778037464-882801"
         // ]
-
         if ($request->has('test')) {
             $test='daesp18-1756268443-379201';
             $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
             $mercOrderNo=substr(str_replace($systemCode,'',$test),0,-2);
             $parts=explode('-',$mercOrderNo);
             $order=SouvenirOrder::find($parts[0]);
+            //dd('abc123', $order, SouvenirOrder::latest()->first());
             //dd($test, $systemCode, $mercOrderNo, $parts[0], $order);
             return Inertia::render('Souvenir/PaymentResult',[
                     'order'=>SouvenirOrder::latest()->first()
                 ]);
         }
+        
+        $validator = Validator::make($request->all(), [
+            'merchantOrderNo' => 'required',
+            'responseStatus' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->route('souvenir')->withErrors($validator)->withInput();
+        }
+
 
         $payment=SouvenirPayment::create([
             'type'=>'result',

@@ -23,7 +23,7 @@
                 <div class="font-bold float-right">Total / 總計: ${{ order.amount.toFixed(2) }}</div>
             </div>
             <div class="text-center p-5">
-                <a-button type="primary" :href="route('souvenir.order.receipt',{id:order.id, uuid:order.uuid})">
+                <a-button type="primary" :href="route('souvenir.order.receipt',{id:order.id, uuid:order.uuid})" target="_blank">
                     Receipt & QR code / 單據及領取二維碼
                 </a-button>
             </div>
@@ -37,6 +37,7 @@
 <script>
 import BlankLayout from '@/Layouts/BlankLayout.vue';
 import { ShoppingCartOutlined } from '@ant-design/icons-vue';
+import { baseSelectPropsWithoutPrivate } from 'ant-design-vue/es/vc-select/BaseSelect';
 import dayjs from 'dayjs';
 
 export default {
