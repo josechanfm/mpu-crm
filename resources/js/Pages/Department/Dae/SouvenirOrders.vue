@@ -72,6 +72,14 @@
                         <template v-else-if="column.dataIndex=='buyer' && record.user">
                             <span>{{ record.user.netid }}</span>
                         </template>
+                        <template v-else-if="column.dataIndex=='email'">
+                            1:{{ record.user.notify_email }}<br>
+                            2:{{ record.user.email }}
+                        </template>
+                        <template v-else-if="column.dataIndex=='phone'">
+                            2:{{ record.user.phone }}<br>
+                            3:{{ record.form_meta.phone }}
+                        </template>
                         <template v-else-if="column.dataIndex=='items'">
                             <div v-for="item in record.items">
                                 {{ item.name }} ({{ item.qty }})
@@ -92,6 +100,9 @@
                     </template>
                 </a-table>
             </div>
+            <p>1: Imported User Info</p>
+            <p>2: Regisered Info</p>
+            <p>3: Order Form Phone Number</p>
         </div>
 
     <!-- Modal Start-->
@@ -195,7 +206,11 @@ export default {
                 },
                 search: {  
                     options: [
-                        { value:'buyer', label: "Student No."},
+                        { value:'netid', label: "NetId"},
+                        { value:'notify_email', label: "Notify Email"},
+                        { value:'register_email', label: "Register Email"},
+                        { value:'user_phone', label: "User Phone"},
+                        { value:'order_phone', label: "Order Phone"},
                     ],
                     column: null, // Selected search column
                     text: null, // search text
@@ -210,8 +225,14 @@ export default {
             },
             columns: [
                 {
-                    title: "Buyer",
+                    title: "NetId",
                     dataIndex: "buyer",
+                }, {
+                    title: "Email",
+                    dataIndex: "email",
+                }, {
+                    title: "Phone",
+                    dataIndex: "phone",
                 }, {
                     title: "Amount",
                     dataIndex: "amount",
@@ -245,7 +266,11 @@ export default {
         pagination() {
             //console.log('comput page', this.urlParams.get('filter_value'))
             //this.myFilter.filter.value = this.urlParams.get('filter_value')??2;
-            this.myFilter.filter.value = this.urlParams.get('filter_value')||'all';
+
+            
+            if(this.urlParams.get('search_column')!==''){
+                this.myFilter.filter.value = this.urlParams.get('filter_value')||'all';
+            }
             this.myFilter.search.column = this.urlParams.get('search_column');
             this.myFilter.search.text = this.urlParams.get('search_text');
             return {

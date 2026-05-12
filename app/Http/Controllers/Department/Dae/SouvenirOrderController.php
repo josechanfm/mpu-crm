@@ -33,10 +33,27 @@ class SouvenirOrderController extends Controller
         }else{
             //$orders = SouvenirOrder::where('status', config('constants.ORDER_PAID'));
         }
-        if($request->search_column && $request->search_column=='buyer' && $request->search_text){
-            $orders = $orders->whereHas('user', function($query) use ($request){
-                $query->where('netid','LIKE', '%'.$request->search_text.'%');
-            });
+        if($request->search_column && $request->search_column=='netid' && $request->search_text){
+            if($request->search_column=='netid'){
+                $orders = $orders->whereHas('user', function($query) use ($request){
+                    $query->where('netid','LIKE', '%'.$request->search_text.'%');
+                });
+            }else if($request->search_column=='notify_email'){
+                $orders = $orders->whereHas('user', function($query) use ($request){
+                    $query->where('notify_email','LIKE', '%'.$request->search_text.'%');
+                });
+            }else if($request->search_column=='email'){
+                $orders = $orders->whereHas('user', function($query) use ($request){
+                    $query->where('email','LIKE', '%'.$request->search_text.'%');
+                });
+            }else if($request->search_column=='user_phone'){
+                $orders = $orders->whereHas('user', function($query) use ($request){
+                    $query->where('phone','LIKE', '%'.$request->search_text.'%');
+                });
+            }else if($request->search_column=='order_phone'){
+                $orders = $orders->where('form_meta','LIKE', '%"phone":"'.$request->search_text.'%');
+            }
+
         }
         // if ($request->has('search_column') && !is_null($request->search_column) && $request->has('search_text') && !is_null($request->search_text)) {
         //     $orders = $souvenior->where($request->search_column,'LIKE', '%'.$request->search_text.'%');
