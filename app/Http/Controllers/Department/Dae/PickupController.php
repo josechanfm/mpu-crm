@@ -85,7 +85,7 @@ class PickupController extends Controller
         }
 
         // Update all PAID orders status to PICKUP
-        $updated=$user->orders()->where('status',config('constants.ORDER_PAID'))->update(['status'=>config('constants.ORDER_PICKUP')]);
+        $updated=$user->orders()->where('status',SouvenirOrder::$status['PAID'])->update(['status'=>SouvenirOrder::$status['PICKUP']]);
         // return response()->json([
         //     "code"=>$request->code, 
         //     'parts'=>$parts,

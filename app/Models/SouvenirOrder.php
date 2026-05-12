@@ -12,7 +12,13 @@ class SouvenirOrder extends Model
     protected $fillable = ['uuid','merc_order_no','sourvenir_user_id','form_meta','items','currency','amount','payment_result','payment_status','status'];
     protected $casts = ['form_meta'=>'object', 'payment_result'=>'object','items'=>'array'];
     protected $appends=['receipt_no'];
-    
+
+    public static $status = [
+        'ORDERED' => NULL, //未支付
+        'FAIL' => 0, //支付失敗
+        'PAID' => 1, //已支付
+        'PICKUP' => 2, //己領取
+    ];
     public function getReceiptNoAttribute(){
        // Get the year from created_at
         $year = $this->created_at->format('Y');

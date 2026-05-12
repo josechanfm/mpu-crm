@@ -18,15 +18,20 @@ class SouvenirOrderController extends Controller
      */
     public function index(Request $request)
     {
-         $orders = SouvenirOrder::query();
+        //dd($request->all(), config('constants.ORDER_PAID'));
+        
+        $orders = SouvenirOrder::query();
         if ($request->has('filter_column') && !is_null($request->filter_column && $request->has('filter_value') && !is_null($request->filter_value))) {
-            if($request->filter_value=='null'){
-                $orders = SouvenirOrder::whereNull($request->filter_column);
-            }else{
-                $orders = SouvenirOrder::where($request->filter_column, $request->filter_value);
+            if($request->filter_value!=='all'){
+                if($request->filter_value=='null'){
+                    $orders = SouvenirOrder::whereNull($request->filter_column);
+                }else{
+                    $orders = SouvenirOrder::where($request->filter_column, $request->filter_value);
+                }
             }
+            //dd($orders);
         }else{
-            $orders = SouvenirOrder::where('status', config('constants.ORDER_PAID'));
+            //$orders = SouvenirOrder::where('status', config('constants.ORDER_PAID'));
         }
         if($request->search_column && $request->search_column=='buyer' && $request->search_text){
             $orders = $orders->whereHas('user', function($query) use ($request){

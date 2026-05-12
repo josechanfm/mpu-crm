@@ -9,6 +9,7 @@
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <div class="flex flex-wrap p-5 gap-4">
+                    <br>
                     <div class="flex items-center space-x-2">
                         <label>Filter:</label>
                         <a-select 
@@ -183,13 +184,14 @@ export default {
             myFilter :{
                 filter:{
                     options:[
-                        { value: null, label: "未支付" },
-                        { value: 0, label: "支付失敗" },
-                        { value: 1, label: "己支付" },
-                        { value: 2, label: "己領取" },
+                        { value: 'all', label: "全部" },
+                        { value: 'null', label: "未支付" },
+                        { value: '0', label: "支付失敗" },
+                        { value: '1', label: "己支付" },
+                        { value: '2', label: "己領取" },
                     ],
                     column:'status',
-                    value: 2
+                    value: 'all'
                 },
                 search: {  
                     options: [
@@ -243,7 +245,7 @@ export default {
         pagination() {
             //console.log('comput page', this.urlParams.get('filter_value'))
             //this.myFilter.filter.value = this.urlParams.get('filter_value')??2;
-            this.myFilter.filter.value = parseInt(this.urlParams.get('filter_value')) || 2;
+            this.myFilter.filter.value = this.urlParams.get('filter_value')||'all';
             this.myFilter.search.column = this.urlParams.get('search_column');
             this.myFilter.search.text = this.urlParams.get('search_text');
             return {

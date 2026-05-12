@@ -173,7 +173,7 @@ class PaymentController extends Controller
         // $order->payment_notify=$request->all();
         $order->payment_meta=json_encode($request->all());
         $order->payment_status=$request->status;
-        $order->status=$request->status=='SUCCESS'?config('constants.ORDER_PAID'):config('constants.ORDER_PAY_FAIL');
+        $order->status=$request->status=='SUCCESS'?SouvenirOrder::$status['PAID']:SouvenirOrder::$status['FAIL'];
         $order->save();
         return true;
     }
@@ -200,26 +200,27 @@ class PaymentController extends Controller
             'merchantOrderNo' => 'required',
             'responseStatus' => 'required'
         ]);
+        //
         if ($validator->fails()) {
             return redirect()->route('souvenir')->withErrors($validator)->withInput();
         }
-
-
+        $orderData=$validator->getData();
         $payment=SouvenirPayment::create([
             'type'=>'result',
-            'meta_data'=>$request->all(),
-            'status'=>$request->responseStatus
+            'meta_data'=>$orderData,
+            'status'=>$orderData['responseStatus']
         ]);
 
         $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
         $mercOrderNo=substr(str_replace($systemCode,'',$request->merchantOrderNo),0,-2);
+        //split by '-' orderId, time(), random(1000,9999)
         $parts=explode('-',$mercOrderNo);
         $order=SouvenirOrder::find((int)$parts[0]);
         //dd($order, $request->all());
         //dd($systemCode, $mercOrderNo, $parts, (int)$parts[0], $order);
-        $order->payment_result=$request->all();
-        $order->payment_status=$request->responseStatus;
-        $order->status=$request->responseStatus=='SUCCESS'?config('constants.ORDER_PAID'):config('constants.ORDER_PAY_FAIL');
+        $order->payment_result=$orderData;
+        $order->payment_status=$orderData['responseStatus'];
+        $order->status=$request->responseStatus=='SUCCESS'?SouvenirOrder::$status['PAID']:SouvenirOrder::$status['FAIL'];
         $order->save();
 
         $payment->order_id=$order->id;

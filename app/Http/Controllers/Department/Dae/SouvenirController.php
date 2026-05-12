@@ -24,7 +24,6 @@ class SouvenirController extends Controller
      */
     public function index(Request $request)
     {
-        //dd($request->all());
         if ($request->has('sort_column') && !is_null($request->sort_column)) {
             $souvenirs = Souvenir::orderBy($request->sort_column, $request->sort_order);
         }else{
