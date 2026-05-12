@@ -77,7 +77,7 @@
                             2:{{ record.user.email }}
                         </template>
                         <template v-else-if="column.dataIndex=='phone'">
-                            2:{{ record.user.phone }}<br>
+                            1:{{ record.user.phone }}<br>
                             3:{{ record.form_meta.phone }}
                         </template>
                         <template v-else-if="column.dataIndex=='items'">
