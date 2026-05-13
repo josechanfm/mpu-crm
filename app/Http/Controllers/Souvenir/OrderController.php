@@ -38,7 +38,7 @@ class OrderController extends Controller
             "faculties" => SouvenirUser::$faculties,
             "degrees" => SouvenirUser::$degrees,
             "user" => $user?->load(['orders' => function ($query) {
-                        $query->where('status', config('constants.ORDER_PAID'));
+                        $query->where('status', SouvenirOrder::$status['PAID']);
                     }]),
             "products" => Souvenir::where('is_available', true)
                 //->where('available_to','>=',now())
@@ -291,12 +291,6 @@ class OrderController extends Controller
         }
        
         $pickupCode=$this->genPickupCode(session('souvenirUser')->id);
-        // return view('souvenir/receipt', [
-        //     'order' => $order,
-        //     'pickupCode' => $this->genQrcode($pickupCode),
-        //     'pickupQrcodePath' => $this->genPickupQrImage($pickupCode)
-        // ]);
-
         $pdf = PDF::loadView('souvenir/receipt', [
             'order' => $order->load('user'),
             'pickupCode' => $this->genQrcode($pickupCode),

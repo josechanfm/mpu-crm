@@ -32,7 +32,6 @@
                 <span class="hidden sm:inline text-gray-700 group-hover:text-blue-600 font-medium">Check Out / 結帳</span>
                 <span class="sm:hidden text-gray-700 group-hover:text-blue-600 font-medium">Cart</span>
             </button>
-
             <!-- Orders Button -->
             <button @click="orderIsOpen = true"
                 class="relative px-4 py-2 bg-white border border-gray-200 hover:border-green-300 hover:bg-green-50 rounded-lg transition-all duration-200 shadow-sm hover:shadow flex items-center gap-2 group">
@@ -339,8 +338,6 @@ export default {
             });
         },
         getButtonText(product) {
-            console.log('get button text', dayjs(product.available_to).isBefore(dayjs()));
-
             if (!this.user) return 'Login to buy / 登入購買';
             if (this.selectedProductCount(product.id) >= product.user_quota_remaining) {
                 return `Max quota reached / 已達上限 (${product.user_quota_remaining})`;

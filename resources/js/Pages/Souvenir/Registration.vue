@@ -41,11 +41,8 @@ const verificationCode = ref('');
 const submit = async () => {
     processing.value = true;
     errors.value = {};
-    console.log('form submit', form);
     try {
         const response = await axios.post(route('souvenir.register'), form);
-        console.log('submit response', response)
-
         message.success(response.data.message);
         showModal.value = true;
         verificationCode.value = '';
@@ -60,7 +57,6 @@ const submit = async () => {
         } else {
             message.error('An unexpected error occurred. Please try again.');
         }
-        console.log('error', error)
     } finally {
         processing.value = false;
     }
@@ -82,7 +78,6 @@ const verifyEmail = async () => {
         } else {
             message.error('Verification failed.');
         }
-        console.log('verify error', error)
     }
 };
 

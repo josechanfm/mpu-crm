@@ -38,63 +38,6 @@ class PaymentController extends Controller
         }
         $cart['cartItems']=$order->items;
         $result=Souvenir::deductAvailable(session('souvenirUser'), $cart);
-        //dd($order, session('souvenirUser'), $result);
-        //dd($order,$result['failedItems']);
-
-        // $failedItems = [];
-        // foreach($order->items as $item){
-        //     $souvenir=Souvenir::find($item['souvenir_id']);
-        //     if (!$souvenir) {
-        //         $failedItems[] = [
-        //             'souvenir_id'=>$souvenir->id,
-        //             'name' => $souvenir->name,
-        //             'reason' => 'Insufficient quota',
-        //             'available' => $souvenir->quota,
-        //             'requested' => $item['qty'],
-        //             'error_code'=>'00', 
-        //             'result' => 'Product not found'
-        //         ];
-        //         continue;
-        //     }
-            
-        //     if (!$souvenir->is_available) {
-        //         $failedItems[] = [
-        //             'souvenir_id'=>$souvenir->id,
-        //             'name' => $souvenir->name,
-        //             'reason' => 'Insufficient quota',
-        //             'available' => $souvenir->quota,
-        //             'requested' => $item['qty'],
-        //             'error_code'=> '30', 
-        //             'result' => 'Not available for order'
-        //         ];
-        //         continue;
-        //     }
-        //     if($item['qty'] > $souvenir->user_quota_remaining){
-        //         $failedItems[] = [
-        //             'souvenir_id'=>$souvenir->id,
-        //             'name' => $souvenir->name,
-        //             'reason' => 'Insufficient quota',
-        //             'available' => $souvenir->quota,
-        //             'requested' => $item['qty'],
-        //             'error_code'=>'10',
-        //             'result'=> 'user quota existed!'
-        //         ];
-        //         continue;
-        //     }
-        //     if ($item['qty'] > $souvenir->available) {
-        //         $failedItems[] = [
-        //             'souvenir_id'=>$souvenir->id,
-        //             'name' => $souvenir->name,
-        //             'reason' => 'Insufficient quota',
-        //             'available' => $souvenir->quota,
-        //             'requested' => $item['qty'],
-        //             'error_code'=>'20',
-        //             'result'=> 'Souvenir available existed!'
-        //         ];
-        //         continue;
-        //     }
-        // }
-        // dd($failedItems);
         if(!$result['success']){
             return Inertia::render("Souvenir/CheckoutFaild",[
                 "user"=>session("souvenirUser"),
@@ -179,10 +122,6 @@ class PaymentController extends Controller
     }
 
     public function result(Request $request){
-        // array:2 [ 
-        //   "responseStatus" => "SUCCESS"
-        //   "merchantOrderNo" => "daesp9-1778037464-882801"
-        // ]
         if ($request->has('test')) {
             $test='daesp18-1756268443-379201';
             $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
@@ -195,12 +134,11 @@ class PaymentController extends Controller
                     'order'=>SouvenirOrder::latest()->first()
                 ]);
         }
-        
+       
         $validator = Validator::make($request->all(), [
             'merchantOrderNo' => 'required',
             'responseStatus' => 'required'
         ]);
-        //
         if ($validator->fails()) {
             return redirect()->route('souvenir')->withErrors($validator)->withInput();
         }
@@ -210,17 +148,14 @@ class PaymentController extends Controller
             'meta_data'=>$orderData,
             'status'=>$orderData['responseStatus']
         ]);
-
         $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
         $mercOrderNo=substr(str_replace($systemCode,'',$request->merchantOrderNo),0,-2);
         //split by '-' orderId, time(), random(1000,9999)
         $parts=explode('-',$mercOrderNo);
         $order=SouvenirOrder::find((int)$parts[0]);
-        //dd($order, $request->all());
-        //dd($systemCode, $mercOrderNo, $parts, (int)$parts[0], $order);
         $order->payment_result=$orderData;
         $order->payment_status=$orderData['responseStatus'];
-        $order->status=$request->responseStatus=='SUCCESS'?SouvenirOrder::$status['PAID']:SouvenirOrder::$status['FAIL'];
+        $order->status=$orderData['responseStatus']=='SUCCESS'?SouvenirOrder::$status['PAID']:SouvenirOrder::$status['FAIL'];
         $order->save();
 
         $payment->order_id=$order->id;
