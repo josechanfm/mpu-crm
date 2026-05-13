@@ -42,7 +42,7 @@ class SouvenirOrderController extends Controller
                     $query->where('netid','LIKE', '%'.$request->search_text.'%');
                 });
             }elseif($request->search_column=='notify_email'){
-                 dd('notify_email');
+                 //dd('notify_email');
                 $orders = $orders->whereHas('user', function($query) use ($request){
                     $query->where('notify_email','LIKE', '%'.$request->search_text.'%');
                 });

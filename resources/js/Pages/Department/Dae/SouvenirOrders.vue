@@ -232,7 +232,7 @@ export default {
                     title: "Receipt No.",
                     dataIndex: "receipt_no",
                 }, {
-                    title: "NetId",
+                    title: "Student No.",
                     dataIndex: "buyer",
                 }, {
                     title: "Email",
