@@ -4,13 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Str;
 
 class Entry extends Model
 {
     use HasFactory;
     
     protected $appends=['uid','submitted_at'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            // Generate a unique ID using Str::random or any other method
+            $model->uuid =  (string) Str::uuid();
+        });
+    }
 
     public function getSubmittedAtAttribute(){
         return date_format($this->created_at, "Y-m-d H:i");
