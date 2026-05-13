@@ -49,7 +49,12 @@
                         <a-button @click="clearMyFilter">Clear</a-button>
                     </div>
                 </div>
-                <a-table :dataSource="souvenirs.data" :columns="columns" :pagination="pagination" @change="onPaginationChange">
+                <a-table 
+                    :dataSource="souvenirs.data" 
+                    :columns="columns" 
+                    :pagination="pagination" 
+                    @change="onPaginationChange"
+                >
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button @click="editRecord(record)">Edit</a-button>
