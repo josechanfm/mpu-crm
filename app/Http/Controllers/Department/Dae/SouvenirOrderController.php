@@ -33,25 +33,36 @@ class SouvenirOrderController extends Controller
         }else{
             //$orders = SouvenirOrder::where('status', config('constants.ORDER_PAID'));
         }
-        if($request->search_column && $request->search_column=='netid' && $request->search_text){
+                // dd('notify_email',$request->search_column, $request->search_text, $orders->get());
+
+        if($request->search_column && $request->search_text){
             if($request->search_column=='netid'){
+                // dd('netid');
                 $orders = $orders->whereHas('user', function($query) use ($request){
                     $query->where('netid','LIKE', '%'.$request->search_text.'%');
                 });
-            }else if($request->search_column=='notify_email'){
+            }elseif($request->search_column=='notify_email'){
+                 dd('notify_email');
                 $orders = $orders->whereHas('user', function($query) use ($request){
                     $query->where('notify_email','LIKE', '%'.$request->search_text.'%');
                 });
-            }else if($request->search_column=='email'){
+
+            }elseif($request->search_column=='register_email'){
+                // dd('register_email');
                 $orders = $orders->whereHas('user', function($query) use ($request){
                     $query->where('email','LIKE', '%'.$request->search_text.'%');
                 });
-            }else if($request->search_column=='user_phone'){
+            }elseif($request->search_column=='user_phone'){
+                //dd('user_phone', $request->search_text, $orders->with('user')->get());
                 $orders = $orders->whereHas('user', function($query) use ($request){
                     $query->where('phone','LIKE', '%'.$request->search_text.'%');
                 });
-            }else if($request->search_column=='order_phone'){
+            }elseif($request->search_column=='order_phone'){
                 $orders = $orders->where('form_meta','LIKE', '%"phone":"'.$request->search_text.'%');
+            }elseif($request->search_column=='receipt_no'){
+                $receiptNo=(int)substr($request->search_text,-6);
+                    //dd($receiptNo);
+                $orders = $orders->where('id', $receiptNo);
             }
 
         }
@@ -62,8 +73,12 @@ class SouvenirOrderController extends Controller
         // }else{
         //    $orders = $orders->where('is_available', true);
         // }
+        $orders = $orders->orderBy('id','desc')->with('user')->paginate($request->per_page??5);
+        $orders->getCollection()->each->append('receipt_no');
+
         return Inertia::render('Department/Dae/SouvenirOrders',[
-            "orders"=>$orders->orderBy('id','desc')->with('user')->paginate($request->per_page??5),
+            // "orders"=>$orders->orderBy('id','desc')->with('user')->paginate($request->per_page??5),
+            "orders"=>$orders,
         ]);
     }
 

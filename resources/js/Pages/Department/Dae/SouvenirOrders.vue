@@ -69,6 +69,9 @@
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button @click="viewRecord(record)">Edit</a-button>
                         </template>
+                        <template v-else-if="column.dataIndex=='receipt_no'">
+                            {{ record.receipt_no }}
+                        </template>
                         <template v-else-if="column.dataIndex=='buyer' && record.user">
                             <span>{{ record.user.netid }}</span>
                         </template>
@@ -206,6 +209,7 @@ export default {
                 },
                 search: {  
                     options: [
+                        { value:'receipt_no', label: "Receipt No."},
                         { value:'netid', label: "NetId"},
                         { value:'notify_email', label: "Notify Email"},
                         { value:'register_email', label: "Register Email"},
@@ -225,6 +229,9 @@ export default {
             },
             columns: [
                 {
+                    title: "Receipt No.",
+                    dataIndex: "receipt_no",
+                }, {
                     title: "NetId",
                     dataIndex: "buyer",
                 }, {
@@ -268,9 +275,7 @@ export default {
             //this.myFilter.filter.value = this.urlParams.get('filter_value')??2;
 
             
-            if(this.urlParams.get('search_column')!==''){
-                this.myFilter.filter.value = this.urlParams.get('filter_value')||'all';
-            }
+            this.myFilter.filter.value = this.urlParams.get('filter_value')||'all';
             this.myFilter.search.column = this.urlParams.get('search_column');
             this.myFilter.search.text = this.urlParams.get('search_text');
             return {
@@ -332,7 +337,7 @@ export default {
         },
 
         onPaginationChange(page, filters, sorter) {
-            //console.log(this.myFilter, page, filters, sorter);
+            console.log(this.myFilter, page, filters, sorter);
             this.$inertia.get(
                 route("dae.souvenir.orders.index"),
                 {
