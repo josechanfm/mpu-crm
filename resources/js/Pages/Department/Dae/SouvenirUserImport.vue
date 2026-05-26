@@ -6,20 +6,20 @@
             <div class="p-2 bg-white relative shadow rounded-lg overflow-x-auto">
                 <div>
                     <span class="font-bold text-red-500 text-xl mt-10">錯誤名單</span>
-                    <span>一般情況下是NetID不正確.</span>
+                    <span>一般情況下是NetID或電郵不正確.</span>
                 </div>
                 <hr>
                 <table width="100%">
                     <thead>
                         <tr>
-                            <th>Notify Email *</th>
-                            <th>Can Buy</th>
                             <th>NetId</th>
                             <th>Name</th>
+                            <th>Notify Email *</th>
                             <th>Phone</th>
                             <th>Faculty</th>
                             <th>Degree</th>
                             <th>Grad Year</th>
+                            <th>Can Buy</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,14 +35,14 @@
                 <table width="100%">
                     <thead>
                         <tr>
-                            <th>Notify Email *</th>
-                            <th>Can Buy</th>
                             <th>NetId</th>
                             <th>Name</th>
+                            <th>Notify Email *</th>
                             <th>Phone</th>
                             <th>Faculty</th>
                             <th>Degree</th>
                             <th>Grad Year</th>
+                            <th>Can Buy</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,14 +58,14 @@
                 <table width="100%">
                     <thead>
                         <tr>
-                            <th>Notify Email *</th>
-                            <th>Can Buy</th>
                             <th>NetId</th>
                             <th>Name</th>
+                            <th>Notify Email *</th>
                             <th>Phone</th>
                             <th>Faculty</th>
                             <th>Degree</th>
                             <th>Grad Year</th>
+                            <th>Can Buy</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -1,10 +1,10 @@
 <template>
     <div class="bg-gray-50 rounded-lg">
-        <h4 class="font-bold text-gray-800 mb-2">預購須知：</h4>
+        <h4 class="font-bold text-gray-800 mb-2">購買須知：</h4>
         <p class="text-sm text-gray-600 mb-4">
             <ol class="list-decimal ml-5">
                 <li>商品一經付款，不能取消或退款。嚴禁任何形式之轉售或商業牟利行為。若發現違規，校方保留追究權利。</li>
-                <li>認購期由即日起至2026年5月25日23:00時止；領取期為2026年6月上旬，以電郵通知為準。數量有限，售完即止。</li>
+                <li>認購期由即日起至2026年6月1日23:00時止；領取期為2026年6月5、8、9、10日，以電郵通知為準。數量有限，售完即止。</li>
                 <li>請務必於下單前確認所填寫的個人聯絡資料及電郵地址正確，以便接收後續通知。</li>
                 <li>商品不設寄送服務。預留足夠時間於領取期內提取商品，不得另約時間，逾期者不獲補領或退款。</li>
                 <li>購買人於領取時需出示本人之學生證及收據/領取二維碼以供核對。</li>
@@ -18,7 +18,7 @@
         <p class="text-sm text-gray-600">
             <ol class="list-decimal ml-5">
                 <li>Once the payment is made, the order cannot be reverted or refunded. Resale or any commercial use of the item is strictly prohibited. The University reserves the right to take further action in case of violation.</li>
-                <li>Subscription Period starts from now until 23:00 on 2026/05/25; pick-up period is scheduled to early June 2026 as per email notification. Supplies are limited and available while stocks last.</li>
+                <li>Subscription Period starts from now until 23:00 on 2026/06/01; pick-up period is scheduled to 5,8,9,10 June 2026 as per email notification. Supplies are limited and available while stocks last.</li>
                 <li>Please ensure your contact information and email address are correct before placing an order to receive subsequent notifications.</li>
                 <li>No shipping services will be offered. Please allow sufficient time to pick up your item within the period. No alternative timeslots will be accommodated. No make-up collections or refunds will be offered for overdue items.</li>
                 <li>Purchasers must present their own student ID and the receipt/pick-up QR code for verification upon collection.</li>

@@ -23,7 +23,7 @@
         <div class="py-0">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 p-5">
                     <div v-if="user">
-                        <h3 class="text-lg font-semibold">NetId: {{ user.netid }}</h3>
+                        <h3 class="text-lg font-semibold">Student Id: {{ user.netid }}</h3>
                         <h3 class="text-lg font-semibold">Name: {{ user.name }}</h3>
                         <h3 class="text-lg font-semibold">Email: {{ user.email }}</h3>
                     </div>

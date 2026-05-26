@@ -104,7 +104,7 @@ const sendResetLink = () => {
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
             <div class="mt-4">
-                <InputLabel for="acknowledge" value="Acknoledge / 已知悉" />
+                <InputLabel for="acknowledge" value="" />
                 <Checkbox id="acknowledge" v-model:checked="form.acknowledge" class="" required
                 />
                 <span class="ml-2 text-sm text-gray-600">I agree to the terms and conditions / 我同意條款及條件</span>
@@ -154,12 +154,12 @@ const sendResetLink = () => {
                         Eligibility: Prospective graduates of Macao Polytechnic University (Academic Year 2025/2026)
                     </li>
                     <li>
-                        認購期：由即日起至2026年5月25日 23:00時止(數量有限，售完即止)<br>
-                        Subscription Period: From now until 23:00 on 2026/05/25. (Limited quantities available; while stocks last)
+                        認購期：由即日起至2026年6月1日 23:00時止(數量有限，售完即止)<br>
+                        Subscription Period: From now until 23:00 on 2026/06/01. (Limited quantities available; while stocks last)
                     </li>
                     <li>
-                        領取期：2026年6月上旬，以電郵通知為準<br>
-                        Pick-up Period: Early June 2026. (Exact details will be notified via email.)
+                        領取期：2026年6月5、8、9、10日(不設補領或奇送)，以電郵通知為準<br>
+                        Pick-up Period: 5,8,9,10 June 2026. (no pick-up re-arrangement nor shipping services will be offered.)
                     </li>
                     <li>
                         每位準畢業生之帳號只能限購1隻<br>

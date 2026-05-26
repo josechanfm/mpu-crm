@@ -48,6 +48,12 @@
             font-size: 12px;
             color: #7f8c8d;
         }
+        .footerNote {
+            text-align: center;
+            font-size: 12px;
+            color: black;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -67,18 +73,18 @@
         <img src="{{ public_path('/storage/images/mpu_banner.png') }}" alt="MPU Logo" style="display: block; margin: 0 auto 20px; height: 80px;" />
     </div>
     <div>
-        <div style="font-size:20px; text-align: center; color: #2c3e50;">Receipt / 收據</div>
+        <div style="font-size:20px; text-align: center; color: #2c3e50;">Recibo / 收據</div>
         <p></p>
 
         <div style="float:right">
-            <div>Pick-up Code / 取件碼</div>
+            <div>Código de Levantamento / 取件碼</div>
             <img style="float:right" width="150" src="{{ $pickupQrcodePath }}" alt="QR Code" />
         </div>
-        <div><span style="font-weight:bold">Número de Recebio / 收據編號:</span> {{ $order->updated_at->format('y') }}-{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</div>
-        <div><span style="font-weight:bold">Unidade académica / 學術單位: </span><br><span style="margin-left: 20px;">{{ $faculties[strtoupper($order->user->faculty_code)] }}<span></div>
-        <div><span style="font-weight:bold">Grau / 學位:</span> {{ ucfirst($order->user->degree_code)  }}</div>
+        <div><span style="font-weight:bold">Número de Recibo / 收據編號:</span> {{ $order->updated_at->format('y') }}-{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</div>
+        <div><span style="font-weight:bold">Unidade Académica / 學術單位: </span><br><span>{{ $faculties[strtoupper($order->user->faculty_code)] }}<span></div>
+        <div><span style="font-weight:bold">Grau Académico / 學位:</span> {{ ucfirst($order->user->degree_code)  }}</div>
         <div><span style="font-weight:bold">Email / 電郵:</span> {{ $order->user->email  }}</div>
-        <div><span style="font-weight:bold">Telephone / 電話:</span> {{ $order->user->phone }}</div>
+        <div><span style="font-weight:bold">Número do Telemóvel / 電話:</span> {{ $order->user->phone }}</div>
         <div><span style="font-weight:bold">Data de Pagamento / 付款日期:</span> {{ $order->created_at->format('Y-m-d') }}</div>
         <div><span style="font-weight:bold">Forma de Pagamento / 付款方式:</span> GOVPAY online (BOC) / 線上政付通(BOC)</div>
         <p></p>
@@ -86,10 +92,10 @@
     <table>
         <thead>
             <tr>
-                <td class="theader">Product / 產品</td>
-                <td class="theader" width="120px">Quantity / 數量</td>
-                <td class="theader" width="120px">Unit Price / 單價</td>
-                <td class="theader" width="120px">Amount / 金額</td>
+                <td class="theader">Nome do Produto  / 產品</td>
+                <td class="theader" width="120px">Quantidade / 數量</td>
+                <td class="theader" width="120px">Preço Unitário / 單價</td>
+                <td class="theader" width="120px">Montante / 金額</td>
             </tr>
         </thead>
         <tbody>
@@ -112,8 +118,19 @@
     <div class="footer">
         <table width="100%" style="border: none; border-collapse: collapse; margin: 0; padding: 0;">
             <tr>
-                <td style="text-align: left; border: none; padding: 0;">Thank you for your purchase! <br> 感謝您的購買！</td>
-                <td style="text-align: right; border: none; padding: 0;">For any inquiries, contact us at sao@mpu.edu.mo <br> 如有任何查詢，請聯繫我們 sao@mpu.edu.mo</td>
+                <td style="text-align: left; border: none; padding: 0;">Obrigado pela sua compra!! <br> 感謝您的購買！</td>
+                <td style="text-align: right; border: none; padding: 0;">Para consultas, por favor contacte-nos através do email sao@mpu.edu.mo <br> 如有任何查詢，請聯繫我們 sao@mpu.edu.mo</td>
+            </tr>
+        </table>
+    </div>
+    <div class="footerNote">
+        <table width="100%" style="border: none; border-collapse: collapse; margin: 0; padding: 0;">
+            <tr>
+                <td style="text-align: left; border: none; padding: 0; width:250px">下載編印日期<br>Data de impressão</td>
+                <td style="text-align: center; border: none; padding: 0;">
+                    財務處<br>Divisão De Assuntos Financeiros<br>
+                    (網上列印無本校蓋章簽署)<br>(Impresso na internet sem carimbo e assinatura do UPM)   
+                </td>
             </tr>
         </table>
     </div>

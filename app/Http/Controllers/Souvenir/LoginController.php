@@ -218,7 +218,7 @@ class LoginController extends Controller
          session()->forget('souvenirUser');
         // Optionally invalidate the session
         session()->invalidate();
-        return redirect()->route('souvenir');
+        return redirect()->route('souvenir.login');
         //return back()->with(["message"=>'logout successful']);
 
     }

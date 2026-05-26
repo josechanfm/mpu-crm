@@ -147,11 +147,12 @@ class SouvenirUserController extends Controller
             
             // Loop through the imported data if needed
             // $data[0] is sheet 1
+            
             foreach ($data[0] as $row) {
-                if(empty($row[0])){
+                if(empty($row[0]) || empty($row[3])){
                     $wrongs[]=$row;
                 }else{
-                    $user=SouvenirUser::where('notify_email', $row[0])->first();
+                    $user=SouvenirUser::where('notify_email', $row[2])->first();
                     //dd($user, $row, $row[0]);
                     if(empty($user)) {
                         $creates[]=$row;
@@ -175,86 +176,12 @@ class SouvenirUserController extends Controller
         }
 
     }
-    public function import_old(Request $request)
-    {
-        // Validate the uploaded file
-        $request->validate([
-            'file' => 'required|file|mimes:xlsx,csv,xls',
-        ]);
-
-        try {
-            // Import the file into an array
-            $data = Excel::toArray(new SouvenirUserImport, $request->file('file'));
-            $idValidator = new IdValidatorController();
-            $wrongs=[];
-            $updates=[];
-            $creates=[];
-            $validFaculties = ['FAC', 'FHSS', 'FLT', 'FAD', '', 'FB', 'AE'];
-            $validDegrees = ['BACHALOR', 'MASTER', 'PHD'];
-            
-            // Loop through the imported data if needed
-            // $data[0] is sheet 1
-            foreach ($data[0] as $row) {
-                // Define the allowed values for each row index
-                // Check if $row[5] is not in the valid faculties
-                // faculty column
-                if (!in_array($row[5], $validFaculties)) {
-                    $row[5] = null; // Set to null if not valid
-                }
-
-                // Check if $row[6] is not in the valid degrees
-                // degree column
-                // if (!in_array($row[6], $validDegrees)) {
-                //     $row[6] = null; // Set to null if not valid
-                // } 
-                //grad_year column
-                if (!in_array($row[7], $validDegrees)) {
-                    $row[6] = null; // Set to null if not valid
-                }
-                if(!empty($row[0]) && $idValidator->_ipm_student_id_version_1_1($row[0])) {
-                    $user=SouvenirUser::where('netid', $row[0])->first();
-                    //dd($user, $row, $row[0]);
-                    if($user) {
-                        $updates[]=$row;
-                    }else{
-                        $creates[]=$row;
-                    }
-                    // Process each row as needed
-                    // You can access columns via $row['column_name'] based on your Excel structure
-                }else{
-                    if(!empty($row[3])){
-                        $user=SouvenirUser::where('email', $row[3])->first();
-                        //dd($user, $row, $row[0]);
-                        if($user) {
-                            $updates[]=$row;
-                        }else{
-                            $creates[]=$row;
-                        }
-
-                    }else{
-                        $wrongs[]=$row;
-                    }
-                }
-            }
-            //dd($wrongs, $updates, $creates);
-            // Optionally, return a success response
-            return Inertia::render('Department/Dae/SouvenirUserImport', [
-                'records' => [
-                    'wrongs' => $wrongs,
-                    'updates' => $updates,
-                    'creates' => $creates
-                ]
-            ]);
-        } catch (\Exception $e) {
-            // Handle any exceptions that occur during the import
-            return response()->json(['error' => 'Failed to import file: ' . $e->getMessage()], 500);
-        }
-    }
     public function importConfirm(Request $request){
         $request->validate([
             'records' => 'required|array',
         ]);
         $records = $request->input('records');
+
         //dd($records, isset($records['updates']), isset($records['creates']));
         // Process the confirmed import
         // Check for 'updates' and process them
@@ -262,13 +189,14 @@ class SouvenirUserController extends Controller
             foreach ($records['updates'] as $update) {
                 // Assuming 'id' is the identifier for the souvenir user
                 SouvenirUser::where('notify_email', $update[0])->update([
-                    'can_buy'=>$update[1]==1?true:false,
-                    //'netid'=>$update[2],
-                    // 'name'=>$update[3],
-                    // 'phone'=>$update[4],
-                    // 'faculty_code'=>$update[5],
-                    // 'degree_code'=>$update[6],
-                    // 'grad_year'=>$update[7]
+                    'netid'=>$update[0],
+                    'name'=>$update[1],
+                    'notify_email'=>$update[2],
+                    'phone'=>$update[3],
+                    'faculty_code'=>$update[4],
+                    'degree_code'=>$update[5],
+                    'grad_year'=>$update[6],
+                    'can_buy'=>$update[7]==1?true:false,
                     'meta_data'=>$update
                 ]);
             }
@@ -277,14 +205,14 @@ class SouvenirUserController extends Controller
         if (isset($records['creates'])) {
             foreach ($records['creates'] as $create) {
                 SouvenirUser::create([
-                    'notify_email'=>$create[0],
-                    'can_buy'=>$create[1]==1?true:false,
-                    // 'netid'=>$create[2],
-                    // 'name'=>$create[3],
-                    // 'phone'=>$create[4],
-                    // 'faculty_code'=>$create[5],
-                    // 'degree_code'=>$create[6],
-                    // 'grad_year'=>$create[7],
+                    'netid'=>$create[0],
+                    'name'=>$create[1],
+                    'notify_email'=>$create[2],
+                    'phone'=>$create[3],
+                    'faculty_code'=>$create[4],
+                    'degree_code'=>$create[5],
+                    'grad_year'=>$create[6],
+                    'can_buy'=>$create[7]==1?true:false,
                     'meta_data'=>$create
                 ]);
             }

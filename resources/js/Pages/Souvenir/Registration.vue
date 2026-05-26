@@ -101,7 +101,7 @@ const redirectToSouvenir = () => {
         </div>
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="netId" value="NetId (Student ID of MPU) / 學生編號 (MPU 學生 ID)" required />
+                <InputLabel for="netId" value="Student ID of MPU / 學生編號" required />
                 <TextInput
                     id="netId"
                     v-model="form.netId"
@@ -122,7 +122,7 @@ const redirectToSouvenir = () => {
                 <InputError class="mt-2" :message="errors.fullName" />
             </div>
             <div class="mt-4">
-                <InputLabel for="phone" value="Contact Phone Number / 聯絡電話號碼" required />
+                <InputLabel for="phone" value="Contact Number / 聯絡電話" required />
                 <TextInput
                     id="phone"
                     v-model="form.phone"
@@ -132,7 +132,7 @@ const redirectToSouvenir = () => {
                 <InputError class="mt-2" :message="errors.phone" /> 
             </div>
             <div class="mt-4">
-                <InputLabel for="faculty" value="Academic Unit / 學術機構" required />
+                <InputLabel for="faculty" value="Academic Unit / 學術單位" required />
                 <a-select
                     v-model:value="form.faculty"
                     style="width: 100%"
@@ -143,7 +143,7 @@ const redirectToSouvenir = () => {
                 <InputError class="mt-2" :message="errors.faculty" />
             </div>
             <div class="mt-4">
-                <InputLabel for="degree" value="Degree of Study / 學位" required />
+                <InputLabel for="degree" value="Degree / 學位" required />
                 <a-select
                     v-model:value="form.degree"
                     style="width: 100%"
@@ -153,7 +153,7 @@ const redirectToSouvenir = () => {
                 />
                 <InputError class="mt-2" :message="errors.degree" />
             </div>
-            <div class="mt-4">
+            <!-- <div class="mt-4">
                 <InputLabel for="graduationYear" value="Graduation Year / 畢業年份" required />
                 <TextInput
                     id="graduationYear"
@@ -162,7 +162,7 @@ const redirectToSouvenir = () => {
                     required
                 />
                 <InputError class="mt-2" :message="errors.graduationYear" />
-            </div>
+            </div> -->
             <div class="mt-4">
                 <InputLabel for="email" value="Email / 電子郵件" required />
                 <TextInput
@@ -172,6 +172,7 @@ const redirectToSouvenir = () => {
                     class="mt-1 block w-full"
                     required
                 />
+                <div>(個人電郵，而非本校學生電郵 / Personal Email, not MPU Email)</div>
                 <InputError class="mt-2" :message="errors.email" />
             </div>
             <div class="mt-4">
@@ -199,9 +200,9 @@ const redirectToSouvenir = () => {
                 <InputError class="mt-2" :message="errors.password_confirmation" />
             </div>
             <div class="mt-4">
-                <InputLabel for="terms" value="Acknowledgement for Terms and Conditions / 條款及條件確認" required />
+                <InputLabel for="terms" value="I verify and confirm that / 本人確認" required />
                 <Checkbox id="terms" v-model:checked="form.terms" class="" required />
-                <span class="ml-2 text-sm text-gray-600">I agree to the terms and conditions / 我同意條款及條件</span>
+                <span class="ml-2 text-sm text-gray-600">The above information is accurate. I accept full responsibility for any missed updates due to incorrect contact details. I will proactively check collection arrangements with the relevant department. / 上述資料填寫無誤。倘因聯絡電郵及電話填寫有誤而導致最新消息無法通知本人，一切責任由本人承擔。本人亦應主動並提前向有關單位了解領取安排。</span>
                 <InputError class="mt-2" :message="errors.terms" />
             </div>
             <div class="flex items-center justify-between mt-4 gap-2">
@@ -217,7 +218,7 @@ const redirectToSouvenir = () => {
                 </PrimaryButton>
             </div>
         </form>
-
+<!-- 
         <template #footer>
             <div class="max-w-94 bg-white px-2">
                 <ul class="list-disc">
@@ -244,7 +245,7 @@ const redirectToSouvenir = () => {
                 </ul>
             </div>
         </template>
-
+ -->
     </AuthenticationCard>
 
     <Modal v-model:open="showModal" title="Email Verification" @ok="verifyEmail" okText="Verify" cancelText="Cancel">

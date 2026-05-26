@@ -200,7 +200,7 @@
                     <template v-else>
                         <div class="mb-4 text-right">
                             <a-button :href="route('souvenir.pickupCode')" danger ghost size="small">
-                                取件碼
+                                Pick-up Code / 取件碼
                             </a-button>
                         </div>
 

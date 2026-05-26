@@ -45,7 +45,7 @@
                     </p>
                     <p class="text-red-600 font-medium mt-1 flex items-center gap-2">
                         <span class="inline-block w-2 h-2 bg-red-500 rounded-full"></span>
-                        We're sorry, but your order cannot be processed because one or more items are out of stock.
+                        We're sorry, but your order cannot be processed.
                     </p>
                 </div>
 
