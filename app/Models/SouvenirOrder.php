@@ -21,7 +21,7 @@ class SouvenirOrder extends Model
     ];
     public function getReceiptNoAttribute(){
        // Get the year from created_at
-        $year = $this->created_at->format('Y');
+        $year = $this->created_at->format('y');
         // Pad the ID with leading zeros to ensure it's 6 digits
         $idPadded = str_pad($this->id, 6, '0', STR_PAD_LEFT);
         // Concatenate the year and padded ID

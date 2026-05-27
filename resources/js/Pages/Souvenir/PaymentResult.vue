@@ -13,7 +13,7 @@
     <div class="py-0">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                <div>Order # / 單號：{{ String(order.id).padStart(6,'0') }}</div>
+                <div>Order # / 單號：{{ order.receipt_no }}</div>
                 <div>Date / 日期：{{ order.created_at }}</div>
                 <li v-for="item in order.items" :key="item.id" class="flex items-center justify-between py-4">
                     <span class="w-1/2 text-gray-700 font-medium truncate">{{ item.name }}</span>

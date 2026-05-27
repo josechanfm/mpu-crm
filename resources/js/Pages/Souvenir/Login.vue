@@ -107,7 +107,7 @@ const sendResetLink = () => {
                 <InputLabel for="acknowledge" value="" />
                 <Checkbox id="acknowledge" v-model:checked="form.acknowledge" class="" required
                 />
-                <span class="ml-2 text-sm text-gray-600">I agree to the terms and conditions / 我同意條款及條件</span>
+                <span class="ml-2 text-sm text-gray-600">I agree to the terms and conditions / 我同意以下條款及細則</span>
                 <InputError class="mt-2" :message="form.errors.acknowledge" />
             </div>
             <div class="flex justify-between items-center mt-4">
@@ -159,7 +159,7 @@ const sendResetLink = () => {
                     </li>
                     <li>
                         領取期：2026年6月5、8、9、10日(不設補領或奇送)，以電郵通知為準<br>
-                        Pick-up Period: 5,8,9,10 June 2026. (no pick-up re-arrangement nor shipping services will be offered.)
+                        Pick-up Period: 5, 8, 9, 10 June 2026. (no pick-up re-arrangement nor shipping services will be offered.)
                     </li>
                     <li>
                         每位準畢業生之帳號只能限購1隻<br>

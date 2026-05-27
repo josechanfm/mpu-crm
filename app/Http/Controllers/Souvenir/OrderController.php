@@ -316,7 +316,7 @@ class OrderController extends Controller
             
         } catch (\Exception $e) {
             // For debugging - output HTML instead
-            dd($e->getMessage());
+            // dd($e->getMessage());
             return view('souvenir/receipt', [
                 'order' => $order->load('user'),
                 'pickupCode' => $this->genQrcode($pickupCode),

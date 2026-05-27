@@ -80,7 +80,7 @@
             <div>Código de Levantamento / 取件碼</div>
             <img style="float:right" width="150" src="{{ $pickupQrcodePath }}" alt="QR Code" />
         </div>
-        <div><span style="font-weight:bold">Número de Recibo / 收據編號:</span> {{ $order->updated_at->format('y') }}-{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</div>
+        <div><span style="font-weight:bold">Número de Recibo / 收據編號:</span> {{ $order->receipt_no }}</div>
         <div><span style="font-weight:bold">Unidade Académica / 學術單位: </span><br><span>{{ $faculties[strtoupper($order->user->faculty_code)] }}<span></div>
         <div><span style="font-weight:bold">Grau Académico / 學位:</span> {{ ucfirst($order->user->degree_code)  }}</div>
         <div><span style="font-weight:bold">Email / 電郵:</span> {{ $order->user->email  }}</div>
