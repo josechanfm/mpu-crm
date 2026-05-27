@@ -7,8 +7,8 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { message, Modal } from "ant-design-vue";
-import { ref, reactive } from 'vue';
+import { message, Modal  } from "ant-design-vue";
+import { ref, reactive, watch, onUnmounted } from 'vue';
 import axios from 'axios';
 import Dropdown from '../../Components/Dropdown.vue';
 
@@ -37,6 +37,7 @@ const errors = ref({});
 const processing = ref(false);
 const showModal = ref(false);
 const verificationCode = ref('');
+let netIdTimeout;
 
 const submit = async () => {
     processing.value = true;
@@ -85,6 +86,53 @@ const redirectToSouvenir = () => {
     window.location.href = '/souvenir';
 };
 
+const validateNetId = async (netId) => {
+    console.log('to validate netid', netId);
+    try {
+        const response = await axios.post(route('souvenir.verifyNetid'), { netId });
+        console.log('Net ID validation response:', response.data);
+        if (response.data.valid) {
+            if (response.data.url) {
+                Modal.info({
+                    title: 'Student ID Verified',
+                    content: response.data.message || 'Your Student ID is valid. Do you want to proceed to the next step?',
+                    okText: 'Yes, Continue',
+                    cancelText: 'Stay Here',
+                    onOk: () => {
+                        window.location.href = response.data.url;
+                    },
+                    onCancel: () => {
+                        message.info('You can continue filling the form.');
+                    }
+                });
+                return;
+            }
+            errors.value.netId = '';
+        } else {
+            errors.value.netId = response.data.message || 'Invalid Student ID. Please enter a valid one.';
+        }
+    } catch (error) {
+        errors.value.netId = 'Error validating Student ID. Please try again.';
+    }
+};
+
+watch(() => form.netId, (newNetId) => {
+    if(newNetId.length > 8){
+        console.log('error')
+    }
+    if(newNetId.length > 0 && newNetId[0].toUpperCase() !== 'P'){
+        console.log('error p',newNetId[0].toUpperCase(), newNetId.length);
+    }
+    if(newNetId.length === 8 && newNetId[0].toUpperCase() === 'P'){
+        validateNetId(newNetId);
+    }
+        
+    
+    // if (!props.user.netid) {
+    //     validateNetId(newNetId);
+    // }
+});
+
 </script>
 
 <template>
@@ -102,12 +150,14 @@ const redirectToSouvenir = () => {
         <form @submit.prevent="submit">
             <div>
                 <InputLabel for="netId" value="Student ID of MPU / 學生編號" required />
-                <TextInput
+                <a-input
+                    type="input"
                     id="netId"
-                    v-model="form.netId"
+                    v-model:value="form.netId"
                     class="mt-1 block w-full"
                     required
                     autofocus
+                    :disabled="user.netid"
                 />
                 <InputError class="mt-2" :message="errors.netId" />
             </div>
@@ -138,7 +188,7 @@ const redirectToSouvenir = () => {
                     style="width: 100%"
                     placeholder="Select Academic Unit"
                     :options="faculties"
-                    :disabled="user.faculty_code"
+                    :disabled="user.faculty_code==null?false:true"
                 />
                 <InputError class="mt-2" :message="errors.faculty" />
             </div>
@@ -149,7 +199,7 @@ const redirectToSouvenir = () => {
                     style="width: 100%"
                     placeholder="Select Degree"
                     :options="degrees"
-                    :disabled="user.degree_code"
+                    :disabled="user.degree_code==null?false:true"
                 />
                 <InputError class="mt-2" :message="errors.degree" />
             </div>
@@ -182,6 +232,7 @@ const redirectToSouvenir = () => {
                     v-model="form.password"
                     type="password"
                     class="mt-1 block w-full"
+                    autocomplete="on"
                     required
                     @input="errors.password = ''"
                 />
@@ -194,6 +245,7 @@ const redirectToSouvenir = () => {
                     v-model="form.password_confirmation"
                     type="password"
                     class="mt-1 block w-full"
+                    autocomplete="on"
                     required
                     @input="errors.password_confirmation = ''"
                 />

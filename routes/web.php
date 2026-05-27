@@ -32,6 +32,8 @@ Route::prefix('souvenir')->group(function(){
     Route::get('/registration',[App\Http\Controllers\Souvenir\LoginController::class,'registration'])->name('souvenir.registration');
     Route::post('/register',[App\Http\Controllers\Souvenir\LoginController::class,'register'])->name('souvenir.register');
     Route::post('/verify-email',[App\Http\Controllers\Souvenir\LoginController::class,'verifyEmail'])->name('souvenir.verifyEmail');
+    Route::post('/verify-netid', [App\Http\Controllers\Souvenir\LoginController::class, 'verifyNetid'])->name('souvenir.verifyNetid');
+
     Route::post('/send_reset_password_to_mail',[App\Http\Controllers\Souvenir\LoginController::class,'sendResetPasswordToEmail'])->name('souvenir.sendResetPasswordToEmail');
     Route::get('/reset-password/{token}',[App\Http\Controllers\Souvenir\LoginController::class,'showResetPassword'])->name('souvenir.reset-password.show');
     Route::post('/reset-password',[App\Http\Controllers\Souvenir\LoginController::class,'resetPassword'])->name('souvenir.reset-password');

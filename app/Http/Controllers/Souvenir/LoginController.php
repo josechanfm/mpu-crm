@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use App\Http\Controllers\Api\idValidatorController;
 
 class LoginController extends Controller
 {
@@ -194,6 +195,45 @@ class LoginController extends Controller
         return redirect()->route('souvenir.login')->with('status', 'Password reset successfully. / 密碼重置成功。');
     }
 
+    public function verifyNetid(Request $request){
+        $request->validate([
+            'netId' => 'required|string|size:8|regex:/^[Pp][0-9]{7}$/',
+        ]);
+        $netId = $request->netId;
+        $idValidator = new idValidatorController();
+        $isValid = $idValidator->_ipm_student_id_version_1_1($netId);
+        if($isValid==false){
+            return response()->json([
+                'valid' => false,
+                'message' => 'Invalid NetId format. / NetId 格式無效。',
+            ]);
+        }else{
+            $user = SouvenirUser::where('netId', $netId)->first();
+
+            if($user){
+                if($user->email){
+                    return response()->json([
+                        'valid' => true,
+                        'message' => 'NetId is already registered. You may login directly. / NetId 已經註冊，您可以直接登入。',
+                        'url' => route('souvenir.login'),
+                    ]);
+                }else{
+                    return response()->json([
+                        'valid' => true,
+                        'message' => 'NetId is exit the system will redirect to your existing account / NetId 已存在，系統將重定向到您的現有帳戶。',
+                        'url'=> route('souvenir.registration', ['uuid'=>$user->uuid]),
+                    ]); 
+                }
+            }else{
+                return response()->json([
+                    'valid' => true,
+                    'message' => 'NetId is not registered. Please complete your registration. / NetId 尚未註冊。請完成您的註冊。',
+                ]);
+            }
+        }
+    }
+
+        
     public function login(Request $request){
         return Inertia::render("Souvenir/Login");
     }

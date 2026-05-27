@@ -26,6 +26,8 @@ class PickupController extends Controller
             $request->validate([
                 'code' => 'required|string|max:255', // Ensure 'code' is present and is a string
             ]);
+            dd($request->all());
+            
             $codeParts = explode('-', $request->code);
 
             $salt=env('SALT','dae-souvenir');
@@ -38,6 +40,7 @@ class PickupController extends Controller
             }
             // Fetch the user based on your business logic; for testing, we'll just get the first user
             $user = SouvenirUser::with('orders')->find($codeParts[0]);
+            dd($request->all(), $codeParts, $salt, $hash, $user);
             // Check if user exists
             if (!$user) {
                 return response()->json([
@@ -60,7 +63,7 @@ class PickupController extends Controller
         $request->validate([
             'code' => 'required|string|max:255', // Ensure 'code' is present and is a valid string
         ]);
-
+        dd($request->all());
         // Split the code by '-'
         $parts = explode('-', $request->code);
         // Check if the code is valid

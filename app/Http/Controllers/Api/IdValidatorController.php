@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class IdValidatorController extends Controller
 {
-    	public function test(){
+	public function test(){
 		return 'ok';
 	}
 

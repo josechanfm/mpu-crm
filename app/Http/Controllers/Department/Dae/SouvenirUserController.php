@@ -149,7 +149,7 @@ class SouvenirUserController extends Controller
             // $data[0] is sheet 1
             
             foreach ($data[0] as $row) {
-                if(empty($row[0]) || empty($row[3])){
+                if(empty($row[2])){
                     $wrongs[]=$row;
                 }else{
                     $user=SouvenirUser::where('notify_email', $row[2])->first();
