@@ -87,7 +87,7 @@ class PickupController extends Controller
             return response()->json(['message' => 'User not found.'], 404);
         }
 
-        dd($request->all(), $parts, $userId, $hashCode, $salt, $user, SouvenirOrder::$status['PICKUP']);
+        //dd($request->all(), $parts, $userId, $hashCode, $salt, $user, SouvenirOrder::$status['PICKUP']);
 
         // Update all PAID orders status to PICKUP
         $updated=$user->orders()->where('status',SouvenirOrder::$status['PAID'])->update(['status'=>SouvenirOrder::$status['PICKUP']]);
