@@ -73,7 +73,6 @@ export default {
         logout(){
             this.$inertia.post(route('souvenir.logout'), {}, {
                 onSuccess: () => {
-                    console.log('Logout successful');
                     this.isLoggedIn = false; // Update login state
                     this.user = {}; // Clear user data
                 },
