@@ -288,31 +288,62 @@ class OrderController extends Controller
 
     public function receipt($id){
         $order = SouvenirOrder::findOrFail($id);
-        //dd($order, session()->has('souvenirUser'));
 
         if(!session()->has('souvenirUser') || empty($order) || $order->souvenir_user_id != session('souvenirUser')->id){
             return redirect()->route('souvenir');
         }
        
         $pickupCode=$this->genPickupCode(session('souvenirUser')->id);
-        $pdf = PDF::loadView('souvenir/receipt', [
-            'order' => $order->load('user'),
-            'pickupCode' => $this->genQrcode($pickupCode),
-            'pickupQrcodePath' => $this->genPickupQrImage($pickupCode)
-        ])
-        ->setPaper('A4', 'portrait')
-        ->setOption([
-            'fontDir' => public_path('fonts/Noto'),
-            'fontCache' => public_path('fonts'),
-            'defaultFont' => 'NotoSansTC',
-            'margin-top' => '20mm',    // Set top margin
-            'margin-right' => '50mm',  // Set right margin
-            'margin-bottom' => '20mm', // Set bottom margin
-            'margin-left' => '15mm',   // Set left margin
-        ]);
 
-        //$pdf->render();
-        return $pdf->stream('receipt.pdf', array('Attachment' => false));
+        try {
+            $pdf = PDF::loadView('souvenir/receipt', [
+                'order' => $order->load('user'),
+                'pickupCode' => $this->genQrcode($pickupCode),
+                'pickupQrcodePath' => $this->genPickupQrImage($pickupCode)
+            ])
+            ->setPaper('A4', 'portrait')
+            ->setOption([
+                'fontDir' => public_path('fonts/Noto'),
+                'fontCache' => public_path('fonts'),
+                'defaultFont' => 'NotoSansTC',
+                'margin-top' => '20mm',
+                'margin-right' => '50mm',
+                'margin-bottom' => '20mm',
+                'margin-left' => '15mm',
+            ]);
+
+            return $pdf->stream('receipt.pdf', array('Attachment' => false));
+            
+        } catch (\Exception $e) {
+            // For debugging - output HTML instead
+            dd($e->getMessage());
+            return view('souvenir/receipt', [
+                'order' => $order->load('user'),
+                'pickupCode' => $this->genQrcode($pickupCode),
+                'pickupQrcodePath' => $this->genPickupQrImage($pickupCode),
+                'error' => $e->getMessage() // Optional: pass error to view
+            ]);
+        }
+
+
+        // $pdf = PDF::loadView('souvenir/receipt', [
+        //     'order' => $order->load('user'),
+        //     'pickupCode' => $this->genQrcode($pickupCode),
+        //     'pickupQrcodePath' => $this->genPickupQrImage($pickupCode)
+        // ])
+        // ->setPaper('A4', 'portrait')
+        // ->setOption([
+        //     'fontDir' => public_path('fonts/Noto'),
+        //     'fontCache' => public_path('fonts'),
+        //     'defaultFont' => 'NotoSansTC',
+        //     'margin-top' => '20mm',    // Set top margin
+        //     'margin-right' => '50mm',  // Set right margin
+        //     'margin-bottom' => '20mm', // Set bottom margin
+        //     'margin-left' => '15mm',   // Set left margin
+        // ]);
+
+        // //$pdf->render();
+        // return $pdf->stream('receipt.pdf', array('Attachment' => false));
 
     }
     private function genPickupCode($str){
