@@ -115,7 +115,7 @@ export default {
 
             // Make the Axios request
             try {
-                const response = await axios.get(route('dae.souvenir.pickupCode'), {
+                const response = await axios.post(route('dae.souvenir.pickupCode'), {
                     params: { code: data } // Send the decoded data as a query parameter
                 });
                 // Handle the response data
