@@ -137,7 +137,7 @@ export default {
                 // Handle the successful response
                 this.$notification.success({
                     message: 'Pickup confirmed: ',
-                    description: JSON.stringify(response.data)
+                    description: JSON.stringify(response.data.message)
                 });
                 console.log(response.data)
                 this.responseData=null;
