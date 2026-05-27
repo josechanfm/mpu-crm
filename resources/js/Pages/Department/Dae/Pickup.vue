@@ -131,8 +131,8 @@ export default {
         },
         async pickupConfirm() {
             try {
-                const response = await axios.get(route('souvenir.pickupConfirm'), {
-                    params: { code: this.decodedData } // Send the decoded data as a query parameter
+                const response = await axios.post(route('dae.souvenir.pickupConfirm'), {
+                    code: this.decodedData  // Send the decoded data as a query parameter
                 });
                 // Handle the successful response
                 this.$notification.success({
