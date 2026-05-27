@@ -19,6 +19,7 @@
                     <QrcodeDropZone @decode="onDecode" @error="onError" />
                     <QrcodeCapture @decode="onDecode" @error="onError" />
                 </div>
+                {{ decodedData }}
                 <div v-if="responseData">
                     <div>{{ responseData.user.netid }}</div>
                     <div>{{ responseData.user.phone }}</div>
@@ -130,7 +131,7 @@ export default {
         },
         async pickupConfirm() {
             try {
-                const response = await axios.post(route('dae.souvenir.pickupConfirm'), {
+                const response = await axios.post(route('souvenir.pickupConfirm'), {
                     code: this.decodedData // Send the decoded data
                 });
                 // Handle the successful response
