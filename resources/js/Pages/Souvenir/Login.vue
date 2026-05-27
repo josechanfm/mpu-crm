@@ -150,19 +150,19 @@ const sendResetLink = () => {
             <div class="max-w-94 bg-white px-2">
                 <ul class="list-disc">
                     <li>
-                        對象：澳門理工大學2025/2026學年準畢業生<br>
+                        對象：澳門理工大學2025/2026學年應屈畢業生<br>
                         Eligibility: Prospective graduates of Macao Polytechnic University (Academic Year 2025/2026)
                     </li>
                     <li>
-                        認購期：由即日起至2026年6月1日 23:00時止(數量有限，售完即止)<br>
+                        購買期：由即日起至2026年6月1日 23:00時止(數量有限，售完即止)<br>
                         Subscription Period: From now until 23:00 on 2026/06/01. (Limited quantities available; while stocks last)
                     </li>
                     <li>
-                        領取期：2026年6月5、8、9、10日(不設補領或奇送)，以電郵通知為準<br>
+                        領取期：2026年6月5、8、9、10日(不設補領或寄送)，以電郵通知為準<br>
                         Pick-up Period: 5, 8, 9, 10 June 2026. (no pick-up re-arrangement nor shipping services will be offered.)
                     </li>
                     <li>
-                        每位準畢業生之帳號只能限購1隻<br>
+                        每位應屆畢業生之帳號只能限購1隻<br>
                         Limited to one bear per prospective graduate account
                     </li>
                     <li>

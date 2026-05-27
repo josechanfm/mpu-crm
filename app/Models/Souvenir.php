@@ -26,7 +26,6 @@ class Souvenir extends Model
 
         // Sum quantities already purchased for this souvenir by this user
         $boughtQty = SouvenirOrder::where('souvenir_user_id', $userId)
-            ->where('status', true)
             ->get()
             ->sum(function ($order) {
                 $items = is_string($order->items) ? json_decode($order->items, true) : $order->items;

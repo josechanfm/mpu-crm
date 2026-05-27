@@ -13,8 +13,8 @@
     <div class="py-0">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                <div>Order # / 單號：{{ order.receipt_no }}</div>
-                <div>Date / 日期：{{ order.created_at }}</div>
+                <div>Receipt Number # / 收據編號：{{ order.receipt_no }}</div>
+                <div>Date / 日期：{{ formatDate(order.created_at).format('YYYY-MM-DD HH:mm:ss') }}</div>
                 <li v-for="item in order.items" :key="item.id" class="flex items-center justify-between py-4">
                     <span class="w-1/2 text-gray-700 font-medium truncate">{{ item.name }}</span>
                     <span class="w-1/4 text-gray-600 truncate">Qty: {{ item.qty }} / 數量: {{ item.qty }}</span>
@@ -27,7 +27,7 @@
                     Receipt & QR code / 單據及領取二維碼
                 </a-button>
             </div>
-            <div class="text-center p-5"><a-button :href="route('souvenir')">Back to Main Page / 返回主要</a-button></div>
+            <div class="text-center p-5"><a-button :href="route('souvenir')">Back to Main Page / 返回主頁</a-button></div>
         </div>
     </div>
 
@@ -58,6 +58,9 @@ export default {
         };
     },
     methods: {
+        formatDate(date) {
+            return dayjs(date);
+        }
     },
 };
 </script>
