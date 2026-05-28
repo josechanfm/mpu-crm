@@ -206,7 +206,7 @@ class LoginController extends Controller
         //$idValidator = new idValidatorController();
         //$isValid = $idValidator->_ipm_student_id_version_1_1($netId);
         $isValid = $this->ipm_student_id_validator($netId);
-        return response()->json(['isValid' => $isValid]);
+        //return response()->json(['isValid' => $isValid]);
 
         if($isValid==false){
             return response()->json([
