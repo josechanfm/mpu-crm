@@ -201,6 +201,8 @@ class LoginController extends Controller
         $request->validate([
             'netId' => 'required|string|size:8|regex:/^[Pp][0-9]{7}$/',
         ]);
+        dd($request->all());
+        
         $netId = $request->netId;
         $idValidator = new idValidatorController();
         $isValid = $idValidator->_ipm_student_id_version_1_1($netId);
