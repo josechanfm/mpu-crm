@@ -123,7 +123,7 @@
                 <th>How to order</th>
                 <td>
                     <b>Purchase Period</b> (One per person, while stocks last)<br>
-                    From now until 23:00 on 2026/06/02
+                    From now until 23:00 on 2026/06/02<br>
                     <b>Steps</b>
                     <ol>
                         <li>
