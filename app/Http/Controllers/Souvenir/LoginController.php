@@ -201,9 +201,17 @@ class LoginController extends Controller
         $request->validate([
             'netId' => 'required|string|size:8|regex:/^[Pp][0-9]{7}$/',
         ]);
+
         $netId = $request->netId;
-        $idValidator = new idValidatorController();
-        $isValid = $idValidator->_ipm_student_id_version_1_1($netId);
+        try{
+            $idValidator = new idValidatorController();
+            $isValid = $idValidator->_ipm_student_id_version_1_1($netId);
+        }catch(Exception $error){
+            return response()->json([
+                'valid' => false,
+                'message' => 'An error occurred while validating NetId. Please try again. / 驗證 NetId 時發生錯誤。請再試一次。',
+            ], 500);
+        }
         if($isValid==false){
             return response()->json([
                 'valid' => false,
@@ -211,6 +219,15 @@ class LoginController extends Controller
             ]);
         }else{
             $user = SouvenirUser::where('netId', $netId)->first();
+
+        return response()->json([
+            'valid' => true, 
+            'message' => '-----',
+            'request'=>$request->all(),
+            'isValid'=>$isValid,
+            'netId'=>$netId,
+            'user'=>$user,
+        ]);
 
             if($user){
                 if($user->email){
