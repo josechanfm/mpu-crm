@@ -130,7 +130,7 @@ const validateNetId = async (netId) => {
     try {
         const response = await axios.post(route('souvenir.verifyNetid'), { netId });
         console.log('Net ID validation response:', response.data);
-        if (response.data.valid) {
+        if (response.data.isValid) {
             if (response.data.url) {
                 Modal.info({
                     title: 'Student ID Verified',
