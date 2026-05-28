@@ -123,15 +123,16 @@ class PaymentController extends Controller
 
     public function result(Request $request){
         if ($request->has('test')) {
-            $test='daesp18-1756268443-379201';
+            $test='3-1778063739-2678';
             $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
             $mercOrderNo=substr(str_replace($systemCode,'',$test),0,-2);
             $parts=explode('-',$mercOrderNo);
             $order=SouvenirOrder::find($parts[0]);
+            //dd($request->all(), $test, $parts[0], $order);
             //dd('abc123', $order, SouvenirOrder::latest()->first());
             //dd($test, $systemCode, $mercOrderNo, $parts[0], $order);
             return Inertia::render('Souvenir/PaymentResult',[
-                    'order'=>SouvenirOrder::latest()->first()
+                    'order'=>$order
                 ]);
         }
        

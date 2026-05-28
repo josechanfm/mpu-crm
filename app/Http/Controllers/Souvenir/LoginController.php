@@ -215,7 +215,6 @@ class LoginController extends Controller
             ]);
         }else{
             $user = SouvenirUser::where('netId', $netId)->first();
-
             if($user){
                 if($user->email){
                     return response()->json([
@@ -250,7 +249,7 @@ class LoginController extends Controller
             "password" => "required",
         ]);
 
-        $user = SouvenirUser::where("email", $request->email)->where('can_buy',true)->first();
+        $user = SouvenirUser::where("email", $request->email)->where('can_buy',true)->where('active',true)->first();
         //dd($user, $request->all(), \Hash::check($request->password, $user->password));
         if ($user && \Hash::check($request->password, $user->password)) {
             session()->put("souvenirUser", $user);
