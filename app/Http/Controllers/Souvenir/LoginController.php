@@ -271,8 +271,6 @@ class LoginController extends Controller
 
 	private function ipm_student_id_validator($no)
 	{
-
-    
 		if(strlen($no)!=8) return false;
 		$table = array("1","3","7","1","3","7");
 		$tmpno= $no;
@@ -290,7 +288,7 @@ class LoginController extends Controller
 		$num = 13 - ($num % 13);
 		if($num>9)
 			$num=$num-10;
-        dd($no, $table, $tmpno, $onlynum, $strsplit, $num);
+        //dd($no, $table, $tmpno, $onlynum, $strsplit, $num);
         
 		if(strtoupper($strsplit[6]) == $num)
 			return true;
