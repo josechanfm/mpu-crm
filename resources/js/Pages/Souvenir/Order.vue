@@ -21,9 +21,6 @@
 
             </div>
         </template>
-{{ user }}
-aaaaaaaaaaaaa
-{{ products }}
         <div class="flex justify-end gap-3 pt-5 px-2" v-if="user">
             <!-- Cart/Checkout Button -->
             <button ref="cartIconRef" @click="selectedIsOpen = true"
