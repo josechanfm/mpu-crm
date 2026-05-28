@@ -225,7 +225,8 @@ const handleNetIdBlur = () => {
             </div>
             <div class="mt-4">
                 <InputLabel for="graduationYear" value="Graduation Year / 畢業年份" required />
-                <TextInput
+                <a-input
+                    type="input"
                     id="graduationYear"
                     v-model="form.graduationYear"
                     class="mt-1 block w-full"
