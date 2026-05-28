@@ -203,15 +203,8 @@ class LoginController extends Controller
         ]);
 
         $netId = $request->netId;
-        try{
-            $idValidator = new idValidatorController();
-            $isValid = $idValidator->_ipm_student_id_version_1_1($netId);
-        }catch(Exception $error){
-            return response()->json([
-                'valid' => false,
-                'message' => 'An error occurred while validating NetId. Please try again. / 驗證 NetId 時發生錯誤。請再試一次。',
-            ], 500);
-        }
+        $idValidator = new idValidatorController();
+        $isValid = $idValidator->_ipm_student_id_version_1_1($netId);
         if($isValid==false){
             return response()->json([
                 'valid' => false,
