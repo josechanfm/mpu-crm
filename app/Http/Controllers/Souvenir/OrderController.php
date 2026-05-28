@@ -311,13 +311,13 @@ class OrderController extends Controller
                 'margin-bottom' => '20mm',
                 'margin-left' => '15mm',
             ]);
-            dd($id, $order, $pickupCode);
+            //dd($id, $order, $pickupCode);
 
             return $pdf->stream('receipt.pdf', array('Attachment' => false));
             
         } catch (\Exception $e) {
             // For debugging - output HTML instead
-            // dd($e->getMessage());
+            dd($e->getMessage());
             return view('souvenir/receipt', [
                 'order' => $order->load('user'),
                 'pickupCode' => $this->genQrcode($pickupCode),
