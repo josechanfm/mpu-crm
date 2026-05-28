@@ -272,11 +272,12 @@ class LoginController extends Controller
 	private function ipm_student_id_validator($no)
 	{
 
-    dd($no);
+    
 		if(strlen($no)!=8) return false;
 		$table = array("1","3","7","1","3","7");
 		$tmpno= $this->_fulltohalf($no);
-
+        dd($no, $table, $tmpno);
+        
 		// if(!preg_match("/[Pp]{7}[0-9]/",$tmpno))
 		// 	return false;
 		$onlynum=preg_replace("/[^0-9]/","",$tmpno);
