@@ -201,7 +201,6 @@ class LoginController extends Controller
         $request->validate([
             'netId' => 'required|string|size:8|regex:/^[Pp][0-9]{7}$/',
         ]);
-
         $netId = $request->netId;
         $idValidator = new idValidatorController();
         $isValid = $idValidator->_ipm_student_id_version_1_1($netId);
@@ -212,15 +211,6 @@ class LoginController extends Controller
             ]);
         }else{
             $user = SouvenirUser::where('netId', $netId)->first();
-
-        return response()->json([
-            'valid' => true, 
-            'message' => '-----',
-            'request'=>$request->all(),
-            'isValid'=>$isValid,
-            'netId'=>$netId,
-            'user'=>$user,
-        ]);
 
             if($user){
                 if($user->email){
