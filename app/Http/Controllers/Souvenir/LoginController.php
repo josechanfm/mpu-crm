@@ -98,6 +98,7 @@ class LoginController extends Controller
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
                 'email_verification_code' => $code,
+                'active'=> false,
             ]);
 
             Mail::to($request->email)->send(new SouvenirEmailVerification($code, $user));

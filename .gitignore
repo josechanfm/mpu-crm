@@ -6,6 +6,8 @@
 /public/recruitment/academic
 /public/thumbnail
 /public/images
+!public/images/souvenirs/bear_poster.jpg
+!public/images/souvenirs/page_url.jpg
 /vendor
 .env
 .env.backup
