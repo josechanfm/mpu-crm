@@ -140,15 +140,22 @@ const netIdError = ref('')
 const handleNetIdBlur = () => {
   const newNetId = form.netId
   netIdError.value = ''
+  if(newNetId==null){
+      errors.value.netId = 'Student ID is required / 學生編號為必填項';
+      return 
+  }
   
   if(newNetId.length < 8){
       errors.value.netId = 'Student id should be 8 characters long / 學生編號應為8個字符';
+      return 
   }
   if(newNetId.length > 0 && newNetId[0].toUpperCase() !== 'P'){
       errors.value.netId = 'Stduent Id start with "P" / 學生編號應以"P"開頭';
+      return 
   }
   if(newNetId.length === 8 && newNetId[0].toUpperCase() === 'P'){
       validateNetId(newNetId);
+      return 
   }
 }
 </script>
@@ -228,7 +235,7 @@ const handleNetIdBlur = () => {
                 <a-input
                     type="input"
                     id="graduationYear"
-                    v-model="form.graduationYear"
+                    v-model:value="form.graduationYear"
                     class="mt-1 block w-full"
                     :disabled="user.grad_year==null?false:true"
                     required
