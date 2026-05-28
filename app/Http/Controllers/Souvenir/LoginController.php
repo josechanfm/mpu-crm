@@ -212,7 +212,7 @@ class LoginController extends Controller
         ]);
         
         $netId = $request->netId;
-        $isValid = $this->idValidator->_ipm_student_id_version_1_1($netId);
+        $isValid = $this->idValidator->_ipm_student_id_version_1_0($netId);
         
         if($isValid == false){
             return response()->json([
