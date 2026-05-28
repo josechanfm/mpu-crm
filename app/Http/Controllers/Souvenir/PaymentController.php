@@ -51,7 +51,7 @@ class PaymentController extends Controller
 
         return Inertia::render('Souvenir/OrderConfirmed', [
             'paymentData' => $paymentData,
-            'paymentUrl' => 'https://epay.mpu.edu.mo/bocpaytest/ipm/cashier',
+            'paymentUrl' => 'https://epay.mpu.edu.mo/bocgateway/ipm/cashier',
         ]);
         //dd($order, $request->all(), $request->getClientIp(), $this->paymentGateway,$paymentData);
 
