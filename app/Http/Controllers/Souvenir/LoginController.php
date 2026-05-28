@@ -23,7 +23,8 @@ class LoginController extends Controller
             'uuid' => 'required|exists:souvenir_users,uuid',
         ]);
         $user = SouvenirUser::where('uuid', $request->uuid)->first();
-        if ($user->email && $user->email_verified_at) {
+
+        if ($user->active==1) {
             return redirect()->route('souvenir.login');
         }
         $user->email=null;

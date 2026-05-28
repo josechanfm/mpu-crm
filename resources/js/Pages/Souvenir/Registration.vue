@@ -8,7 +8,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { message, Modal  } from "ant-design-vue";
-import { ref, reactive, watch, onUnmounted } from 'vue';
+import { ref, reactive, watch, onUnmounted, computed } from 'vue'; // Add computed
 import axios from 'axios';
 import Dropdown from '../../Components/Dropdown.vue';
 
@@ -37,9 +37,46 @@ const errors = ref({});
 const processing = ref(false);
 const showModal = ref(false);
 const verificationCode = ref('');
+const netIdError = ref(''); // Add this
 let netIdTimeout;
 
+// Add computed property to check if netId is valid for submission
+const isNetIdValid = computed(() => {
+    // If user already has netId (disabled field), it's considered valid
+    if (props.user.netid) return true;
+    
+    // Check if there's an error message
+    if (errors.value.netId || netIdError.value) return false;
+    
+    // Check if netId meets requirements
+    const netId = form.netId;
+    if (!netId || netId.length !== 8) return false;
+    if (netId[0].toUpperCase() !== 'P') return false;
+    
+    return true;
+});
+
+// Also disable submit if any required fields are invalid
+const isFormValid = computed(() => {
+    return isNetIdValid.value && 
+           form.fullName && 
+           form.phone && 
+           form.faculty && 
+           form.degree && 
+           form.graduationYear && 
+           form.email && 
+           form.password && 
+           form.password_confirmation === form.password &&
+           form.terms;
+});
+
 const submit = async () => {
+    // Prevent submission if netId is invalid
+    if (!isNetIdValid.value) {
+        message.error('Please fix the Student ID error before submitting');
+        return;
+    }
+    
     processing.value = true;
     errors.value = {};
     try {
@@ -110,54 +147,50 @@ const validateNetId = async (netId) => {
                 return;
             }
             errors.value.netId = '';
+            netIdError.value = '';
         } else {
             errors.value.netId = response.data.message || 'Invalid Student ID. Please enter a valid one.';
+            netIdError.value = response.data.message || 'Invalid Student ID. Please enter a valid one.';
         }
     } catch (error) {
         errors.value.netId = 'Error validating Student ID. Please try again.';
+        netIdError.value = 'Error validating Student ID. Please try again.';
     }
 };
 
-// watch(() => form.netId, (newNetId) => {
-//     if(newNetId.length > 8){
-//         console.log('error')
-//     }
-//     if(newNetId.length > 0 && newNetId[0].toUpperCase() !== 'P'){
-//         console.log('error p',newNetId[0].toUpperCase(), newNetId.length);
-//     }
-//     if(newNetId.length === 8 && newNetId[0].toUpperCase() === 'P'){
-//         validateNetId(newNetId);
-//     }
-        
-    
-//     // if (!props.user.netid) {
-//     //     validateNetId(newNetId);
-//     // }
-// });
-
-const netIdError = ref('')
-
 const handleNetIdBlur = () => {
-  const newNetId = form.netId
-  netIdError.value = ''
-  if(newNetId==null){
-      errors.value.netId = 'Student ID is required / 學生編號為必填項';
-      return 
-  }
-  
-  if(newNetId.length < 8){
-      errors.value.netId = 'Student id should be 8 characters long / 學生編號應為8個字符';
-      return 
-  }
-  if(newNetId.length > 0 && newNetId[0].toUpperCase() !== 'P'){
-      errors.value.netId = 'Stduent Id start with "P" / 學生編號應以"P"開頭';
-      return 
-  }
-  if(newNetId.length === 8 && newNetId[0].toUpperCase() === 'P'){
-      validateNetId(newNetId);
-      return 
-  }
-}
+    const newNetId = form.netId;
+    
+    // Clear previous errors
+    errors.value.netId = '';
+    netIdError.value = '';
+    
+    // Check if netId is null or empty
+    if (!newNetId || newNetId.trim() === '') {
+        errors.value.netId = 'Student ID is required / 學生編號為必填項';
+        netIdError.value = 'Student ID is required / 學生編號為必填項';
+        return;
+    }
+    
+    // Check length
+    if (newNetId.length !== 8) {
+        errors.value.netId = 'Student ID should be 8 characters long / 學生編號應為8個字符';
+        netIdError.value = 'Student ID should be 8 characters long / 學生編號應為8個字符';
+        return;
+    }
+    
+    // Check first character
+    if (newNetId[0].toUpperCase() !== 'P') {
+        errors.value.netId = 'Student ID should start with "P" / 學生編號應以"P"開頭';
+        netIdError.value = 'Student ID should start with "P" / 學生編號應以"P"開頭';
+        return;
+    }
+    
+    // If all basic validations pass, validate against backend
+    if (newNetId.length === 8 && newNetId[0].toUpperCase() === 'P') {
+        validateNetId(newNetId);
+    }
+};
 </script>
 
 <template>
@@ -172,6 +205,12 @@ const handleNetIdBlur = () => {
                 User Registration / 用戶註冊
             </h2>
         </div>
+        
+        <!-- Add a validation summary -->
+        <div v-if="!isNetIdValid && form.netId" class="mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded">
+            ⚠️ Please fix the Student ID error before submitting
+        </div>
+        
         <form @submit.prevent="submit">
 
             <div>
@@ -181,6 +220,7 @@ const handleNetIdBlur = () => {
                     id="netId"
                     v-model:value="form.netId"
                     class="mt-1 block w-full"
+                    :class="{ 'border-red-500': errors.netId }"
                     required
                     autofocus
                     :disabled="user.netid==null?false:true"
@@ -294,39 +334,15 @@ const handleNetIdBlur = () => {
                 >
                     Close / 關閉
                 </button>
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': processing }" :disabled="processing">
+                <PrimaryButton 
+                    class="ml-4" 
+                    :class="{ 'opacity-25': processing || !isNetIdValid }" 
+                    :disabled="processing || !isNetIdValid"
+                >
                     Register / 註冊
                 </PrimaryButton>
             </div>
         </form>
-<!-- 
-        <template #footer>
-            <div class="max-w-94 bg-white px-2">
-                <ul class="list-disc">
-                    <li>
-                        對象：澳門理工大學2025/2026學年準畢業生<br>
-                        Eligibility: Prospective graduates of Macao Polytechnic University (Academic Year 2025/2026)
-                    </li>
-                    <li>
-                        認購期：由即日起至2026年5月25日 23:00時止(數量有限，售完即止)<br>
-                        Subscription Period: From now until 23:00 on 2026/05/25. (Limited quantities available; while stocks last)
-                    </li>
-                    <li>
-                        領取期：2026年6月上旬，以電郵通知為準<br>
-                        Pick-up Period: Early June 2026. (Exact details will be notified via email.)
-                    </li>
-                    <li>
-                        每位準畢業生之帳號只能限購1隻<br>
-                        Limited to one bear per prospective graduate account
-                    </li>
-                    <li>
-                        付款後，請點開收據及領取二維碼頁面，保存支付憑證<br>
-                        After payment, please access the page displaying your receipt and pick-up QR code, and save this proof for collection
-                    </li>
-                </ul>
-            </div>
-        </template>
- -->
     </AuthenticationCard>
 
     <Modal v-model:open="showModal" title="Email Verification" @ok="verifyEmail" okText="Verify" cancelText="Cancel">
@@ -337,5 +353,4 @@ const handleNetIdBlur = () => {
             class="mt-2"
         />
     </Modal>
-
 </template>
