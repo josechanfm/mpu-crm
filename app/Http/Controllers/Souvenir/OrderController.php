@@ -294,6 +294,7 @@ class OrderController extends Controller
         }
        
         $pickupCode=$this->genPickupCode(session('souvenirUser')->id);
+        dd($id, $order, $pickupCode);
 
         try {
             $pdf = PDF::loadView('souvenir/receipt', [
