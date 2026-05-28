@@ -203,10 +203,18 @@ class LoginController extends Controller
         ]);
         
         $netId = $request->netId;
-        
-        $idValidator = new idValidatorController();
-        dd($request->all(), $netId);
-        $isValid = $idValidator->_ipm_student_id_version_1_1($netId);
+        try {
+            $idValidator = new idValidatorController();
+            $isValid = $idValidator->_ipm_student_id_version_1_1($netId);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'valid' => false,
+                'message' => 'NetId must be a string. / NetId 必須是字符串。',
+                'error'=>$e->getMessage(),
+            ]);
+        }; 
+
         if($isValid==false){
             return response()->json([
                 'valid' => false,
