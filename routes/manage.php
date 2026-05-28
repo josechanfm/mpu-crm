@@ -241,7 +241,7 @@ Route::group([
     Route::post('souvenir/users/batch_delete',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'batchDelete'])->name('dae.souvenir.users.batchDelete');
     Route::get('souvenir/users/batch_export',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'batchExport'])->name('dae.souvenir.users.batchExport');
     Route::post('souvenir/users/batch_update',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'batchUpdate'])->name('dae.souvenir.users.batchUpdate');
-    Route::post('souvenir/users/email_notification',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'emailNotification'])->name('dae.souvenir.users.emailNotification');
+    Route::any('souvenir/users/email_notification',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'emailNotification'])->name('dae.souvenir.users.emailNotification');
     Route::resource('souvenir/users',App\Http\Controllers\Department\Dae\SouvenirUserController::class)->names('dae.souvenir.users');
 
     Route::post('souvenir/user/import',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'import'])->name('dae.souvenir.user.import');

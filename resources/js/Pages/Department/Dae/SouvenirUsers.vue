@@ -483,7 +483,7 @@ export default {
                         this.selectedRows = [];
                         
                         // Refresh the table data
-                        this.$inertia.reload();
+                        //this.$inertia.reload();
                     } catch (error) {
                         message.error('Failed to send emails');
                         console.log('error', error);

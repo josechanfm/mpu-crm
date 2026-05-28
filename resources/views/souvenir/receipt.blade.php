@@ -126,7 +126,10 @@
     <div class="footerNote">
         <table width="100%" style="border: none; border-collapse: collapse; margin: 0; padding: 0;">
             <tr>
-                <td style="text-align: left; border: none; padding: 0; width:250px">下載編印日期<br>Data de impressão</td>
+                <td style="text-align: left; border: none; padding: 0; width:250px">
+                    下載編印日期<br>Data de impressão<br>{{ now()->format('Y-m-d H:i:s') }}
+
+                </td>
                 <td style="text-align: center; border: none; padding: 0;">
                     財務處<br>Divisão De Assuntos Financeiros<br>
                     (網上列印無本校蓋章簽署)<br>(Impresso na internet sem carimbo e assinatura do UPM)   

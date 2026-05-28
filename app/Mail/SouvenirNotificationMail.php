@@ -21,7 +21,7 @@ class SouvenirNotificationMail extends Mailable
 
     public function build()
     {
-        return $this->subject('Souvenir Notification / Souvenir 通知')
+        return $this->subject('【畢業快樂】澳理大小熊上線喇!｜【Happy Graduation】MPU Bear is now available!')
                     ->view('emails.souvenir_notification');
     }
 }

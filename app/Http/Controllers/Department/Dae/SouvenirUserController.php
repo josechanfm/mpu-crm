@@ -255,11 +255,16 @@ class SouvenirUserController extends Controller
     }
 
     public function emailNotification(Request $request){
+        
+        
         $request->validate([
             'ids' => 'required|array',
             'ids.*' => 'integer|exists:souvenir_users,id',
         ]);
-
+        $users=SouvenirUser::whereIn('id', $request->ids)
+            ->whereNotNull('notify_email')
+            ->where('notify_email', '!=', '')
+            ->get();
         SouvenirUser::whereIn('id', $request->ids)
             ->whereNotNull('notify_email')
             ->where('notify_email', '!=', '')

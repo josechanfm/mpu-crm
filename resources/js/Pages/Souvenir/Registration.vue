@@ -44,6 +44,7 @@ const submit = async () => {
     errors.value = {};
     try {
         const response = await axios.post(route('souvenir.register'), form);
+        console.log('register response', response.data);
         message.success(response.data.message);
         showModal.value = true;
         verificationCode.value = '';
@@ -69,6 +70,7 @@ const verifyEmail = async () => {
             uuid: props.uuid,
             code: verificationCode.value,
         });
+        console.log(response.data);
         message.success(response.data.message);
         showModal.value = false;
         // Redirect to login or something
@@ -148,6 +150,7 @@ watch(() => form.netId, (newNetId) => {
             </h2>
         </div>
         <form @submit.prevent="submit">
+
             <div>
                 <InputLabel for="netId" value="Student ID of MPU / 學生編號" required />
                 <a-input
@@ -157,7 +160,7 @@ watch(() => form.netId, (newNetId) => {
                     class="mt-1 block w-full"
                     required
                     autofocus
-                    :disabled="user.netid"
+                    :disabled="user.netid==null?false:true"
                 />
                 <InputError class="mt-2" :message="errors.netId" />
             </div>
@@ -203,16 +206,17 @@ watch(() => form.netId, (newNetId) => {
                 />
                 <InputError class="mt-2" :message="errors.degree" />
             </div>
-            <!-- <div class="mt-4">
+            <div class="mt-4">
                 <InputLabel for="graduationYear" value="Graduation Year / 畢業年份" required />
                 <TextInput
                     id="graduationYear"
                     v-model="form.graduationYear"
                     class="mt-1 block w-full"
+                    :disabled="user.grad_year==null?false:true"
                     required
                 />
                 <InputError class="mt-2" :message="errors.graduationYear" />
-            </div> -->
+            </div>
             <div class="mt-4">
                 <InputLabel for="email" value="Email / 電子郵件" required />
                 <TextInput

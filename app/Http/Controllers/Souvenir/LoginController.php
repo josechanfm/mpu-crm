@@ -83,7 +83,6 @@ class LoginController extends Controller
                 'terms.required' => 'You must accept the terms. / 您必須接受條款。',
                 'terms.accepted' => 'You must accept the terms. / 您必須接受條款。',
             ];
-
             $validate = $request->validate($rules, $messages);
 
             $code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
@@ -141,6 +140,7 @@ class LoginController extends Controller
     }
 
     public function sendResetPasswordToEmail(Request $request){
+        //dd($request->all());
         $request->validate([
             'email' => 'required|email|exists:souvenir_users,email',
         ]);
