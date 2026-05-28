@@ -276,13 +276,13 @@ class LoginController extends Controller
 		if(strlen($no)!=8) return false;
 		$table = array("1","3","7","1","3","7");
 		$tmpno= $no;
-        dd($no, $table, $tmpno);
 
 		// if(!preg_match("/[Pp]{7}[0-9]/",$tmpno))
 		// 	return false;
 		$onlynum=preg_replace("/[^0-9]/","",$tmpno);
 		$strsplit=str_split($onlynum);
 		$num=0;
+        dd($no, $table, $tmpno, $onlynum, $strsplit, $num);
 		for($i=0; $i<count($strsplit)-1; $i++){
             // echo $i.'-'.$num.'::'.$strsplit[$i].'-'.$table[$i].'<br>';
 			$num += $strsplit[$i]*$table[$i];
