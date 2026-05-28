@@ -76,7 +76,7 @@ const submit = async () => {
         message.error('Please fix the Student ID error before submitting');
         return;
     }
-    
+   
     processing.value = true;
     errors.value = {};
     try {
@@ -212,7 +212,6 @@ const handleNetIdBlur = () => {
         </div>
         
         <form @submit.prevent="submit">
-
             <div>
                 <InputLabel for="netId" value="Student ID of MPU / 學生編號" required />
                 <a-input
@@ -256,6 +255,7 @@ const handleNetIdBlur = () => {
                     placeholder="Select Academic Unit"
                     :options="faculties"
                     :disabled="user.faculty_code==null?false:true"
+                    required
                 />
                 <InputError class="mt-2" :message="errors.faculty" />
             </div>
@@ -267,6 +267,7 @@ const handleNetIdBlur = () => {
                     placeholder="Select Degree"
                     :options="degrees"
                     :disabled="user.degree_code==null?false:true"
+                    required
                 />
                 <InputError class="mt-2" :message="errors.degree" />
             </div>
