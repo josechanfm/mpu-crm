@@ -66,7 +66,8 @@ class PaymentController extends Controller
         // $order->merc_order_no=$mercOrderNo;
         // $order->save();
         //$mercOrderNo=(string)$order->uuid;
-        $salt=env('DAESP_SALT','jdNk7Dzs45LbMXHCkzsa00D608vr3yCJcxvrHnAcyP5JQwxL');
+        //$salt=env('DAESP_SALT','jdNk7Dzs45LbMXHCkzsa00D608vr3yCJcxvrHnAcyP5JQwxL'); //test
+        $salt=env('DAESP_SALT','BqEvMH177QZmkHBwRt0EIpRmrBSAwqc122RS9zBWIB1oHjhU'); //production
 
         $payment=[
             'systemCode'=>$systemCode, //Required 授權後獲得
