@@ -294,7 +294,6 @@ class OrderController extends Controller
         }
        
         $pickupCode=$this->genPickupCode(session('souvenirUser')->id);
-        dd($id, $order, $pickupCode);
 
         try {
             $pdf = PDF::loadView('souvenir/receipt', [
@@ -312,6 +311,7 @@ class OrderController extends Controller
                 'margin-bottom' => '20mm',
                 'margin-left' => '15mm',
             ]);
+            dd($id, $order, $pickupCode);
 
             return $pdf->stream('receipt.pdf', array('Attachment' => false));
             
