@@ -118,23 +118,39 @@ const validateNetId = async (netId) => {
     }
 };
 
-watch(() => form.netId, (newNetId) => {
-    if(newNetId.length > 8){
-        console.log('error')
-    }
-    if(newNetId.length > 0 && newNetId[0].toUpperCase() !== 'P'){
-        console.log('error p',newNetId[0].toUpperCase(), newNetId.length);
-    }
-    if(newNetId.length === 8 && newNetId[0].toUpperCase() === 'P'){
-        validateNetId(newNetId);
-    }
+// watch(() => form.netId, (newNetId) => {
+//     if(newNetId.length > 8){
+//         console.log('error')
+//     }
+//     if(newNetId.length > 0 && newNetId[0].toUpperCase() !== 'P'){
+//         console.log('error p',newNetId[0].toUpperCase(), newNetId.length);
+//     }
+//     if(newNetId.length === 8 && newNetId[0].toUpperCase() === 'P'){
+//         validateNetId(newNetId);
+//     }
         
     
-    // if (!props.user.netid) {
-    //     validateNetId(newNetId);
-    // }
-});
+//     // if (!props.user.netid) {
+//     //     validateNetId(newNetId);
+//     // }
+// });
 
+const netIdError = ref('')
+
+const handleNetIdBlur = () => {
+  const newNetId = form.netId
+  netIdError.value = ''
+  
+  if(newNetId.length < 8){
+      errors.value.netId = 'Student id should be 8 characters long / 學生編號應為8個字符';
+  }
+  if(newNetId.length > 0 && newNetId[0].toUpperCase() !== 'P'){
+      errors.value.netId = 'Stduent Id start with "P" / 學生編號應以"P"開頭';
+  }
+  if(newNetId.length === 8 && newNetId[0].toUpperCase() === 'P'){
+      validateNetId(newNetId);
+  }
+}
 </script>
 
 <template>
@@ -161,6 +177,7 @@ watch(() => form.netId, (newNetId) => {
                     required
                     autofocus
                     :disabled="user.netid==null?false:true"
+                    @blur="handleNetIdBlur"
                 />
                 <InputError class="mt-2" :message="errors.netId" />
             </div>
