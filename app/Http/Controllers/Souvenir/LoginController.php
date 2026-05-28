@@ -205,13 +205,7 @@ class LoginController extends Controller
         return redirect()->route('souvenir.login')->with('status', 'Password reset successfully. / 密碼重置成功。');
     }
 
-    public function __construct(idValidatorController $idValidator)
-    {
-        $this->idValidator = $idValidator;
-    }
-    
-    // ... other methods ...
-    
+
     public function verifyNetid(Request $request){
         $request->validate([
             'netId' => 'required|string|size:8|regex:/^[Pp][0-9]{7}$/',
