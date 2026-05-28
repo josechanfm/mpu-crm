@@ -18,6 +18,14 @@ use App\Http\Controllers\Api\idValidatorController;
 
 class LoginController extends Controller
 {
+    protected $idValidator;
+    
+    // Inject via constructor
+    public function __construct(idValidatorController $idValidator)
+    {
+        $this->idValidator = $idValidator;
+    }
+
     public function registration(Request $request){
         $request->validate([
             'uuid' => 'required|exists:souvenir_users,uuid',
@@ -197,30 +205,27 @@ class LoginController extends Controller
         return redirect()->route('souvenir.login')->with('status', 'Password reset successfully. / 密碼重置成功。');
     }
 
+    public function __construct(idValidatorController $idValidator)
+    {
+        $this->idValidator = $idValidator;
+    }
+    
+    // ... other methods ...
+    
     public function verifyNetid(Request $request){
         $request->validate([
             'netId' => 'required|string|size:8|regex:/^[Pp][0-9]{7}$/',
         ]);
         
         $netId = $request->netId;
-        try {
-            $idValidator = new idValidatorController();
-            $isValid = $idValidator->_ipm_student_id_version_1_1($netId);
-            
-        } catch (\Exception $e) {
-            return response()->json([
-                'valid' => false,
-                'message' => 'NetId must be a string. / NetId 必須是字符串。',
-                'error'=>$e->getMessage(),
-            ]);
-        }; 
-
-        if($isValid==false){
+        $isValid = $this->idValidator->_ipm_student_id_version_1_1($netId);
+        
+        if($isValid == false){
             return response()->json([
                 'valid' => false,
                 'message' => 'Invalid NetId format. / NetId 格式無效。',
             ]);
-        }else{
+        } else {
             $user = SouvenirUser::where('netId', $netId)->first();
 
             if($user){
@@ -230,14 +235,14 @@ class LoginController extends Controller
                         'message' => 'NetId is already registered. You may login directly. / NetId 已經註冊，您可以直接登入。',
                         'url' => route('souvenir.login'),
                     ]);
-                }else{
+                } else {
                     return response()->json([
                         'valid' => true,
                         'message' => 'NetId is exit the system will redirect to your existing account / NetId 已存在，系統將重定向到您的現有帳戶。',
                         'url'=> route('souvenir.registration', ['uuid'=>$user->uuid]),
                     ]); 
                 }
-            }else{
+            } else {
                 return response()->json([
                     'valid' => true,
                     'message' => 'NetId is not registered. Please complete your registration. / NetId 尚未註冊。請完成您的註冊。',
@@ -245,7 +250,6 @@ class LoginController extends Controller
             }
         }
     }
-
         
     public function login(Request $request){
         return Inertia::render("Souvenir/Login");
