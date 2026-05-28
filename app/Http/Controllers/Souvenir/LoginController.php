@@ -89,7 +89,7 @@ class LoginController extends Controller
 
             $user = SouvenirUser::where('uuid', $request->uuid)->first();
             $user->update([
-                'netId' => $request->netId,
+                'netid' => $request->netId,
                 'name' => $request->fullName,
                 'phone' => $request->phone,
                 'faculty' => $request->faculty,
