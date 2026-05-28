@@ -282,7 +282,6 @@ class LoginController extends Controller
 		$onlynum=preg_replace("/[^0-9]/","",$tmpno);
 		$strsplit=str_split($onlynum);
 		$num=0;
-        dd($no, $table, $tmpno, $onlynum, $strsplit, $num);
 		for($i=0; $i<count($strsplit)-1; $i++){
             // echo $i.'-'.$num.'::'.$strsplit[$i].'-'.$table[$i].'<br>';
 			$num += $strsplit[$i]*$table[$i];
@@ -291,6 +290,7 @@ class LoginController extends Controller
 		$num = 13 - ($num % 13);
 		if($num>9)
 			$num=$num-10;
+        dd($no, $table, $tmpno, $onlynum, $strsplit, $num);
         
 		if(strtoupper($strsplit[6]) == $num)
 			return true;
