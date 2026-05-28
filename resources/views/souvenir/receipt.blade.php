@@ -81,7 +81,9 @@
             <img style="float:right" width="150" src="{{ $pickupQrcodePath }}" alt="QR Code" />
         </div>
         <div><span style="font-weight:bold">Número de Recibo / 收據編號:</span> {{ $order->receipt_no }}</div>
-        <div><span style="font-weight:bold">Unidade Académica / 學術單位: </span><br><span>{{ $faculties[strtoupper($order->user->faculty_code)] }}<span></div>
+        <div><span style="font-weight:bold">Unidade Académica / 學術單位: </span><br>
+                <span>{{ $faculties[strtoupper($order->user->faculty_code)] ?? 'Not specified / 未指定' }}</span>
+        </div>
         <div><span style="font-weight:bold">Grau Académico / 學位:</span> {{ ucfirst($order->user->degree_code)  }}</div>
         <div><span style="font-weight:bold">Email / 電郵:</span> {{ $order->user->email  }}</div>
         <div><span style="font-weight:bold">Número do Telemóvel / 電話:</span> {{ $order->user->phone }}</div>
