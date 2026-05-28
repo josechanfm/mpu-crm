@@ -21,8 +21,8 @@ class SouvenirNotificationMail extends Mailable
 
     public function build()
     {
-        return $this->from('josephine.kou@mpu.edu.mo', 'MPU Student Affairs Office')
+        return $this->from('josephine.kou@mpu.edu.mo', 'Student Affairs Office')
             ->subject('【畢業快樂】澳理大小熊上線喇!｜【Happy Graduation】MPU Bear is now available!')
-                    ->view('emails.souvenir_notification');
+            ->view('emails.souvenir_notification');
     }
 }

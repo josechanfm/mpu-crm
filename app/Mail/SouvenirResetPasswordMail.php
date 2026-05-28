@@ -21,7 +21,7 @@ class SouvenirResetPasswordMail extends Mailable
 
     public function build()
     {
-        return $this->from('josephine.kou@mpu.edu.mo', 'MPU Student Affairs Office')
+        return $this->from('josephine.kou@mpu.edu.mo', 'Student Affairs Office')
             ->subject('【密碼重置】購買“澳理大小熊”｜【Reset Password】MPU Bear Order')
             ->view('emails.souvenir_reset_password');
     }
