@@ -35,8 +35,8 @@ class SouvenirEmailVerification extends Mailable
     public function envelope()
     {
         return new Envelope(
-            from: new Address('josephine.kou@mpu.edu.mo', 'Student Affairs Office'),
-            subject: '【電郵驗證】購買“澳理大小熊”｜【Email Verification】MPU Bear Order Form',
+            // from: ['josephine.kou@mpu.edu.mo', 'Student Affairs Office'],  // 使用数组
+            subject: '【電郵驗證】購買“澳理大小熊”｜【Email Verification】Bear Order Form',
         );
     }
 
