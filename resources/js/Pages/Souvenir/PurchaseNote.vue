@@ -4,7 +4,7 @@
         <p class="text-sm text-gray-600 mb-4">
             <ol class="list-decimal ml-5">
                 <li>商品一經付款，不能取消或退款。購買前請務必確認可於指定期間及地點領取商品。嚴禁任何形式之轉售或商業牟利行為。若發現違規，校方保留追究權利。</li>
-                <li>認購期由即日起至2026年6月2日23:00時止；領取期為2026年6月5、8、9及10日(指定時間內)；領取點為匯智樓2樓學生事務處。數量有限，售完即止。</li>
+                <li>認購期由即日起至2026年6月3日23:00時止；領取期為2026年6月5、8、9及10日(指定時間內)；領取點為匯智樓2樓學生事務處。數量有限，售完即止。</li>
                 <li>下單前請務必確認所填寫的個人聯絡資料正確，以便接收後續通知。</li>
                 <li>商品不設寄送服務。預留足夠時間於領取期內提取商品，不得另約時間，逾期者不獲補領或退款。</li>
                 <li>須小心保管付款後生成之單據及領取二維碼，切勿隨意轉發。</li>
@@ -20,7 +20,7 @@
         <p class="text-sm text-gray-600">
             <ol class="list-decimal ml-5">
                 <li>Once the payment is made, the order cannot be reverted or refunded. Resale or any commercial use of the item is strictly prohibited. Please ensure you are able to collect the item at the designated time and location before purchasing. The University reserves the right to take further action in case of violation.</li>
-                <li>Subscription Period starts from now until 23:00 on 2026/06/02; pick-up period is scheduled to 5, 8, 9, 10 June 2026 during designated timeslots at the Student Affairs Office, 2/F of Wui Chi Building. Supplies are limited and available while stocks last.</li>
+                <li>Subscription Period starts from now until 23:00 on 2026/06/03; pick-up period is scheduled to 5, 8, 9, 10 June 2026 during designated timeslots at the Student Affairs Office, 2/F of Wui Chi Building. Supplies are limited and available while stocks last.</li>
                 <li>Please ensure your contact information is correct before placing an order for any subsequent notifications.</li>
                 <li>No shipping services will be offered. Please allow sufficient time to pick up your item within the period. No alternative timeslots will be accommodated. No make-up collections or refunds will be offered for overdue items.</li>
                 <li>Please keep your payment receipt and pick-up code secure at all times. Do not share them with others.</li>

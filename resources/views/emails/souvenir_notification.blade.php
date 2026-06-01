@@ -20,7 +20,7 @@
                 <th>購買流程</th>
                 <td>
                     <b>購買期</b>（每人限購1隻，售完即止）<br>
-                    由即日起至2026/06/02，23:00時止<br>
+                    由即日起至2026/06/03，23:00時止<br>
                     <b>購買方式</b><br>
                     <br>
                     <ol>
@@ -123,7 +123,7 @@
                 <th>How to order</th>
                 <td>
                     <b>Purchase Period</b> (One per person, while stocks last)<br>
-                    From now until 23:00 on 2026/06/02<br>
+                    From now until 23:00 on 2026/06/03<br>
                     <b>Steps</b>
                     <ol>
                         <li>

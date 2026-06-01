@@ -154,8 +154,8 @@ const sendResetLink = () => {
                         Eligibility: Prospective graduates of Macao Polytechnic University (Academic Year 2025/2026)
                     </li>
                     <li>
-                        購買期：由即日起至2026年6月2日 23:00時止(數量有限，售完即止)<br>
-                        Subscription Period: From now until 23:00 on 2026/06/02. (Limited quantities available; while stocks last)
+                        購買期：由即日起至2026年6月3日 23:00時止(數量有限，售完即止)<br>
+                        Subscription Period: From now until 23:00 on 2026/06/03. (Limited quantities available; while stocks last)
                     </li>
                     <li>
                         領取期：2026年6月5、8、9、10日(不設補領或寄送)，以電郵通知為準<br>
