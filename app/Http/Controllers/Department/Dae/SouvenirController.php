@@ -145,7 +145,6 @@ class SouvenirController extends Controller
         }
 
         $souvenir->update($data);
-        dd($data, $request->all());
         return redirect()->back();
     }
 
