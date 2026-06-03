@@ -315,9 +315,12 @@ export default {
     methods: {
         isAvailable(product){
             if (product.user_quota_remaining==0) return false;
-            const now = new Date();
-            const expiry = new Date(product.available_to);
-            return expiry > now;
+            // const now = new Date();
+            // const expiry = new Date(product.available_to);
+            const n=dayjs();
+            const e=dayjs(product.available_to).add(8, 'hours')
+            return e > n;
+            //return expiry > now;
         },
         handleResize() {
             this.windowWidth = window.innerWidth;
@@ -342,7 +345,7 @@ export default {
                 return `Max quota reached / 已達上限 (${product.user_quota_remaining})`;
             }else if(product.available==0){
                 return `Out of stock / 已售罄`;
-            }else if(dayjs(product.available_to).isBefore(dayjs())){
+            }else if(dayjs(product.available_to).add(8, 'hour').isBefore(dayjs())){
                 return `Sales closed / 已停售`;
             }
             return `Add to cart / 加入購物車 (${this.selectedProductCount(product.id)}/${product.user_quota_remaining})`;
