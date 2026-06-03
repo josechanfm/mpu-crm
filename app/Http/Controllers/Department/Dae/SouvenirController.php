@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Souvenir;
+use Carbon\Carbon;
 
 class SouvenirController extends Controller
 {
@@ -139,7 +140,12 @@ class SouvenirController extends Controller
             }
         }
         $data['images']=$images;
+        if ($request->filled('available_to')) {
+            $data['available_to'] = Carbon::parse($request->available_to, 'Asia/Shanghai')->format('Y-m-d H:i:s');
+        }
+
         $souvenir->update($data);
+        dd($data, $request->all());
         return redirect()->back();
     }
 

@@ -178,8 +178,12 @@ import {
 import Icon, { RestFilled } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
 import axios from "axios";
 import QuillEditor from "@/Components/QuillEditor.vue";
+
+
 
 export default {
     components: {
@@ -407,8 +411,9 @@ export default {
             this.modal.isOpen = true;
         },
         editRecord(record) {
+            console.log('available_to', record.available_to)
             this.modal.data = { ...record };
-            this.modal.data.available_to=record.available_to ? dayjs(record.available_to) : null;
+            this.modal.data.available_to=record.available_to ? dayjs(record.available_to).add('8', 'hour') : null;
 
             this.modal.mode = "EDIT";
             this.modal.title = "Edit item";

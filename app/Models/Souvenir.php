@@ -11,7 +11,7 @@ class Souvenir extends Model
     use HasFactory;
 
     protected $fillable = ['name','description','thumbnail','stock','price','quota','available', 'available_to','is_available','thumbnail','images','remark'];
-    protected $casts = ['images'=>'array','is_available'=>'boolean','status'=>'boolean',    'available_to' => 'datetime'];
+    protected $casts = ['images'=>'array','is_available'=>'boolean','status'=>'boolean'];
     protected $appends = ['user_quota_remaining'];
 
     public function getUserQuotaRemainingAttribute()

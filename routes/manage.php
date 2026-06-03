@@ -270,34 +270,26 @@ Route::group([
     Route::get('payment/souvenir_orders',[App\Http\Controllers\Department\Saf\PaymentController::class,'souvenirOrders'])->name('saf.payment.souvenirOrders');
     Route::get('payment/souvenir_export',[App\Http\Controllers\Department\Saf\PaymentController::class,'souvenirExport'])->name('saf.payment.souvenirExport');
 });
-// Route::middleware([
-//     'auth:admin',
-//     config('jetstream.auth_session'),
-//     'role:PES|admin|master',
-//     'checkIneternalIP'
-// ])->group(function () {
-//     Route::prefix('/personnel')->group(function(){
-//         Route::get('/',[App\Http\Controllers\Department\Personnel\DashboardController::class,'index'])->name('personnel.dashboard');
-//         Route::get('/gpdps/export',[App\Http\Controllers\Department\Personnel\GpdpController::class,'export'])->name('personnel.gpdps.export');
-//         Route::post('/gpdps/import',[App\Http\Controllers\Department\Personnel\GpdpController::class,'import'])->name('personnel.gpdps.import');
-//         Route::get('/gpdps/emails',[App\Http\Controllers\Department\Personnel\GpdpController::class,'listEmails'])->name('personnel.gpdps.emails');
-//         Route::resource('/gpdps',App\Http\Controllers\Department\Personnel\GpdpController::class)->names('personnel.gpdps');
-//         Route::post('/gpdp/{gpdp}/sendEmailReminder',[App\Http\Controllers\Department\Personnel\GpdpController::class,'sendEmailReminder'])->name('personnel.gpdp.sendEmailReminder');
-//         Route::get('/recruitment',[App\Http\Controllers\Department\Personnel\Recruitment\DashboardController::class,'index'])->name('personnel.recruitment.dashboard');
-//         Route::resource('/recruitment/workflows',App\Http\Controllers\Department\Personnel\Recruitment\WorkflowController::class)->names('personnel.recruitment.workflows');
-//         Route::resource('/recruitment/tasks',App\Http\Controllers\Department\Personnel\Recruitment\TaskController::class)->names('personnel.recruitment.tasks');
-//         Route::resource('/recruitment/{workflow}/activities',App\Http\Controllers\Department\Personnel\Recruitment\ActivityController::class)->names('personnel.recruitment.activities');
 
-//         Route::resource('/recruitment/vacancies',App\Http\Controllers\Department\Personnel\Recruitment\VacancyController::class)->names('personnel.recruitment.vacancies');
-//         Route::resource('/recruitment/vacancy/{vacancy}/notices',App\Http\Controllers\Department\Personnel\Recruitment\NoticeController::class)->names('personnel.recruitment.vacancy.notices');
-//         Route::get('/recruitment/notice/delete_media/{media}',[App\Http\Controllers\Department\Personnel\Recruitment\NoticeController::class,'deleteMedia'])->name('personnel.recruitment.notice.deleteMedia');
-//         Route::resource('/recruitment/{vacancy}/applications',App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class)->names('personnel.recruitment.applications');
-//         Route::get('/recruitment/application/quit_masquerade',[App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class,'quitMasquerade'])->name('personnel.recruitment.application.quitMasquerade');
+Route::group([
+    'prefix' => '/grp',
+    'middleware' => [
+        'auth:admin',
+        // 'checkInternalIP',
+        'role:GRP|admin|master'
+    ]
+], function () {
+    Route::get('/',[App\Http\Controllers\Department\Grp\DashboardController::class,'index'])->name('grp.dashboard');
+    Route::resource('invitation-events', App\Http\Controllers\Department\Grp\InvitationEventController::class)->names('grp.invitation-events');
+    Route::resource('invitation-guests', App\Http\Controllers\Department\Grp\InvitationGuestController::class)->names('grp.invitation-guests');
+    Route::post('invitation-guests/import', [App\Http\Controllers\Department\Grp\InvitationGuestController::class, 'import'])->name('grp.invitation-guests.import');
+    Route::get('invitation-guests/export/{event}', [App\Http\Controllers\Department\Grp\InvitationGuestController::class, 'export'])->name('grp.invitation-guests.export');
 
-//         Route::get('/recruitment/application/check_id_num',[App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class,'checkIdNum'])->name('personnel.recruitment.application.checkIdNum');
-//         Route::get('/recruitment/application/check_email',[App\Http\Controllers\Department\Personnel\Recruitment\ApplicationController::class,'checkEmail'])->name('personnel.recruitment.application.checkEmail');
-//     });
-// });
+    Route::get('invitation-event/generate-pdf', [App\Http\Controllers\Department\Grp\InvitationEventController::class, 'generatePdf'])
+    ->name('grp.invitation-event.generate-pdf');
+    Route::post('invitation-event/send-bulk', [App\Http\Controllers\Department\Grp\InvitationEventController::class, 'sendBulkEmails'])->name('grp.invitation-event.send-bulk');
+});
+Route::get('/grp/invitation-rsvp', [App\Http\Controllers\Department\Grp\InvitationGuestController::class, 'invitationRsvp'])->name('grp.invitation-rsvp');
 
 
 Route::middleware([
