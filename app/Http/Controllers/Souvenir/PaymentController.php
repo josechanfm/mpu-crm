@@ -120,8 +120,6 @@ class PaymentController extends Controller
         $order->payment_status=$request->status;
         $order->status=$request->status=='SUCCESS'?SouvenirOrder::$status['PAID']:SouvenirOrder::$status['FAIL'];
         $order->save();
-        dd('parts: ', $parts, $order);
-        dd($request->all());
         return true;
     }
 
