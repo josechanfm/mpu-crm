@@ -140,7 +140,7 @@ class Souvenir extends Model
                 'amount'=>$totalAmount,
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
-            return false;
+            return ['success' => false, 'order' => null, 'failedItems'=>[]];
         }
         return ['success' => true, 'order' => $order, 'failedItems'=>[]];
 

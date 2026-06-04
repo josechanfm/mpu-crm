@@ -102,9 +102,10 @@ class PaymentController extends Controller
     }
 
     public function notify(Request $request){
-        $payment=SouvenirPayment::create([
-            'type'=>'notify1',
-        ]);
+        // $payment=SouvenirPayment::create([
+        //     'type'=>'notify',
+        // ]);
+        // dd($payment);
         $payment=SouvenirPayment::create([
             'type'=>'notify',
             'meta_data'=>$request->all(),
@@ -115,10 +116,12 @@ class PaymentController extends Controller
         $parts=explode('-',$mercOrderNo);
         $order=SouvenirOrder::find($parts[0]);
         // $order->payment_notify=$request->all();
-        $order->payment_meta=json_encode($request->all());
+        $order->payment_result=$request->all();
         $order->payment_status=$request->status;
         $order->status=$request->status=='SUCCESS'?SouvenirOrder::$status['PAID']:SouvenirOrder::$status['FAIL'];
         $order->save();
+        dd('parts: ', $parts, $order);
+        dd($request->all());
         return true;
     }
 

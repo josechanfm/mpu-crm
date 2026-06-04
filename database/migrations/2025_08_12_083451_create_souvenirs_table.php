@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('price')->default(100); 
             $table->integer('quota')->default(3);
             $table->integer('available')->default(0); 
-            $table->dateitme('available_to')->nullable();
+            $table->datetime('available_to')->nullable();
             $table->boolean('is_available')->default(false); 
             $table->string('thumbnail')->nullable();
             $table->text('images')->nullable();
