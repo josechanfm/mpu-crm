@@ -151,15 +151,15 @@ class PaymentController extends Controller
             'meta_data'=>$orderData,
             'status'=>$orderData['responseStatus']
         ]);
-        $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
-        $mercOrderNo=substr(str_replace($systemCode,'',$request->merchantOrderNo),0,-2);
-        //split by '-' orderId, time(), random(1000,9999)
-        $parts=explode('-',$mercOrderNo);
-        $order=SouvenirOrder::find((int)$parts[0]);
-        $order->payment_result=$orderData;
-        $order->payment_status=$orderData['responseStatus'];
-        $order->status=$orderData['responseStatus']=='SUCCESS'?SouvenirOrder::$status['PAID']:SouvenirOrder::$status['FAIL'];
-        $order->save();
+        // $systemCode=strtolower(env('BOC_SOUVENIR_CODE','DAESP'));
+        // $mercOrderNo=substr(str_replace($systemCode,'',$request->merchantOrderNo),0,-2);
+        // //split by '-' orderId, time(), random(1000,9999)
+        // $parts=explode('-',$mercOrderNo);
+        // $order=SouvenirOrder::find((int)$parts[0]);
+        // $order->payment_result=$orderData;
+        // $order->payment_status=$orderData['responseStatus'];
+        // $order->status=$orderData['responseStatus']=='SUCCESS'?SouvenirOrder::$status['PAID']:SouvenirOrder::$status['FAIL'];
+        // $order->save();
 
         $payment->order_id=$order->id;
         $payment->save();
