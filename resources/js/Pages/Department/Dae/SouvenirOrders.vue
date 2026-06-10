@@ -73,15 +73,15 @@
                             {{ record.receipt_no }}
                         </template>
                         <template v-else-if="column.dataIndex=='buyer' && record.user">
-                            <span>{{ record.user.netid }}</span>
+                            <span>{{ record.user?.netid }}</span>
                         </template>
                         <template v-else-if="column.dataIndex=='email'">
-                            1:{{ record.user.notify_email }}<br>
-                            2:{{ record.user.email }}
+                            1:{{ record.user?.notify_email }}<br>
+                            2:{{ record.user?.email }}
                         </template>
                         <template v-else-if="column.dataIndex=='phone'">
-                            1:{{ record.user.phone }}<br>
-                            3:{{ record.form_meta.phone }}
+                            1:{{ record.user?.phone }}<br>
+                            3:{{ record.form_meta?.phone }}
                         </template>
                         <template v-else-if="column.dataIndex=='items'">
                             <div v-for="item in record.items">
@@ -142,14 +142,33 @@
           <a-form-item label="Date" >
             {{  formatDate(modal.data.created_at) }}
           </a-form-item>
-          <a-form-item label="Status" >
+          <!-- <a-form-item label="Status" >
             <span v-if="modal.data.status==null">未支付</span>
             <span v-else-if="modal.data.status==0">支付失敗</span>
             <span v-else-if="modal.data.status==1">已支付</span>
             <span v-else-if="modal.data.status==2">己領取</span>
-          </a-form-item>
+          </a-form-item> -->
+
+          <a-form-item label="Status" >
+            <a-select
+                :value="modal.data.status"
+                placeholder="Select status / 選擇狀態"
+                allow-clear
+                @change="handleStatusChange"
+            >
+                <a-select-option :value="null" disabled="true">未支付</a-select-option>
+                <a-select-option :value="0" disabled="true">支付失敗</a-select-option>
+                <a-select-option :value="1" :disabled="modal.data.status!=2">已支付</a-select-option>
+                <a-select-option :value="2">已領取</a-select-option>
+            </a-select>
+        </a-form-item>
+
+
+
+        
       </a-form>
       <template #footer>
+        <a-button type="primary" key="update" @click="updateRecord()">{{ $t('update')}}</a-button>
         <a-button key="back" @click="modal.isOpen=false">{{ $t('close')}}</a-button>
       </template>
     </a-modal>
@@ -171,6 +190,7 @@ import Icon, { RestFilled } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
 import dayjs from 'dayjs';
 import axios from "axios";
+import { Modal } from 'ant-design-vue';
 
 export default {
     components: {
@@ -337,7 +357,6 @@ export default {
         },
 
         onPaginationChange(page, filters, sorter) {
-            console.log(this.myFilter, page, filters, sorter);
             this.$inertia.get(
                 route("dae.souvenir.orders.index"),
                 {
@@ -362,6 +381,48 @@ export default {
                 }
             );
         },
+        updateRecord(){
+            console.log(this.modal.data)
+            this.$inertia.put(route('dae.souvenir.orders.update', this.modal.data.id), this.modal.data, {
+                onSuccess: () => {
+                    this.modal.isOpen = false;
+                    //this.$emit('updated'); // notify parent if needed
+                },
+                onError: (errors) => {
+                    // Attach errors to form fields if you have a form helper
+                    this.errors = errors;
+                },
+            });
+        },
+
+        handleStatusChange(newValue) {
+            const oldValue = this.modal.data.status;
+            // If the value hasn't changed, do nothing
+            if (newValue === oldValue) return;
+
+            // Get display text for confirmation message
+            const getStatusText = (value) => {
+                if (value === null) return '未支付';
+                if (value === 0) return '支付失敗';
+                if (value === 1) return '已支付';
+                if (value === 2) return '已領取';
+                return 'Unknown';
+            };
+
+            Modal.confirm({
+                title: 'Confirm Status Change / 確認更改狀態',
+                content: `Are you sure you want to change status from "${getStatusText(oldValue)}" to "${getStatusText(newValue)}"?\n\n您確定要將狀態從「${getStatusText(oldValue)}」更改為「${getStatusText(newValue)}」嗎？`,
+                okText: 'Yes / 是',
+                cancelText: 'No / 否',
+                onOk: () => {
+                // User confirmed, update the value
+                    this.modal.data.status = newValue;
+                },
+                onCancel: () => {
+                // Do nothing, keep old value
+                },
+            });
+        },        
 
     },
 };

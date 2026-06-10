@@ -132,9 +132,18 @@ class SouvenirOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, SouvenirOrder $order)
     {
-        //
+        $validated = $request->validate([
+            'id' => 'required|integer|exists:souvenir_orders,id',
+            'status' => 'required|integer|in:0,1,2', // adjust allowed values as needed
+        ]);
+        if ($request->input('id') != $order->id) {
+            return redirect()->back()->withErrors(['id' => 'ID mismatch. The order ID in the request does not match the order being updated.']);
+        };     
+        $order->status = $validated['status'];
+        $order->save();
+        return redirect()->back();
     }
 
     /**

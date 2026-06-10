@@ -37,6 +37,14 @@ class OrderController extends Controller
         $user=$user?->load(['orders' => function ($query) {
                         $query->where('status', SouvenirOrder::$status['PAID']);
                     }]);
+        $products=Souvenir::where('is_available', true)
+                ->where('available_to','>=',now())
+                ->orderBy('created_at', 'desc')
+                ->get();
+        if($products->count()==0){
+            return Inertia::render("Souvenir/OrderEmpty",[
+            ]);
+        }
         //dd($user, session()->has('souvenirUser'), SouvenirOrder::$status['PAID']);
         return Inertia::render("Souvenir/Order",[
             "faculties" => SouvenirUser::$faculties,
@@ -44,10 +52,7 @@ class OrderController extends Controller
             "user" => $user?->load(['orders' => function ($query) {
                         $query->where('status', SouvenirOrder::$status['PAID']);
                     }]),
-            "products" => Souvenir::where('is_available', true)
-                //->where('available_to','>=',now())
-                ->orderBy('created_at', 'desc')
-                ->get()
+            "products" => $products
         ]);
     }
 
