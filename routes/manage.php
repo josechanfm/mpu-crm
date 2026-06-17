@@ -229,31 +229,42 @@ Route::group([
 });
 
 
-Route::group([
-    'prefix' => '/dae',
-    'middleware' => [
-        'auth:admin',
-        // 'checkInternalIP',
-        'role:DAE|admin|master'
-    ]
-], function () {
-    Route::get('/',[App\Http\Controllers\Department\Dae\DashboardController::class,'index'])->name('dae.dashboard');
-    Route::post('souvenir/users/batch_delete',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'batchDelete'])->name('dae.souvenir.users.batchDelete');
-    Route::get('souvenir/users/batch_export',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'batchExport'])->name('dae.souvenir.users.batchExport');
-    Route::post('souvenir/users/batch_update',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'batchUpdate'])->name('dae.souvenir.users.batchUpdate');
-    Route::any('souvenir/users/email_notification',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'emailNotification'])->name('dae.souvenir.users.emailNotification');
-    Route::resource('souvenir/users',App\Http\Controllers\Department\Dae\SouvenirUserController::class)->names('dae.souvenir.users');
 
-    Route::post('souvenir/user/import',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'import'])->name('dae.souvenir.user.import');
-    Route::post('souvenir/user/import/confirm',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'importConfirm'])->name('dae.souvenir.user.import.confirm');
-    Route::resource('souvenirs',App\Http\Controllers\Department\Dae\SouvenirController::class)->names('dae.souvenirs');
-    Route::resource('souvenir/orders',App\Http\Controllers\Department\Dae\SouvenirOrderController::class)->names('dae.souvenir.orders');
-    Route::get('souvenir/order/export',[App\Http\Controllers\Department\Dae\SouvenirOrderController::class,'export'])->name('dae.souvenir.order.export');
+Route::group(['prefix' => '/dae'], function () {
+    Route::group([
+        'middleware' => [
+            'auth:admin',
+            // 'checkInternalIP',
+            'role:DAE|admin|master'
+        ]
+    ], function() {
+        Route::get('/',[App\Http\Controllers\Department\Dae\DashboardController::class,'index'])->name('dae.dashboard');
+        Route::post('souvenir/users/batch_delete',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'batchDelete'])->name('dae.souvenir.users.batchDelete');
+        Route::get('souvenir/users/batch_export',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'batchExport'])->name('dae.souvenir.users.batchExport');
+        Route::post('souvenir/users/batch_update',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'batchUpdate'])->name('dae.souvenir.users.batchUpdate');
+        Route::any('souvenir/users/email_notification',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'emailNotification'])->name('dae.souvenir.users.emailNotification');
+        Route::resource('souvenir/users',App\Http\Controllers\Department\Dae\SouvenirUserController::class)->names('dae.souvenir.users');
 
-    Route::post('souvenir/remove_image/{souvenir}/{imageId}',[App\Http\Controllers\Department\Dae\SouvenirController::class,'removeImage'])->name('dae.souvenir.removeImage');
-    Route::get('souvenir/pickup',[App\Http\Controllers\Department\Dae\PickupController::class,'index'])->name('dae.souvenir.pickup');
-    Route::get('souvenir/pickup_code',[App\Http\Controllers\Department\Dae\PickupController::class,'pickupCode'])->name('dae.souvenir.pickupCode');
-    Route::any('souvenir/pickup_confirm',[App\Http\Controllers\Department\Dae\PickupController::class,'pickupConfirm'])->name('dae.souvenir.pickupConfirm');
+        Route::post('souvenir/user/import',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'import'])->name('dae.souvenir.user.import');
+        Route::post('souvenir/user/import/confirm',[App\Http\Controllers\Department\Dae\SouvenirUserController::class,'importConfirm'])->name('dae.souvenir.user.import.confirm');
+        Route::resource('souvenirs',App\Http\Controllers\Department\Dae\SouvenirController::class)->names('dae.souvenirs');
+        Route::resource('souvenir/orders',App\Http\Controllers\Department\Dae\SouvenirOrderController::class)->names('dae.souvenir.orders');
+        Route::get('souvenir/order/export',[App\Http\Controllers\Department\Dae\SouvenirOrderController::class,'export'])->name('dae.souvenir.order.export');
+
+        Route::post('souvenir/remove_image/{souvenir}/{imageId}',[App\Http\Controllers\Department\Dae\SouvenirController::class,'removeImage'])->name('dae.souvenir.removeImage');
+        Route::get('souvenir/pickup',[App\Http\Controllers\Department\Dae\PickupController::class,'index'])->name('dae.souvenir.pickup');
+        Route::get('souvenir/pickup_code',[App\Http\Controllers\Department\Dae\PickupController::class,'pickupCode'])->name('dae.souvenir.pickupCode');
+        Route::any('souvenir/pickup_confirm',[App\Http\Controllers\Department\Dae\PickupController::class,'pickupConfirm'])->name('dae.souvenir.pickupConfirm');
+    });
+    Route::group([
+        'middleware' => [
+            'auth:admin',
+            // 'checkInternalIP',
+            'role:DAE|SAF|admin|master'
+        ]
+    ], function() {
+        Route::get('souvenir/order/export',[App\Http\Controllers\Department\Dae\SouvenirOrderController::class,'export'])->name('dae.souvenir.order.export');
+    });
 });
 
 

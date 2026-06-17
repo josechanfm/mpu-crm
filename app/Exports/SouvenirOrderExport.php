@@ -51,6 +51,16 @@ class SouvenirOrderExport implements FromCollection, WithHeadings
             $souvenirOrders = SouvenirOrder::with('user')->whereIn('id', $this->orderIds)->get();
         }
         foreach ($souvenirOrders as $order) {
+            if(empty($order->user)){
+                continue;
+            }
+            if($order->payment_result && $order->payment_result->paymentDate){
+                $transactionDateTime=$order->payment_result->paymentDate & ' ' & $order->payment_result->paymentTime;
+            }else{
+                $transactionDateTime=$order->created_at;
+            }
+            
+
             $modifiedOrder = [
                 'netid'=>$order->user->netid,
                 'name'=>$order->user->name,
@@ -64,9 +74,9 @@ class SouvenirOrderExport implements FromCollection, WithHeadings
                 'payment_amount'=>$order->amount,
                 'status'=>$order->status>0?'PAID':'UNPAID',
                 'redemption'=>$order->status==2?'已領':'未領取',
-                'transaction_time'=>$order->updated_at,
-                'purchase_year'=>$order->updated_at->format('Y'),
-                'purchase_month'=>$order->updated_at->format('m'),
+                'transaction_time'=>$transactionDateTime,
+                'purchase_year'=>$order->created_at->format('Y'),
+                'purchase_month'=>$order->created_at->format('m'),
                 'phone'=>$order->form_meta->phone??null,
             ];
             foreach($order->form_meta->cartItems as $item){

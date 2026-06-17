@@ -8,7 +8,12 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     SAF Dashboard
                     <a-button :href="route('saf.payment.souvenirOrders')">Souvenior Orders</a-button>
+                    <a :href="route('dae.souvenir.order.export')">
+                        <a-button>Export</a-button>
+                    </a>
+
                 </div>
+
             </div>
             <div v-html="department.landing_page" class="mb-6"></div>
         </div>

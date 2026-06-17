@@ -2,9 +2,9 @@
     <DepartmentLayout title="Souvenir orders" >
         <div class="mx-auto pt-5">
             <div class="flex flex-justify justify-end pb-3 gap-5">
-                <a :href="route('saf.payment.souvenir_export')">
+                <!-- <a :href="route('saf.payment.souvenir_export')">
                     <a-button>Export</a-button>
-                </a>
+                </a> -->
                 <a-button :href="route('dae.dashboard')">Back</a-button>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">

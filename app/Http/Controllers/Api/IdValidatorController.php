@@ -167,10 +167,10 @@ class IdValidatorController extends Controller
 		if(strlen($no)!=8) return false;
 		$table = array("1","3","7","1","3","7");
 		$tmpno= $this->_fulltohalf($no);
-		// if(!preg_match("/[Pp]{7}[0-9]/",$tmpno))
-		// 	return false;
-		$onlynum=preg_replace("/[^0-9]/","",$tmpno);
-		$strsplit=str_split($onlynum);
+		if(!preg_match("/[Pp]{7}[0-9]/",$tmpno))
+			return false;
+		$onlynum=preg_replace("/[^0-9]/","",$tmpno); //replace all not number charactors
+		$strsplit=str_split($onlynum); //split in to array of each number
 		$num=0;
 		for($i=0; $i<count($strsplit)-1; $i++){
             // echo $i.'-'.$num.'::'.$strsplit[$i].'-'.$table[$i].'<br>';

@@ -15,7 +15,7 @@ class PaymentController extends Controller
         ]);
     }
     public function souvenirOrders(Request $request){
-        dd('SouvenirOrders');
+        //dd('SouvenirOrders');
         $orders = SouvenirOrder::query();
         if ($request->has('filter_column') && !is_null($request->filter_column && $request->has('filter_value') && !is_null($request->filter_value))) {
             if($request->filter_value=='null'){

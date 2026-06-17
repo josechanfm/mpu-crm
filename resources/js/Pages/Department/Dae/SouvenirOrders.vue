@@ -103,9 +103,20 @@
                     </template>
                 </a-table>
             </div>
-            <p>1: Imported User Info</p>
-            <p>2: Regisered Info</p>
-            <p>3: Order Form Phone Number</p>
+            <div>
+                <div class="text-lg font-bold">* Symbol Remark:</div>
+                <p>1: Imported User Info</p>
+                <p>2: Regisered Info</p>
+                <p>3: Order Form Phone Number</p>
+            </div>
+            <div>
+                <div class="text-lg font-bold">Export Data Column Remark:</div>
+                <ul class="list-disc pl-5">
+                    <li>transaction_time: 如果支付成功, 顯示支付碓認信息的日期及時間, 否則顯示購買記錄生成的日期及時間.</li>
+                    <li>purchase_year: 指購買記錄生成的年分</li>
+                    <li>purchase_month: 指購買記錄生成的年分</li>
+                </ul>
+            </div>
         </div>
 
     <!-- Modal Start-->
@@ -255,10 +266,10 @@ export default {
                     title: "Student No.",
                     dataIndex: "buyer",
                 }, {
-                    title: "Email",
+                    title: "Email *",
                     dataIndex: "email",
                 }, {
-                    title: "Phone",
+                    title: "Phone *",
                     dataIndex: "phone",
                 }, {
                     title: "Amount",
