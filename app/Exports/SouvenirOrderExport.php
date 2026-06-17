@@ -54,7 +54,7 @@ class SouvenirOrderExport implements FromCollection, WithHeadings
             if(empty($order->user)){
                 continue;
             }
-            if($order->payment_result && $order->payment_result->paymentDate){
+            if ($order->payment_result && isset($order->payment_result->paymentDate)) {
                 $transactionDateTime=$order->payment_result->paymentDate & ' ' & $order->payment_result->paymentTime;
             }else{
                 $transactionDateTime=$order->created_at;
