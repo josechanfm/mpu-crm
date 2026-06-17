@@ -277,9 +277,9 @@ Route::group([
     ]
 ], function () {
     Route::get('/',[App\Http\Controllers\Department\Saf\DashboardController::class,'index'])->name('saf.dashboard');
-    Route::get('payments',[App\Http\Controllers\Department\Saf\PaymentController::class,'index'])->name('saf.payments');
-    Route::get('payment/souvenir_orders',[App\Http\Controllers\Department\Saf\PaymentController::class,'souvenirOrders'])->name('saf.payment.souvenirOrders');
-    Route::get('payment/souvenir_export',[App\Http\Controllers\Department\Saf\PaymentController::class,'souvenirExport'])->name('saf.payment.souvenirExport');
+    // Route::get('payments',[App\Http\Controllers\Department\Saf\PaymentController::class,'index'])->name('saf.payments');
+    // Route::get('payment/souvenir_orders',[App\Http\Controllers\Department\Saf\PaymentController::class,'souvenirOrders'])->name('saf.payment.souvenirOrders');
+    // Route::get('payment/souvenir_export',[App\Http\Controllers\Department\Saf\PaymentController::class,'souvenirExport'])->name('saf.payment.souvenirExport');
 });
 
 Route::group([
