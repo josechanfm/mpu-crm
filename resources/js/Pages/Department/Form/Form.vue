@@ -92,7 +92,14 @@
                     The form has responses, please backup before unpublished.</span
                 >
             </a-form-item>
-
+            <a-form-item label="Show Receipt" name="show_receipt">
+                <a-switch
+                    v-model:checked="form.show_receipt"
+                    :unCheckedValue="0"
+                    :checkedValue="1"
+                />
+                <span class="pl-3">Login is required</span>
+            </a-form-item>
             <a-form-item label="Banner Image" name="banner_image">
               <div class="flex gap-5">
                   <div>
@@ -139,6 +146,7 @@
                   </a-upload>
               </div>
             </a-form-item>
+            
 
             <a-form-item :wrapper-col="{ offset: 12, span: 10 }">
                 <a-button type="primary" html-type="submit">Submit</a-button>

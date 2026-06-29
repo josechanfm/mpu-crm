@@ -140,6 +140,7 @@ class FormController extends Controller
             'name'=>'required',
             'title'=>'required',
         ]);
+        // dd($request->all());
         $form->update($request->all());
         if($request->file('banner_image')){
             $form->addMedia($request->file('banner_image')[0]['originFileObj'])->toMediaCollection('banner');

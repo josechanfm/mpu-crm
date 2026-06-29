@@ -111,7 +111,7 @@
                         </div>
                         <div v-else-if="field.type=='email'" :key="field.id">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required},{type:'email'}]" >
-                                <a-input type="inpuut" v-model:value="formData[field.id]" />
+                                <a-input type="input" v-model:value="formData[field.id]" />
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='true_false'" :key="field.id">

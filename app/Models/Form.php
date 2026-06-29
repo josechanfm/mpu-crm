@@ -16,8 +16,8 @@ class Form extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
-    protected $fillable = ['department_id', 'name', 'title', 'welcome', 'description', 'thanks', 'require_login', 'for_staff', 'published','layout','remark'];
-    protected $cast=['require_login'=>'boolean','for_staff'=>'boolean','published'=>'boolean'];
+    protected $fillable = ['department_id', 'name', 'title', 'welcome', 'description', 'thanks', 'require_login', 'for_staff', 'show_receipt', 'published','layout','remark'];
+    protected $cast=['require_login'=>'boolean','for_staff'=>'boolean','show_receipt'=>'boolean','published'=>'boolean'];
     protected $appends=['entry_count','thumbnail'];
 
 
@@ -171,7 +171,7 @@ class Form extends Model implements HasMedia
                     return $item->form_field_id == $field->id;
                 })->first();
                 if ($field->type == 'radio') {
-                    $value = array_filter(json_decode($field->options), function ($item) use ($entry_record) {
+                    $value = array_filter($field->options, function ($item) use ($entry_record) {
                         return $item['value'] === $entry_record?->field_value;
                     });
                     $table_data[$field->field_label] = reset($value)->label ?? '';
