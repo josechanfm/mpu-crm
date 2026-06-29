@@ -119,6 +119,7 @@ class FormController extends Controller
         //dd(config('app'), $form->getFirstMediaUrl('banner'));
         $form->banner_url=$form->getFirstMediaUrl('banner');
         $form->thumb_url=$form->getFirstMediaUrl('thumb');
+        dd($form);
         return Inertia::render('Department/Form/Form',[
             'departments'=>Department::orderBy('abbr')->get(),
             'form'=>$form
