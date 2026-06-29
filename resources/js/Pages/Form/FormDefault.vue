@@ -32,22 +32,22 @@
                 >
                     <template v-for="field in form.fields">
                         <div v-if="form.require_member" :key="field.id">
-                            <a-form-item label="Member Id" :name="field.id" :rules="[{required:field.required, 'message':'必埴欗位/Is Required'}]">
+                            <a-form-item label="Member Id" :name="field.id" :rules="[{required:field.required, 'message':'必填欗位/Is Required'}]">
                                 <a-input type="inpuut" v-model:value="$page.props.user.id" />
                             </a-form-item>                        
                         </div>
                         <div v-if="field.type=='input'" :key="field.id">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必埴欗位/Is Required'}]">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欗位/Is Required'}]">
                                 <a-input type="input" v-model:value="formData[field.id]" />
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='number'" :key="field.id">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必埴欗位/Is Required'}]">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欗位/Is Required'}]">
                                 <a-input-number v-model:value="formData[field.id]" />
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='select'" :key="field.id">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必埴欗位/Is Required'}]">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欗位/Is Required'}]">
                                 <a-select
                                     v-model:value="formData[field.id]"
                                     :options="field.options"
@@ -55,7 +55,7 @@
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='radio'" :key="field.id">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必埴欗位/Is Required'}]">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欗位/Is Required'}]">
                                 <a-radio-group v-model:value="formData[field.id]">
                                 <template v-for="item in field.options" :key="item.value">
                                     <a-radio :style="field.direction=='V'?verticalStyle:null" :value="item.value">{{ item.label }}</a-radio>
@@ -64,7 +64,7 @@
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='checkbox'" :key="field.id">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必埴欗位/Is Required'}]">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欗位/Is Required'}]">
                                 <a-checkbox-group v-model:value="formData[field.id]" :class="field.direction=='V'?'checkbox-vertical':null">
                                     <template v-for="item in field.options" :key="item.value">
                                         <a-checkbox :style="verticalStyle" :value="item.value">{{ item.label }}</a-checkbox>
@@ -74,7 +74,7 @@
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='dropdown'" :key="field.id">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必埴欗位/Is Required'}]">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欗位/Is Required'}]">
                                 <a-select 
                                     v-model:value="formData[field.id]"
                                     :options="field.options"
@@ -82,12 +82,12 @@
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='longtext'" :key="field.id">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必埴欗位/Is Required'}]">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欗位/Is Required'}]">
                                 <a-textarea v-model:value="formData[field.id]" />
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='richtext'" :key="field.id">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必埴欗位/Is Required'}]">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欗位/Is Required'}]">
                                 <quill-editor
                                     v-model="formData[field.id]"
                                     style="min-height:200px"
@@ -95,12 +95,12 @@
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='datetime'" :key="field.id">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必埴欗位/Is Required'}]" >
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欗位/Is Required'}]" >
                                 <a-date-picker v-model:value="formData[field.id]" :show-time="{ format: 'HH:mm' }" :format="dateTimeFormat" :valueFormat="dateTimeFormat" />
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='date'" :key="field.id">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必埴欗位/Is Required'}]" >
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欗位/Is Required'}]" >
                                 <a-date-picker v-model:value="formData[field.id]" :format="dateFormat" :valueFormat="dateFormat" />
                             </a-form-item>                        
                         </div>
@@ -110,22 +110,22 @@
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='email'" :key="field.id">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必埴欗位/Is Required'},{type:'email'}]" >
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欗位/Is Required'},{type:'email'}]" >
                                 <a-input type="input" v-model:value="formData[field.id]" />
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='true_false'" :key="field.id">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必埴欗位/Is Required'},{type:'boolean'}]" >
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欗位/Is Required'},{type:'boolean'}]" >
                                 <a-checkbox v-model:checked="formData[field.id]" />
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='html'" :key="field.id">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必埴欗位/Is Required'},{type:'boolean'}]" >
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欗位/Is Required'},{type:'boolean'}]" >
                                 <div v-html="field.extra"/>
                             </a-form-item>                        
                         </div>
                         <div v-else :key="field.id">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必埴欗位/Is Required'}]" >
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欗位/Is Required'}]" >
                                 <p>Data type undefined</p>
                                 {{ field }}
                             </a-form-item>                        
