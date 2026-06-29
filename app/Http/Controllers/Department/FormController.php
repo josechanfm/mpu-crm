@@ -119,25 +119,6 @@ class FormController extends Controller
         //dd(config('app'), $form->getFirstMediaUrl('banner'));
         $form->banner_url=$form->getFirstMediaUrl('banner');
         $form->thumb_url=$form->getFirstMediaUrl('thumb');
-
-        dd(
-            $form,
-            $form->getFirstMediaUrl('banner'),
-            config('app.url'),
-            env('APP_URL'),
-            request()->getSchemeAndHttpHost(),
-            app()->environment(),
-            app()->basePath('.env'),
-            file_get_contents(app()->basePath('.env')),
-            config('app.url'),
-            env('APP_URL'),
-            'ENV Helper: ' . env('APP_URL'),
-            'Config: ' . config('app.url'),
-            '$_ENV: ' . ($_ENV['APP_URL'] ?? 'null'),
-            '$_SERVER: ' . ($_SERVER['APP_URL'] ?? 'null'),
-            'getenv: ' . getenv('APP_URL')
-            
-        );
         return Inertia::render('Department/Form/Form',[
             'departments'=>Department::orderBy('abbr')->get(),
             'form'=>$form
