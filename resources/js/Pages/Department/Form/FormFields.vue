@@ -35,6 +35,10 @@
             </template>
 
         </a-table>
+        <div>
+            <div>備註:</div>
+            <div>1. 若表格式發佈,其已建主的欄位內容修改.</div>
+        </div>
 
         <!-- Modal Start-->
         <a-modal v-model:open="modal.isOpen" :title="modal.mode == 'CREATE' ? 'Create' : 'Update'" width="60%">
