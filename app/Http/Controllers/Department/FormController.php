@@ -125,7 +125,12 @@ class FormController extends Controller
             $form->getFirstMediaUrl('banner'),
             config('app.url'),
             env('APP_URL'),
-            request()->getSchemeAndHttpHost()
+            request()->getSchemeAndHttpHost(),
+            app()->environment(),
+            app()->basePath('.env'),
+            file_get_contents(app()->basePath('.env')),
+            config('app.url'),
+            env('APP_URL')
         );
         return Inertia::render('Department/Form/Form',[
             'departments'=>Department::orderBy('abbr')->get(),
