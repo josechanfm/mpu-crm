@@ -98,7 +98,7 @@
                     :unCheckedValue="0"
                     :checkedValue="1"
                 />
-                <span class="pl-3">Login is required</span>
+                <span class="pl-3">Show Receipt on the thank you page.</span>
             </a-form-item>
             <a-form-item label="Banner Image" name="banner_image">
               <div class="flex gap-5">
