@@ -130,7 +130,13 @@ class FormController extends Controller
             app()->basePath('.env'),
             file_get_contents(app()->basePath('.env')),
             config('app.url'),
-            env('APP_URL')
+            env('APP_URL'),
+            'ENV Helper: ' . env('APP_URL'),
+            'Config: ' . config('app.url'),
+            '$_ENV: ' . ($_ENV['APP_URL'] ?? 'null'),
+            '$_SERVER: ' . ($_SERVER['APP_URL'] ?? 'null'),
+            'getenv: ' . getenv('APP_URL')
+            
         );
         return Inertia::render('Department/Form/Form',[
             'departments'=>Department::orderBy('abbr')->get(),
