@@ -127,8 +127,13 @@ class EntryController extends Controller
 
     public function export(Form $form)
     {
+        $slug = Str::of($form->name)->slug('-');
+        if ($slug->isEmpty()) {
+            // Fallback: remove forbidden URL characters and replace spaces with hyphens
+            $slug = Str::of($form->name)->trim()->replaceMatches('/[^\pL\d\s]+/u', '')->replace(' ', '-');
+        }
         //dd($form->excelRecords());
-        return Excel::download(new EntryExport($form), Str::slug($form->name).'.xlsx');
+        return Excel::download(new EntryExport($form), $slug->value.'.xlsx');
     }
 
     public function success(Form $form, Entry $entry, Request $request)
