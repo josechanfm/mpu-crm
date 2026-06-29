@@ -106,24 +106,26 @@ class Form extends Model implements HasMedia
             foreach ($fields as $field) {
                 $f = $entry->records->where('form_field_id', $field->id)->first();
                 if ($f) {
-
                     if ($field->type == 'radio') {
-                        $fieldOptions = json_decode($field->options);
+                        $fieldOptions = $field->options;
                         $value = array_filter($fieldOptions, function ($item) use ($f) {
-                            return $item->value == $f->field_value;
+                            return $item['value'] == $f->field_value;
                         });
                         $valueItem = reset($value);
-                        $entry['extra_' . $field->id] = $valueItem->label ?? '';
+                       
+                        $entry['extra_' . $field->id] = $valueItem['label'] ?? '';
                         // academic.form$entry);
                     } else if ($field->type == 'checkbox') {
-                        $fieldOptions = json_decode($field->options);
+                        $fieldOptions = $field->options;
                         $fieldValue = json_decode($f->field_value);
+                        
                         $value = array_filter($fieldOptions, function ($item) use ($fieldValue) {
-                            return in_array($item->value, $fieldValue);
+                            return in_array($item['value'], $fieldValue);
                         });
+                        
                         $labels = [];
                         foreach ($value as $item) {
-                            $labels[] = $item->label;
+                            $labels[] = $item['label'];
                         }
                         $result = implode(',', $labels);
                         $entry['extra_' . $field->id] = $result;
@@ -170,7 +172,7 @@ class Form extends Model implements HasMedia
                 })->first();
                 if ($field->type == 'radio') {
                     $value = array_filter(json_decode($field->options), function ($item) use ($entry_record) {
-                        return $item->value === $entry_record?->field_value;
+                        return $item['value'] === $entry_record?->field_value;
                     });
                     $table_data[$field->field_label] = reset($value)->label ?? '';
                 // } else if ($field->type == 'checkbox') {
