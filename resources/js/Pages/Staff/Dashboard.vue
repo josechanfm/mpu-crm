@@ -1,7 +1,7 @@
 <template>
     <StaffLayout title="Dashboard">
     <div class="h-64 bg-gradient-to-tr from-green-800 to-green-500 rounded-md flex items-center">
-      <div class="ml-20">
+      <div class="ml-2 lg:ml-20">
         <h2 class="text-white text-4xl">General Staff</h2>
         <p class="text-white mt-4 capitalize tracking-wider leading-7">Staff Landing page, which shows general information
           for both Administration and Teaching staff.</p>
@@ -12,7 +12,7 @@
     </div>
     
     
-<a-row gutter={16} class="flex flex-wrap">
+<a-row :gutter="[16, 16]" class="flex flex-wrap pt-5">
     <a-col :xs="24" :sm="12" :md="8">
         <a-card
             title="Staff Cards"
@@ -26,6 +26,22 @@
             <div class="flex justify-end mt-4">
               <inertia-link :href="route('staff.cards')">
                 <a-button type="primary">Go to Service</a-button>
+              </inertia-link>
+            </div>
+        </a-card>
+    </a-col>
+      <a-col :xs="24" :sm="12" :md="8">
+        <a-card
+            title="工作備忘"
+            class="rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300"
+            :style="{ padding: '16px' }"
+        >
+            <div class="card-content">
+                <p>用來記錄與管理個人工作備忘，整理待辦事項與執行重點，讓任務處理更有條理。</p>
+            </div>
+            <div class="flex justify-end mt-4">
+              <inertia-link :href="route('staff.tasks.index')">
+                <a-button type="primary">My Tasks</a-button>
               </inertia-link>
             </div>
         </a-card>

@@ -25,7 +25,7 @@ defineProps({
             <!-- Page Content -->
             <main>
                 <div
-                    class="bg-gray-100 sm:grid grid-cols-5 grid-rows-2 px-4 py-6 min-h-full lg:min-h-screen space-y-6 sm:space-y-0 sm:gap-4">
+                    class="bg-gray-100 sm:grid grid-cols-5 grid-rows-2 px-1 lg:px-4 py-6 min-h-full lg:min-h-screen space-y-6 sm:space-y-0 sm:gap-4">
                     <div class="col-span-4">
                         <slot />
                     </div>

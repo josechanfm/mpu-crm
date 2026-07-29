@@ -60,4 +60,8 @@ class Department extends Model
     public function publications(){
         return $this->hasMany(Publication::class);
     }
+    public function tasks(){
+        return $this->hasMany(Task::class);
+    }
+
 }

@@ -41,7 +41,7 @@ Route::group([
             return auth()->check()?auth()->user()->jsPermissions():0;
         });
         Route::get('cards',[App\Http\Controllers\Staff\StaffCardController::class,'index'])->name('staff.cards');
-
+        Route::resource('tasks',\App\Http\Controllers\Staff\TaskController::class)->names('staff.tasks');
 });
 
 
