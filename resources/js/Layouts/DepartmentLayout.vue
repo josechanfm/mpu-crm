@@ -129,7 +129,7 @@ const routeBack = ()=>{
     if (breadcrumbLength >= 2) {
         // Get the second-to-last item
         const secondLastItem = props.breadcrumb[breadcrumbLength - 2];
-        console.log(props.breadcrumb, secondLastItem);
+        //console.log('routeback',props.breadcrumb, secondLastItem);
         if (secondLastItem && secondLastItem.url) {
             // Navigate to the URL of the second-to-last breadcrumb
             window.location.href = secondLastItem.url; // Replace with the URL path

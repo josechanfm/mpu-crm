@@ -2,11 +2,17 @@
     <DepartmentLayout title="須回應提問" :breadcrumb="breadcrumb">
         <div class="mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                <a-table :dataSource="questions.data" :columns="columns" :row-key="record => record.root_id" :pagination="pagination" @change="onPaginationChange">
+                <a-table 
+                    :dataSource="questions.data" 
+                    :columns="columns" 
+                    :row-key="record => record.root_id" 
+                    :pagination="pagination" 
+                    @change="onPaginationChange"
+                >
                     <template #bodyCell="{column, text, record, index}" >
                         <template v-if="column.dataIndex=='operation'">
                             <a-button @click="viewRecord(record)">瀏覽</a-button>
-                            <a-button @click="goToRecord(record.id)" type="default">回應</a-button>
+                            <a-button @click="goToRecord(record.id, $event)" type="default">回應</a-button>
                         </template>
                         <template v-else-if="column.dataIndex=='enquiry_id'">
                             {{ text }}
@@ -44,11 +50,10 @@
                             {{ record.content.substring(0,10) }}...
                         </template>
                         <template v-else-if="column.dataIndex=='status'">
-                            
                             {{ record.is_closed?'完成':'跟進中' }}
                         </template>
                         <template v-else>
-                                {{record[column.dataIndex]}}
+                            {{record[column.dataIndex]}}
                         </template>
                     </template>
                 </a-table>
@@ -58,61 +63,56 @@
 
         <!-- Modal Start-->
         <a-modal v-model:open="modal.isOpen" :title="modal.title" width="60%" >
-        <a-form
-            ref="modalRef"
-            :model="modal.data"
-            name="Teacher"
-            :label-col="{ span: 8 }"
-            :wrapper-col="{ span: 16 }"
-            autocomplete="off"
-        >
-            <a-form-item :label="fields.origin.short">
-                {{ optionFind(fields.origin.options,modal.data.enquiry.origin) }}
-            </a-form-item>
-            <a-form-item :label="fields.degree.short">
-                {{ optionFind(fields.degree.options,modal.data.enquiry.degree) }}
-            </a-form-item>
-            <a-form-item :label="fields.admission.short" v-if="modal.data.enquiry.admission">
-                {{ optionFind(fields.admission.options,modal.data.enquiry.admission) }}
-            </a-form-item>
-            <a-form-item :label="fields.profile.short">
-                {{ optionFind(fields.profile.options,modal.data.enquiry.profile) }}
-                {{ modal.data.enquiry.profile_other }}
-            </a-form-item>
-            <a-form-item :label="fields.apply.short">
-                {{ optionFind(fields.apply.options,modal.data.enquiry.apply) }}
-                {{ modal.data.enquiry.apply_number }}
-            </a-form-item>
-            <a-form-item :label="fields.surname.short">
-                {{ modal.data.enquiry.surname }}
-            </a-form-item>
-            <a-form-item :label="fields.givenname.short">
-                {{ modal.data.enquiry.givenname }}
-            </a-form-item>
-            <a-form-item :label="fields.email.short">
-                {{ modal.data.enquiry.email }}
-            </a-form-item>
-            <a-form-item :label="fields.phone.short">
-                {{ modal.data.enquiry.areacode }} - {{ modal.data.enquiry.phone }}
-            </a-form-item>
-            <a-form-item :label="fields.subjects.short">
-                <span v-html="optionFind(fields.subjects.options,modal.data.enquiry.subjects)"/>
-            </a-form-item>
-            <a-form-item label="Question">
-                {{ modal.data.question }}
-            </a-form-item>
-            <a-form-item label="Has question">
-                {{ modal.data.has_question }}
-            </a-form-item>
-        </a-form>
-        <!-- <template #footer>
-            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
-            <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">Add</a-button>
-        </template> -->
-    </a-modal>    
-    <!-- Modal End-->
+            <a-form
+                ref="modalRef"
+                :model="modal.data"
+                name="Teacher"
+                :label-col="{ span: 8 }"
+                :wrapper-col="{ span: 16 }"
+                autocomplete="off"
+            >
+                <a-form-item :label="fields.origin.short">
+                    {{ optionFind(fields.origin.options,modal.data.enquiry.origin) }}
+                </a-form-item>
+                <a-form-item :label="fields.degree.short">
+                    {{ optionFind(fields.degree.options,modal.data.enquiry.degree) }}
+                </a-form-item>
+                <a-form-item :label="fields.admission.short" v-if="modal.data.enquiry.admission">
+                    {{ optionFind(fields.admission.options,modal.data.enquiry.admission) }}
+                </a-form-item>
+                <a-form-item :label="fields.profile.short">
+                    {{ optionFind(fields.profile.options,modal.data.enquiry.profile) }}
+                    {{ modal.data.enquiry.profile_other }}
+                </a-form-item>
+                <a-form-item :label="fields.apply.short">
+                    {{ optionFind(fields.apply.options,modal.data.enquiry.apply) }}
+                    {{ modal.data.enquiry.apply_number }}
+                </a-form-item>
+                <a-form-item :label="fields.surname.short">
+                    {{ modal.data.enquiry.surname }}
+                </a-form-item>
+                <a-form-item :label="fields.givenname.short">
+                    {{ modal.data.enquiry.givenname }}
+                </a-form-item>
+                <a-form-item :label="fields.email.short">
+                    {{ modal.data.enquiry.email }}
+                </a-form-item>
+                <a-form-item :label="fields.phone.short">
+                    {{ modal.data.enquiry.areacode }} - {{ modal.data.enquiry.phone }}
+                </a-form-item>
+                <a-form-item :label="fields.subjects.short">
+                    <span v-html="optionFind(fields.subjects.options,modal.data.enquiry.subjects)"/>
+                </a-form-item>
+                <a-form-item label="Question">
+                    {{ modal.data.question }}
+                </a-form-item>
+                <a-form-item label="Has question">
+                    {{ modal.data.has_question }}
+                </a-form-item>
+            </a-form>
+        </a-modal>    
+        <!-- Modal End-->
     </DepartmentLayout>
-
 </template>
 
 <script>
@@ -149,13 +149,13 @@ export default {
             },
             pagination: {
                 total: this.questions.total,
-                current: this.questions.current_page,
-                pageSize: this.questions.per_page,
-                defaultPageSize:10,
-                showSizeChanger:true,
-                pageSizeOptions:['10','20','30','40','50']
+                current: this.questions.current_page || 1,
+                pageSize: this.questions.per_page || 10,
+                defaultPageSize: 10,
+                showSizeChanger: true,
+                pageSizeOptions: ['10', '25', '50', '75', '100'],
+                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
             },
-
         }
     },
     created(){       
@@ -165,9 +165,7 @@ export default {
         const urlParams = new URLSearchParams(window.location.search);
         urlParams.forEach((value, key) => {
             if (key.startsWith('filters[status][')) {
-                //const filterKey = key.replace('filters[', '').replaceAll(']', '').replaceAll('[', '');
                 const filterKey='status';
-                // Initialize filter with the first value or keep its existing value
                 this.filters[filterKey] = this.filters[filterKey] || [];
                 this.filters[filterKey].push(value);
             }
@@ -175,7 +173,6 @@ export default {
         if (urlParams.size === 0) {
             this.filters.status.push('false');
         }
-
     },
     computed:{
         columns(){
@@ -183,57 +180,34 @@ export default {
                 {
                     title: '日期',
                     dataIndex: 'created_at',
-                    // sorter: (a, b) => {
-                    //     return new Date(a.enquiry.created_at).getTime() > new Date(b.enquiry.created_at).getTime()
-                    //     //a.enquiry.phone.localeCompare(b.enquiry.)
-                    // },
+                    sorter: true, // Enable sorting
+                    sortDirections: ['ascend', 'descend', 'ascend'],
                 },{
                     title: '查詢編號',
                     dataIndex: 'enquiry_id',
+                    sorter: true, // Enable sorting
+                    sortDirections: ['ascend', 'descend', 'ascend'],
                 },{
                     title: '證件類別('+this.configFields.origin.short+')',
                     dataIndex: 'origin',
-                    // sorter: (a, b) => a.enquiry.origin.localeCompare(b.enquiry.origin),
-                    // filters: this.configFields.origin.options.map(option=>({
-                    //     text:option['label_'+this.$t('lang')],
-                    //     value: option.value
-                    // })),
-                    // filterMultiple: false,
-                    // onFilter: (value, record) => record.enquiry.origin == value
-
                 },{
                     title: this.configFields.admission.short,
                     dataIndex: 'admission',
-                    //sorter: (a, b) => a.enquiry.admission.localeCompare(b.enquiry.admission)
                 },{
                     title: this.configFields.degree.short,
                     dataIndex: 'degree',
-                    //sorter: (a, b) => a.enquiry.degree.localeCompare(b.enquiry.degree)
                 },{
                     title: '姓, 名',
                     dataIndex: 'fullname',
-                    //sorter: (a, b) => a.enquiry.surname.localeCompare(b.enquiry.surename)
-                // },{
-                //     title: this.fields.email.short,
-                //     dataIndex: 'email',
-                //     sorter: (a, b) => a.enquiry.email.localeCompare(b.enquiry.email),
-                // },{
-                //     title: this.fields.phone.short,
-                //     dataIndex: 'phone',
-                //     sorter: (a, b) => a.enquiry.phone.localeCompare(b.enquiry.phone),
-                // },{
-                //     title: '提問',
-                //     dataIndex: 'content',
                 },{
                     title: '跟進人員',
                     dataIndex: 'admin_user',
                 },{
                     title: '跟進情況',
                     dataIndex: 'status',
-                    //sorter: (a, b) => a.is_closed > b.is_closed,
                     filters: [{value:false,text:'跟進中'},{value:true,text:'完成'}],
                     filterMultiple: false,
-                    defaultFilteredValue: this.filters['status'], // Default selected filter value
+                    defaultFilteredValue: this.filters['status'],
                     onFilter: (value, record) => record.is_closed == value
                 },{
                     title: '操作',
@@ -304,51 +278,67 @@ export default {
             const option = options.find(o=>o.value==item)
             return option?option['label_zh']:'--'
         },
-        goToRecord(id) {
-            this.$inertia.visit(route('registry.enquiry.questions.show', { question: id }));
+        goToRecord(id, event) {
+            const url = route('registry.enquiry.questions.show', { question: id });
+            
+            // Check if Shift key is pressed
+            if (event && event.shiftKey) {
+                // Open in new tab
+                window.open(url, '_blank');
+            } else {
+                // Navigate in same tab
+                this.$inertia.visit(url);
+            }
         },
         onPaginationChange(page, filters, sorter) {
+            // Update filters
             this.filters = {
                 ...this.filters,
                 ...filters
             };
-            console.log('onPage',filters, sorter);
 
-            if (sorter.field) {
+            // Update sorter
+            if (sorter && sorter.field) {
                 this.sorter = {
                     field: sorter.field,
                     order: sorter.order
                 };
             }
-            if (sorter) {
-                this.sorter = {
-                    ...this.sorter,
-                    ...sorter
-                };
-            }            
+
+            // Update pagination state
+            const currentPage = page.current || page;
+            const pageSize = page.pageSize || this.pagination.pageSize;
+
+            this.pagination.current = currentPage;
+            this.pagination.pageSize = pageSize;
+
+            // Make the request with updated parameters
             this.$inertia.get(
                 route("registry.enquiry.questions.index"),
                 {
-                    page: page.current,
-                    per_page: page.pageSize,
+                    page: currentPage,
+                    per_page: pageSize,
                     filters: this.filters,
-                    // sorter:sorter,
                     sort_field: this.sorter.field,
                     sort_order: this.sorter.order,
                 },
                 {
-                onSuccess: (page) => {
-                    console.log(page);
-                },
-                onError: (error) => {
-                    console.log(error);
-                },
+                    preserveState: true,
+                    preserveScroll: true,
+                    onSuccess: (page) => {
+                        // Update pagination with new data
+                        if (page.props.questions) {
+                            this.pagination.total = page.props.questions.total;
+                            this.pagination.current = page.props.questions.current_page;
+                            this.pagination.pageSize = page.props.questions.per_page;
+                        }
+                    },
+                    onError: (error) => {
+                        console.log(error);
+                    },
                 }
             );
         },
-
-        
-
     },
 }
 </script>

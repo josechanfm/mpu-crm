@@ -27,43 +27,80 @@ class EnquiryQuestionController extends Controller
      */
     public function index(Request $request)
     {
-        //$department=session('department');
-        $department=Department::where('abbr','DAMIA')->first();
-        //$department->enquiryQuestionsOpen;
-        //dd($department->enquiryQuestions()->paginate());
+        $department = Department::where('abbr', 'DAMIA')->first();
+        
         if ($department) {
-            $questions = EnquiryQuestion::with('lastResponse')->with('enquiry')->join('enquiries', 'enquiry_questions.enquiry_id', '=', 'enquiries.id')
-                ->where('enquiries.department_id', $department->id) // Use the correct foreign key
-                ->select('enquiry_questions.*')// Select the enquiry question fields
-                ->orderBy('enquiry_questions.created_at','desc');
-                //->paginate();
-
+            $questions = EnquiryQuestion::with('lastResponse')
+                ->with('enquiry')
+                ->join('enquiries', 'enquiry_questions.enquiry_id', '=', 'enquiries.id')
+                ->leftJoin('admin_users', 'enquiry_questions.admin_id', '=', 'admin_users.id') // For sorting by admin_user
+                ->where('enquiries.department_id', $department->id)
+                ->select('enquiry_questions.*');
         } else {
-            $questions = collect(); // Return an empty collection if department is not found
+            $questions = collect();
         }
         
-        if($request->has('filters')){
-            $filters=$request->filters;
-            if(!empty($filters['status'])){
-                $questions->where('enquiry_questions.is_closed',$filters['status'][0]=='true'?1:0);
+        // Apply filters if they exist
+        if ($request->has('filters')) {
+            $filters = $request->filters;
+            if (!empty($filters['status'])) {
+                $questions->where('enquiry_questions.is_closed', $filters['status'][0] == 'true' ? 1 : 0);
             }
-            
-        }else{ // both page and filters are not set, default to open questions
-            if(!$request->has('page')){
-                $questions->where('enquiry_questions.is_closed',0);
+        } else {
+            // Both page and filters are not set, default to open questions
+            if (!$request->has('page')) {
+                $questions->where('enquiry_questions.is_closed', 0);
             }
         }
-        // Apply sorting
-        // if ($request->has('sort_field') && $request->has('sort_order')) {
-        //     $sortField = $request->input('sort_field');
-        //     $sortOrder = $request->input('sort_order') === 'ascend' ? 'asc' : 'desc';
-        //     $questions->orderBy($sortField, $sortOrder);
-        // }
 
-        return Inertia::render('Department/Registry/Questions',[
-            'questions'=>$questions->paginate(),
-            'department'=>$department,
-            'configFields'=>Config::enquiryFormFields(),
+        // Apply sorting
+        if ($request->has('sort_field') && !is_null($request->sort_field) && $request->has('sort_order')) {
+            $sortField = $request->input('sort_field');
+            $sortOrder = $request->input('sort_order');
+            if ($sortOrder === 'ascend') {
+                $sortOrder = 'asc';
+            } elseif ($sortOrder === 'descend') {
+                $sortOrder = 'desc';
+            }
+            // Validate sort order
+            if (!in_array($sortOrder, ['asc', 'desc'])) {
+                $sortOrder = 'asc';
+            }
+            
+            // Map frontend column names to database columns if needed
+            $sortFieldMap = [
+                'enquiries.id' => 'enquiries.id',
+                'created_at' => 'enquiry_questions.created_at',
+                // 'enquiries.origin' => 'enquiries.origin',
+                // 'enquiries.admission' => 'enquiries.admission',
+                // 'enquiries.degree' => 'enquiries.degree',
+                // 'enquiries.surname' => 'enquiries.surname',
+                // 'admin_users.name' => 'admin_users.name',
+                // 'enquiry_questions.is_closed' => 'enquiry_questions.is_closed'
+            ];
+            //dd($sortField, $sortFieldMap, $sortFieldMap[$sortField]);
+            // Use mapped field or default to the provided field
+            $sortField = $sortFieldMap[$sortField] ?? $sortField;
+            
+            
+            // Apply the sort
+            $questions->orderBy($sortField, $sortOrder);
+        }
+
+        // Get per_page from request or use default
+        $perPage = $request->input('per_page', 10);
+        
+        // Validate per_page to ensure it's one of the allowed values
+        $allowedPerPage = [10, 25, 50, 75, 100];
+        if (!in_array($perPage, $allowedPerPage)) {
+            $perPage = 10;
+        }
+        
+        
+        return Inertia::render('Department/Registry/Questions', [
+            'questions' => $questions->paginate($perPage),
+            'department' => $department,
+            'configFields' => Config::enquiryFormFields(),
         ]);
     }
 

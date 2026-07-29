@@ -3,6 +3,12 @@
         <!-- Enquirer basic info-->
         <a-card title="Contact Info">
             <template #extra>
+                <a-button @click="goHistoryBack" type="default">
+                    <template #icon>
+                        <ArrowLeftOutlined />
+                    </template>
+                    返回上一頁
+                </a-button>
                 <!-- <a-button type="primary">Edit</a-button> -->
             </template>
             <a-descriptions :column="2">
@@ -202,6 +208,7 @@ export default {
         return {
             breadcrumb:[
                 {label:"招生注冊處" ,url:route('registry.dashboard')},
+                {label:"須回應問題" ,url:route('registry.enquiry.questions.index')},
                 {label:"回應問題" ,url:null},
             ],
             lang:{},
@@ -292,6 +299,13 @@ export default {
         },
         dateFormat(date, format = 'YYYY-MM-DD HH:mm') {
             return dayjs(date).format(format);
+        },
+        goHistoryBack() {
+            // Use browser's history back
+            window.history.back();
+            
+            // Alternative: Use Inertia's back
+            // this.$inertia.back();
         },
 
     },
