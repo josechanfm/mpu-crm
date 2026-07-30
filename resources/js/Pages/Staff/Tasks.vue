@@ -334,7 +334,7 @@ const columns = [
 // Initialize local filters from props
 const localFilters = reactive({
   search: props.filters?.search || '',
-  status: props.filters?.status || null,
+    status: props.filters?.status || 'pending', // ✅ Changed from null to 'pending'
   department_id: props.filters?.department_id || null,
   per_page: props.filters?.per_page || 10,
 });

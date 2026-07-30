@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class TaskController extends Controller
 {
@@ -16,7 +17,7 @@ class TaskController extends Controller
     {
         $perPage = $request->input('per_page', 10);
         $search = $request->input('search', '');
-        $status = $request->input('status', '');
+        $status = $request->input('status', 'pending');
         $departmentId = $request->input('department_id', '');
         
         $tasks = Task::with(['user', 'department','files'])

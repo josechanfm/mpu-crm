@@ -57,17 +57,20 @@
 
           <!-- File Actions -->
           <div class="flex justify-center gap-1 mt-2">
+            <!-- Set Primary Button -->
             <a-button
               v-if="!readonly"
               type="text"
               size="small"
               @click="handleSetPrimary(file.id)"
-              :disabled="file.is_primary || isMarkedForDeletion(file.id)"
-              class="text-blue-500 hover:text-blue-700"
-              title="Set as primary"
+              :disabled="isMarkedForDeletion(file.id)"
+              :class="file.is_primary ? 'text-yellow-500' : 'text-gray-400 hover:text-blue-500'"
+              :title="file.is_primary ? '主要檔案' : '設為主要'"
             >
-              <StarOutlined />
+              <StarOutlined :class="file.is_primary ? 'text-yellow-500' : ''" />
             </a-button>
+            
+            <!-- Download Button -->
             <a-button
               type="text"
               size="small"
@@ -103,6 +106,7 @@
               <UndoOutlined />
             </a-button>
           </div>
+
         </div>
       </div>
     </div>
@@ -234,11 +238,11 @@ const props = defineProps({
   },
   downloadRoute: {
     type: String,
-    default: 'staff.tasks.download-file',
+    default: 'staff.task.download-file',
   },
   setPrimaryRoute: {
     type: String,
-    default: 'staff.tasks.set-primary-file',
+    default: 'staff.task.set-primary-file',
   },
 });
 
@@ -250,6 +254,7 @@ const emit = defineEmits([
   'file-restored',
   'primary-set',
   'files-change',
+  'download', // ✅ Add this line
 ]);
 
 const fileList = ref([]);
@@ -441,7 +446,7 @@ const handleSetPrimary = (fileId) => {
 // Download file
 const handleDownload = (fileId) => {
   if (props.downloadRoute) {
-    window.open(route(props.downloadRoute, fileId), '_blank');
+    window.open(route(props.downloadRoute, fileId), '_self');
   }
   emit('download', fileId);
 };

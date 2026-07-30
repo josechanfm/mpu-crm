@@ -41,11 +41,11 @@ Route::group([
             return auth()->check()?auth()->user()->jsPermissions():0;
         });
         Route::get('cards',[App\Http\Controllers\Staff\StaffCardController::class,'index'])->name('staff.cards');
+        Route::get('task/file/{file}/download', [\App\Http\Controllers\Staff\TaskController::class, 'downloadFile'])->name('staff.task.download-file');
+        Route::post('task/file/{file}/set-primary', [\App\Http\Controllers\Staff\TaskController::class, 'setPrimaryFile'])->name('staff.task.set-primary-file');
+        Route::post('task/files/reorder', [\App\Http\Controllers\Staff\TaskController::class, 'reorderFiles'])->name('staff.task.reorder-files');        
         Route::resource('tasks',\App\Http\Controllers\Staff\TaskController::class)->names('staff.tasks');
     // File management routes
-        Route::get('tasks/file/{file}/download', [TaskController::class, 'downloadFile'])->name('tasks.download-file');
-        Route::post('tasks/file/{file}/set-primary', [TaskController::class, 'setPrimaryFile'])->name('tasks.set-primary-file');
-        Route::post('tasks/files/reorder', [TaskController::class, 'reorderFiles'])->name('tasks.reorder-files');        
 });
 
 
