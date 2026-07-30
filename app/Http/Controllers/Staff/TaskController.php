@@ -17,7 +17,7 @@ class TaskController extends Controller
     {
         $perPage = $request->input('per_page', 10);
         $search = $request->input('search', '');
-        $status = $request->input('status', 'pending');
+        $status = $request->input('status', '');
         $departmentId = $request->input('department_id', '');
         
         $tasks = Task::with(['user', 'department','files'])

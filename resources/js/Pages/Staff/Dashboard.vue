@@ -40,7 +40,7 @@
                 <p>用來記錄與管理個人工作備忘，整理待辦事項與執行重點，讓任務處理更有條理。</p>
             </div>
             <div class="flex justify-end mt-4">
-              <inertia-link :href="route('staff.tasks.index')">
+              <inertia-link :href="route('staff.tasks.index', {status:'pending'})">
                 <a-button type="primary">My Tasks</a-button>
               </inertia-link>
             </div>
