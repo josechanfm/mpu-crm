@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('department_id')->nullalbe();
+            $table->foreignId('department_id')->nullable();
             $table->foreignId('user_id');
             $table->string('title');
-            $table->text('description')->nullalbe();
-            $table->text('action')->nullalbe();
-            $table->text('result')->nullalbe();
+            $table->text('description')->nullable();
+            $table->text('action')->nullable();
+            $table->text('result')->nullable();
             $table->enum('status',['pending','in_progress','completed','cancelled'])->default('pending');
             $table->timestamps();
         });

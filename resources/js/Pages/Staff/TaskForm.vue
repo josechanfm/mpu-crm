@@ -9,7 +9,6 @@
       </a-button>
       <h1 class="form-title">{{ formTitle }}</h1>
     </div>
-
     <a-card   :body-style="isMobile ? { padding: '5px' } : { padding: '10px' }">
       <a-form
         :model="form"
@@ -96,6 +95,34 @@
               />
             </a-form-item>
           </a-col>
+
+
+            <!-- ============================================ -->
+            <!-- REUSABLE FILE UPLOAD COMPONENT -->
+            <!-- ============================================ -->
+            <a-col :span="24">
+              <a-form-item label="Files" name="files">
+                <FileUpload
+                  ref="fileUploadRef"
+                  :existing-files="form.existing_files"
+                  :readonly="readonly"
+                  :max-files="10"
+                  :multiple="true"
+                  upload-button-text="上傳檔案"
+                  help-text="最多 10 個檔案。支援格式：圖片 (JPG, PNG, GIF, WebP)、PDF、Word、Excel。每個檔案最大 10MB"
+                  download-route="staff.tasks.download-file"
+                  set-primary-route="staff.tasks.set-primary-file"
+                  @update:existing-files="handleFilesUpdate"
+                  @primary-set="handlePrimarySet"
+                  @files-change="handleFilesChange"
+                />
+              </a-form-item>
+            </a-col>
+            <!-- ============================================ -->
+            <!-- END FILE UPLOAD COMPONENT -->
+            <!-- ============================================ -->
+             
+            
         </a-row>
 
         <div v-if="!readonly" class="form-actions">
@@ -122,7 +149,7 @@
 
 <script setup>
 import StaffLayout from "@/Layouts/StaffLayout.vue";
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, onMounted, onUnmounted } from 'vue';
 import { router, usePage } from '@inertiajs/vue3';
 import { message } from 'ant-design-vue';
 import {
@@ -130,6 +157,7 @@ import {
   SaveOutlined,
   EditOutlined,
 } from '@ant-design/icons-vue';
+import FileUpload from '@/Components/FileUpload.vue';
 
 const props = defineProps({
   task: Object,
@@ -139,6 +167,7 @@ const props = defineProps({
 });
 
 const formRef = ref();
+const fileUploadRef = ref(null);
 const submitting = ref(false);
 const page = usePage();
 
@@ -158,6 +187,10 @@ const form = reactive({
   status: props.task?.status || 'pending',
   user_id: props.task?.user_id || '',
   department_id: props.task?.department_id || null,
+  // File state handled via @files-change event
+  existing_files: props.task?.files || [],
+  new_files: [],
+  delete_files: [],  
 });
 
 const rules = {
@@ -184,19 +217,114 @@ const editTask = () => {
   router.get(route('staff.tasks.edit', props.task.id));
 };
 
+// ============================================
+// FILE UPLOAD EVENT HANDLERS
+// ============================================
+
+const handleFilesUpdate = (updatedFiles) => {
+  form.existing_files = updatedFiles;
+};
+
+const handlePrimarySet = (fileId) => {
+  router.post(
+    route('staff.tasks.set-primary-file', fileId),
+    { is_primary: true },
+    {
+      preserveState: true,
+      onSuccess: () => {
+        message.success('主要檔案已更新');
+      },
+      onError: () => {
+        message.error('更新主要檔案失敗');
+        if (props.task?.files) {
+          form.existing_files = JSON.parse(JSON.stringify(props.task.files));
+        }
+      }
+    }
+  );
+};
+
+// Receives payload emitted from FileUpload component
+const handleFilesChange = ({ existingFiles, newFiles, deleteFiles }) => {
+  form.existing_files = existingFiles;
+  form.new_files = newFiles;
+  form.delete_files = deleteFiles;
+};
+
+// ============================================
+// LIFECYCLE HOOKS
+// ============================================
+
+const handleResize = () => {
+  isMobile.value = window.innerWidth < 768;
+};
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
+});
+
+// ============================================
+// FORM SUBMISSION
+// ============================================
+
 const handleSubmit = async () => {
   try {
     await formRef.value?.validate();
     submitting.value = true;
-    console.log('submitting');
-    console.log(formRef, form, props.task)
 
-     if (isEditing.value) {
-      console.log('update');
-      router.put(route('staff.tasks.update', props.task.id), form);
+    // Prepare payload using reactive form data
+    const payload = {
+      title: form.title,
+      description: form.description,
+      action: form.action,
+      result: form.result,
+      status: form.status,
+      user_id: form.user_id,
+      department_id: form.department_id,
+      delete_files: form.delete_files,
+      files: form.new_files,
+    };
+
+    if (isEditing.value) {
+      // Use POST with _method: 'put' for Laravel file upload support on update
+      router.post(
+        route('staff.tasks.update', props.task.id),
+        {
+          _method: 'put',
+          ...payload,
+        },
+        {
+          forceFormData: true,
+          onSuccess: () => {
+            message.success('Task updated successfully');
+            fileUploadRef.value?.reset();
+          },
+          onError: () => {
+            message.error('Error updating task');
+          },
+          onFinish: () => {
+            submitting.value = false;
+          },
+        }
+      );
     } else {
-      console.log('store');
-      router.post(route('staff.tasks.store'), form);
+      // Standard POST request for creation
+      router.post(route('staff.tasks.store'), payload, {
+        forceFormData: true,
+        onSuccess: () => {
+          message.success('Task created successfully');
+        },
+        onError: () => {
+          message.error('Error creating task');
+        },
+        onFinish: () => {
+          submitting.value = false;
+        },
+      });
     }
   } catch (error) {
     submitting.value = false;
@@ -204,6 +332,7 @@ const handleSubmit = async () => {
   }
 };
 </script>
+
 
 <style scoped>
 

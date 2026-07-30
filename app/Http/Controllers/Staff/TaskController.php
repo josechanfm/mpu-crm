@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
 use App\Models\Task;
+use App\Models\TaskFile;
 use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class TaskController extends Controller
         $status = $request->input('status', '');
         $departmentId = $request->input('department_id', '');
         
-        $tasks = Task::with(['user', 'department'])
+        $tasks = Task::with(['user', 'department','files'])
             ->when($search, function ($query, $search) {
                 return $query->where('title', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
@@ -67,10 +68,19 @@ class TaskController extends Controller
             'action' => 'nullable|string',
             'result' => 'nullable|string',
             'status' => ['required', Rule::in(['pending', 'in_progress', 'completed', 'cancelled'])],
+            'files.*' => 'nullable|file|max:10240', // Max 10MB per file
+            'files' => 'nullable|array|max:10', // Max 10 files            
         ]);
         $validated['user_id']=auth()->user()->id;
 
         $task = Task::create($validated);
+        // Handle multiple file uploads
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $index => $file) {
+                $isPrimary = $index === 0; // First file is primary
+                TaskFile::uploadFile($file, $task, $isPrimary, $index);
+            }
+        }
 
         return redirect()->route('staff.tasks.index')
             ->with('success', 'Task created successfully.');
@@ -78,7 +88,7 @@ class TaskController extends Controller
 
     public function show(Task $task)
     {
-        $task->load(['user', 'department']);
+        $task->load(['user', 'department','files']);
         
         return Inertia::render('Staff/TaskForm', [
             'task' => $task,
@@ -90,7 +100,7 @@ class TaskController extends Controller
 
     public function edit(Task $task)
     {
-        $task->load(['user', 'department']);
+        $task->load(['user', 'department','files']);
         
         return Inertia::render('Staff/TaskForm', [
             'task' => $task,
@@ -101,6 +111,7 @@ class TaskController extends Controller
 
     public function update(Request $request, Task $task)
     {
+       
             $validated = $request->validate([
                 'department_id' => 'nullable|exists:departments,id',
                 'user_id' => 'required|exists:admin_users,id',
@@ -109,10 +120,37 @@ class TaskController extends Controller
                 'action' => 'nullable|string',
                 'result' => 'nullable|string',
                 'status' => ['required', 'in:pending,in_progress,completed,cancelled'],
+                'files.*' => 'nullable|file|max:10240',
+                'files' => 'nullable|array|max:10',
+                'delete_files' => 'nullable|array',                
             ]);
 
-            $task->update($validated);
 
+            $task->update($validated);
+            // Delete specified files
+            if ($request->has('delete_files')) {
+                $deleteFiles = $request->input('delete_files', []);
+                TaskFile::whereIn('id', $deleteFiles)
+                    ->where('task_id', $task->id)
+                    ->each(function ($file) {
+                        $file->deleteFile();
+                    });
+            }
+            // Handle new file uploads
+            if ($request->hasFile('files')) {
+                $currentFileCount = $task->files()->count();
+                $maxFiles = 10;
+                $allowedToUpload = $maxFiles - $currentFileCount;
+
+                if ($allowedToUpload > 0) {
+                    $files = array_slice($request->file('files'), 0, $allowedToUpload);
+                    foreach ($files as $index => $file) {
+                        $sortOrder = $currentFileCount + $index;
+                        $isPrimary = $task->files()->count() === 0 && $index === 0;
+                        TaskFile::uploadFile($file, $task, $isPrimary, $sortOrder);
+                    }
+                }
+            }            
             return redirect()->route('staff.tasks.index')
                 ->with('success', 'Task updated successfully.');
     }
@@ -124,4 +162,47 @@ class TaskController extends Controller
         return redirect()->route('staff.tasks.index')
             ->with('success', 'Task deleted successfully.');
     }
+
+        // Download a specific file
+    public function downloadFile(TaskFile $file)
+    {
+        if (!Storage::disk('public')->exists($file->file_path)) {
+            abort(404, 'File not found.');
+        }
+
+        return Storage::disk('public')->download($file->file_path, $file->original_name);
+    }
+    // Set primary image
+    public function setPrimaryFile(Request $request, TaskFile $file)
+    {
+        $request->validate([
+            'is_primary' => 'required|boolean',
+        ]);
+
+        // Remove primary from all files of this task
+        TaskFile::where('task_id', $file->task_id)
+            ->update(['is_primary' => false]);
+
+        // Set this file as primary
+        $file->update(['is_primary' => true]);
+
+        return back()->with('success', 'Primary file updated.');
+    }
+
+    // Reorder files
+    public function reorderFiles(Request $request)
+    {
+        $request->validate([
+            'files' => 'required|array',
+            'files.*.id' => 'required|exists:task_files,id',
+            'files.*.sort_order' => 'required|integer|min:0',
+        ]);
+
+        foreach ($request->input('files') as $fileData) {
+            TaskFile::where('id', $fileData['id'])
+                ->update(['sort_order' => $fileData['sort_order']]);
+        }
+
+        return response()->json(['message' => 'Files reordered successfully.']);
+    }    
 }

@@ -121,14 +121,15 @@
               <UserOutlined class="text-blue-500 w-4" />
               <span>{{ task.user?.name || 'N/A' }}</span>
             </div> -->
-            {{ task }}
             <div class="flex items-center gap-2">
               <ApartmentOutlined class="text-purple-500 w-4" />
               <span>{{ task.department?.name || task.department?.name_zh || 'N/A' }}</span>
             </div>
             <div class="flex items-center gap-2">
               <MenuOutlined class="text-purple-500 w-4" />
-              <span>{{ task.description || 'N/A' }}</span>
+              <p class="line-clamp-3">
+                {{ task.description || 'N/A' }}
+              </p>
             </div>
             <div class="flex items-center gap-2">
               <CalendarOutlined class="text-green-500 w-4" />
@@ -139,7 +140,7 @@
           <!-- Description -->
           <div v-if="task.description" class="mt-3 pt-3 border-t border-gray-100">
             <p class="text-sm text-gray-500 line-clamp-2">
-              {{ task.description }}
+              {{ task.department.abbr }}
             </p>
           </div>
         </div>

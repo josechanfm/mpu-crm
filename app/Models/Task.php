@@ -72,5 +72,28 @@ class Task extends Model
     public function isCancelled(): bool
     {
         return $this->status === 'cancelled';
+    }
+
+    public function files()
+    {
+        return $this->hasMany(TaskFile::class)->orderBy('sort_order');
+    }
+
+    // Get primary image
+    public function primaryImage()
+    {
+        return $this->files()->where('is_primary', true)->first();
+    }
+
+    // Get all images
+    public function images()
+    {
+        return $this->files()->where('file_type', 'image');
+    }
+
+    // Get all documents
+    public function documents()
+    {
+        return $this->files()->where('file_type', 'document');
     }    
 }

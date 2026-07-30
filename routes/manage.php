@@ -42,6 +42,10 @@ Route::group([
         });
         Route::get('cards',[App\Http\Controllers\Staff\StaffCardController::class,'index'])->name('staff.cards');
         Route::resource('tasks',\App\Http\Controllers\Staff\TaskController::class)->names('staff.tasks');
+    // File management routes
+        Route::get('tasks/file/{file}/download', [TaskController::class, 'downloadFile'])->name('tasks.download-file');
+        Route::post('tasks/file/{file}/set-primary', [TaskController::class, 'setPrimaryFile'])->name('tasks.set-primary-file');
+        Route::post('tasks/files/reorder', [TaskController::class, 'reorderFiles'])->name('tasks.reorder-files');        
 });
 
 
