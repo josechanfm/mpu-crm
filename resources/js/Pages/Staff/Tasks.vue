@@ -84,7 +84,8 @@
       >
         <div class="p-4">
           <!-- Card Header -->
-          <div class="flex justify-between items-start gap-2 mb-3">
+          <div @click="editTask(task.id)" class="flex justify-between items-start gap-2 mb-3">
+            
             <h3 class="text-base font-semibold text-gray-900 flex-1 line-clamp-2">
               {{ task.title }}
             </h3>
@@ -95,9 +96,6 @@
               <template #overlay>
                 <a-menu>
                   <a-menu-item @click="editTask(task.id)" class="flex items-center gap-2">
-                    <EditOutlined /> Edit
-                  </a-menu-item>
-                  <a-menu-item :href="route('staff.tasks.edit', task.id)" class="flex items-center gap-2">
                     <EditOutlined /> Edit
                   </a-menu-item>
                   <a-menu-item danger @click="deleteTask(task.id)" class="flex items-center gap-2">

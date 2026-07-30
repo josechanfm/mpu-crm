@@ -27,11 +27,16 @@
 
           <!-- File Preview - Image -->
           <div v-if="file.file_url && isImage(file)" class="flex flex-col items-center">
-            <img 
-              :src="file.file_url" 
-              class="w-full aspect-square object-cover rounded-lg"
-              :class="{ 'opacity-50': isMarkedForDeletion(file.id) }"
+             <a-image
+              :src="file.file_url"
               :alt="file.original_name"
+              :preview="{
+                mask: '點擊預覽',
+                maskClassName: 'image-preview-mask',
+              }"
+              class="w-full aspect-square object-cover rounded-lg cursor-pointer"
+              :class="{ 'opacity-50': isMarkedForDeletion(file.id) }"
+              :width="'100%'"
             />
             <div class="text-xs font-medium truncate w-full text-center mt-2" :title="file.original_name">
               {{ file.original_name }}
