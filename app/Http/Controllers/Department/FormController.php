@@ -81,7 +81,9 @@ class FormController extends Controller
             'name'=>'required',
             'title'=>'required',
         ]);
-        $form=Form::create($request->all());
+        $data=$request->all();
+        $data['admin_user_id']=auth()->user()->id;
+        $form=Form::create($data);
         if($request->file('banner_image')){
             $form->addMedia($request->file('banner_image')[0]['originFileObj'])->toMediaCollection('banner');
         }

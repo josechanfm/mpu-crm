@@ -121,8 +121,7 @@ class TaskController extends Controller
                 'action' => 'nullable|string',
                 'result' => 'nullable|string',
                 'status' => ['required', 'in:pending,in_progress,completed,cancelled'],
-                'files.*' => 'nullable|file|max:10240',
-                'files' => 'nullable|array|max:10',
+                'files.*' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,pdf,doc,docx,xls,xlsx,ppt,pptx|max:10240',
                 'delete_files' => 'nullable|array',                
             ]);
 

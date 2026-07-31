@@ -3,7 +3,7 @@
   <div class="file-upload-component">
     <!-- Existing Files Display -->
     <div v-if="existingFiles && existingFiles.length > 0" class="mb-4">
-      <div class="grid xs:grid-cols-1 md:grid-cols-4 xl:grid-cols-6 gap-3">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3">
         <div
           v-for="file in existingFiles"
           :key="file.id"
@@ -17,7 +17,7 @@
           <!-- Deletion Overlay -->
           <div 
             v-if="isMarkedForDeletion(file.id)" 
-            class="absolute inset-0 bg-red-50 bg-opacity-60 rounded-lg flex items-center justify-center"
+            class="absolute inset-0 bg-red-50 bg-opacity-60 rounded-lg flex items-center justify-center z-10"
           >
             <div class="text-center">
               <div class="text-red-500 text-2xl mb-1">🗑️</div>
@@ -27,17 +27,23 @@
 
           <!-- File Preview - Image -->
           <div v-if="file.file_url && isImage(file)" class="flex flex-col items-center">
-             <a-image
+            <a-image
               :src="file.file_url"
               :alt="file.original_name"
-              :preview="{
-                mask: '點擊預覽',
-                maskClassName: 'image-preview-mask',
-              }"
               class="w-full aspect-square object-cover rounded-lg cursor-pointer"
               :class="{ 'opacity-50': isMarkedForDeletion(file.id) }"
-              :width="'100%'"
-            />
+              :preview="{
+                mask: true,
+                maskClassName: 'image-preview-mask',
+              }"
+            >
+              <template #previewMask>
+                <div class="flex flex-col items-center justify-center w-full h-full bg-black bg-opacity-40 rounded-lg">
+                  <span class="text-white text-2xl">🔍</span>
+                  <span class="text-white text-xs mt-1 font-medium">點擊預覽</span>
+                </div>
+              </template>
+            </a-image>
             <div class="text-xs font-medium truncate w-full text-center mt-2" :title="file.original_name">
               {{ file.original_name }}
             </div>
@@ -56,26 +62,23 @@
           </div>
 
           <!-- Primary Badge -->
-          <div v-if="file.is_primary && !isMarkedForDeletion(file.id)" class="absolute top-2 right-2">
+          <div v-if="file.is_primary && !isMarkedForDeletion(file.id)" class="absolute top-2 right-2 z-10">
             <a-tag color="blue" size="small" class="text-xs">主要</a-tag>
           </div>
 
           <!-- File Actions -->
           <div class="flex justify-center gap-1 mt-2">
-            <!-- Set Primary Button -->
             <a-button
               v-if="!readonly"
               type="text"
               size="small"
               @click="handleSetPrimary(file.id)"
-              :disabled="isMarkedForDeletion(file.id)"
-              :class="file.is_primary ? 'text-yellow-500' : 'text-gray-400 hover:text-blue-500'"
-              :title="file.is_primary ? '主要檔案' : '設為主要'"
+              :disabled="file.is_primary || isMarkedForDeletion(file.id)"
+              class="text-blue-500 hover:text-blue-700"
+              title="Set as primary"
             >
-              <StarOutlined :class="file.is_primary ? 'text-yellow-500' : ''" />
+              <StarOutlined />
             </a-button>
-            
-            <!-- Download Button -->
             <a-button
               type="text"
               size="small"
@@ -86,7 +89,6 @@
               <DownloadOutlined />
             </a-button>
             
-            <!-- Delete/Restore Button -->
             <a-popconfirm
               v-if="!readonly && !isMarkedForDeletion(file.id)"
               title="確定要刪除這個檔案嗎？"
@@ -99,7 +101,6 @@
               </a-button>
             </a-popconfirm>
             
-            <!-- Restore Button -->
             <a-button
               v-if="!readonly && isMarkedForDeletion(file.id)"
               type="text"
@@ -111,7 +112,6 @@
               <UndoOutlined />
             </a-button>
           </div>
-
         </div>
       </div>
     </div>
@@ -125,9 +125,11 @@
         :multiple="multiple"
         :max-count="maxFiles"
         @remove="handleRemove"
+        @change="handleUploadChange"
         class="file-uploader"
+        :accept="acceptTypes"
       >
-        <a-button class="upload-btn">
+        <a-button>
           <UploadOutlined />
           {{ uploadButtonText }}
         </a-button>
@@ -148,7 +150,6 @@
             closable
             @close="removeNewFile(index)"
             color="blue"
-            class="text-sm"
           >
             📎 {{ file.name }} ({{ formatFileSize(file.size) }})
           </a-tag>
@@ -162,7 +163,7 @@
     </div>
 
     <!-- No files -->
-    <div v-if="!existingFiles || existingFiles.length === 0" class="text-sm text-gray-400">
+    <div v-if="(!existingFiles || existingFiles.length === 0) && (!newFiles || newFiles.length === 0)" class="text-sm text-gray-400">
       {{ readonly ? '尚無檔案' : '尚未上傳任何檔案' }}
     </div>
 
@@ -190,6 +191,7 @@
 
 <script setup>
 import { ref, watch, computed } from 'vue';
+import { router } from '@inertiajs/vue3';
 import { message } from 'ant-design-vue';
 import {
   UploadOutlined,
@@ -222,19 +224,27 @@ const props = defineProps({
   },
   helpText: {
     type: String,
-    default: '最多 10 個檔案。支援格式：圖片 (JPG, PNG, GIF, WebP)、PDF、Word、Excel。每個檔案最大 10MB',
+    default: '最多 10 個檔案。支援格式：圖片 (JPG, PNG, GIF, WebP)、PDF、Word (doc, docx)、Excel (xls, xlsx)、PowerPoint (ppt, pptx)。每個檔案最大 10MB',
   },
   allowedTypes: {
     type: Array,
     default: () => [
-      'image/jpeg', 'image/png', 'image/gif', 'image/webp',
+      // Images
+      'image/jpeg',
+      'image/png', 
+      'image/gif',
+      'image/webp',
+      // PDF
       'application/pdf',
+      // Word
       'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+      // Excel
       'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
+      // PowerPoint
       'application/vnd.ms-powerpoint',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
     ],
   },
   maxFileSize: {
@@ -243,12 +253,31 @@ const props = defineProps({
   },
   downloadRoute: {
     type: String,
-    default: 'staff.task.download-file',
+    default: 'staff.tasks.download-file',
   },
   setPrimaryRoute: {
     type: String,
-    default: 'staff.task.set-primary-file',
+    default: 'staff.tasks.set-primary-file',
   },
+});
+
+// Computed accept types for file input
+const acceptTypes = computed(() => {
+  const extensions = {
+    'image/jpeg': '.jpg,.jpeg',
+    'image/png': '.png',
+    'image/gif': '.gif',
+    'image/webp': '.webp',
+    'application/pdf': '.pdf',
+    'application/msword': '.doc',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': '.docx',
+    'application/vnd.ms-excel': '.xls',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': '.xlsx',
+    'application/vnd.ms-powerpoint': '.ppt',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation': '.pptx',
+  };
+  
+  return props.allowedTypes.map(type => extensions[type] || '').filter(Boolean).join(',');
 });
 
 const emit = defineEmits([
@@ -259,7 +288,7 @@ const emit = defineEmits([
   'file-restored',
   'primary-set',
   'files-change',
-  'download', // ✅ Add this line
+  'download',
 ]);
 
 const fileList = ref([]);
@@ -288,10 +317,6 @@ const getDeletedFileNames = () => {
 
 // Clear all deletions
 const clearAllDeletions = () => {
-  const restoredFiles = props.existingFiles.filter(file => 
-    deleteFiles.value.includes(file.id)
-  );
-  
   deleteFiles.value = [];
   emit('update:existingFiles', props.existingFiles);
   emit('files-change', {
@@ -355,54 +380,96 @@ const formatFileSize = (bytes) => {
 
 // Before upload - validate and store file
 const beforeUpload = (file) => {
+  console.log('📁 File attempting to upload:', file.name, 'Type:', file.type, 'Size:', file.size);
+  
   // Validate file type
   if (!props.allowedTypes.includes(file.type)) {
-    message.error('不支援的檔案格式。請上傳圖片、PDF、Word 或 Excel 檔案。');
+    const errorMsg = `不支援的檔案格式: ${file.type}。請上傳圖片、PDF、Word、Excel 或 PowerPoint 檔案。`;
+    console.error('❌', errorMsg);
+    message.error(errorMsg);
     return false;
   }
 
   // Validate file size
   if (file.size > props.maxFileSize) {
-    message.error(`檔案大小必須小於 ${formatFileSize(props.maxFileSize)}。`);
+    const errorMsg = `檔案大小 (${formatFileSize(file.size)}) 超過限制 (${formatFileSize(props.maxFileSize)})。`;
+    console.error('❌', errorMsg);
+    message.error(errorMsg);
     return false;
   }
 
   // Check if already in list
   const exists = newFiles.value.some(f => f.name === file.name && f.size === file.size);
   if (exists) {
-    message.warning('此檔案已在待上傳清單中。');
+    const errorMsg = `"${file.name}" 已在待上傳清單中。`;
+    console.warn('⚠️', errorMsg);
+    message.warning(errorMsg);
     return false;
   }
 
   // Check max files limit
   const totalFiles = (props.existingFiles?.length || 0) + newFiles.value.length;
   if (totalFiles >= props.maxFiles) {
-    message.error(`最多只能上傳 ${props.maxFiles} 個檔案。`);
+    const errorMsg = `最多只能上傳 ${props.maxFiles} 個檔案。`;
+    console.error('❌', errorMsg);
+    message.error(errorMsg);
     return false;
   }
 
   // Add to new files list
   newFiles.value.push(file);
+  console.log('✅ File added to queue:', file.name);
   emit('file-added', file);
   message.success(`已加入: ${file.name}`);
   
-  return false;
+  // Update fileList to show in upload component
+  fileList.value = [...fileList.value, file];
+  
+  return false; // Prevent automatic upload
+};
+
+// Handle upload change event
+const handleUploadChange = (info) => {
+  console.log('Upload change:', info);
+  // If file was removed from upload list but still in newFiles, remove it
+  if (info.file.status === 'removed') {
+    const index = newFiles.value.findIndex(f => f.uid === info.file.uid);
+    if (index > -1) {
+      const removedFile = newFiles.value[index];
+      newFiles.value.splice(index, 1);
+      console.log('🗑️ File removed from queue:', removedFile.name);
+      emit('file-removed', removedFile);
+    }
+  }
 };
 
 // Remove file from upload queue
 const removeNewFile = (index) => {
   const file = newFiles.value[index];
   newFiles.value.splice(index, 1);
+  // Also remove from fileList
+  const fileListIndex = fileList.value.findIndex(f => f.uid === file.uid);
+  if (fileListIndex > -1) {
+    fileList.value.splice(fileListIndex, 1);
+  }
+  console.log('🗑️ File removed from queue:', file.name);
   emit('file-removed', file);
 };
 
 // Remove from file list (Ant Design upload component)
 const handleRemove = (file) => {
+  console.log('Remove called for:', file.name);
   const index = newFiles.value.findIndex(f => f.uid === file.uid);
   if (index > -1) {
     const removedFile = newFiles.value[index];
     newFiles.value.splice(index, 1);
+    console.log('🗑️ File removed:', removedFile.name);
     emit('file-removed', removedFile);
+  }
+  // Also remove from fileList
+  const fileListIndex = fileList.value.findIndex(f => f.uid === file.uid);
+  if (fileListIndex > -1) {
+    fileList.value.splice(fileListIndex, 1);
   }
 };
 
@@ -420,6 +487,7 @@ const handleDelete = (fileId) => {
   const deletedFile = props.existingFiles.find(f => f.id === fileId);
   emit('file-deleted', { id: fileId, file: deletedFile });
   
+  console.log('🗑️ File marked for deletion:', deletedFile?.original_name);
   message.success(`檔案 "${deletedFile?.original_name}" 已標記為刪除`);
 };
 
@@ -434,6 +502,7 @@ const handleRestore = (fileId) => {
     const updatedFiles = [...props.existingFiles, restoredFile];
     emit('update:existingFiles', updatedFiles);
     emit('file-restored', restoredFile);
+    console.log('🔄 File restored:', restoredFile.original_name);
     message.success(`已復原: ${restoredFile.original_name}`);
   }
 };
@@ -446,12 +515,13 @@ const handleSetPrimary = (fileId) => {
   }));
   emit('update:existingFiles', updatedFiles);
   emit('primary-set', fileId);
+  console.log('⭐ Primary file set:', fileId);
 };
 
 // Download file
 const handleDownload = (fileId) => {
   if (props.downloadRoute) {
-    window.open(route(props.downloadRoute, fileId), '_self');
+    window.open(route(props.downloadRoute, fileId), '_blank');
   }
   emit('download', fileId);
 };
@@ -461,6 +531,7 @@ const reset = () => {
   newFiles.value = [];
   deleteFiles.value = [];
   fileList.value = [];
+  console.log('🔄 FileUpload component reset');
 };
 
 // Get all files
@@ -487,7 +558,7 @@ defineExpose({
   width: 100%;
 }
 
-/* Grid layout for files - Responsive */
+/* Grid layout for files */
 .grid {
   display: grid;
   gap: 0.75rem;
@@ -515,7 +586,7 @@ defineExpose({
   }
 }
 
-/* Mobile optimization - larger images on mobile */
+/* Mobile optimization */
 @media (max-width: 640px) {
   .grid-cols-2 {
     grid-template-columns: repeat(2, 1fr);
@@ -529,19 +600,6 @@ defineExpose({
   .relative img {
     min-height: 120px;
     max-height: 180px;
-  }
-  
-  .relative .aspect-square {
-    min-height: 100px;
-  }
-  
-  .text-xs {
-    font-size: 0.65rem !important;
-  }
-  
-  .upload-btn {
-    width: 100% !important;
-    justify-content: center !important;
   }
 }
 
@@ -584,16 +642,24 @@ defineExpose({
   background-color: #fef2f2 !important;
 }
 
-/* Deletion overlay */
-.absolute.inset-0 {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+/* Image preview mask */
+:deep(.image-preview-mask) {
+  background: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(4px) !important;
+  border-radius: 8px !important;
 }
 
-/* Upload button mobile full width */
+:deep(.ant-image-preview-img) {
+  max-height: 80vh !important;
+  object-fit: contain !important;
+}
+
+:deep(.ant-image-preview-operations) {
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+/* Mobile upload button */
 @media (max-width: 640px) {
   .file-uploader :deep(.ant-upload) {
     display: block !important;

@@ -44,7 +44,6 @@ class FormController extends Controller
      */
     public function store(Request $request)
     {
-
         $entry=new Entry();
         $entry->form_id=$request->form['id'];
         //$entry->member_id=auth()->user()->id;

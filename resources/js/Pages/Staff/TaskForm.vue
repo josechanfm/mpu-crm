@@ -5,11 +5,11 @@
     <div class="mb-5">
       <a-button @click="goBack" class="back-button">
         <ArrowLeftOutlined />
-        Back
+        返回
       </a-button>
       <h1 class="form-title">{{ formTitle }}</h1>
     </div>
-    <a-card   :body-style="isMobile ? { padding: '5px' } : { padding: '10px' }">
+    <a-card :body-style="isMobile ? { padding: '5px' } : { padding: '10px' }">
       <a-form
         :model="form"
         :rules="rules"
@@ -19,7 +19,7 @@
       >
         <a-row :gutter="24">
           <a-col :span="12">
-            <a-form-item label="Title" name="title" required>
+            <a-form-item label="標題" name="title" required>
               <a-input
                 type="input"
                 v-model:value="form.title"
@@ -30,7 +30,7 @@
           </a-col>
 
           <a-col :span="12">
-            <a-form-item label="Status" name="status" required>
+            <a-form-item label="狀態" name="status" required>
               <a-select
                 v-model:value="form.status"
                 placeholder="Select status"
@@ -44,7 +44,7 @@
             </a-form-item>
           </a-col>
           <a-col :span="12" v-if="departments.length>1">
-            <a-form-item label="Department" name="department_id">
+            <a-form-item label="部門" name="department_id">
               <a-select
                 v-model:value="form.department_id"
                 placeholder="Select department"
@@ -65,7 +65,7 @@
           </a-col>
 
           <a-col :span="24">
-            <a-form-item label="Description" name="description">
+            <a-form-item label="簡介" name="description">
               <a-textarea
                 v-model:value="form.description"
                 placeholder="Enter task description"
@@ -76,7 +76,7 @@
           </a-col>
 
           <a-col :span="24">
-            <a-form-item label="Action" name="action">
+            <a-form-item label="處理" name="action">
               <a-textarea
                 v-model:value="form.action"
                 placeholder="Enter action items"
@@ -86,7 +86,7 @@
             </a-form-item>
           </a-col>
           <a-col :span="24">
-            <a-form-item label="Result" name="result">
+            <a-form-item label="結果" name="result">
               <a-textarea
                 v-model:value="form.result"
                 placeholder="Enter results"
@@ -101,7 +101,7 @@
             <!-- REUSABLE FILE UPLOAD COMPONENT -->
             <!-- ============================================ -->
             <a-col :span="24">
-              <a-form-item label="Files" name="files">
+              <a-form-item label="文檔" name="files">
                 <FileUpload
                   ref="fileUploadRef"
                   :existing-files="form.existing_files"
@@ -175,8 +175,8 @@ const isEditing = computed(() => !!props.task?.id);
 const isMobile = ref(window.innerWidth < 768);
 
 const formTitle = computed(() => {
-  if (props.readonly) return 'Task Details';
-  return isEditing.value ? 'Edit Task' : 'Create New Task';
+  if (props.readonly) return '備忘內容';
+  return isEditing.value ? '修改備忘' : '新增備忘';
 });
 
 const form = reactive({

@@ -18,6 +18,9 @@ class AdminLoginController extends Controller
 {
     public function showLoginForm()
     {
+        if(auth('admin')->user()){
+            return redirect()->route('staff');
+        }
         return Inertia::render('Staff/Auth/AdminLogin', [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),

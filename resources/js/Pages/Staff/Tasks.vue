@@ -34,13 +34,13 @@
                 @change="handleFilterChange"
                 style="width:100%"
             >
-                <a-select-option value="pending">Pending</a-select-option>
-                <a-select-option value="in_progress">In Progress</a-select-option>
-                <a-select-option value="completed">Completed</a-select-option>
-                <a-select-option value="cancelled">Cancelled</a-select-option>
+                <a-select-option value="pending">待處理</a-select-option>
+                <a-select-option value="in_progress">進行中</a-select-option>
+                <a-select-option value="completed">已完成</a-select-option>
+                <a-select-option value="cancelled">已取消</a-select-option>
             </a-select>
         </a-col>
-        <a-col :xs="12" :sm="12" :md="6">
+        <a-col v-if="departments.length > 1" :xs="12" :sm="12" :md="6">
             <a-select
                 v-model:value="localFilters.department_id"
                 placeholder="部門"
@@ -49,9 +49,7 @@
                 :option-label-prop="'label'"
                 style="width:100%"
             >
-                <a-select-option :value="null" label="All Departments">
-                    All Departments
-                </a-select-option>
+                <a-select-option :value="null" label="所有部門"/>
                 <a-select-option
                     v-for="dept in departments"
                     :key="dept.id"
@@ -63,7 +61,7 @@
             </a-select>
         </a-col>
         <a-col :xs="24" :sm="24" :md="4">
-            <a-form-item :label="isMobile ? '' : '&nbsp;'">
+          <a-form-item :label="isMobile ? '' : '&nbsp;'">
           <a-button @click="resetFilters" size="large" block>
             <ReloadOutlined />
             清空
@@ -96,10 +94,10 @@
               <template #overlay>
                 <a-menu>
                   <a-menu-item @click="editTask(task.id)" class="flex items-center gap-2">
-                    <EditOutlined /> Edit
+                    <EditOutlined /> 修改
                   </a-menu-item>
                   <a-menu-item danger @click="deleteTask(task.id)" class="flex items-center gap-2">
-                    <DeleteOutlined /> Delete
+                    <DeleteOutlined /> 刪除
                   </a-menu-item>
                 </a-menu>
               </template>
