@@ -33,76 +33,23 @@
                     {{ record.in_column }}
                 </template>
             </template>
-
         </a-table>
         <div>
             <div>備註:</div>
             <div>1. 若表格式發佈,其已建主的欄位內容修改.</div>
         </div>
 
-        <!-- Modal Start-->
-        <a-modal v-model:open="modal.isOpen" :title="modal.mode == 'CREATE' ? 'Create' : 'Update'" width="60%">
-            <a-form ref="modalRef" :model="modal.data" name="formField" :label-col="{ span: 4 }"
-                :wrapper-col="{ span: 20 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages">
-                <a-form-item  v-if="is('admin | master')" label="Field Name" name="field_name">
-                    <a-input type="inpuut" v-model:value="modal.data.field_name" />
-                    <p class="text-red-500 text-xs">* Only shows for admin and master, suggest to keep it blank</p>
-                </a-form-item>
-                <a-form-item label="Field Label" name="field_label">
-                    <a-input type="inpuut" v-model:value="modal.data.field_label" />
-                </a-form-item>
-                <a-form-item label="Field Type" name="type">
-                    <a-select v-model:value="modal.data.type" placeholder="Field Type" :options="fieldTypes"
-                        @change="onChangeType" />
-                </a-form-item>
-                <a-form-item label="Rows" name="rows"
-                    v-if="['textarea', 'longtext', 'richtext'].includes(modal.data.type)">
-                    <a-input-number v-model:value="modal.data.options" />
-                </a-form-item>
-                <template v-if="['radio', 'checkbox', 'dropdown'].includes(modal.data.type)">
-                    <a-form-item label="Options" name="options">
-                        <a-radio-group>
-                            <template v-for="option in modal.data.options">
-                                <a-radio :style="verticalStyle" :value="option.value">
-                                    <a-input type="inpuut" v-model:value="option.label" />
-                                </a-radio>
-                            </template>
-                            <a-radio @click="addOptionItem"> Add option</a-radio>
-                        </a-radio-group>
-                    </a-form-item>
-                    <a-form-item label="Template" name="optionTemplate">
-                        <a-select :options="optionTemplates" @change="onChangeOptionTemplate" />
-                    </a-form-item>
-                    <a-form-item label="Template" name="optionTemplate"
-                        v-if="['radio', 'checkbox'].includes(modal.data.type)">
-                        <a-radio-group v-model:value="modal.data.direction">
-                            <a-radio value="H">Horizontal</a-radio>
-                            <a-radio value="V">Vertical</a-radio>
-                        </a-radio-group>
-                    </a-form-item>
-                </template>
-                <a-form-item label="Compulsory" name="required">
-                    <a-switch v-model:checked="modal.data.required" />
-                </a-form-item>
-                <a-form-item label="Column data" name="in_column" v-if="modal.data.required">
-                    <a-switch v-model:checked="modal.data.in_column" />
-                </a-form-item>
-                <a-form-item label="Extra">
-                    <a-textarea v-model:value="modal.data.extra" />
-                </a-form-item>
-                <a-form-item label="Remark" name="remark">
-                    <a-textarea v-model:value="modal.data.remark" />
-                </a-form-item>
-            </a-form>
-            <template #footer>
-                <a-button key="back" @click="modal.isOpen = false">Cancel</a-button>
-                <a-button v-if="modal.mode == 'EDIT'" key="Update" type="primary"
-                    @click="updateRecord()">Update</a-button>
-                <a-button v-if="modal.mode == 'CREATE'" key="Store" type="primary"
-                    @click="storeRecord()">Create</a-button>
-            </template>
-        </a-modal>
-        <!-- Modal End-->
+        <!-- Modal Component -->
+        <FormFieldModal
+            v-model:open="modal.isOpen"
+            :mode="modal.mode"
+            :initialData="modal.data"
+            :formId="form.id"
+            :isAdminOrMaster="isAdminOrMaster"
+            :optionTemplates="optionTemplates"
+            @save="handleSaveField"
+            @update="handleUpdateField"
+        />
     </DepartmentLayout>
 </template>
 
@@ -112,6 +59,7 @@ import { defineComponent, reactive } from 'vue';
 import { VueDraggableNext } from 'vue-draggable-next'
 import { HolderOutlined } from "@ant-design/icons-vue";
 import Sortable from "sortablejs";
+import FormFieldModal from './FormFieldModal.vue';   // <-- new import
 
 export default {
     components: {
@@ -119,6 +67,7 @@ export default {
         draggable: VueDraggableNext,
         Sortable,
         HolderOutlined,
+        FormFieldModal,   // <-- registered
     },
     props: ['department', 'form', 'fields','configs'],
     data() {
@@ -130,72 +79,20 @@ export default {
                 mode: ""
             },
             dataModel: null,
-            fieldTypes: [
-                { value: "input", label: "單行文字" },
-                { value: "longtext", label: "長編文字" },
-                { value: "richtext", label: "格式文字" },
-                { value: "radio", label: "單項選擇" },
-                { value: "checkbox", label: "多項選擇" },
-                { value: "dropdown", label: "下拉清單" },
-                { value: "true_false", label: "真/偽" },
-                { value: "datetime", label: "日期時間" },
-                { value: "date", label: "日期格式" },
-                { value: "time", label: "時間" },
-                { value: "email", label: "電郵欄位" },
-                { value: "number", label: "數值欄位" },
-                { value: "html", label: "HMTL text" }
-            ],
             isDraggable: false,
-            rules: {
-                field_label: { required: true },
-                type: { required: true },
-            },
-            validateMessages: {
-                required: '${label} is required!',
-                types: {
-                    email: '${label} is not a valid email!',
-                    number: '${label} is not a valid number!',
-                },
-                number: {
-                    range: '${label} must be between ${min} and ${max}',
-                },
-            },
+            // labelCol is still used in the child, but moved there; we can keep or remove
+            // Keep only data that is still used in parent
             labelCol: {
                 style: {
                     width: '150px',
                 },
             },
-            verticalStyle: {
-                display: 'flex',
-                height: '30px',
-                lineHeight: '30px',
-                width: '100%'
-            },
-            optionTemplates: [
-                { value: 'clear', label: 'Reset', template: [{ value: 'option_1', label: 'option_1' }] },
-                {
-                    value: 'agree', label: 'Level of Agreement', template: [
-                        { value: 5, label: 'Strongly Agree' },
-                        { value: 4, label: 'Argree' },
-                        { value: 3, label: 'Neutual' },
-                        { value: 2, label: 'Disagree' },
-                        { value: 1, label: 'Strongly Disagree' },
-                        { value: 0, label: 'Not Applicable' }
-                    ]
-                },
-                { value: 'gender', label: 'Gender', template: [{ value: 'M', label: 'Male' }, { value: 'F', label: 'Female' }] },
-                { value: 'department', label: 'Department', template: this.configs['departments'].map(d => ({ value: d.abbr, label: d.abbr + " " + d.name_zh })) },
-                { value: 'faculty', label: 'Faculty', template: this.configs['faculties'].value},
-            ]
         }
     },
     created() {
         this.dataModel = this.fields
-        //console.log(this.departments);
-        //$d=this.departments.map(d=>({value:d.id,label:d.abbr}));
-        //console.log($d);
     },
-    computed:{
+    computed: {
         columns() {
             return [
                 {
@@ -224,10 +121,35 @@ export default {
                     dataIndex: 'operation'
                 }
             ]
+        },
+        // Permission check – adapt to your actual implementation
+        isAdminOrMaster() {
+            // Replace with your own logic, e.g.:
+            // return this.$page.props.auth.user.isAdmin || this.$page.props.auth.user.isMaster;
+            return this.is('admin | master'); // assuming this method exists
+        },
+        optionTemplates() {
+            // Moved from data to computed to react to configs changes
+            return [
+                { value: 'clear', label: 'Reset', template: [{ value: 'option_1', label: 'option_1' }] },
+                {
+                    value: 'agree', label: 'Level of Agreement', template: [
+                        { value: 5, label: 'Strongly Agree' },
+                        { value: 4, label: 'Argree' },
+                        { value: 3, label: 'Neutual' },
+                        { value: 2, label: 'Disagree' },
+                        { value: 1, label: 'Strongly Disagree' },
+                        { value: 0, label: 'Not Applicable' }
+                    ]
+                },
+                { value: 'gender', label: 'Gender', template: [{ value: 'M', label: 'Male' }, { value: 'F', label: 'Female' }] },
+                { value: 'department', label: 'Department', template: this.configs['departments'].map(d => ({ value: d.abbr, label: d.abbr + " " + d.name_zh })) },
+                { value: 'faculty', label: 'Faculty', template: this.configs['faculties'].value },
+            ];
         }
-
     },
     methods: {
+        // ---- Modal control ----
         createRecord() {
             this.modal.data = {};
             this.modal.data.form_id = this.form.id;
@@ -237,6 +159,7 @@ export default {
         },
         editRecord(record) {
             this.modal.data = { ...record };
+            // Ensure options is an array
             try {
                 this.modal.data.options = this.modal.data.options;
             } catch (e) {
@@ -245,61 +168,46 @@ export default {
             this.modal.mode = "EDIT";
             this.modal.isOpen = true;
         },
-        cloneRecord(record){
-            this.$inertia.post(route('manage.form.field.clone',{formField:record.id}), {
-                preserveState:false,
+        // ---- Save/Update handlers (called by modal) ----
+        handleSaveField(data) {
+            this.$inertia.post(route('manage.form.fields.store', { form: this.form.id }), data, {
                 onSuccess: (page) => {
-                    //window.location.reload();
-                    // console.log('cloned')
-                    // console.log(page)
+                    this.modal.isOpen = false;
+                    // Optionally reload or update list (fields are refreshed by Inertia)
                 },
                 onError: (err) => {
                     console.log(err);
                 }
             });
         },
-        storeRecord() {
-            this.$refs.modalRef.validateFields().then(() => {
-                this.$inertia.post(route('manage.form.fields.store', {
-                    form: this.form.id
-                }), this.modal.data, {
-                    onSuccess: (page) => {
-                        this.modal.data = {};
-                        this.modal.isOpen = false;
-                    },
-                    onError: (err) => {
-                        console.log(err);
-                    }
-                });
-            }).catch(err => {
-                console.log(err);
+        handleUpdateField(data) {
+            this.$inertia.patch(route('manage.form.fields.update', { form: this.form.id, field: data }), data, {
+                onSuccess: (page) => {
+                    this.modal.isOpen = false;
+                    console.log(page);
+                },
+                onError: (error) => {
+                    console.log(error);
+                }
             });
         },
-        updateRecord() {
-            console.log('update record',this.modal.data);
-            this.$refs.modalRef.validateFields().then(() => {
-                this.$inertia.patch(route('manage.form.fields.update', {
-                    form: this.form.id,
-                    field: this.modal.data
-                }), this.modal.data, {
-                    onSuccess: (page) => {
-                        this.modal.data = {};
-                        this.modal.isOpen = false;
-                        console.log(page);
-                    },
-                    onError: (error) => {
-                        console.log(error);
-                    }
-                });
-            }).catch(err => {
-                console.log("error", err);
+        // ---- Other record actions ----
+        cloneRecord(record) {
+            this.$inertia.post(route('manage.form.field.clone', { formField: record.id }), {
+                preserveState: false,
+                onSuccess: (page) => {
+                    // page refreshed
+                },
+                onError: (err) => {
+                    console.log(err);
+                }
             });
         },
         deleteRecord(record) {
             this.$inertia.delete(route('manage.form.fields.destroy', {
                 form: this.form.id, field: record.id
             }), {
-                preserveState:false,
+                preserveState: false,
                 onSuccess: (page) => {
                     console.log('the field has been deleted!');
                 },
@@ -308,30 +216,12 @@ export default {
                 }
             });
         },
-        addOptionItem() {
-            const newOption = 'option_' + (this.modal.data.options.length + 1);
-            this.modal.data.options.push({ value: newOption, label: newOption })
-        },
-        onChangeOptionTemplate(value) {
-            this.modal.data.options = this.optionTemplates.find(t => t.value == value).template
-        },
-        onChangeType(value) {
-            if (['textarea', 'longtext', 'richtext'].includes(this.modal.data.type)) {
-                if (!Number.isInteger(this.modal.data.type)) {
-                    this.modal.data.options = 5;
-                }
-            } else if (['radio', 'checkbox','dropdown'].includes(this.modal.data.type)) {
-                if (typeof this.modal.data.options !== 'object') {
-                    this.modal.data.options = [{ value: 'option_1', label: 'option_1' }];
-                }
-            }
-        },
+        // ---- Drag & drop ----
         rowChange(event) {
             var data = []
             this.fields.forEach((field, idx) => {
                 data.push({ id: field.id, form_id: field.form_id, sequence: idx })
-            }
-            )
+            })
             console.log(data);
             this.$inertia.post(route("manage.form.fieldsSequence", this.form.id), data, {
                 onSuccess: (page) => {
@@ -341,7 +231,6 @@ export default {
                     console.log(error);
                 }
             });
-
         },
         reloadFormFields() {
             this.$inertia.reload({
@@ -359,49 +248,40 @@ export default {
                 style: {
                     cursor: this.isDraggable ? 'move' : 'default'
                 },
-                // mouse move
                 onMouseenter: event => {
                     if (this.isDraggable) {
-                        var ev = event || window.event // for competible with IE
+                        var ev = event || window.event
                         ev.target.draggable = true
                     }
                 },
-                // start drag
                 onDragstart: event => {
                     if (this.isDraggable) {
                         var ev = event || window.event
-                        ev.stopPropagation() // block popup
-                        this.sourceObj = record // get sourceObject with record id
+                        ev.stopPropagation()
+                        this.sourceObj = record
                     }
                 },
-                // drag crossing elements
                 onDragover: event => {
                     if (this.isDraggable) {
                         var ev = event || window.event
                         ev.preventDefault()
                     }
                 },
-                // mouse up
                 onDrop: event => {
-                    // console.log(event)
-                    // console.log(this.dataModel)
                     if (this.isDraggable) {
                         var ev = event || window.event
                         ev.stopPropagation()
-                        this.targetObj = record // get target Object
-                        // swap record position
+                        this.targetObj = record
                         let sourceIndex = ''
                         let targetIndex = ''
                         this.dataModel.map((item, idx) => {
                             if (this.sourceObj == item) {
-                                // console.log(idx)
                                 sourceIndex = idx
                             }
                             if (this.targetObj == item) {
                                 targetIndex = idx
                             }
                         })
-                        // show swap data
                         let arr = []
                         this.dataModel.map((item, idx) => {
                             if (sourceIndex == idx) {
@@ -414,7 +294,6 @@ export default {
                         })
                         arr.map((item, idx) => {
                             arr[idx].sequence = idx
-                            // console.log(item);
                         })
                         this.dataModel = arr
                         this.$inertia.post(route("manage.form.fieldsSequence", this.form.id), this.dataModel, {
@@ -429,25 +308,12 @@ export default {
                 },
             }
         }
-
     },
     watch: {
-        // "modal.data.type": function($value){
-        //     if($value=='agree'){
-        //         // if(this.modal.data.options=='null'){
-        //             this.modal.data.options=[
-        //                 {value:5,label:'非常同意'},
-        //                 {value:4,label:'同意'},
-        //                 {value:3,label:'普通'},
-        //                 {value:2,label:'不同意'},
-        //                 {value:1,label:'非常不同意'},
-        //                 {value:0,label:'不適用'}
-        //             ]
-        //         //}
-        //     }
-        // }
+        // no longer needed for modal type changes – moved to child
     }
 }
 </script>
+
 <style scoped>
 </style>

@@ -6,7 +6,7 @@
             </h2>
         </template>
         
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+        <div class="mx-auto sm:px-6 lg:px-8">
             <!-- Alert Component -->
             <a-alert
                 v-if="form.published==false"
@@ -54,25 +54,28 @@
                                 ></a-select>
                             </a-form-item>                        
                         </div>
-                        <div v-else-if="field.type=='radio'" :key="field.id">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]">
-                                <a-radio-group v-model:value="formData[field.id]">
-                                <template v-for="item in field.options" :key="item.value">
-                                    <a-radio :style="field.direction=='V'?verticalStyle:null" :value="item.value">{{ item.label }}</a-radio>
-                                </template>
-                                </a-radio-group>
-                            </a-form-item>                        
-                        </div>
-                        <div v-else-if="field.type=='checkbox'" :key="field.id">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]">
-                                <a-checkbox-group v-model:value="formData[field.id]" :class="field.direction=='V'?'checkbox-vertical':null">
-                                    <template v-for="item in field.options" :key="item.value">
-                                        <a-checkbox :style="verticalStyle" :value="item.value">{{ item.label }}</a-checkbox>
-                                    </template>
+<div v-else-if="field.type=='radio'" :key="field.id">
+    <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]">
+        <div class="custom-option-group" :class="field.direction=='V' ? 'vertical' : ''">
+            <label v-for="item in field.options" :key="item.value" class="custom-option">
+                <input type="radio" :value="item.value" v-model="formData[field.id]" />
+                <span class="custom-label">{{ item.label }}</span>
+            </label>
+        </div>
+    </a-form-item>
+</div>
 
-                                </a-checkbox-group>
-                            </a-form-item>                        
-                        </div>
+<div v-else-if="field.type=='checkbox'" :key="field.id">
+    <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]">
+        <div class="custom-option-group" :class="field.direction=='V' ? 'vertical' : ''">
+            <label v-for="item in field.options" :key="item.value" class="custom-option">
+                <input type="checkbox" :value="item.value" v-model="formData[field.id]" />
+                <span class="custom-label">{{ item.label }}</span>
+            </label>
+        </div>
+    </a-form-item>
+</div>
+
                         <div v-else-if="field.type=='dropdown'" :key="field.id">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]">
                                 <a-select 
@@ -265,5 +268,45 @@ export default {
 .checkbox-vertical {
     display: block;
     margin-right: 0;
+    word-wrap: break-word;
+
+}
+
+
+
+/* Container for the group */
+.custom-option-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+}
+
+/* Vertical layout – stack options */
+.custom-option-group.vertical {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Each option (label + input + text) */
+.custom-option {
+    display: inline-flex;
+    align-items: flex-start;   /* align top for multi-line text */
+    cursor: pointer;
+}
+
+/* Input styling */
+.custom-option input[type="radio"],
+.custom-option input[type="checkbox"] {
+    flex-shrink: 0;
+    margin-top: 2px;           /* fine-tune vertical alignment */
+}
+
+/* Label text – this ensures wrapping */
+.custom-label {
+    margin-left: 4px;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;    /* breaks very long unbroken strings */
 }
 </style>
