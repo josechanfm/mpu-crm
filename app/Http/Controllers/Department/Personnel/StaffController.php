@@ -181,8 +181,6 @@ public function cardPrint(Request $request, $staffId)
         'id' => 'required|integer'               // id must be an integer
     ]);
 
-    // DO NOT define K_PATH_FONTS here. Leaving it default allows TCPDF to find core fonts (helvetica, etc.).
-
     $pdf = new TCPDF('L', 'mm', array(54, 85)); 
 
     // Basic setup
@@ -190,16 +188,15 @@ public function cardPrint(Request $request, $staffId)
     $pdf->setPrintFooter(false);
     $pdf->SetAutoPageBreak(TRUE, 0);
 
-    // Load font directly from /public/fonts/
+    // Path to your TTF file in /public/fonts/
     $fontPath = public_path('fonts/DroidSans.ttf'); 
-    
+
     if (file_exists($fontPath)) {
-        // TCPDF processes the TTF file at the given absolute path.
-        // It saves converted definition files in TCPDF's working font cache or temp dir automatically.
+        // TCPDF processes DroidSans.ttf and saves droidsans.php & droidsans.z into storage/fonts/
         $fontName = TCPDF_FONTS::addTTFfont($fontPath, 'TrueTypeUnicode', '', 96);
         $pdf->SetFont($fontName, '', 12);
     } else {
-        // Fallback to built-in UTF-8 font if TTF is missing
+        // Fallback font available in storage/fonts/
         $fontName = 'dejavusans';
         $pdf->SetFont($fontName, '', 12);
     }

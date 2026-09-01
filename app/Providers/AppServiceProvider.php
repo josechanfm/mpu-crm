@@ -25,6 +25,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (!defined('K_PATH_FONTS')) {
+            define('K_PATH_FONTS', storage_path('fonts/'));
+        }
         if($this->app->environment('production')) {
         //if(env('production')){
             URL::forceScheme('https');
