@@ -22,28 +22,46 @@
                          v-if="['textarea', 'longtext', 'richtext'].includes(localData.type)">
                 <a-input-number v-model:value="localData.options" />
             </a-form-item>
+            
+            <!-- Options editor (for radio, checkbox, dropdown) -->
             <template v-if="['radio', 'checkbox', 'dropdown'].includes(localData.type)">
                 <a-form-item label="Options" name="options">
-                    <a-radio-group>
-                        <template v-for="option in localData.options">
-                            <a-radio :style="verticalStyle" :value="option.value">
-                                <a-input type="input" v-model:value="option.label" />
-                            </a-radio>
-                        </template>
-                        <a-radio @click="addOptionItem"> Add option</a-radio>
-                    </a-radio-group>
+                    <div class="flex flex-col gap-2">
+                        <!-- Each option row -->
+                        <div v-for="(option, idx) in localData.options" :key="idx" class="flex items-center gap-2">
+                            <span class="min-w-[30px] text-right font-medium text-gray-600">{{ idx + 1 }}.</span>
+                            <a-input 
+                                type="input" 
+                                v-model:value="option.label"
+                                placeholder="Option label"
+                                class="flex-1"
+                            />
+                        </div>
+                        <!-- Add option button -->
+                        <div class="mt-1">
+                            <a-button type="dashed" @click="addOptionItem" block>
+                                + Add option
+                            </a-button>
+                            <div>
+                                with other
+                            </div>
+                        </div>
+                    </div>
                 </a-form-item>
                 <a-form-item label="Template" name="optionTemplate">
                     <a-select :options="optionTemplates" @change="onChangeOptionTemplate" />
                 </a-form-item>
-                <a-form-item label="Template" name="optionTemplate"
-                             v-if="['radio', 'checkbox'].includes(localData.type)">
+                <a-form-item 
+                    v-if="['radio', 'checkbox'].includes(localData.type)"
+                    label="Direction"
+                >
                     <a-radio-group v-model:value="localData.direction">
                         <a-radio value="H">Horizontal</a-radio>
                         <a-radio value="V">Vertical</a-radio>
                     </a-radio-group>
                 </a-form-item>
             </template>
+
             <a-form-item label="Compulsory" name="required">
                 <a-switch v-model:checked="localData.required" />
             </a-form-item>
@@ -127,12 +145,6 @@ export default {
                 number: {
                     range: '${label} must be between ${min} and ${max}',
                 },
-            },
-            verticalStyle: {
-                display: 'flex',
-                height: '30px',
-                lineHeight: '30px',
-                width: '100%'
             },
         };
     },
