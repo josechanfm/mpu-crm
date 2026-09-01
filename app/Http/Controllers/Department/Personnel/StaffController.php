@@ -10,6 +10,7 @@ use App\Models\StaffNotice;
 use App\Models\StaffUpload;
 use Carbon\Carbon;
 use TCPDF;
+use TCPDF_FONTS; // Make sure to import this at the top of your controller file
 use Exception; // Import the Exception class
 
 
@@ -172,10 +173,6 @@ class StaffController extends Controller
         return redirect()->back()->with('error', 'Invalid image format.');
     }
 
-
-
-use TCPDF;
-use TCPDF_FONTS; // Make sure to import this at the top of your controller file
 
 public function cardPrint(Request $request, $staffId)
 {
