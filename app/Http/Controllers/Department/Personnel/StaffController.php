@@ -181,32 +181,30 @@ public function cardPrint(Request $request, $staffId)
         'id' => 'required|integer'               // id must be an integer
     ]);
 
-    // 1. Tell TCPDF to look for font files inside public/fonts/
-    if (!defined('K_PATH_FONTS')) {
-        define('K_PATH_FONTS', public_path('fonts/'));
-    }
+    // DO NOT define K_PATH_FONTS here. Leaving it default allows TCPDF to find core fonts (helvetica, etc.).
 
     $pdf = new TCPDF('L', 'mm', array(54, 85)); 
 
-    // 2. Basic setup
+    // Basic setup
     $pdf->setPrintHeader(false);
     $pdf->setPrintFooter(false);
     $pdf->SetAutoPageBreak(TRUE, 0);
 
-    // 3. Load font from /public/fonts/ (Change DroidSans.ttf to your actual filename)
+    // Load font directly from /public/fonts/
     $fontPath = public_path('fonts/DroidSans.ttf'); 
     
     if (file_exists($fontPath)) {
-        // TCPDF compiles the TTF definition files and saves them alongside the TTF in /public/fonts/
+        // TCPDF processes the TTF file at the given absolute path.
+        // It saves converted definition files in TCPDF's working font cache or temp dir automatically.
         $fontName = TCPDF_FONTS::addTTFfont($fontPath, 'TrueTypeUnicode', '', 96);
         $pdf->SetFont($fontName, '', 12);
     } else {
-        // Fallback to built-in UTF-8 font if file is missing
+        // Fallback to built-in UTF-8 font if TTF is missing
         $fontName = 'dejavusans';
         $pdf->SetFont($fontName, '', 12);
     }
 
-    // 4. Render staff or relative card
+    // Render staff or relative card
     if ($request->has('model') && $request->model == 'staff') {
         $staff = Staff::find($request->id);
         $this->getIssueDate($staff, $request->issue_date);
@@ -219,7 +217,7 @@ public function cardPrint(Request $request, $staffId)
         $this->printRelativeCard($pdf, (object)$relative, $fontName);   
     }
 
-    // 5. Close and output PDF document
+    // Close and output PDF document
     $pdf->Output('example.pdf', 'I');
 }
 
