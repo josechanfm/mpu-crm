@@ -41,7 +41,7 @@ class TaskFile extends Model
     // Accessors
     public function getFileUrlAttribute()
     {
-        return $this->file_path ? asset('storage/' . $this->file_path) : null;
+        return $this->file_path ? asset('/' . $this->file_path) : null;
     }
 
     public function getFormattedSizeAttribute()
