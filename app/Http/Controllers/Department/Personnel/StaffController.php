@@ -184,7 +184,7 @@ class StaffController extends Controller
 		$pdf = new TCPDF('L', 'mm', array(54,85)); 
         // Set custom font directory
         // $pdf->setFontSubsetting(true);
-        $pdf->setFontDir(storage_path('fonts/')); // Set path to your custom fonts
+        //$pdf->setFontDir(storage_path('fonts/')); // Set path to your custom fonts
 		// ---------------------------------------------------------
 		//Basic setup
 		$pdf->setPrintHeader(false);
