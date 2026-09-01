@@ -174,43 +174,58 @@ class StaffController extends Controller
 
 
 
-    public function cardPrint(Request $request, $staffId)
-    {
-        $request->validate([
-            'model' => 'required|in:staff,relative', // model must be either 'staff' or 'relative'
-            'id' => 'required|integer'               // id must be an integer
-        ]);
+use TCPDF;
+use TCPDF_FONTS; // Make sure to import this at the top of your controller file
 
-		$pdf = new TCPDF('L', 'mm', array(54,85)); 
-        // Set custom font directory
-        // $pdf->setFontSubsetting(true);
-        //$pdf->setFontDir(storage_path('fonts/')); // Set path to your custom fonts
-		// ---------------------------------------------------------
-		//Basic setup
-		$pdf->setPrintHeader(false);
-		$pdf->setPrintFooter(false);
-		$pdf->SetAutoPageBreak(TRUE, 0);
-		// set font
-		$pdf->SetFont('kozminproregular', '', 12);
-        
-        if($request->has('model') && $request->model=='staff'){
-            $staff=Staff::find($request->id);
-            $this->getIssueDate($staff, $request->issue_date);
-            $this->printStaffCard($pdf,(object)$staff);	
-        }
-        if($request->has('model') && $request->model=='relative'){
-            $relative=StaffRelative::find($request->id);
-            $this->getIssueDate($relative, $request->issue_date);
-            $this->printRelativeCard($pdf,(object)$relative);	
-        }
+public function cardPrint(Request $request, $staffId)
+{
+    $request->validate([
+        'model' => 'required|in:staff,relative', // model must be either 'staff' or 'relative'
+        'id' => 'required|integer'               // id must be an integer
+    ]);
 
-		// foreach($cards as $card){
-		// 	$this->print_card($pdf,(object)$card);	
-		// }
-		
-		//Close and output PDF document
-		$pdf->Output('example.pdf', 'I');
+    // 1. Tell TCPDF to look for font files inside public/fonts/
+    if (!defined('K_PATH_FONTS')) {
+        define('K_PATH_FONTS', public_path('fonts/'));
     }
+
+    $pdf = new TCPDF('L', 'mm', array(54, 85)); 
+
+    // 2. Basic setup
+    $pdf->setPrintHeader(false);
+    $pdf->setPrintFooter(false);
+    $pdf->SetAutoPageBreak(TRUE, 0);
+
+    // 3. Load font from /public/fonts/ (Change DroidSans.ttf to your actual filename)
+    $fontPath = public_path('fonts/DroidSans.ttf'); 
+    
+    if (file_exists($fontPath)) {
+        // TCPDF compiles the TTF definition files and saves them alongside the TTF in /public/fonts/
+        $fontName = TCPDF_FONTS::addTTFfont($fontPath, 'TrueTypeUnicode', '', 96);
+        $pdf->SetFont($fontName, '', 12);
+    } else {
+        // Fallback to built-in UTF-8 font if file is missing
+        $fontName = 'dejavusans';
+        $pdf->SetFont($fontName, '', 12);
+    }
+
+    // 4. Render staff or relative card
+    if ($request->has('model') && $request->model == 'staff') {
+        $staff = Staff::find($request->id);
+        $this->getIssueDate($staff, $request->issue_date);
+        $this->printStaffCard($pdf, (object)$staff, $fontName); 
+    }
+
+    if ($request->has('model') && $request->model == 'relative') {
+        $relative = StaffRelative::find($request->id);
+        $this->getIssueDate($relative, $request->issue_date);
+        $this->printRelativeCard($pdf, (object)$relative, $fontName);   
+    }
+
+    // 5. Close and output PDF document
+    $pdf->Output('example.pdf', 'I');
+}
+
     private function getIssueDate($model, $issueDate){
         try {
             // Try to parse the provided date
