@@ -7,6 +7,7 @@
         </template>
         
         <div class="mx-auto sm:px-6 lg:px-8">
+            <!-- Alert Component -->
             <a-alert
                 v-if="form.published==false"
                 message="Your are in the form preview which is not yet PUBLISHED!"
@@ -55,33 +56,23 @@
                         </div>
                         <div v-else-if="field.type=='radio'" :key="field.id">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]">
-                                <a-radio-group v-model:value="formData[field.id]">
-                                    <template v-for="item in field.options" :key="item.value">
-                                        <a-radio 
-                                            :style="field.direction=='V' ? verticalStyle : null"
-                                            :class="field.direction=='V' ? 'vertical' : ''"
-                                            :value="item.value"
-                                        >
-                                            {{ item.label }}
-                                        </a-radio>
-                                    </template>
-                                </a-radio-group>
-                            </a-form-item>                        
+                                <div class="custom-option-group" :class="field.direction=='V' ? 'vertical' : ''">
+                                    <label v-for="item in field.options" :key="item.value" class="custom-option">
+                                        <input type="radio" :value="item.value" v-model="formData[field.id]" />
+                                        <span class="custom-label">{{ item.label }}</span>
+                                    </label>
+                                </div>
+                            </a-form-item>
                         </div>
                         <div v-else-if="field.type=='checkbox'" :key="field.id">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]">
-                                <a-checkbox-group v-model:value="formData[field.id]">
-                                    <template v-for="item in field.options" :key="item.value">
-                                        <a-checkbox 
-                                            :style="field.direction=='V' ? verticalStyle : null"
-                                            :class="field.direction=='V' ? 'vertical' : ''"
-                                            :value="item.value"
-                                        >
-                                            {{ item.label }}
-                                        </a-checkbox>
-                                    </template>
-                                </a-checkbox-group>
-                            </a-form-item>                        
+                                <div class="custom-option-group" :class="field.direction=='V' ? 'vertical' : ''">
+                                    <label v-for="item in field.options" :key="item.value" class="custom-option">
+                                        <input type="checkbox" :value="item.value" v-model="formData[field.id]" />
+                                        <span class="custom-label">{{ item.label }}</span>
+                                    </label>
+                                </div>
+                            </a-form-item>
                         </div>
                         <div v-else-if="field.type=='dropdown'" :key="field.id">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]">
@@ -144,6 +135,7 @@
                     <div class="text-center pb-10">
                         <a-button type="primary" html-type="submit">遞交 Submit</a-button>
                     </div>
+                    
                 </a-form>
             </div>
         </div>
@@ -206,30 +198,29 @@ export default {
                     width: '150px',
                 },
             },
-            verticalStyle: {
-                display: 'flex',
-                width: '100%',
-                marginBottom: '4px',
-                alignItems: 'flex-start',   // 👈 this aligns the box to the top
-            }
         }
     },
     created() {
+        // Initialize formData with default values based on field type
         if (this.form && this.form.fields) {
             this.form.fields.forEach(field => {
                 switch (field.type) {
                     case 'checkbox':
+                        // For checkboxes, always start with an empty array
                         this.formData[field.id] = [];
                         break;
                     case 'radio':
                     case 'select':
                     case 'dropdown':
+                        // For single-select fields, start with null or first option?
                         this.formData[field.id] = null;
                         break;
                     case 'true_false':
+                        // Boolean default
                         this.formData[field.id] = false;
                         break;
                     default:
+                        // Text, number, date, etc. start with null or empty string
                         this.formData[field.id] = '';
                         break;
                 }
@@ -244,6 +235,7 @@ export default {
             }, {
                 onSuccess: (page) => {
                     this.formData = {};
+                    // Optionally reset after success
                 },
                 onError: (err) => {
                     console.log(err);
@@ -266,30 +258,35 @@ export default {
     padding: 0px !important;
 }
 
-/* Force label text to wrap */
-.ant-radio-wrapper,
-.ant-checkbox-wrapper {
-    white-space: normal !important;
-    word-wrap: break-word !important;
-    overflow-wrap: break-word !important;
-    height: auto !important;
-    line-height: 1.4 !important;
+/* ========== Custom Radio / Checkbox ========== */
+.custom-option-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
 }
 
-/* Vertical layout – full width and top-align input */
-.ant-radio-wrapper.vertical,
-.ant-checkbox-wrapper.vertical {
-    display: flex !important;
-    width: 100% !important;
-    /* align-items: flex-start !important; */  /* already in inline style, but keep as fallback */
+.custom-option-group.vertical {
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-/* Optional fine-tune */
-.ant-radio-wrapper.vertical .ant-radio,
-.ant-checkbox-wrapper.vertical .ant-checkbox {
+.custom-option {
+    display: inline-flex;
+    align-items: flex-start;
+    cursor: pointer;
+}
+
+.custom-option input[type="radio"],
+.custom-option input[type="checkbox"] {
+    flex-shrink: 0;
     margin-top: 2px;
 }
-.span.ant-radio {
-    margin-top:0px!important;
+
+.custom-label {
+    margin-left: 4px;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 </style>
