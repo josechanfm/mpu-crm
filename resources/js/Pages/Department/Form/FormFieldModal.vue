@@ -32,7 +32,7 @@
                     <div class="ant-form-item-control">
                         <div class="ant-form-item-control-input">
                             <div class="flex flex-col gap-2">
-                                <!-- Each option row wrapped with a-form-item-rest -->
+                                <!-- Each option row with delete button -->
                                 <a-form-item-rest v-for="(option, idx) in localData.options" :key="idx">
                                     <div class="flex items-center gap-2">
                                         <span class="min-w-[40px] text-right font-medium text-gray-600">
@@ -45,11 +45,20 @@
                                             placeholder="Option label"
                                             class="flex-1"
                                         />
+                                        <a-button 
+                                            type="text" 
+                                            danger 
+                                            size="small"
+                                            @click="deleteOption(idx)"
+                                            class="flex-shrink-0"
+                                        >
+                                            <CloseOutlined />
+                                        </a-button>
                                     </div>
                                 </a-form-item-rest>
                                 <!-- Add buttons row -->
                                 <div class="mt-1 flex flex-wrap items-center gap-2">
-                                    <a-button type="dashed" @click="addOptionItem" class="flex-1">
+                                    <a-button type="primary" ghost @click="addOptionItem" class="flex-1">
                                         + Add option
                                     </a-button>
                                     <div class="flex items-center gap-1">
@@ -102,7 +111,12 @@
 </template>
 
 <script>
+import { CloseOutlined } from '@ant-design/icons-vue';
+
 export default {
+    components: {
+        CloseOutlined,
+    },
     props: {
         open: {
             type: Boolean,
@@ -224,6 +238,15 @@ export default {
             this.localData.options.push({ value: newOption, label: newOption });
             this.sortOptions();
         },
+        deleteOption(idx) {
+            const removed = this.localData.options[idx];
+            this.localData.options.splice(idx, 1);
+            // If the deleted option was 'option_other', clean up its associated data
+            if (removed && removed.value === 'option_other') {
+                delete this.localData[this.localData.id + '_other'];
+            }
+            this.sortOptions();
+        },
         toggleOtherOption(checked) {
             if (checked) {
                 const exists = this.localData.options.some(opt => opt.value === 'option_other');
@@ -237,7 +260,6 @@ export default {
                 const index = this.localData.options.findIndex(opt => opt.value === 'option_other');
                 if (index !== -1) {
                     this.localData.options.splice(index, 1);
-                    // Clean up associated _other field
                     delete this.localData[this.localData.id + '_other'];
                 }
             }
