@@ -10,7 +10,7 @@
             <!-- Alert Component -->
             <a-alert
                 v-if="form.published==false"
-                message="Your are in the form preview which is not yet PUBLISHED!"
+                message="Your are in the form preview which is NOT YET PUBLISHED!"
                 type="error"
                 closable
             />
@@ -272,7 +272,11 @@ export default {
     },
     methods: {
         onFinish(values) {
-            console.log(this.formData)
+
+            if(this.form.published == false){
+                alert('Hold on! The for has NOT YET published, could not formally submitted!')
+                return false;
+            }
             
             this.$inertia.post(route('forms.store'), {
                 formId: this.form.id,
