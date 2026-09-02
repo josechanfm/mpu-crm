@@ -13,7 +13,8 @@ class EntryRecord extends Model
     protected $fillable = [
         'entry_id',
         'form_field_id',
-        'field_value'
+        'field_value',
+        'extra'
     ];
     protected $casts = [
         'options' => 'array',

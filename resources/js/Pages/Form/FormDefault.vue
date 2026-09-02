@@ -14,7 +14,6 @@
                 type="error"
                 closable
             />
-
             <div class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                 <div class="text-center font-bold">{{ form.title }}</div>
                 <div v-if="form.banner">
@@ -62,6 +61,14 @@
                                         <span class="custom-label">{{ item.label }}</span>
                                     </label>
                                 </div>
+                                <div v-if="formData[field.id] == 'option_other'" class="flex items-center gap-2 pl-2">
+                                    <span class="ant-form-item-label" style="width: auto; padding: 0; font-weight: 500; white-space: nowrap;">
+                                        請填寫：
+                                    </span>
+                                    <a-input type="input" v-model:value="formData[field.id + '_other']" class="flex-1" />
+                                </div>
+
+                                
                             </a-form-item>
                         </div>
                         <div v-else-if="field.type=='checkbox'" :key="field.id">
@@ -71,7 +78,14 @@
                                         <input type="checkbox" :value="item.value" v-model="formData[field.id]" />
                                         <span class="custom-label">{{ item.label }}</span>
                                     </label>
+
                                 </div>
+                                    <div v-if="formData[field.id] && formData[field.id].includes('option_other')" class="flex items-center gap-2 pl-2">
+                                        <span class="ant-form-item-label" style="width: auto; padding: 0; font-weight: 500; white-space: nowrap;">
+                                            請填寫：
+                                        </span>
+                                         <a-input type="input" v-model:value="formData[field.id + '_other']" class="flex-1" />
+                                    </div>
                             </a-form-item>
                         </div>
                         <div v-else-if="field.type=='dropdown'" :key="field.id">
@@ -80,6 +94,14 @@
                                     v-model:value="formData[field.id]"
                                     :options="field.options"
                                 />
+                                <div v-if="formData[field.id] == 'option_other'" class="flex items-center gap-2 pl-2">
+                                    <span class="ant-form-item-label" style="width: auto; padding: 0; font-weight: 500; white-space: nowrap;">
+                                        請填寫：
+                                        <!-- {{ field.options.find(o => o.value == 'option_other').label }} -->
+                                    </span>
+                                    <a-input type="input" v-model:value="formData[field.id + '_other']" class="flex-1" />
+                                </div>
+
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='longtext'" :key="field.id">
@@ -204,33 +226,39 @@ export default {
         // Initialize formData with default values based on field type
         if (this.form && this.form.fields) {
             this.form.fields.forEach(field => {
+                // Default value by type
                 switch (field.type) {
                     case 'checkbox':
-                        // For checkboxes, always start with an empty array
                         this.formData[field.id] = [];
                         break;
                     case 'radio':
+                        this.formData[field.id] = [];
                     case 'select':
                     case 'dropdown':
-                        // For single-select fields, start with null or first option?
                         this.formData[field.id] = null;
                         break;
                     case 'true_false':
-                        // Boolean default
                         this.formData[field.id] = false;
                         break;
                     default:
-                        // Text, number, date, etc. start with null or empty string
                         this.formData[field.id] = '';
                         break;
+                }
+
+                // If the field has an "Other" option, prepare the _other key
+                // Safely check that options is an array before using .some()
+                if (Array.isArray(field.options) && field.options.some(opt => opt.value === 'option_other')) {
+                    this.formData[field.id + '_other'] = '';   // empty string, not null
                 }
             });
         }
     },
     methods: {
         onFinish(values) {
+            console.log(this.formData)
+            
             this.$inertia.post(route('forms.store'), {
-                form: this.form,
+                formId: this.form.id,
                 fields: this.formData
             }, {
                 onSuccess: (page) => {

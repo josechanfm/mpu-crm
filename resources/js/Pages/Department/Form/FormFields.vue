@@ -7,7 +7,7 @@
             <a-button @click="createRecord()" type="primary">Create Field</a-button>
         </div>
         <a-table 
-            :dataSource="dataModel" 
+            :dataSource="formFields" 
             :columns="columns" 
             :customRow="customRow"
         >
@@ -55,11 +55,10 @@
 
 <script>
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
-import { defineComponent, reactive } from 'vue';
 import { VueDraggableNext } from 'vue-draggable-next'
 import { HolderOutlined } from "@ant-design/icons-vue";
 import Sortable from "sortablejs";
-import FormFieldModal from './FormFieldModal.vue';   // <-- new import
+import FormFieldModal from './FormFieldModal.vue';
 
 export default {
     components: {
@@ -67,69 +66,43 @@ export default {
         draggable: VueDraggableNext,
         Sortable,
         HolderOutlined,
-        FormFieldModal,   // <-- registered
+        FormFieldModal,
     },
-    props: ['department', 'form', 'fields','configs'],
+    props: ['department', 'form', 'fields', 'configs'],
     data() {
         return {
+            // Modal state
             modal: {
                 isOpen: false,
-                data: {},
-                title: "Modal",
-                mode: ""
+                data: {},      // data for the field being created/edited
+                mode: '',      // 'CREATE' or 'EDIT'
             },
-            dataModel: null,
+            // Table data
+            formFields: null,
             isDraggable: false,
-            // labelCol is still used in the child, but moved there; we can keep or remove
-            // Keep only data that is still used in parent
             labelCol: {
-                style: {
-                    width: '150px',
-                },
+                style: { width: '150px' },
             },
         }
     },
     created() {
-        this.dataModel = this.fields
+        this.formFields = this.fields;
     },
     computed: {
         columns() {
             return [
-                {
-                    title: '拖拉',
-                    width: '60px',
-                    dataIndex: 'dragger',
-                }, {
-                    title: '欄位名稱',
-                    i18n: 'field_label',
-                    dataIndex: 'field_label',
-                }, {
-                    title: '欄位格式',
-                    i18n: 'field_type',
-                    dataIndex: 'type',
-                }, {
-                    title: '必填欄',
-                    i18n: 'compulsory',
-                    dataIndex: 'required',
-                }, {
-                    title: '顯示於輸出表格',
-                    i18n: 'in_column',
-                    dataIndex: 'in_column',
-                }, {
-                    title: '操作',
-                    i18n: 'operation',
-                    dataIndex: 'operation'
-                }
+                { title: '拖拉', width: '60px', dataIndex: 'dragger' },
+                { title: '欄位名稱', i18n: 'field_label', dataIndex: 'field_label' },
+                { title: '欄位格式', i18n: 'field_type', dataIndex: 'type' },
+                { title: '必填欄', i18n: 'compulsory', dataIndex: 'required' },
+                { title: '顯示於輸出表格', i18n: 'in_column', dataIndex: 'in_column' },
+                { title: '操作', i18n: 'operation', dataIndex: 'operation' }
             ]
         },
-        // Permission check – adapt to your actual implementation
         isAdminOrMaster() {
-            // Replace with your own logic, e.g.:
-            // return this.$page.props.auth.user.isAdmin || this.$page.props.auth.user.isMaster;
-            return this.is('admin | master'); // assuming this method exists
+            return this.is('admin | master');
         },
         optionTemplates() {
-            // Moved from data to computed to react to configs changes
             return [
                 { value: 'clear', label: 'Reset', template: [{ value: 'option_1', label: 'option_1' }] },
                 {
@@ -151,169 +124,100 @@ export default {
     methods: {
         // ---- Modal control ----
         createRecord() {
-            this.modal.data = {};
-            this.modal.data.form_id = this.form.id;
-            this.modal.data.direction = 'V';
+            this.modal.data = {
+                form_id: this.form.id,
+                direction: 'V',
+            };
             this.modal.mode = "CREATE";
             this.modal.isOpen = true;
         },
         editRecord(record) {
-            this.modal.data = { ...record };
-            // Ensure options is an array
-            try {
-                this.modal.data.options = this.modal.data.options;
-            } catch (e) {
-                this.modal.data.options = [{ value: 'option_1', label: 'option_1' }];
+            // Clone the record and ensure options is an array for option-based types
+            const data = { ...record };
+            if (['radio', 'checkbox', 'dropdown'].includes(data.type) && !Array.isArray(data.options)) {
+                data.options = [{ value: 'option_1', label: 'option_1' }];
             }
+            this.modal.data = data;
             this.modal.mode = "EDIT";
             this.modal.isOpen = true;
         },
-        // ---- Save/Update handlers (called by modal) ----
+        // ---- Save/Update handlers ----
         handleSaveField(data) {
             this.$inertia.post(route('manage.form.fields.store', { form: this.form.id }), data, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     this.modal.isOpen = false;
-                    // Optionally reload or update list (fields are refreshed by Inertia)
                 },
-                onError: (err) => {
-                    console.log(err);
-                }
+                onError: (err) => console.log(err),
             });
         },
         handleUpdateField(data) {
             this.$inertia.patch(route('manage.form.fields.update', { form: this.form.id, field: data }), data, {
-                onSuccess: (page) => {
+                onSuccess: () => {
                     this.modal.isOpen = false;
-                    console.log(page);
                 },
-                onError: (error) => {
-                    console.log(error);
-                }
+                onError: (err) => console.log(err),
             });
         },
-        // ---- Other record actions ----
+        // ---- Other actions ----
         cloneRecord(record) {
             this.$inertia.post(route('manage.form.field.clone', { formField: record.id }), {
                 preserveState: false,
-                onSuccess: (page) => {
-                    // page refreshed
-                },
-                onError: (err) => {
-                    console.log(err);
-                }
+                onSuccess: () => {},
+                onError: (err) => console.log(err),
             });
         },
         deleteRecord(record) {
-            this.$inertia.delete(route('manage.form.fields.destroy', {
-                form: this.form.id, field: record.id
-            }), {
+            this.$inertia.delete(route('manage.form.fields.destroy', { form: this.form.id, field: record.id }), {
                 preserveState: false,
-                onSuccess: (page) => {
-                    console.log('the field has been deleted!');
-                },
-                onError: (error) => {
-                    alert(error.message);
-                }
-            });
-        },
-        // ---- Drag & drop ----
-        rowChange(event) {
-            var data = []
-            this.fields.forEach((field, idx) => {
-                data.push({ id: field.id, form_id: field.form_id, sequence: idx })
-            })
-            console.log(data);
-            this.$inertia.post(route("manage.form.fieldsSequence", this.form.id), data, {
-                onSuccess: (page) => {
-                    console.log(page);
-                },
-                onError: (error) => {
-                    console.log(error);
-                }
+                onSuccess: () => console.log('deleted'),
+                onError: (err) => alert(err.message),
             });
         },
         reloadFormFields() {
-            this.$inertia.reload({
-                only: ["fields"],
-                onSuccess: (page) => {
-                    this.isDraggable = false;
-                },
-            });
+            this.$inertia.reload({ only: ["fields"], onSuccess: () => { this.isDraggable = false; } });
         },
+        // ---- Drag & drop ----
         customRow(record, index) {
             return {
-                domProps: {
-                    draggable: this.isDraggable
-                },
-                style: {
-                    cursor: this.isDraggable ? 'move' : 'default'
-                },
+                domProps: { draggable: this.isDraggable },
+                style: { cursor: this.isDraggable ? 'move' : 'default' },
                 onMouseenter: event => {
-                    if (this.isDraggable) {
-                        var ev = event || window.event
-                        ev.target.draggable = true
-                    }
+                    if (this.isDraggable) event.target.draggable = true;
                 },
                 onDragstart: event => {
                     if (this.isDraggable) {
-                        var ev = event || window.event
-                        ev.stopPropagation()
-                        this.sourceObj = record
+                        event.stopPropagation();
+                        this.sourceObj = record;
                     }
                 },
                 onDragover: event => {
-                    if (this.isDraggable) {
-                        var ev = event || window.event
-                        ev.preventDefault()
-                    }
+                    if (this.isDraggable) event.preventDefault();
                 },
                 onDrop: event => {
                     if (this.isDraggable) {
-                        var ev = event || window.event
-                        ev.stopPropagation()
-                        this.targetObj = record
-                        let sourceIndex = ''
-                        let targetIndex = ''
-                        this.dataModel.map((item, idx) => {
-                            if (this.sourceObj == item) {
-                                sourceIndex = idx
-                            }
-                            if (this.targetObj == item) {
-                                targetIndex = idx
-                            }
-                        })
-                        let arr = []
-                        this.dataModel.map((item, idx) => {
-                            if (sourceIndex == idx) {
-                                arr.push(this.targetObj)
-                            } else if (targetIndex == idx) {
-                                arr.push(this.sourceObj)
-                            } else {
-                                arr.push(item)
-                            }
-                        })
-                        arr.map((item, idx) => {
-                            arr[idx].sequence = idx
-                        })
-                        this.dataModel = arr
-                        this.$inertia.post(route("manage.form.fieldsSequence", this.form.id), this.dataModel, {
-                            onSuccess: (page) => {
-                                console.log(page);
-                            },
-                            onError: (error) => {
-                                console.log(error);
-                            },
+                        event.stopPropagation();
+                        this.targetObj = record;
+                        let sourceIndex = '', targetIndex = '';
+                        this.formFields.forEach((item, idx) => {
+                            if (this.sourceObj == item) sourceIndex = idx;
+                            if (this.targetObj == item) targetIndex = idx;
+                        });
+                        const arr = [];
+                        this.formFields.forEach((item, idx) => {
+                            if (sourceIndex == idx) arr.push(this.targetObj);
+                            else if (targetIndex == idx) arr.push(this.sourceObj);
+                            else arr.push(item);
+                        });
+                        arr.forEach((item, idx) => { arr[idx].sequence = idx; });
+                        this.formFields = arr;
+                        this.$inertia.post(route("manage.form.fieldsSequence", this.form.id), this.formFields, {
+                            onSuccess: () => {},
+                            onError: (err) => console.log(err),
                         });
                     }
                 },
             }
         }
     },
-    watch: {
-        // no longer needed for modal type changes – moved to child
-    }
 }
 </script>
-
-<style scoped>
-</style>

@@ -44,22 +44,31 @@ class FormController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $fields=$request->fields;
+        $formId=$request->formId;
+        // $form=Form::with('fields')->find($request->formId);
         $entry=new Entry();
-        $entry->form_id=$request->form['id'];
+        $entry->form_id=$formId;
         //$entry->member_id=auth()->user()->id;
         $entry->save();
 
-        foreach($request->fields as $key=>$value){
-            $field=new EntryRecord();
-            $field->entry_id=$entry->id;
-            $field->form_field_id=$key;
-            if(is_array($value)){
-                $field->field_value=json_encode($value, JSON_UNESCAPED_UNICODE);
-            }else{
-                $field->field_value=$value;
+        foreach($fields as $key=>$value){
+            if(!is_int($key)){
+                continue;
             }
-            $field->save();
+            $entryRecord=new EntryRecord();
+            $entryRecord->entry_id=$entry->id;
+            $entryRecord->form_field_id=$key;
+            $optionOther=null;
+            if(array_key_exists($key.'_other', $fields) ){
+               $entryRecord->extra=json_encode(["option_other"=>$fields[$key.'_other']]);
+              }
+            if(is_array($value)){
+                $entryRecord->field_value=json_encode($value, JSON_UNESCAPED_UNICODE);
+            }else{
+                $entryRecord->field_value=$value;
+            }
+            $entryRecord->save();
         }
         $form=Form::find($entry->form_id);
         return Inertia::render('Form/Thanks',[

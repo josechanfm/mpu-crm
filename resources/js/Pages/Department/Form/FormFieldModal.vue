@@ -22,32 +22,48 @@
                          v-if="['textarea', 'longtext', 'richtext'].includes(localData.type)">
                 <a-input-number v-model:value="localData.options" />
             </a-form-item>
-            
+
             <!-- Options editor (for radio, checkbox, dropdown) -->
             <template v-if="['radio', 'checkbox', 'dropdown'].includes(localData.type)">
-                <a-form-item label="Options" name="options">
-                    <div class="flex flex-col gap-2">
-                        <!-- Each option row -->
-                        <div v-for="(option, idx) in localData.options" :key="idx" class="flex items-center gap-2">
-                            <span class="min-w-[30px] text-right font-medium text-gray-600">{{ idx + 1 }}.</span>
-                            <a-input 
-                                type="input" 
-                                v-model:value="option.label"
-                                placeholder="Option label"
-                                class="flex-1"
-                            />
-                        </div>
-                        <!-- Add option button -->
-                        <div class="mt-1">
-                            <a-button type="dashed" @click="addOptionItem" block>
-                                + Add option
-                            </a-button>
-                            <div>
-                                with other
+                <div class="ant-form-item">
+                    <div class="ant-form-item-label">
+                        <label>Options</label>
+                    </div>
+                    <div class="ant-form-item-control">
+                        <div class="ant-form-item-control-input">
+                            <div class="flex flex-col gap-2">
+                                <!-- Each option row wrapped with a-form-item-rest -->
+                                <a-form-item-rest v-for="(option, idx) in localData.options" :key="idx">
+                                    <div class="flex items-center gap-2">
+                                        <span class="min-w-[40px] text-right font-medium text-gray-600">
+                                            <span v-if="option.value=='option_other'">其他.</span>
+                                            <span v-else>{{ idx + 1 }}.</span>
+                                        </span>
+                                        <a-input 
+                                            type="input" 
+                                            v-model:value="option.label"
+                                            placeholder="Option label"
+                                            class="flex-1"
+                                        />
+                                    </div>
+                                </a-form-item-rest>
+                                <!-- Add buttons row -->
+                                <div class="mt-1 flex flex-wrap items-center gap-2">
+                                    <a-button type="dashed" @click="addOptionItem" class="flex-1">
+                                        + Add option
+                                    </a-button>
+                                    <div class="flex items-center gap-1">
+                                        <a-checkbox v-model:checked="hasOtherOption">
+                                            Include "Other" option
+                                        </a-checkbox>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-500">"Other" option allows users to enter custom text</div>
                             </div>
                         </div>
                     </div>
-                </a-form-item>
+                </div>
+
                 <a-form-item label="Template" name="optionTemplate">
                     <a-select :options="optionTemplates" @change="onChangeOptionTemplate" />
                 </a-form-item>
@@ -148,6 +164,16 @@ export default {
             },
         };
     },
+    computed: {
+        hasOtherOption: {
+            get() {
+                return this.localData.options?.some(opt => opt.value === 'option_other') ?? false;
+            },
+            set(checked) {
+                this.toggleOtherOption(checked);
+            }
+        }
+    },
     watch: {
         open(newVal) {
             if (newVal) {
@@ -159,6 +185,7 @@ export default {
                 } else {
                     this.localData = this.cloneData(this.initialData);
                 }
+                this.ensureOptionsArray();
             }
         },
         initialData: {
@@ -166,6 +193,7 @@ export default {
             handler(newVal) {
                 if (this.open && this.mode === 'EDIT') {
                     this.localData = this.cloneData(newVal);
+                    this.ensureOptionsArray();
                 }
             },
         },
@@ -194,11 +222,40 @@ export default {
         addOptionItem() {
             const newOption = 'option_' + (this.localData.options.length + 1);
             this.localData.options.push({ value: newOption, label: newOption });
+            this.sortOptions();
+        },
+        toggleOtherOption(checked) {
+            if (checked) {
+                const exists = this.localData.options.some(opt => opt.value === 'option_other');
+                if (!exists) {
+                    this.localData.options.push({ value: 'option_other', label: '其他' });
+                    this.sortOptions();
+                } else {
+                    this.$message?.warning('"Other" option already exists.');
+                }
+            } else {
+                const index = this.localData.options.findIndex(opt => opt.value === 'option_other');
+                if (index !== -1) {
+                    this.localData.options.splice(index, 1);
+                    // Clean up associated _other field
+                    delete this.localData[this.localData.id + '_other'];
+                }
+            }
+        },
+        sortOptions() {
+            this.localData.options.sort((a, b) => {
+                if (a.value === 'option_other') return 1;
+                if (b.value === 'option_other') return -1;
+                const numA = parseInt(a.value.replace('option_', ''), 10);
+                const numB = parseInt(b.value.replace('option_', ''), 10);
+                return numA - numB;
+            });
         },
         onChangeOptionTemplate(value) {
             const template = this.optionTemplates.find(t => t.value == value);
             if (template) {
                 this.localData.options = this.cloneData(template.template);
+                this.sortOptions();
             }
         },
         onChangeType(value) {
@@ -207,9 +264,15 @@ export default {
                     this.localData.options = 5;
                 }
             } else if (['radio', 'checkbox', 'dropdown'].includes(value)) {
-                if (typeof this.localData.options !== 'object' || !Array.isArray(this.localData.options)) {
+                if (!Array.isArray(this.localData.options)) {
                     this.localData.options = [{ value: 'option_1', label: 'option_1' }];
                 }
+            }
+        },
+        ensureOptionsArray() {
+            const type = this.localData?.type;
+            if (['radio', 'checkbox', 'dropdown'].includes(type) && !Array.isArray(this.localData.options)) {
+                this.localData.options = [{ value: 'option_1', label: 'option_1' }];
             }
         },
     },

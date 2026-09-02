@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('entry_id');
             $table->string('form_field_id');
             $table->text('field_value');
+            $table->text('extra')->nullable();
             $table->timestamps();
         });
     }

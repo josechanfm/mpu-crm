@@ -28,7 +28,8 @@
               <a-button @click="openQrCodeModal(record)">Show QR Code</a-button>
               <a-button @click="cloneForm(record)">Clone</a-button>
               <a-button @click="backupRecords(record)" v-if="record.entries_count > 0">Backup</a-button>
-              <a-button :href="route('forms.show', { form: record.id, view: record.uuid })" target="_blank">Link</a-button>
+              <a-button :href="route('forms.show', { form: record.id, view: record.uuid })" target="_blank">Preview</a-button>
+              
             </template>
             <template v-else-if="column.type == 'yesno'">
               <span v-if="record[column.dataIndex] == 1">Yes</span>
