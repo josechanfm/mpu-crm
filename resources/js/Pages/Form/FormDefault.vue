@@ -63,7 +63,7 @@
                                 </div>
                                 <div v-if="formData[field.id] == 'option_other'" class="flex items-center gap-2 pl-2">
                                     <span class="ant-form-item-label" style="width: auto; padding: 0; font-weight: 500; white-space: nowrap;">
-                                        請填寫：
+                                        請填寫/Please fill
                                     </span>
                                     <a-input type="input" v-model:value="formData[field.id + '_other']" class="flex-1" />
                                 </div>
@@ -90,17 +90,17 @@
                                 <!-- "Other" text input -->
                                 <div v-if="formData[field.id] && formData[field.id].includes('option_other')" class="flex items-center gap-2 pl-2">
                                     <span class="ant-form-item-label" style="width: auto; padding: 0; font-weight: 500; white-space: nowrap;">
-                                        請填寫：
+                                        請填寫/Please fill
                                     </span>
                                     <a-input type="input" v-model:value="formData[field.id + '_other']" class="flex-1" />
                                 </div>
                                 <!-- Counter (visual feedback only) -->
                                 <div v-if="field.extra?.option_max" class="text-xs mt-1">
                                     <span :class="formData[field.id]?.length >= parseInt(field.extra.option_max, 10) ? 'text-red-500' : 'text-gray-500'">
-                                        已選 {{ formData[field.id]?.length || 0 }} / 最多 {{ parseInt(field.extra.option_max, 10) }} 項
+                                        已選/Already selected {{ formData[field.id]?.length || 0 }} /  {{ parseInt(field.extra.option_max, 10) }} 
                                     </span>
                                     <span v-if="formData[field.id]?.length >= parseInt(field.extra.option_max, 10)" class="text-red-500 ml-2">
-                                        (已達上限)
+                                        (已達上限/Max select)
                                     </span>
                                 </div>
                             </a-form-item>
@@ -113,7 +113,7 @@
                                 />
                                 <div v-if="formData[field.id] == 'option_other'" class="flex items-center gap-2 pl-2">
                                     <span class="ant-form-item-label" style="width: auto; padding: 0; font-weight: 500; white-space: nowrap;">
-                                        請填寫：
+                                        請填寫/Please fill
                                         <!-- {{ field.options.find(o => o.value == 'option_other').label }} -->
                                     </span>
                                     <a-input type="input" v-model:value="formData[field.id + '_other']" class="flex-1" />

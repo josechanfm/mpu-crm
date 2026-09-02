@@ -176,6 +176,15 @@ class Form extends Model implements HasMedia
                     $recordOptions=json_decode($record->field_value);
                     foreach($options as $key=>$value){
                         $options[$key]=in_array($key, $recordOptions)?1:null;
+
+                        if($key=='option_other'){
+                            $decoded = json_decode($record->extra, true);
+                            if (json_last_error() === JSON_ERROR_NONE) {
+                                $options['option_other']=$decoded['option_other'];
+                                //dd($record->extra, $decoded['option_other']);
+                            }
+
+                        }
                         // dd($options, $key, $value, $recordOptions, in_array($key, $recordOptions));
                     }
                     //dd($options, $recordOptions);

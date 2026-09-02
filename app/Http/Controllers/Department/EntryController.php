@@ -61,9 +61,22 @@ class EntryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Form $form, Entry $entry)
     {
-        //
+        $records=array_column($entry->records->toArray(),null,'form_field_id');
+        $formFields = $form->fields->toArray();
+
+        //dd($form->fields, $formFields, $entry, $records);
+
+        foreach($formFields as $i=>$field){
+            $formFields[$i]['entry_record']=$records[$field['id']];
+        }
+
+        return inertia('Department/Form/EntryRecord', [
+            'form' => $form,
+            'entry' => $entry,
+            'formFields'=>$formFields
+        ]);
     }
 
     /**
