@@ -63,27 +63,29 @@
                   </template>
 
                   <!-- Radio / Checkbox / Dropdown / Select -->
-                  <template v-else-if="['dropdown', 'select', 'checkbox', 'radio'].includes(field.type)">
-                    <div class="space-y-1">
-                      <div
-                        v-for="option in field.options"
-                        :key="option.value"
-                        class="flex items-center gap-2 text-sm"
-                      >
-                        <span v-if="isSelected(field, option.value)" class="text-green-600 dark:text-green-400">
-                          ✅
-                        </span>
-                        <span v-else class="text-gray-300 dark:text-gray-600">⬜</span>
-                        <span>{{ option.label }}</span>
+<template v-else-if="['dropdown', 'select', 'checkbox', 'radio'].includes(field.type)">
+  <div class="space-y-1">
+    <div
+      v-for="option in field.options"
+      :key="option.value"
+      class="flex items-start gap-2 text-sm"
+    >
+      <!-- Checkmark / empty square -->
+      <span v-if="isSelected(field, option.value)" class="text-green-600 dark:text-green-400">
+        ✅
+      </span>
+      <span v-else class="text-gray-300 dark:text-gray-600">⬜</span>
 
-                        <span v-if="option.value=='option_other'">
-                          {{ getOptionOther(field.entry_record.extra) }} 
-                        </span>
-                      </div>
-                      
-                    </div>
-                    
-                  </template>
+      <!-- Option label -->
+      <span>{{ option.label }}</span>
+
+      <!-- Custom text for "Other" -->
+      <span v-if="option.value == 'option_other'">
+        {{ getOptionOther(field.entry_record.extra) }}
+      </span>
+    </div>
+  </div>
+</template>
 
                   <!-- True / False -->
                   <template v-else-if="field.type === 'true_false'">
