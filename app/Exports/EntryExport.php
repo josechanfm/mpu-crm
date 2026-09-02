@@ -26,7 +26,7 @@ class EntryExport implements FromCollection, WithHeadings
             if($field->type=='checkbox'){
                 $columnHeaders = array_merge(
                     $columnHeaders, 
-                    array_column($field->options,'value',null)
+                    array_column($field->options,'label',null)
                 );
             }
         }
