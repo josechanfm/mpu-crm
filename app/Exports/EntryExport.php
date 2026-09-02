@@ -19,7 +19,18 @@ class EntryExport implements FromCollection, WithHeadings
     }
     public function headings(): array
     {
-        $columnHeaders = $this->form->fields->where('type','<>','html')->pluck('field_label')->sortBy('sequence')->toArray();
+        $columnHeaders = [];
+        $fields=$this->form->fields->where('type','<>','html');
+        foreach($fields as $field){
+            $columnHeaders[]=$field->field_label;
+            if($field->type=='checkbox'){
+                $columnHeaders = array_merge(
+                    $columnHeaders, 
+                    array_column($field->options,'value',null)
+                );
+            }
+        }
+        //dd($columnHeaders);
         return $columnHeaders;
     }
     public function collection()

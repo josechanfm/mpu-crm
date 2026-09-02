@@ -161,47 +161,28 @@ class Form extends Model implements HasMedia
 
     public function excelRecords()
     {
-        $form_fields = $this->fields->where('type','<>','html')->sortBy('sequence');
+        $formFields = array_column($this->fields->where('type','<>','html')->sortBy('sequence')->toArray(),null,'id');
         $list = [];
         // $this->form->fields->pluck('field_label')->toArray();
         foreach ($this->entries as $entry) {
-            $entry_records = $entry->records;
-            
-            collect($form_fields)->map(function ($field, $key) use ($entry_records, &$table_data) {
-                $entry_record = collect($entry_records)->filter(function ($item) use ($field) {
-                    return $item->form_field_id == $field->id;
-                })->first();
-                // if ($field->type == 'radio') {
-                //     // $value = array_filter($field->options, function ($item) use ($entry_record) {
-                //     //     return $item['value'] === $entry_record?->field_value;
-                //     // });
-                //     // $table_data[$field->field_label] = reset($value)->label ?? '';
-                // // } else if ($field->type == 'checkbox') {
-                // //     //dd($entry_records, $field, $field->options);
-                // //     $value = array_filter(json_decode($field->options), function ($item) use ($entry_record) {
-                // //         return in_array($item->value, json_decode($entry_record->field_value));
-                // //     });
-                // //     $labels = [];
-                // //     foreach ($value as $item) {
-                // //         $labels[] = $item->label;
-                // //     }
-                // //     $result = implode(',', $labels);
-                // //     $table_data[$field->field_label] = $result;
-                // $table_data[$field->field_label] = $entry_record?->field_value;
-                // } else {
-                //     $table_data[$field->field_label] = $entry_record?->field_value;
-                // };
-                $value=$entry_record?->field_value;
-                $extra = json_decode($entry_record?->extra, true);
-                $hasOtherOption=str_contains($value, 'option_other');
+            $entryRecords = $entry->records;
+            $rowData=[];
+            foreach($entryRecords as $record){
+                $field=$formFields[$record->form_field_id];
+                $rowData[$field['field_label']]=$record->field_value;
 
-                if($hasOtherOption && is_array($extra) && array_key_exists('option_other', $extra)){
-                    $value.='::其他:'.$extra['option_other'];
+                if($field['type']=='checkbox'){
+                    $options = array_fill_keys(array_column($field['options'], 'value'), null);
+                    $recordOptions=json_decode($record->field_value);
+                    foreach($options as $key=>$value){
+                        $options[$key]=in_array($key, $recordOptions)?1:null;
+                        // dd($options, $key, $value, $recordOptions, in_array($key, $recordOptions));
+                    }
+                    //dd($options, $recordOptions);
+                    $rowData=array_merge($rowData, $options);
                 }
-                $table_data[$field->field_label] = $value;
-
-            });
-            array_push($list, $table_data);
+            }
+            array_push($list, $rowData);
         }
         return collect($list);
     }

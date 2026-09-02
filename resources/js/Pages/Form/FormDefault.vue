@@ -30,30 +30,30 @@
                     @finishFailed="onFinishFailed"
                 >
                     <template v-for="field in form.fields">
-                        <div v-if="form.require_member" :key="field.id">
+                        <template v-if="form.require_member" :key="field.id">
                             <a-form-item label="Member Id" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]">
                                 <a-input type="input" v-model:value="$page.props.user.id" />
                             </a-form-item>                        
-                        </div>
-                        <div v-if="field.type=='input'" :key="field.id">
+                        </template>
+                        <template v-if="field.type=='input'" :key="field.id">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]">
                                 <a-input type="input" v-model:value="formData[field.id]" />
                             </a-form-item>                        
-                        </div>
-                        <div v-else-if="field.type=='number'" :key="field.id">
+                        </template>
+                        <template v-else-if="field.type=='number'" >
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]">
                                 <a-input-number v-model:value="formData[field.id]" />
                             </a-form-item>                        
-                        </div>
-                        <div v-else-if="field.type=='select'" :key="field.id">
+                        </template>
+                        <template v-else-if="field.type=='select'" >
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]">
                                 <a-select
                                     v-model:value="formData[field.id]"
                                     :options="field.options"
                                 ></a-select>
                             </a-form-item>                        
-                        </div>
-                        <div v-else-if="field.type=='radio'" :key="field.id">
+                        </template>
+                        <template v-else-if="field.type=='radio'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]">
                                 <div class="custom-option-group" :class="field.direction=='V' ? 'vertical' : ''">
                                     <label v-for="item in field.options" :key="item.value" class="custom-option">
@@ -70,25 +70,42 @@
 
                                 
                             </a-form-item>
-                        </div>
-                        <div v-else-if="field.type=='checkbox'" :key="field.id">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]">
+                        </template>
+                        <template v-else-if="field.type=='checkbox'" >
+                            <a-form-item 
+                                :label="field.field_label" 
+                                :name="field.id" 
+                                :rules="checkboxRules(field)"
+                            >
                                 <div class="custom-option-group" :class="field.direction=='V' ? 'vertical' : ''">
                                     <label v-for="item in field.options" :key="item.value" class="custom-option">
-                                        <input type="checkbox" :value="item.value" v-model="formData[field.id]" />
+                                        <input 
+                                            type="checkbox" 
+                                            :value="item.value" 
+                                            v-model="formData[field.id]"
+                                        />
                                         <span class="custom-label">{{ item.label }}</span>
                                     </label>
-
                                 </div>
-                                    <div v-if="formData[field.id] && formData[field.id].includes('option_other')" class="flex items-center gap-2 pl-2">
-                                        <span class="ant-form-item-label" style="width: auto; padding: 0; font-weight: 500; white-space: nowrap;">
-                                            請填寫：
-                                        </span>
-                                         <a-input type="input" v-model:value="formData[field.id + '_other']" class="flex-1" />
-                                    </div>
+                                <!-- "Other" text input -->
+                                <div v-if="formData[field.id] && formData[field.id].includes('option_other')" class="flex items-center gap-2 pl-2">
+                                    <span class="ant-form-item-label" style="width: auto; padding: 0; font-weight: 500; white-space: nowrap;">
+                                        請填寫：
+                                    </span>
+                                    <a-input type="input" v-model:value="formData[field.id + '_other']" class="flex-1" />
+                                </div>
+                                <!-- Counter (visual feedback only) -->
+                                <div v-if="field.extra?.option_max" class="text-xs mt-1">
+                                    <span :class="formData[field.id]?.length >= parseInt(field.extra.option_max, 10) ? 'text-red-500' : 'text-gray-500'">
+                                        已選 {{ formData[field.id]?.length || 0 }} / 最多 {{ parseInt(field.extra.option_max, 10) }} 項
+                                    </span>
+                                    <span v-if="formData[field.id]?.length >= parseInt(field.extra.option_max, 10)" class="text-red-500 ml-2">
+                                        (已達上限)
+                                    </span>
+                                </div>
                             </a-form-item>
-                        </div>
-                        <div v-else-if="field.type=='dropdown'" :key="field.id">
+                        </template>
+                        <template v-else-if="field.type=='dropdown'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]">
                                 <a-select 
                                     v-model:value="formData[field.id]"
@@ -103,56 +120,56 @@
                                 </div>
 
                             </a-form-item>                        
-                        </div>
-                        <div v-else-if="field.type=='longtext'" :key="field.id">
+                        </template>
+                        <template v-else-if="field.type=='longtext'" >
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]">
                                 <a-textarea v-model:value="formData[field.id]" />
                             </a-form-item>                        
-                        </div>
-                        <div v-else-if="field.type=='richtext'" :key="field.id">
+                        </template>
+                        <template v-else-if="field.type=='richtext'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]">
                                 <quill-editor
                                     v-model="formData[field.id]"
                                     style="min-height:200px"
                                 />
                             </a-form-item>                        
-                        </div>
-                        <div v-else-if="field.type=='datetime'" :key="field.id">
+                        </template>
+                        <template v-else-if="field.type=='datetime'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]" >
                                 <a-date-picker v-model:value="formData[field.id]" :show-time="{ format: 'HH:mm' }" :format="dateTimeFormat" :valueFormat="dateTimeFormat" />
                             </a-form-item>                        
-                        </div>
-                        <div v-else-if="field.type=='date'" :key="field.id">
+                        </template>
+                        <template v-else-if="field.type=='date'" >
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]" >
                                 <a-date-picker v-model:value="formData[field.id]" :format="dateFormat" :valueFormat="dateFormat" />
                             </a-form-item>                        
-                        </div>
-                        <div v-else-if="field.type=='time'" :key="field.id">
+                        </template>
+                        <template v-else-if="field.type=='time'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]" >
                                 <a-date-picker v-model:value="formData[field.id]" picker="time" :show-time="{ format: 'HH:mm' }"  :format="timeFormat" :valueFormat="timeFormat" />
                             </a-form-item>                        
-                        </div>
-                        <div v-else-if="field.type=='email'" :key="field.id">
+                        </template>
+                        <template v-else-if="field.type=='email'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'},{type:'email'}]" >
                                 <a-input type="input" v-model:value="formData[field.id]" />
                             </a-form-item>                        
-                        </div>
-                        <div v-else-if="field.type=='true_false'" :key="field.id">
+                        </template>
+                        <template v-else-if="field.type=='true_false'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'},{type:'boolean'}]" >
                                 <a-checkbox v-model:checked="formData[field.id]" />
                             </a-form-item>                        
-                        </div>
-                        <div v-else-if="field.type=='html'" :key="field.id">
+                        </template>
+                        <template v-else-if="field.type=='html'" >
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'},{type:'boolean'}]" >
                                 <div v-html="field.extra"/>
                             </a-form-item>                        
-                        </div>
-                        <div v-else :key="field.id">
+                        </template>
+                        <template v-else >
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required, 'message':'必填欄位/Required'}]" >
                                 <p>Data type undefined</p>
                                 {{ field }}
                             </a-form-item>                        
-                        </div>
+                        </template>
                     </template>
                     <div class="text-center pb-10">
                         <a-button type="primary" html-type="submit">遞交 Submit</a-button>
@@ -276,6 +293,28 @@ export default {
                 top: 0,
                 behavior: 'smooth'
             });
+        },
+        checkboxRules(field) {
+            const rules = [];
+            if (field.required) {
+                rules.push({ required: true, message: '必填欄位/Required' });
+            }
+            const max = field.extra?.option_max;
+            if (max) {
+                const intMax = parseInt(max, 10);
+                if (!isNaN(intMax) && intMax > 0) {
+                    rules.push({
+                        validator: (rule, value) => {
+                            if (!value) return Promise.resolve();
+                            if (Array.isArray(value) && value.length > intMax) {
+                                return Promise.reject(`最多選擇 ${intMax} 項`);
+                            }
+                            return Promise.resolve();
+                        }
+                    });
+                }
+            }
+            return rules;
         }
     },
 }
