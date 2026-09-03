@@ -30,9 +30,11 @@
             </a-form-item>
             <a-form-item label="Form Name" name="name">
                 <a-input type="inpuut" v-model:value="form.name" />
+                <span>Name easy for reference and export as file name.</span>
             </a-form-item>
             <a-form-item label="Title" name="title">
                 <a-input type="inpuut" v-model:value="form.title" />
+                <span>Title name shows on top of the form.</span>
             </a-form-item>
                 <div class="text-right">
                     <a @click="form.openWelcome=!form.openWelcome">Welcome Message</a>

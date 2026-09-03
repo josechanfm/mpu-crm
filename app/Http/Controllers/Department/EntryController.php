@@ -138,15 +138,30 @@ class EntryController extends Controller
         //
     }
 
-    public function export(Form $form)
+    public function export(Form $form, Request $request)
     {
-        $slug = Str::of($form->name)->slug('-');
-        if ($slug->isEmpty()) {
-            // Fallback: remove forbidden URL characters and replace spaces with hyphens
-            $slug = Str::of($form->name)->trim()->replaceMatches('/[^\pL\d\s]+/u', '')->replace(' ', '-');
+        // Get the selected IDs (comma separated)
+        $ids = $request->input('ids') ? explode(',', $request->input('ids')) : [];
+
+        // Base query for entries of this form
+        $query = $form->entries()->with('records');
+
+        // If we have specific IDs, filter the query
+        if (!empty($ids)) {
+            $query->whereIn('id', $ids);
         }
-        //dd($form->excelRecords());
-        return Excel::download(new EntryExport($form), $slug->value.'.xlsx');
+
+        // Retrieve the filtered entries
+        $entries = $query->get();
+
+        // Generate filename
+        $filename = Str::of($form->name)
+            ->trim()
+            ->replaceMatches('/[^\pL\d\s]+/u', '')
+            ->replace(' ', '-');
+
+        // Pass both the form and the filtered entries to the export class
+        return Excel::download(new EntryExport($form, $entries), $filename . '.xlsx');
     }
 
     public function success(Form $form, Entry $entry, Request $request)

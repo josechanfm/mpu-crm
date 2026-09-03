@@ -1,6 +1,6 @@
 <template>
   <DepartmentLayout title="View Entry">
-    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl rounded-lg">
         <!-- Header -->
         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
@@ -30,7 +30,7 @@
             >
               <div class="flex flex-col sm:flex-row sm:items-start gap-2">
                 <!-- Label -->
-                <div class="sm:w-1/3 flex-shrink-0">
+                <div class="sm:w-1/5 flex-shrink-0">
                   <div class="text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ field.field_label }}
                     <span v-if="field.required" class="text-red-500 ml-1">*</span>
@@ -41,7 +41,7 @@
                 </div>
 
                 <!-- Value -->
-                <div class="sm:w-2/3 text-gray-900 dark:text-gray-100">
+                <div class="sm:w-4/5 text-gray-900 dark:text-gray-100">
                   <!-- Input / Number / Email -->
                   <template v-if="['input', 'number', 'email'].includes(field.type)">
                     <span class="break-all">{{ field.entry_record?.field_value || '—' }}</span>
