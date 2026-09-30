@@ -8,5 +8,7 @@
 
 .ant-btn-secondary{
     @apply bg-green-300 w-7
-
+}
+.ql-align-center{
+ text-align:center;   
 }
