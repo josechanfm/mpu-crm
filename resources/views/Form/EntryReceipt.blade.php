@@ -50,6 +50,7 @@
             border: 1px solid #ccc;
             padding: 10px;
             text-align: left;
+            background-color: #f0f0f0;
         }
     </style>
 </head>
@@ -57,7 +58,7 @@
 
 <div>
     <div>
-        <img src="{{ public_path('/storage/images/mpu_banner.png') }}"
+        <img src="file://{{ public_path('storage/images/mpu_banner.png') }}"
              alt="MPU Logo"
              style="display: block; margin: 0 auto 20px; height: 80px;" />
     </div>
@@ -75,7 +76,7 @@
             </thead>
             <tbody>
                 @php
-                    // Create a mapping of form_field_id to field_label and options
+                    // Build a mapping of form_field_id => [type, label, options]
                     $fieldsMap = [];
                     foreach ($entry->form->fields as $field) {
                         $fieldsMap[$field->id] = [
@@ -84,9 +85,10 @@
                             'options' => $field->options,
                         ];
                     }
+                @endphp
 
-                    // Loop through entry records and display field names
-                    foreach ($entry->records as $record) {
+                @forelse($entry->records as $record)
+                    @php
                         $fieldId    = $record->form_field_id;
                         $fieldName  = $fieldsMap[$fieldId]['label'] ?? 'Unknown Field';
                         $fieldType  = $fieldsMap[$fieldId]['type'] ?? null;
@@ -122,16 +124,17 @@
                                 // keep as-is
                                 break;
                         }
-                @endphp
+                    @endphp
 
-                <tr>
-                    <td>{{ $fieldName }}</td>
-                    <td>{!! $fieldValue !!}</td>
-                </tr>
-
-                @php
-                    } // end foreach records
-                @endphp
+                    <tr>
+                        <td>{{ $fieldName }}</td>
+                        <td>{{ $fieldValue }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="2" style="text-align: center;">No records / 無記錄</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
