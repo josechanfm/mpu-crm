@@ -7,7 +7,7 @@
 
     <style type="text/css">
         @font-face {
-            font-family: 'NotoSansTC';
+            font-family: 'NotoSansTC', 'NotoSansSC', sans-serif;
             font-style: normal;
             font-weight: 400;
             src: url('{{ public_path('fonts/Noto/NotoSansTC-Regular.ttf') }}') format('truetype');
