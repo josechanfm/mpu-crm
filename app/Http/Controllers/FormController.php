@@ -173,7 +173,7 @@ class FormController extends Controller
             ->setOption([
                 'fontDir' => public_path('fonts/Noto'),
                 'fontCache' => public_path('fonts'),
-                'defaultFont' => 'NotoSansTC',
+                'defaultFont' => 'SimHei',
                 'margin-top' => '20mm',    // Set top margin
                 'margin-right' => '50mm',  // Set right margin
                 'margin-bottom' => '20mm', // Set bottom margin
