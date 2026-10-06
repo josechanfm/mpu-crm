@@ -6,8 +6,7 @@
 <style type="text/css">
     @font-face {
         font-family: SimHei;
-        src: url('{{ public_path('fonts/simhei.ttf') }}') format('truetype');
-
+        src: url('{{base_path().' /storage/'}}fonts/simhei.ttf') format('truetype')
     }
 
     /*         
