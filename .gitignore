@@ -9,6 +9,7 @@
 /public/images
 !public/images/souvenirs/bear_poster.jpg
 !public/images/souvenirs/page_url.jpg
+/public/fonts
 /vendor
 .env
 .env.backup
