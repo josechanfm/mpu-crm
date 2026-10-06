@@ -159,33 +159,35 @@ class FormController extends Controller
         return redirect()->route('forms.index');
     }
 
-    public function receipt(Entry $entry, Request $request){
-        if($entry && $request->has('uuid') && $request->uuid==$entry->uuid){
-            //dd($entry->load(['form','records']));
-            // return view('Form/EntryReceipt', [
-            //     'entry' => $entry->load(['form','records']),
-            // ]);
+    public function receipt(Entry $entry, Request $request)
+    {
+        if ($entry && $request->filled('uuid') && $request->input('uuid') === $entry->uuid) {
 
             $pdf = PDF::loadView('Form/EntryReceipt', [
-                'entry' => $entry->load(['form','records']),
+                'entry' => $entry->load(['form', 'records']),
             ])
             ->setPaper('A4', 'portrait')
             ->setOption([
-                'fontDir' => public_path('fonts/Noto'),
-                'fontCache' => public_path('fonts'),
-                'defaultFont' => 'NotoSansTC',
-                'margin-top' => '20mm',    // Set top margin
-                'margin-right' => '50mm',  // Set right margin
-                'margin-bottom' => '20mm', // Set bottom margin
-                'margin-left' => '15mm',   // Set left margin
+                // Folder containing SimHei.ufm, SimHei.json, and simhei.ttf
+                'fontDir'     => public_path('fonts'),
+
+                // Must match the alias you registered with load_font.php
+                'defaultFont' => 'SimHei',
+
+                'margin-top'    => '20mm',
+                'margin-right'  => '50mm',
+                'margin-bottom' => '20mm',
+                'margin-left'   => '15mm',
+
+                // Optional but recommended
+                'isRemoteEnabled'      => true,
+                'isHtml5ParserEnabled' => true,
+                'chroot'               => public_path(),
             ]);
 
-            //$pdf->render();
-            
-            return $pdf->stream('receipt.pdf', array('Attachment' => false));
-
-
+            return $pdf->stream('receipt.pdf', ['Attachment' => false]);
         }
+
         return redirect()->route('forms.index');
     }
 
