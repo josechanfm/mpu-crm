@@ -212,7 +212,7 @@
 <table class="header">
     <tr>
         <td class="logo" style="width: 240px;">
-            <img src="file://{{ public_path('/images/mpu_banner.png') }}" alt="MPU Logo" />
+            <img src="file://{{ public_path('storage/images/mpu_banner.png') }}" alt="MPU Logo" />
         </td>
         <td class="institution">
             <div class="zh">澳門理工大學</div>
