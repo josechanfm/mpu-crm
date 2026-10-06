@@ -1,26 +1,37 @@
 <!doctype html>
-<html>
-    <head>
+<html lang="zh-Hant">
+<head>
     <meta charset="UTF-8">
     <title>Macao Polytechnic University</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <style type="text/css">
-        @font-face {
-            font-family: SimHei, sans-serif;
-            font-style: normal;
-            font-weight: 400;
-            /* src: url('{{ public_path('fonts/Noto/NotoSansTC-Regular.ttf') }}') format('truetype'); */
+        @page {
+            margin: 0; /* margins handled by dompdf setOption() */
+        }
+
+        * {
+            font-family: 'SimHei', sans-serif;
+            font-weight: normal;   /* SimHei has no bold face */
+            font-style: normal;    /* SimHei has no italic face */
         }
 
         body {
             margin: 10px;
-            font-family: SimHei, sans-serif;
+            font-family: 'SimHei', sans-serif;
+            font-size: 12px;
+            color: #000;
         }
-    
+
+        h1, h2, h3, h4, h5, h6,
+        b, strong, th {
+            font-family: 'SimHei', sans-serif;
+            font-weight: normal;   /* avoid tofu from missing bold face */
+        }
+
         table {
-            border-spacing: 0px;
-            width: 100%
+            border-spacing: 0;
+            width: 100%;
         }
 
         table,
@@ -29,93 +40,97 @@
             border-collapse: collapse;
         }
 
-        table tr {
-            line-height: 4px;
+        table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            vertical-align: top;
         }
 
-        table td {
-            border: 1px solid;
-            padding-left: 2px;
+        th {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
         }
     </style>
 </head>
 <body>
 
-<div style="font-family: SimHei">
+<div>
     <div>
-        <img src="{{ public_path('/storage/images/mpu_banner.png') }}" alt="MPU Logo" style="display: block; margin: 0 auto 20px; height: 80px;" />
+        <img src="{{ public_path('/storage/images/mpu_banner.png') }}"
+             alt="MPU Logo"
+             style="display: block; margin: 0 auto 20px; height: 80px;" />
     </div>
+
     <div>
-        <h2 style="text-align: center; margin-top: 20px;">{{ $entry->form->title }}</h2> <!-- Form title -->
-        <div style="text-align: right">No.: {{ $entry->uid }}</div>
-        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <h2 style="text-align: center; margin-top: 20px;">{{ $entry->form->title }}</h2>
+        <div style="text-align: right;">No.: {{ $entry->uid }}</div>
+
+        <table style="margin-top: 20px;">
             <thead>
                 <tr>
-                    <th style="border: 1px solid #ccc; padding: 10px; text-align: left;">Field Name / 欄位</th>
-                    <th style="border: 1px solid #ccc; padding: 10px; text-align: left;">Value / 內容</th>
+                    <th>Field Name / 欄位</th>
+                    <th>Value / 內容</th>
                 </tr>
             </thead>
             <tbody>
                 @php
-                // Create a mapping of form_field_id to field_label and options
-                $fieldsMap = [];
-                foreach ($entry->form->fields as $field) {
-                    $fieldsMap[$field->id] = [
-                        'type'=>$field->type,
-                        'label' => $field->field_label,
-                        'options' => $field->options // Assuming options is an array
-                    ];
-                }
-
-                // Loop through entry records and display field names
-                foreach ($entry->records as $record) {
-                    $fieldId = $record->form_field_id;
-                    $fieldName = $fieldsMap[$fieldId]['label'] ?? 'Unknown Field'; // Fallback if field not found
-                    $fieldType = $fieldsMap[$fieldId]['type']; // Assuming field_type is defined
-                    $fieldValue = $record->field_value; // Basic field value
-                    switch ($fieldType) {
-                        case 'true_false':
-                            $fieldValue=$fieldValue?'是/Yes':'否/No';
-                            break;
-                        case 'dropdown':
-                            $value=array_column($fieldsMap[$fieldId]['options'], 'label', 'value')[$fieldValue];
-                            $fieldValue=$value;
-                            break;
-                        case 'radio':
-                            // If fieldValue is a string and maps to options
-                            $value=array_column($fieldsMap[$fieldId]['options'], 'label', 'value')[$fieldValue];
-                            $fieldValue=$value;
-                            break;
-                        case 'checkbox':
-                            // Check if fieldValue is a valid JSON string representing an array
-                            $decodedValue = json_decode($fieldValue, true);
-                            if (json_last_error() === JSON_ERROR_NONE && is_array($decodedValue)) {
-                                // Map the array values to their corresponding option labels
-                                $mappedValues = null;
-                                foreach ($decodedValue as $value) {
-                                    if (isset($fieldsMap[$fieldId]['options'][$value])) {
-                                        $mappedValues .= $fieldsMap[$fieldId]['options'][$value]['label'].'; ';
-                                    }
-                                }
-                                $fieldValue=$mappedValues;
-                                //$fieldValue = implode(', ', $mappedValues); // Join mapped values as a string
-                            } else {
-                                // If fieldValue is not an array, handle it as a single string
-                                $fieldValue = 'Unsupported format';
-                            }
-
-                            break;
-                        default:
-                            $fieldValue = $fieldValue;
-                            break;
+                    // Create a mapping of form_field_id to field_label and options
+                    $fieldsMap = [];
+                    foreach ($entry->form->fields as $field) {
+                        $fieldsMap[$field->id] = [
+                            'type'    => $field->type,
+                            'label'   => $field->field_label,
+                            'options' => $field->options,
+                        ];
                     }
+
+                    // Loop through entry records and display field names
+                    foreach ($entry->records as $record) {
+                        $fieldId    = $record->form_field_id;
+                        $fieldName  = $fieldsMap[$fieldId]['label'] ?? 'Unknown Field';
+                        $fieldType  = $fieldsMap[$fieldId]['type'] ?? null;
+                        $fieldValue = $record->field_value;
+
+                        switch ($fieldType) {
+                            case 'true_false':
+                                $fieldValue = $fieldValue ? '是/Yes' : '否/No';
+                                break;
+
+                            case 'dropdown':
+                            case 'radio':
+                                $options = array_column($fieldsMap[$fieldId]['options'] ?? [], 'label', 'value');
+                                $fieldValue = $options[$fieldValue] ?? $fieldValue;
+                                break;
+
+                            case 'checkbox':
+                                $decodedValue = json_decode($fieldValue, true);
+                                if (json_last_error() === JSON_ERROR_NONE && is_array($decodedValue)) {
+                                    $mappedValues = [];
+                                    foreach ($decodedValue as $value) {
+                                        if (isset($fieldsMap[$fieldId]['options'][$value])) {
+                                            $mappedValues[] = $fieldsMap[$fieldId]['options'][$value]['label'];
+                                        }
+                                    }
+                                    $fieldValue = implode('; ', $mappedValues);
+                                } else {
+                                    $fieldValue = 'Unsupported format';
+                                }
+                                break;
+
+                            default:
+                                // keep as-is
+                                break;
+                        }
                 @endphp
+
                 <tr>
-                    <td style="border: 1px solid #ccc; padding: 10px;">{{ $fieldName }}</td>
-                    <td style="border: 1px solid #ccc; padding: 10px;">{!! $fieldValue !!}</td>
+                    <td>{{ $fieldName }}</td>
+                    <td>{!! $fieldValue !!}</td>
                 </tr>
+
                 @php
-                }
+                    } // end foreach records
                 @endphp
             </tbody>
         </table>
@@ -123,5 +138,4 @@
 </div>
 
 </body>
-
 </html>

@@ -171,7 +171,7 @@ class FormController extends Controller
             ])
             ->setPaper('A4', 'portrait')
             ->setOption([
-                'fontDir' => public_path('fonts/Noto'),
+                'fontDir' => public_path('fonts'),
                 'fontCache' => public_path('fonts'),
                 'defaultFont' => 'SimHei',
                 'margin-top' => '20mm',    // Set top margin
