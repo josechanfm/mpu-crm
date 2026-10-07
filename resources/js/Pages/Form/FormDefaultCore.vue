@@ -1,10 +1,5 @@
 <template>
-    <WebLayout title="Dashboard">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                表格管理
-            </h2>
-        </template>
+
         
         <div class="mx-auto sm:px-6 lg:px-8">
             <!-- Alert Component -->
@@ -178,17 +173,14 @@
                 </a-form>
             </div>
         </div>
-    </WebLayout>
+    
 </template>
 
 <script>
-import MemberLayout from '@/Layouts/MemberLayout.vue';
-import WebLayout from '@/Layouts/WebLayout.vue';
+
 import QuillEditor from "@/Components/QuillEditor.vue";
 export default {
     components: {
-        MemberLayout,
-        WebLayout,
         QuillEditor
     },
     props: ['form'],

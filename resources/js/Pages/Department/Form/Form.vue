@@ -148,7 +148,17 @@
                   </a-upload>
               </div>
             </a-form-item>
-            
+
+            <a-form-item v-if="isLayoutPreset" label="Layout" name="layout">
+                <a-select 
+                  show-search 
+                  v-model:value="form.layout" 
+                  :options="layoutStyle" 
+                  :fieldNames="{value:'value',label:'label'}" 
+                  optionFilterProp="label"
+                  optionLabelProp="label"
+                />
+            </a-form-item>
 
             <a-form-item :wrapper-col="{ offset: 12, span: 10 }">
                 <a-button type="primary" html-type="submit">Submit</a-button>
@@ -208,13 +218,26 @@ export default {
           width: "150px",   
         },
       },
+      layoutStyle: [
+        {value: 'FormDefaultWebLayout', label: 'Web Layout'},
+        {value: 'FormDefaultBlankLayout', label: 'Blank Layout'},
+      ],
     };
   },
   created() {
+    if (!this.form.layout) {
+        this.form.layout = 'FormDefaultWebLayout';
+    }
   },
   mounted() {
 
   },
+  computed: {
+    isLayoutPreset() {
+        // true if form.layout matches one of the layoutStyle values
+        return this.layoutStyle.some(opt => opt.value === this.form.layout);
+    },
+  }, 
   methods: {
     onFinish(){
         if(this.form.id){

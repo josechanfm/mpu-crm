@@ -111,7 +111,7 @@ class FormController extends Controller
                 'form'=>$form,
             ]);
         }else{
-            return Inertia::render('Form/FormDefault',[
+            return Inertia::render('Form/FormDefaultWebLayout',[
                 'form'=>$form,
             ]);
         }

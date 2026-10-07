@@ -1,14 +1,10 @@
 <script setup>
 import { ref } from "vue";
 import { Inertia } from "@inertiajs/inertia";
-import { Head, Link } from '@inertiajs/inertia-vue3';
-import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
+import { Link } from '@inertiajs/inertia-vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
-import Dropdown from "@/Components/Dropdown.vue";
-import DropdownLink from "@/Components/DropdownLink.vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import { loadLanguageAsync } from "laravel-vue-i18n";
-import { getActiveLanguage } from "laravel-vue-i18n";
 
 defineProps({
     canLogin: Boolean,
