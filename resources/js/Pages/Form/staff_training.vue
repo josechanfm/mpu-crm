@@ -69,6 +69,7 @@
                 </div>
                 <a-divider/>
                 <div v-html="formFields['part_2'].extra" />
+                {{ formFields['table_header'].extra }}
                     <table>
                             <tr>
                                 <th width="400px"></th>
@@ -226,16 +227,24 @@ export default {
             });
         },
         getExtraContent(extra,column){
-            if(extra==null){
-                return {title:'Title',hour:'Hour'}
+            const fallback = { title: 'Title', hour: 'Hour' };
+            if (extra == null) {
+                return fallback;
             }
-            try{
-                const option =JSON.parse(extra)
-                return option[column]
-            }catch(err){
-                console.log(extra);
-                return {title:'Title',hour:'Hour'}
-            }                     
+            let parsed = extra;
+            // If it's a string, try to parse it as JSON
+            if (typeof extra === 'string') {
+                try {
+                    parsed = JSON.parse(extra);
+                } catch (err) {
+                    return fallback;
+                }
+            }
+            // Make sure we ended up with a non-null object
+            if (typeof parsed !== 'object' || parsed === null) {
+                return fallback;
+            }
+            return parsed[column] ?? fallback;                    
         },
     },
     computed:{

@@ -164,7 +164,7 @@ export default {
     },
     openQrCodeModal(record) {
       this.qrCodeModal.title = record.title;
-      this.qrCodeModal.url = `${window.location.origin}/forms/${record.id}`;
+      this.qrCodeModal.url = `${window.location.origin}/forms/${record.id}&uuid=${record.uuid}`;
       this.qrCodeModal.isOpen = true; 
     },
     updateQrCodeModalOpen(value) {
