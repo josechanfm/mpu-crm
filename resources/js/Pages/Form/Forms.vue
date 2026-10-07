@@ -74,7 +74,7 @@ export default {
     methods: {
         toApply(record){
             if(record.require_login==0 || this.$page.props.user){
-                Inertia.get(route('forms.show',record.id));
+                Inertia.get(route('forms.show',{ form: record.id, uuid: record.uuid }));
             }else{
                 alert("login required");
             }

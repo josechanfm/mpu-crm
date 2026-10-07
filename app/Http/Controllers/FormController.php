@@ -87,14 +87,18 @@ class FormController extends Controller
     {
         // dd($form, $request->all());
         //$form=Form::with('fields')->find($id);
+        $inPreviewMode=$request->has('mode') && $request->mode=='preview';
+        
+        if(!$inPreviewMode ){
+            if(!$form->published){
+                return redirect()->route('forms.index');
+            }
+            if($form->require_login==1 && empty($request->user_id)){
+                return redirect('forms');
+            }
 
-        if(!$form->published && empty($request->view) && $request->view!=$form->uuid){
-            return redirect()->route('forms.index');
         }
         $form->fields;
-        if($form->require_login==1 && empty($request->user_id) && $request->uuid!=$form->uuid){
-            return redirect('forms');
-        }
         $form->banner=$form->media()->where('collection_name','banner')->first()?->original_url;
         $form->thumbnail==$form->media()->where('collection_name','thumbnail')->first()?->original_url;
         if($form->layout){
