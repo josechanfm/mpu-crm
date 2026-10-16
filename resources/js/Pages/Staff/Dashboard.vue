@@ -46,6 +46,22 @@
             </div>
         </a-card>
     </a-col>
+    <a-col :xs="24" :sm="12" :md="8">
+        <a-card
+            title="二維碼生成器"
+            class="rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300"
+            :style="{ padding: '16px' }"
+        >
+            <div class="card-content">
+                <p>輸入網址，可選標題與 Logo，即時生成專屬二維碼，並支援複製與下載 PNG。</p>
+            </div>
+            <div class="flex justify-end mt-4">
+              <inertia-link :href="route('widget.genQrcode', {status:'pending'})">
+                <a-button type="primary">去生成</a-button>
+              </inertia-link>
+            </div>
+        </a-card>
+    </a-col>
 </a-row>
 
     

@@ -28,7 +28,13 @@ Route::group(['middleware' => config('fortify.middleware', ['admin_web'])], func
     Route::post('/staff/logout', [AuthenticatedSessionController::class, 'destroy'])->name('staff.logout');
 });
 */
-
+Route::group([
+    'middleware' => [
+         'auth:admin',
+    ]
+], function () {
+    Route::get('/widget/gen_qrcode',[App\Http\Controllers\Staff\WidgetController::class,'genQrcode'])->name('widget.genQrcode');
+});
 Route::group([
     'prefix' => '/staff',
     'middleware' => [
