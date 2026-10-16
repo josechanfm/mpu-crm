@@ -5,7 +5,7 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
 defineOptions({ layout: StaffLayout })
 
-/* ---------- 状态 ---------- */
+/* ---------- 狀態 ---------- */
 const url = ref('')
 const qrUrl = ref('')
 const renderKey = ref(0)
@@ -20,12 +20,12 @@ const copied = ref(false)
 const isGenerating = ref(false)
 const qrReady = ref(false)
 
-/* ---------- 常量 ---------- */
+/* ---------- 常數 ---------- */
 const QR_SIZE = 512
 const COMPOSE_PADDING = 10
 const TITLE_HEIGHT = 100
 
-/* ---------- QR 组件 props ---------- */
+/* ---------- QR 元件 props ---------- */
 const qrOptions = {
   typeNumber: 0,
   mode: 'Byte',
@@ -34,16 +34,16 @@ const qrOptions = {
 
 const imageOptions = {
   hideBackgroundDots: true,
-  imageSize: 0.28,   // Logo 占二维码 28%
-  margin: 2,         // Logo 自身的白边（不是二维码外框）
+  imageSize: 0.28,   // Logo 佔二維碼 28%
+  margin: 2,         // Logo 自身的白邊（不是二維碼外框）
   crossOrigin: 'anonymous',
 }
 
-/* ---------- 生成二维码 ---------- */
+/* ---------- 產生二維碼 ---------- */
 async function generateQr() {
   const trimmed = url.value.trim()
   if (!trimmed) {
-    error.value = '请输入 URL'
+    error.value = '請輸入 URL'
     return
   }
   error.value = ''
@@ -61,12 +61,12 @@ async function generateQr() {
   isGenerating.value = false
 }
 
-/* ---------- ⭐ isStale：模板中使用，必须定义 ---------- */
+/* ---------- ⭐ isStale：範本中使用，必須定義 ---------- */
 const isStale = computed(
   () => !!qrUrl.value && url.value.trim() !== qrUrl.value
 )
 
-/* ---------- 等待 QR 组件渲染完成（轮询） ---------- */
+/* ---------- 等待 QR 元件渲染完成（輪詢） ---------- */
 async function waitForQrReady(maxTries = 40, interval = 50) {
   for (let i = 0; i < maxTries; i++) {
     await nextTick()
@@ -94,14 +94,14 @@ onMounted(async () => {
   if (qrUrl.value) await waitForQrReady()
 })
 
-/* ---------- 从 QR 组件提取 data URL ---------- */
+/* ---------- 從 QR 元件擷取 data URL ---------- */
 async function getQrDataUrl() {
   if (!qrReady.value) {
     const ok = await waitForQrReady()
-    if (!ok) throw new Error('二维码尚未渲染完成')
+    if (!ok) throw new Error('QR Code 尚未完成渲染')
   }
 
-  // 方式 1：getInstance().getRawData('png')
+  // 方法 1：getInstance().getRawData('png')
   try {
     const instance = qrRef.value?.getInstance?.()
     if (instance && typeof instance.getRawData === 'function') {
@@ -109,12 +109,12 @@ async function getQrDataUrl() {
       if (blob) return await blobToDataURL(blob)
     }
   } catch (e) {
-    console.warn('[QR] getInstance 失败，改用 DOM 提取：', e)
+    console.warn('[QR] getInstance 失敗，改用 DOM 擷取：', e)
   }
 
-  // 方式 2：从 DOM 提取
+  // 方法 2：從 DOM 擷取
   const el = qrRef.value?.$el || qrRef.value
-  if (!el) throw new Error('找不到 QR 组件根元素')
+  if (!el) throw new Error('找不到 QR 元件根元素')
 
   const canvas =
     el.querySelector?.('canvas') ||
@@ -129,7 +129,7 @@ async function getQrDataUrl() {
     return await urlToDataURL(img.src)
   }
 
-  throw new Error('无法从 QR 组件获取图片')
+  throw new Error('無法從 QR 元件取得圖片')
 }
 
 function blobToDataURL(blob) {
@@ -147,7 +147,7 @@ async function urlToDataURL(src) {
   return blobToDataURL(blob)
 }
 
-/* ---------- Logo 上传 ---------- */
+/* ---------- Logo 上傳 ---------- */
 function pickLogo() {
   fileInputRef.value?.click()
 }
@@ -156,7 +156,7 @@ function onLogoChange(e) {
   const file = e.target.files?.[0]
   if (!file) return
   if (!file.type.startsWith('image/')) {
-    error.value = '请选择图片文件'
+    error.value = '請選擇圖片檔案'
     return
   }
   const reader = new FileReader()
@@ -174,18 +174,18 @@ function removeLogo() {
   if (fileInputRef.value) fileInputRef.value.value = ''
 }
 
-/* ---------- 图片加载 ---------- */
+/* ---------- 圖片載入 ---------- */
 function loadImage(src) {
   return new Promise((resolve, reject) => {
     const img = new Image()
     img.crossOrigin = 'anonymous'
     img.onload = () => resolve(img)
-    img.onerror = () => reject(new Error('图片加载失败'))
+    img.onerror = () => reject(new Error('圖片載入失敗'))
     img.src = src
   })
 }
 
-/* ---------- 合成：QR + 标题 → canvas ---------- */
+/* ---------- 合成：QR + 標題 → canvas ---------- */
 async function composeCanvas() {
   const canvas = composeCanvasRef.value
   if (!canvas) throw new Error('合成 canvas 不存在')
@@ -210,7 +210,7 @@ async function composeCanvas() {
     const text = title.value.trim()
     const maxWidth = totalW - COMPOSE_PADDING * 2
     const fontFamily =
-      'system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif'
+      'system-ui, -apple-system, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif'
 
     let fontSize = 36
     while (fontSize > 14) {
@@ -228,38 +228,38 @@ async function composeCanvas() {
   return canvas
 }
 
-/* ---------- 复制 ---------- */
+/* ---------- 複製 ---------- */
 async function copyImage() {
   if (!qrUrl.value) {
-    error.value = '请先生成二维码'
+    error.value = '請先產生二維碼'
     return
   }
   try {
     const canvas = await composeCanvas()
     const blob = await new Promise((resolve, reject) => {
       canvas.toBlob(
-        (b) => (b ? resolve(b) : reject(new Error('导出 Blob 失败'))),
+        (b) => (b ? resolve(b) : reject(new Error('匯出 Blob 失敗'))),
         'image/png'
       )
     })
 
     if (!navigator.clipboard || !window.ClipboardItem) {
-      throw new Error('当前浏览器不支持复制图片，请改用下载')
+      throw new Error('目前的瀏覽器不支援複製圖片，請改用下載')
     }
     await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
     copied.value = true
     setTimeout(() => (copied.value = false), 1500)
     error.value = ''
   } catch (e) {
-    console.error('[QR] 复制失败：', e)
-    error.value = '复制失败：' + (e.message || '未知错误')
+    console.error('[QR] 複製失敗：', e)
+    error.value = '複製失敗：' + (e.message || '未知錯誤')
   }
 }
 
-/* ---------- 下载 ---------- */
+/* ---------- 下載 ---------- */
 async function downloadWithTitle() {
   if (!qrUrl.value) {
-    error.value = '请先生成二维码'
+    error.value = '請先產生二維碼'
     return
   }
   try {
@@ -273,12 +273,12 @@ async function downloadWithTitle() {
     document.body.removeChild(link)
     error.value = ''
   } catch (e) {
-    console.error('[QR] 下载失败：', e)
-    error.value = '下载失败：' + (e.message || '未知错误')
+    console.error('[QR] 下載失敗：', e)
+    error.value = '下載失敗：' + (e.message || '未知錯誤')
   }
 }
 
-/* ---------- URL 变化清除错误 ---------- */
+/* ---------- URL 變更時清除錯誤 ---------- */
 watch(url, () => {
   if (error.value) error.value = ''
 })
@@ -288,16 +288,16 @@ watch(url, () => {
   <div class="max-w-5xl mx-auto px-4 py-8">
     <!-- Header -->
     <header class="mb-6">
-      <h1 class="text-2xl md:text-3xl font-bold text-gray-900">QR 码生成器</h1>
+      <h1 class="text-2xl md:text-3xl font-bold text-gray-900">QR Code 產生器</h1>
       <p class="text-sm text-gray-500 mt-1">
-        输入 URL，可选标题与 Logo，点「生成二维码」创建。
+        輸入 URL，可選標題與 Logo，點選「產生二維碼」建立。
       </p>
     </header>
 
     <div class="grid md:grid-cols-2 gap-5">
-      <!-- ============ Left: 设置 ============ -->
+      <!-- ============ 左側：設定 ============ -->
       <section class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
-        <h2 class="text-base font-semibold text-gray-800 mb-4">设置</h2>
+        <h2 class="text-base font-semibold text-gray-800 mb-4">設定</h2>
 
         <!-- URL -->
         <div class="mb-4">
@@ -314,33 +314,33 @@ watch(url, () => {
             @keyup.enter="generateQr"
           />
           <p v-if="isStale" class="text-xs text-amber-600 mt-1.5">
-            输入已变更，点「生成二维码」以刷新。
+            輸入內容已變更，點選「產生二維碼」以更新。
           </p>
         </div>
 
-        <!-- 标题 -->
+        <!-- 標題 -->
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700 mb-1.5">
-            标题（可选）
+            標題（選填）
           </label>
           <input
             v-model="title"
             type="text"
             maxlength="60"
-            placeholder="显示在二维码下方"
+            placeholder="顯示於二維碼下方"
             class="w-full h-11 px-3 rounded-xl border border-gray-300 text-sm
                    focus:outline-none focus:ring-2 focus:ring-indigo-500/30
                    focus:border-indigo-500 transition"
           />
           <p class="text-xs text-gray-400 mt-1">
-            {{ title.length }} / 60，过长会自动缩小字号
+            {{ title.length }} / 60，文字過長時會自動縮小字體
           </p>
         </div>
 
         <!-- Logo -->
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700 mb-1.5">
-            Logo（可选）
+            Logo（選填）
           </label>
           <input
             ref="fileInputRef"
@@ -365,7 +365,7 @@ watch(url, () => {
                 <circle cx="8.5" cy="8.5" r="1.5"/>
                 <path d="M21 15l-5-5L5 21"/>
               </svg>
-              选择图片
+              選擇圖片
             </button>
             <button
               v-if="logoDataUrl"
@@ -395,11 +395,11 @@ watch(url, () => {
             </span>
           </div>
           <p class="text-xs text-gray-400 mt-1">
-            图片会自动缩放并放置在二维码中央。
+            圖片會自動縮放並放置於二維碼中央。
           </p>
         </div>
 
-        <!-- ============ 生成按钮 ============ -->
+        <!-- ============ 產生按鈕 ============ -->
         <button
           type="button"
           :disabled="!url.trim() || isGenerating"
@@ -450,19 +450,19 @@ watch(url, () => {
             <path d="M14 14h3v3M21 14v0M14 21h3M21 21v0M17 17v4M21 17v4"/>
           </svg>
 
-          {{ isGenerating ? '生成中...' : (qrUrl ? '重新生成' : '生成二维码') }}
+          {{ isGenerating ? '產生中...' : (qrUrl ? '重新產生' : '產生二維碼') }}
         </button>
 
         <p class="text-xs text-gray-400 mt-2 text-center">
-          生成后可在右侧预览、复制或下载。
+          產生後可在右側預覽、複製或下載。
         </p>
 
         <p v-if="error" class="text-sm text-red-600 mt-3">{{ error }}</p>
       </section>
 
-      <!-- ============ Right: 预览 ============ -->
+      <!-- ============ 右側：預覽 ============ -->
       <section class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
-        <h2 class="text-base font-semibold text-gray-800 mb-4">预览</h2>
+        <h2 class="text-base font-semibold text-gray-800 mb-4">預覽</h2>
 
         <div
           class="flex flex-col items-center justify-center bg-gray-50 rounded-xl p-4 min-h-[260px]"
@@ -499,7 +499,7 @@ watch(url, () => {
               <rect x="3" y="14" width="7" height="7" rx="1"/>
               <path d="M14 14h3v3M21 14v0M14 21h3M21 21v0M17 17v4M21 17v4"/>
             </svg>
-            <span>点「生成二维码」创建</span>
+            <span>點選「產生二維碼」以建立</span>
           </div>
 
           <p
@@ -536,7 +536,7 @@ watch(url, () => {
               <rect x="9" y="9" width="13" height="13" rx="2"/>
               <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
             </svg>
-            {{ copied ? '已复制' : '复制图片' }}
+            {{ copied ? '已複製' : '複製圖片' }}
           </button>
           <button
             type="button"
@@ -554,17 +554,17 @@ watch(url, () => {
               <polyline points="7 10 12 15 17 10"/>
               <line x1="12" y1="15" x2="12" y2="3"/>
             </svg>
-            下载 PNG
+            下載 PNG
           </button>
         </div>
 
         <p class="text-xs text-gray-400 mt-3 text-center">
-          复制与下载的图片包含二维码与标题，可直接粘贴到聊天或文档。
+          複製或下載的圖片包含二維碼與標題，可直接貼到聊天或文件中。
         </p>
       </section>
     </div>
 
-    <!-- 隐藏的合成 canvas -->
+    <!-- 隱藏的合成 canvas -->
     <canvas ref="composeCanvasRef" class="hidden" aria-hidden="true"></canvas>
   </div>
 </template>
