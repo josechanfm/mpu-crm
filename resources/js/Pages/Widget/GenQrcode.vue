@@ -23,7 +23,7 @@ const qrReady = ref(false)
 /* ---------- 常數 ---------- */
 const QR_SIZE = 512
 const COMPOSE_PADDING = 10
-const TITLE_HEIGHT = 100
+const TITLE_HEIGHT = 60
 
 /* ---------- QR 元件 props ---------- */
 const qrOptions = {
@@ -34,7 +34,7 @@ const qrOptions = {
 
 const imageOptions = {
   hideBackgroundDots: true,
-  imageSize: 0.28,   // Logo 佔二維碼 28%
+  imageSize: 0.35,   // Logo 佔二維碼 28%
   margin: 2,         // Logo 自身的白邊（不是二維碼外框）
   crossOrigin: 'anonymous',
 }
@@ -504,7 +504,7 @@ watch(url, () => {
 
           <p
             v-if="title.trim() && qrUrl"
-            class="mt-3 text-center font-bold text-gray-900 px-2 break-words max-w-full"
+            class="mt-1 text-center font-bold text-gray-900 px-2 break-words max-w-full"
             :style="{ fontSize: title.length > 30 ? '13px' : '16px' }"
           >
             {{ title.trim() }}
