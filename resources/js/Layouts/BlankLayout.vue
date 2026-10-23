@@ -15,7 +15,7 @@ defineProps({
 });
 const showingNavigationDropdown = ref(false);
 const page = usePage();
-loadLanguageAsync(page.props.value.lang);
+loadLanguageAsync(page.props.value?.lang);
 const logout = () => {
     Inertia.post(route("logout"));
 };
