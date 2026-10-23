@@ -32,6 +32,16 @@ class TaskFile extends Model
 
     protected $appends = ['file_url', 'formatted_size', 'icon'];
 
+    // Boot method for cleanup
+    protected static function booted()
+    {
+        static::deleting(function ($file) {
+            if ($file->file_path && Storage::disk('public')->exists($file->file_path)) {
+                Storage::disk('public')->delete($file->file_path);
+            }
+        });
+    }
+
     // Relationships
     public function task(): BelongsTo
     {
@@ -108,6 +118,7 @@ class TaskFile extends Model
     {
         // Store file with auto-generated name
         $path = $file->store('tasks/' . $task->id, 'public');
+        
         $filename = basename($path);
 
         // Determine file type
@@ -137,13 +148,4 @@ class TaskFile extends Model
         return $this->delete();
     }
 
-    // Boot method for cleanup
-    protected static function booted()
-    {
-        static::deleting(function ($file) {
-            if ($file->file_path && Storage::disk('public')->exists($file->file_path)) {
-                Storage::disk('public')->delete($file->file_path);
-            }
-        });
-    }
 }

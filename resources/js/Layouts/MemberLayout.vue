@@ -1,11 +1,11 @@
 <script setup>
 import { ref } from 'vue';
-import { Head } from '@inertiajs/inertia-vue3';
+import { Head } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import MemberMenu from '@/Components/Member/MemberMenu.vue';
-import { usePage } from "@inertiajs/inertia-vue3";
+import { usePage } from "@inertiajs/vue3";
 import { loadLanguageAsync } from "laravel-vue-i18n";
 import { GlobalOutlined } from '@ant-design/icons-vue';
 

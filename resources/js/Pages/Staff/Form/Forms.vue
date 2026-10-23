@@ -23,7 +23,7 @@
 
 <script>
 import StaffLayout from '@/Layouts/StaffLayout.vue';
-import { Inertia } from '@inertiajs/inertia';
+import { router as Inertia } from '@inertiajs/vue3';
 
 export default {
     components: {

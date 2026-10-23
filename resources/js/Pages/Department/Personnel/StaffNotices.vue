@@ -123,7 +123,7 @@ import Icon, { RestFilled } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
 import dayjs from 'dayjs';
 import axios from "axios";
-import { Inertia } from "@inertiajs/inertia";
+import { router as Inertia } from "@inertiajs/vue3";
 
 export default {
     components: {

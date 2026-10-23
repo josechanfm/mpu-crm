@@ -54,7 +54,7 @@
 
 <script>
 import DepartmentLayout from "@/Layouts/DepartmentLayout.vue";
-import { Inertia } from "@inertiajs/inertia";
+import { router as Inertia } from "@inertiajs/vue3";
 
 export default {
     components: { DepartmentLayout },

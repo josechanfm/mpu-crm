@@ -60,7 +60,7 @@
 
 <script setup>
 import { ref, reactive } from 'vue';
-import { Inertia } from '@inertiajs/inertia';
+import { router as Inertia } from '@inertiajs/vue3';
 import PageHeader from '@/Components/Admin/PageHeader.vue';
 
 import {

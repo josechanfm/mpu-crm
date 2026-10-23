@@ -3,117 +3,130 @@
   <div class="file-upload-component">
     <!-- Existing Files Display -->
     <div v-if="existingFiles && existingFiles.length > 0" class="mb-4">
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3">
-        <div
-          v-for="file in existingFiles"
-          :key="file.id"
-          class="relative border rounded-lg p-3 hover:shadow-md transition-shadow bg-white"
-          :class="{
-            'border-blue-500 bg-blue-50': file.is_primary && !isMarkedForDeletion(file.id),
-            'border-red-500 bg-red-50 opacity-60': isMarkedForDeletion(file.id),
-            'border-gray-200': !file.is_primary && !isMarkedForDeletion(file.id),
+      
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+  <div
+    v-for="file in existingFiles"
+    :key="file.id"
+    class="relative border rounded-lg p-3 hover:shadow-md transition-shadow bg-white
+           flex flex-col"
+    :class="{
+      'border-blue-500 bg-blue-50': file.is_primary && !isMarkedForDeletion(file.id),
+      'border-red-500 bg-red-50 opacity-60': isMarkedForDeletion(file.id),
+      'border-gray-200': !file.is_primary && !isMarkedForDeletion(file.id),
+    }"
+  >
+    <!-- Deletion Overlay -->
+    <div
+      v-if="isMarkedForDeletion(file.id)"
+      class="absolute inset-0 bg-red-50/60 rounded-lg flex items-center justify-center z-10"
+    >
+      <div class="text-center">
+        <div class="text-red-500 text-2xl mb-1">🗑️</div>
+        <div class="text-red-600 text-xs font-semibold">將被刪除</div>
+      </div>
+    </div>
+
+    <!-- 預覽區（flex-1 撐滿，讓按鈕固定底部） -->
+    <div class="flex-1 flex flex-col items-center min-w-0">
+      <!-- File Preview - Image -->
+      <div v-if="file.file_url && isImage(file)" class="w-full flex flex-col items-center">
+        <a-image
+          :src="file.file_url"
+          :alt="file.original_name"
+          :preview="{ mask: true, maskClassName: 'image-preview-mask' }"
+          class="w-full cursor-pointer"
+          :img-style="{
+            width: '100%',
+            aspectRatio: '1 / 1',
+            objectFit: 'cover',
+            borderRadius: '8px',
+            opacity: isMarkedForDeletion(file.id) ? 0.5 : 1,
           }"
         >
-          <!-- Deletion Overlay -->
-          <div 
-            v-if="isMarkedForDeletion(file.id)" 
-            class="absolute inset-0 bg-red-50 bg-opacity-60 rounded-lg flex items-center justify-center z-10"
-          >
-            <div class="text-center">
-              <div class="text-red-500 text-2xl mb-1">🗑️</div>
-              <div class="text-red-600 text-xs font-semibold">將被刪除</div>
+          <template #previewMask>
+            <div class="flex flex-col items-center justify-center w-full h-full bg-black/40 rounded-lg">
+              <span class="text-white text-2xl">🔍</span>
+              <span class="text-white text-xs mt-1 font-medium">點擊預覽</span>
             </div>
-          </div>
-
-          <!-- File Preview - Image -->
-          <div v-if="file.file_url && isImage(file)" class="flex flex-col items-center">
-            <a-image
-              :src="file.file_url"
-              :alt="file.original_name"
-              class="w-full aspect-square object-cover rounded-lg cursor-pointer"
-              :class="{ 'opacity-50': isMarkedForDeletion(file.id) }"
-              :preview="{
-                mask: true,
-                maskClassName: 'image-preview-mask',
-              }"
-            >
-              <template #previewMask>
-                <div class="flex flex-col items-center justify-center w-full h-full bg-black bg-opacity-40 rounded-lg">
-                  <span class="text-white text-2xl">🔍</span>
-                  <span class="text-white text-xs mt-1 font-medium">點擊預覽</span>
-                </div>
-              </template>
-            </a-image>
-            <div class="text-xs font-medium truncate w-full text-center mt-2" :title="file.original_name">
-              {{ file.original_name }}
-            </div>
-            <div class="text-xs text-gray-500">{{ formatFileSize(file.file_size) }}</div>
-          </div>
-
-          <!-- File Preview - Non-Image -->
-          <div v-else class="flex flex-col items-center">
-            <div class="w-full aspect-square flex items-center justify-center bg-gray-50 rounded-lg">
-              <div class="text-5xl">{{ getFileIcon(file) }}</div>
-            </div>
-            <div class="text-xs font-medium truncate w-full text-center mt-2" :title="file.original_name">
-              {{ file.original_name }}
-            </div>
-            <div class="text-xs text-gray-500">{{ formatFileSize(file.file_size) }}</div>
-          </div>
-
-          <!-- Primary Badge -->
-          <div v-if="file.is_primary && !isMarkedForDeletion(file.id)" class="absolute top-2 right-2 z-10">
-            <a-tag color="blue" size="small" class="text-xs">主要</a-tag>
-          </div>
-
-          <!-- File Actions -->
-          <div class="flex justify-center gap-1 mt-2">
-            <a-button
-              v-if="!readonly"
-              type="text"
-              size="small"
-              @click="handleSetPrimary(file.id)"
-              :disabled="file.is_primary || isMarkedForDeletion(file.id)"
-              class="text-blue-500 hover:text-blue-700"
-              title="Set as primary"
-            >
-              <StarOutlined />
-            </a-button>
-            <a-button
-              type="text"
-              size="small"
-              @click="handleDownload(file.id)"
-              class="text-green-500 hover:text-green-700"
-              title="Download"
-            >
-              <DownloadOutlined />
-            </a-button>
-            
-            <a-popconfirm
-              v-if="!readonly && !isMarkedForDeletion(file.id)"
-              title="確定要刪除這個檔案嗎？"
-              @confirm="handleDelete(file.id)"
-              ok-text="確定"
-              cancel-text="取消"
-            >
-              <a-button type="text" size="small" danger title="Delete">
-                <DeleteOutlined />
-              </a-button>
-            </a-popconfirm>
-            
-            <a-button
-              v-if="!readonly && isMarkedForDeletion(file.id)"
-              type="text"
-              size="small"
-              @click="handleRestore(file.id)"
-              class="text-green-500 hover:text-green-700"
-              title="Restore file"
-            >
-              <UndoOutlined />
-            </a-button>
-          </div>
+          </template>
+        </a-image>
+        <div class="text-xs font-medium truncate w-full text-center mt-2" :title="file.original_name">
+          {{ file.original_name }}
         </div>
+        <div class="text-xs text-gray-500">{{ formatFileSize(file.file_size) }}</div>
       </div>
+
+      <!-- File Preview - Non-Image -->
+      <div v-else class="w-full flex flex-col items-center">
+        <div class="w-full aspect-square flex items-center justify-center bg-gray-50 rounded-lg">
+          <div class="text-5xl">{{ getFileIcon(file) }}</div>
+        </div>
+        <div class="text-xs font-medium truncate w-full text-center mt-2" :title="file.original_name">
+          {{ file.original_name }}
+        </div>
+        <div class="text-xs text-gray-500">{{ formatFileSize(file.file_size) }}</div>
+      </div>
+    </div>
+
+    <!-- Primary Badge -->
+    <div
+      v-if="file.is_primary && !isMarkedForDeletion(file.id)"
+      class="absolute top-2 right-2 z-10"
+    >
+      <a-tag color="blue" size="small" class="text-xs !m-0">主要</a-tag>
+    </div>
+
+    <!-- File Actions（固定底部） -->
+    <div class="flex flex-wrap justify-center gap-0.5 mt-3 pt-2 border-t border-gray-100">
+      <a-button
+        v-if="!readonly"
+        type="text"
+        size="small"
+        @click="handleSetPrimary(file.id)"
+        :disabled="file.is_primary || isMarkedForDeletion(file.id)"
+        class="!px-1.5 text-blue-500 hover:text-blue-700"
+        title="Set as primary"
+      >
+        <StarOutlined />
+      </a-button>
+
+      <a-button
+        type="text"
+        size="small"
+        @click="handleDownload(file.id)"
+        class="!px-1.5 text-green-500 hover:text-green-700"
+        title="Download"
+      >
+        <DownloadOutlined />
+      </a-button>
+
+      <a-popconfirm
+        v-if="!readonly && !isMarkedForDeletion(file.id)"
+        title="確定要刪除這個檔案嗎？"
+        @confirm="handleDelete(file.id)"
+        ok-text="確定"
+        cancel-text="取消"
+      >
+        <a-button type="text" size="small" danger class="!px-1.5" title="Delete">
+          <DeleteOutlined />
+        </a-button>
+      </a-popconfirm>
+
+      <a-button
+        v-if="!readonly && isMarkedForDeletion(file.id)"
+        type="text"
+        size="small"
+        @click="handleRestore(file.id)"
+        class="!px-1.5 text-green-500 hover:text-green-700"
+        title="Restore file"
+      >
+        <UndoOutlined />
+      </a-button>
+    </div>
+  </div>
+</div>
+
     </div>
 
     <!-- File Upload -->
@@ -558,66 +571,7 @@ defineExpose({
   width: 100%;
 }
 
-/* Grid layout for files */
-.grid {
-  display: grid;
-  gap: 0.75rem;
-}
-
-.grid-cols-2 {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-@media (min-width: 640px) {
-  .grid-cols-3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 768px) {
-  .grid-cols-4 {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media (min-width: 1280px) {
-  .grid-cols-6 {
-    grid-template-columns: repeat(6, 1fr);
-  }
-}
-
-/* Mobile optimization */
-@media (max-width: 640px) {
-  .grid-cols-2 {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
-  }
-  
-  .relative {
-    padding: 0.5rem !important;
-  }
-  
-  .relative img {
-    min-height: 120px;
-    max-height: 180px;
-  }
-}
-
-/* File uploader */
-.file-uploader :deep(.ant-upload-list) {
-  margin-top: 8px;
-}
-
-.file-uploader :deep(.ant-upload-list-item) {
-  border-radius: 8px;
-  border: 1px solid #d9d9d9;
-}
-
-.file-uploader :deep(.ant-upload-list-item:hover) {
-  border-color: #1890ff;
-}
-
-/* File card hover effects */
+/* ---------- 卡片动效（保留，不影响列数） ---------- */
 .relative {
   position: relative;
   transition: all 0.2s ease;
@@ -628,21 +582,7 @@ defineExpose({
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Aspect ratio for images */
-.aspect-square {
-  aspect-ratio: 1 / 1;
-}
-
-/* Deletion styles */
-.border-red-500 {
-  border-color: #ef4444 !important;
-}
-
-.bg-red-50 {
-  background-color: #fef2f2 !important;
-}
-
-/* Image preview mask */
+/* ---------- 图片预览遮罩（Ant Design 深度样式） ---------- */
 :deep(.image-preview-mask) {
   background: rgba(0, 0, 0, 0.5) !important;
   backdrop-filter: blur(4px) !important;
@@ -659,13 +599,27 @@ defineExpose({
   backdrop-filter: blur(8px) !important;
 }
 
-/* Mobile upload button */
+/* ---------- 上传组件（Ant Design 深度样式） ---------- */
+.file-uploader :deep(.ant-upload-list) {
+  margin-top: 8px;
+}
+
+.file-uploader :deep(.ant-upload-list-item) {
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+}
+
+.file-uploader :deep(.ant-upload-list-item:hover) {
+  border-color: #1890ff;
+}
+
+/* ---------- 手机端上传按钮全宽 ---------- */
 @media (max-width: 640px) {
   .file-uploader :deep(.ant-upload) {
     display: block !important;
     width: 100% !important;
   }
-  
+
   .file-uploader :deep(.ant-upload > .ant-btn) {
     width: 100% !important;
   }

@@ -9,6 +9,7 @@
       </a-button>
       <h1 class="form-title">{{ formTitle }}</h1>
     </div>
+
     <a-card :body-style="isMobile ? { padding: '5px' } : { padding: '10px' }">
       <a-form
         :model="form"
@@ -95,7 +96,7 @@
               />
             </a-form-item>
           </a-col>
-
+111
 
             <!-- ============================================ -->
             <!-- REUSABLE FILE UPLOAD COMPONENT -->

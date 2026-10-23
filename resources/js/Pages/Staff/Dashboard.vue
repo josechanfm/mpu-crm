@@ -104,7 +104,7 @@
 </template>
 
 <script >
-import { Inertia } from '@inertiajs/inertia';
+import { router as Inertia } from '@inertiajs/vue3';
 import StaffLayout from '@/Layouts/StaffLayout.vue';
 
 

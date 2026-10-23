@@ -102,7 +102,7 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         $task->load(['user', 'department','files']);
-        
+        // dd($task);
         return Inertia::render('Staff/TaskForm', [
             'task' => $task,
             'departments' => auth()->user()->departments()->get(),

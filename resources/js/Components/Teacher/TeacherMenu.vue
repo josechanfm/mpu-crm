@@ -39,8 +39,8 @@
 </template>
 <script>
 import { defineComponent, ref, watch } from 'vue';
-import { Link } from '@inertiajs/inertia-vue3'
-import { Inertia } from '@inertiajs/inertia';
+import { Link } from '@inertiajs/vue3'
+import { router as Inertia } from '@inertiajs/vue3';
 import menu from './menu.js';
 import SubMenu from './SubMenu.vue';
 import * as AntdIcons from '@ant-design/icons-vue';

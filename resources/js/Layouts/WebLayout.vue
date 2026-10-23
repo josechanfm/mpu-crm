@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { Inertia } from "@inertiajs/inertia";
-import { Head, Link } from '@inertiajs/inertia-vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Dropdown from '@/Components/Dropdown.vue';

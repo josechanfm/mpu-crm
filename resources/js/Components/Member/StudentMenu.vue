@@ -37,8 +37,8 @@
 <script>
 import { defineComponent, ref, watch } from 'vue';
 import { MenuFoldOutlined, MenuUnfoldOutlined, PieChartOutlined, MailOutlined, StepForwardFilled, LogoutOutlined } from '@ant-design/icons-vue'; // you can rewrite it to a single file component, if not, you should config vue alias to vue/dist/vue.esm-bundler.js
-import { Link } from '@inertiajs/inertia-vue3'
-import { Inertia } from '@inertiajs/inertia';
+import { Link } from '@inertiajs/vue3'
+import { router as Inertia } from '@inertiajs/vue3';
 import menu from './menu.js';
 
 const SubMenu = {

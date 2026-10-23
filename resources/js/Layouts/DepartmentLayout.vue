@@ -90,7 +90,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
-import { Inertia } from '@inertiajs/inertia';
+import { router as Inertia } from '@inertiajs/vue3';
 import DepartmentMenu from '@/Components/Department/DepartmentMenu.vue';
 import { QuestionCircleOutlined } from '@ant-design/icons-vue';
 import {
