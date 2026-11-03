@@ -1,0 +1,386 @@
+[
+  {
+    "title": "My Pets",
+    "type": "speech",
+    "level": "A1",
+    "content": "I have a small cat. My cat is white and soft.",
+    "translation": "Tôi có một con mèo nhỏ. Mèo của tôi màu trắng và mềm.",
+    "tags": "children, animals, pets"
+  },
+  {
+    "title": "My Pets",
+    "type": "speech",
+    "level": "A1",
+    "content": "My dog likes to run. He is happy.",
+    "translation": "Con chó của tôi thích chạy. Nó rất vui.",
+    "tags": "children, animals, pets"
+  },
+  {
+    "title": "My Pets",
+    "type": "speech",
+    "level": "A1",
+    "content": "I feed my fish every day.",
+    "translation": "Tôi cho cá ăn mỗi ngày.",
+    "tags": "children, animals, pets"
+  },
+  {
+    "title": "My Pets",
+    "type": "speech",
+    "level": "A1",
+    "content": "My rabbit eats carrots.",
+    "translation": "Con thỏ của tôi ăn cà rốt.",
+    "tags": "children, animals, pets"
+  },
+  {
+    "title": "At the Zoo",
+    "type": "speech",
+    "level": "A1",
+    "content": "I see a big elephant. It has a long nose.",
+    "translation": "Tôi thấy một con voi lớn. Nó có cái mũi dài.",
+    "tags": "children, animals, zoo"
+  },
+  {
+    "title": "At the Zoo",
+    "type": "speech",
+    "level": "A1",
+    "content": "The monkey can climb the tree.",
+    "translation": "Con khỉ có thể trèo cây.",
+    "tags": "children, animals, zoo"
+  },
+  {
+    "title": "At the Zoo",
+    "type": "speech",
+    "level": "A1",
+    "content": "The lion is big and strong.",
+    "translation": "Con sư tử to và khỏe.",
+    "tags": "children, animals, zoo"
+  },
+  {
+    "title": "At the Zoo",
+    "type": "speech",
+    "level": "A1",
+    "content": "The giraffe has a long neck.",
+    "translation": "Con hươu cao cổ có cái cổ dài.",
+    "tags": "children, animals, zoo"
+  },
+  {
+    "title": "Space Adventure",
+    "type": "speech",
+    "level": "A1",
+    "content": "The moon is round and bright.",
+    "translation": "Mặt trăng tròn và sáng.",
+    "tags": "children, space, science"
+  },
+  {
+    "title": "Space Adventure",
+    "type": "speech",
+    "level": "A1",
+    "content": "Stars shine at night.",
+    "translation": "Những ngôi sao tỏa sáng vào ban đêm.",
+    "tags": "children, space, science"
+  },
+  {
+    "title": "Space Adventure",
+    "type": "speech",
+    "level": "A1",
+    "content": "A rocket goes up to space.",
+    "translation": "Một tên lửa bay lên vũ trụ.",
+    "tags": "children, space, science"
+  },
+  {
+    "title": "Space Adventure",
+    "type": "speech",
+    "level": "A1",
+    "content": "I want to see a planet.",
+    "translation": "Tôi muốn nhìn thấy một hành tinh.",
+    "tags": "children, space, science"
+  },
+  {
+    "title": "Dinosaurs",
+    "type": "speech",
+    "level": "A1",
+    "content": "The dinosaur is very big.",
+    "translation": "Con khủng long rất lớn.",
+    "tags": "children, dinosaurs, animals"
+  },
+  {
+    "title": "Dinosaurs",
+    "type": "speech",
+    "level": "A1",
+    "content": "Some dinosaurs eat plants.",
+    "translation": "Một số khủng long ăn thực vật.",
+    "tags": "children, dinosaurs, animals"
+  },
+  {
+    "title": "Dinosaurs",
+    "type": "speech",
+    "level": "A1",
+    "content": "The T-Rex has sharp teeth.",
+    "translation": "Khủng long T-Rex có răng sắc.",
+    "tags": "children, dinosaurs, animals"
+  },
+  {
+    "title": "Dinosaurs",
+    "type": "speech",
+    "level": "A1",
+    "content": "I like dinosaur books.",
+    "translation": "Tôi thích sách về khủng long.",
+    "tags": "children, dinosaurs, books"
+  },
+  {
+    "title": "Playground Fun",
+    "type": "speech",
+    "level": "A1",
+    "content": "Let's play on the slide.",
+    "translation": "Chúng ta hãy chơi cầu trượt.",
+    "tags": "children, play, playground"
+  },
+  {
+    "title": "Playground Fun",
+    "type": "speech",
+    "level": "A1",
+    "content": "I can swing high.",
+    "translation": "Tôi có thể đu xà cao.",
+    "tags": "children, play, playground"
+  },
+  {
+    "title": "Playground Fun",
+    "type": "speech",
+    "level": "A1",
+    "content": "We run and laugh together.",
+    "translation": "Chúng tôi chạy và cười cùng nhau.",
+    "tags": "children, play, playground"
+  },
+  {
+    "title": "Playground Fun",
+    "type": "speech",
+    "level": "A1",
+    "content": "The sandbox is fun.",
+    "translation": "Hộp cát thật vui.",
+    "tags": "children, play, playground"
+  },
+  {
+    "title": "Favorite Foods",
+    "type": "speech",
+    "level": "A1",
+    "content": "I like ice cream. It is cold and sweet.",
+    "translation": "Tôi thích kem. Nó lạnh và ngọt.",
+    "tags": "children, food, daily"
+  },
+  {
+    "title": "Favorite Foods",
+    "type": "speech",
+    "level": "A1",
+    "content": "My favorite fruit is banana.",
+    "translation": "Trái cây yêu thích của tôi là chuối.",
+    "tags": "children, food, daily"
+  },
+  {
+    "title": "Favorite Foods",
+    "type": "speech",
+    "level": "A1",
+    "content": "We eat rice and eggs.",
+    "translation": "Chúng tôi ăn cơm và trứng.",
+    "tags": "children, food, daily"
+  },
+  {
+    "title": "Favorite Foods",
+    "type": "speech",
+    "level": "A1",
+    "content": "Pizza is yummy.",
+    "translation": "Pizza rất ngon.",
+    "tags": "children, food, daily"
+  },
+  {
+    "title": "Weather and Seasons",
+    "type": "speech",
+    "level": "A1",
+    "content": "It is sunny today.",
+    "translation": "Hôm nay trời nắng.",
+    "tags": "children, weather, seasons"
+  },
+  {
+    "title": "Weather and Seasons",
+    "type": "speech",
+    "level": "A1",
+    "content": "Rain falls from the sky.",
+    "translation": "Mưa rơi từ trên trời.",
+    "tags": "children, weather, seasons"
+  },
+  {
+    "title": "Weather and Seasons",
+    "type": "speech",
+    "level": "A1",
+    "content": "Winter is cold. I wear a coat.",
+    "translation": "Mùa đông lạnh. Tôi mặc áo khoác.",
+    "tags": "children, weather, seasons"
+  },
+  {
+    "title": "Weather and Seasons",
+    "type": "speech",
+    "level": "A1",
+    "content": "Leaves fall in autumn.",
+    "translation": "Lá rụng vào mùa thu.",
+    "tags": "children, weather, seasons"
+  },
+  {
+    "title": "School Friends",
+    "type": "speech",
+    "level": "A1",
+    "content": "My friend sits next to me.",
+    "translation": "Bạn của tôi ngồi cạnh tôi.",
+    "tags": "children, school, friends"
+  },
+  {
+    "title": "School Friends",
+    "type": "speech",
+    "level": "A1",
+    "content": "We share our crayons.",
+    "translation": "Chúng tôi chia sẻ bút sáp màu.",
+    "tags": "children, school, friends"
+  },
+  {
+    "title": "School Friends",
+    "type": "speech",
+    "level": "A1",
+    "content": "I say hello to my teacher.",
+    "translation": "Tôi chào thầy cô giáo.",
+    "tags": "children, school, friends"
+  },
+  {
+    "title": "School Friends",
+    "type": "speech",
+    "level": "A1",
+    "content": "We read books in class.",
+    "translation": "Chúng tôi đọc sách trong lớp.",
+    "tags": "children, school, friends"
+  },
+  {
+    "title": "Toys and Games",
+    "type": "speech",
+    "level": "A1",
+    "content": "I have a red toy car.",
+    "translation": "Tôi có một chiếc ô tô đồ chơi màu đỏ.",
+    "tags": "children, toys, games"
+  },
+  {
+    "title": "Toys and Games",
+    "type": "speech",
+    "level": "A1",
+    "content": "Let's build with blocks.",
+    "translation": "Chúng ta hãy xây bằng khối gạch.",
+    "tags": "children, toys, games"
+  },
+  {
+    "title": "Toys and Games",
+    "type": "speech",
+    "level": "A1",
+    "content": "My doll has long hair.",
+    "translation": "Búp bê của tôi có mái tóc dài.",
+    "tags": "children, toys, games"
+  },
+  {
+    "title": "Toys and Games",
+    "type": "speech",
+    "level": "A1",
+    "content": "We play hide-and-seek.",
+    "translation": "Chúng tôi chơi trốn tìm.",
+    "tags": "children, toys, games"
+  },
+  {
+    "title": "Fairy Tales",
+    "type": "speech",
+    "level": "A1",
+    "content": "The princess lives in a castle.",
+    "translation": "Công chúa sống trong một lâu đài.",
+    "tags": "children, stories, fairy tales"
+  },
+  {
+    "title": "Fairy Tales",
+    "type": "speech",
+    "level": "A1",
+    "content": "The dragon can fly.",
+    "translation": "Con rồng có thể bay.",
+    "tags": "children, stories, fairy tales"
+  },
+  {
+    "title": "Fairy Tales",
+    "type": "speech",
+    "level": "A1",
+    "content": "The fairy has a magic wand.",
+    "translation": "Nàng tiên có một cây đũa thần.",
+    "tags": "children, stories, fairy tales"
+  },
+  {
+    "title": "Fairy Tales",
+    "type": "speech",
+    "level": "A1",
+    "content": "The prince rides a white horse.",
+    "translation": "Hoàng tử cưỡi một con ngựa trắng.",
+    "tags": "children, stories, fairy tales"
+  },
+  {
+    "title": "Farm Animals",
+    "type": "speech",
+    "level": "A1",
+    "content": "The cow gives us milk.",
+    "translation": "Con bò cho chúng ta sữa.",
+    "tags": "children, animals, farm"
+  },
+  {
+    "title": "Farm Animals",
+    "type": "speech",
+    "level": "A1",
+    "content": "The chicken lays eggs.",
+    "translation": "Con gà đẻ trứng.",
+    "tags": "children, animals, farm"
+  },
+  {
+    "title": "Farm Animals",
+    "type": "speech",
+    "level": "A1",
+    "content": "The sheep has soft wool.",
+    "translation": "Con cừu có bộ lông mềm.",
+    "tags": "children, animals, farm"
+  },
+  {
+    "title": "Farm Animals",
+    "type": "speech",
+    "level": "A1",
+    "content": "The duck swims in the pond.",
+    "translation": "Con vịt bơi trong ao.",
+    "tags": "children, animals, farm"
+  },
+  {
+    "title": "Under the Sea",
+    "type": "speech",
+    "level": "A1",
+    "content": "The fish swims in the water.",
+    "translation": "Con cá bơi trong nước.",
+    "tags": "children, animals, sea"
+  },
+  {
+    "title": "Under the Sea",
+    "type": "speech",
+    "level": "A1",
+    "content": "The turtle has a hard shell.",
+    "translation": "Con rùa có mai cứng.",
+    "tags": "children, animals, sea"
+  },
+  {
+    "title": "Under the Sea",
+    "type": "speech",
+    "level": "A1",
+    "content": "I see a big whale.",
+    "translation": "Tôi thấy một con cá voi lớn.",
+    "tags": "children, animals, sea"
+  },
+  {
+    "title": "Under the Sea",
+    "type": "speech",
+    "level": "A1",
+    "content": "The crab walks sideways.",
+    "translation": "Con cua đi ngang.",
+    "tags": "children, animals, sea"
+  }
+]

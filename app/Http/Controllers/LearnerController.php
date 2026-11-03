@@ -10,7 +10,7 @@ class LearnerController extends Controller
     public function speaking(Request $request)
     {
         return inertia('Learner/Speaking',[
-            'lang' => $request->input('lang','en-US'),
+            'lang' => $request->input('lang','zh-MO'),
             'level'=> $request->input('level','A1'),
             'materials' => LanguageMaterial::where('type', 'speech')->get()
         ]);

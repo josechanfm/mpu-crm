@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('language_materials', function (Blueprint $table) {
             $table->id();
+            $table->string('lang'); // e.g., "Daily Routine"
             $table->string('title'); // e.g., "Daily Routine"
             $table->string('type', 20); // e.g., "speach", "vocabulary"
             $table->string('level', 5); // A1, A2, B1, B2
