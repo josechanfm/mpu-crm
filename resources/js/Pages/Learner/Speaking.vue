@@ -98,9 +98,9 @@ import axios from 'axios';
 
 export default {
   props: {
-    lang: { type: String, default: 'en-US' },  // practice + recording language (English)
+    lang: { type: String, default: 'en-US' },
     level: { type: String, default: 'A1' },
-    translationLang: { type: String, default: 'vi' } // used only by backend / UI hints
+    translationLang: { type: String, default: 'vi' }
   },
 
   data() {
@@ -113,17 +113,24 @@ export default {
       accuracy: null,
       loading: false,
       recognition: null,
-      silenceTimer: null,
-      silenceDuration: 4000,
-      playCount: 0,
-      isPlaying: false,
+
+      // ─── Timing tuned for slow / young speakers ────────────────
+      // Give the user plenty of time to think and speak slowly.
+      silenceDuration: 15000, // 15s of total silence before auto-stop (was 4000)
+      // After a final result on a short sentence, wait a bit before stopping.
+      // Cancelled if any new speech comes in, so it won't cut a child off.
+      autoStopDelay: 3000,    // 3s (was 700)
       autoStopShortSentences: true,
-      shortSentenceWordLimit: 8
+      shortSentenceWordLimit: 8,
+
+      silenceTimer: null,
+      autoStopTimer: null,
+      playCount: 0,
+      isPlaying: false
     };
   },
 
   computed: {
-    // Always record English, even if the UI or translation is Vietnamese
     recognitionLang() {
       return this.lang && this.lang.startsWith('en') ? this.lang : 'en-US';
     },
@@ -142,6 +149,7 @@ export default {
 
   beforeUnmount() {
     this.clearSilenceTimer();
+    this.cancelAutoStop();
     if (this.recognition) this.recognition.stop();
     if (window.speechSynthesis) window.speechSynthesis.cancel();
   },
@@ -185,9 +193,13 @@ export default {
       this.recognition.onend = () => {
         this.isListening = false;
         this.clearSilenceTimer();
+        this.cancelAutoStop();
       };
 
       this.recognition.onresult = (event) => {
+        // Any new speech (interim OR final) means the user is still talking.
+        // Cancel any pending auto-stop and restart the silence countdown.
+        this.cancelAutoStop();
         this.resetSilenceTimer();
 
         let finalTranscript = '';
@@ -201,12 +213,9 @@ export default {
           this.transcript = finalTranscript;
           this.calculateAccuracy();
 
-          // For short A1 sentences, stop automatically after a final result
           const wordCount = this.targetText.trim().split(/\s+/).length;
           if (this.autoStopShortSentences && wordCount <= this.shortSentenceWordLimit) {
-            setTimeout(() => {
-              if (this.isListening) this.toggleListening();
-            }, 700);
+            this.scheduleAutoStop(this.autoStopDelay);
           }
         }
       };
@@ -218,9 +227,8 @@ export default {
 
       const utterance = new SpeechSynthesisUtterance(this.targetText);
       utterance.lang = this.recognitionLang;
-      utterance.rate = this.playCount === 0 ? 1.0 : 0.6; // normal first, then slow
+      utterance.rate = this.playCount === 0 ? 1.0 : 0.6; // normal, then slow
 
-      // Prefer an English voice so the model is always English
       const voices = window.speechSynthesis.getVoices();
       const englishVoice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith('en'));
       if (englishVoice) utterance.voice = englishVoice;
@@ -241,6 +249,7 @@ export default {
       if (this.isListening) {
         this.recognition.stop();
         this.clearSilenceTimer();
+        this.cancelAutoStop();
         this.isListening = false;
       } else {
         this.transcript = '';
@@ -257,6 +266,7 @@ export default {
       this.accuracy = null;
       this.isListening = false;
       this.clearSilenceTimer();
+      this.cancelAutoStop();
       if (this.recognition) this.recognition.stop();
     },
 
@@ -276,11 +286,14 @@ export default {
         : 0;
     },
 
+    // ─── Silence / auto-stop timers ────────────────────────────
+
     resetSilenceTimer() {
       this.clearSilenceTimer();
       this.silenceTimer = setTimeout(() => {
+        this.silenceTimer = null;
         if (this.isListening) {
-          console.log('Auto-stopping due to silence...');
+          console.log(`Auto-stopping after ${this.silenceDuration}ms of silence.`);
           this.toggleListening();
         }
       }, this.silenceDuration);
@@ -290,6 +303,22 @@ export default {
       if (this.silenceTimer) {
         clearTimeout(this.silenceTimer);
         this.silenceTimer = null;
+      }
+    },
+
+    // Auto-stop after a final result — but any new speech cancels it.
+    scheduleAutoStop(delay) {
+      this.cancelAutoStop();
+      this.autoStopTimer = setTimeout(() => {
+        this.autoStopTimer = null;
+        if (this.isListening) this.toggleListening();
+      }, delay);
+    },
+
+    cancelAutoStop() {
+      if (this.autoStopTimer) {
+        clearTimeout(this.autoStopTimer);
+        this.autoStopTimer = null;
       }
     }
   }
