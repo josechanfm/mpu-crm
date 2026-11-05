@@ -21,9 +21,9 @@ const isGenerating = ref(false)
 const qrReady = ref(false)
 
 /* ---------- 常數 ---------- */
-const QR_SIZE = 512
-const COMPOSE_PADDING = 10
-const TITLE_HEIGHT = 60
+const QR_SIZE = 1024
+const COMPOSE_PADDING = 20
+const TITLE_HEIGHT = 120
 
 /* ---------- QR 元件 props ---------- */
 const qrOptions = {
@@ -212,7 +212,7 @@ async function composeCanvas() {
     const fontFamily =
       'system-ui, -apple-system, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif'
 
-    let fontSize = 36
+    let fontSize = 72
     while (fontSize > 14) {
       ctx.font = `bold ${fontSize}px ${fontFamily}`
       if (ctx.measureText(text).width <= maxWidth) break
@@ -472,8 +472,8 @@ watch(url, () => {
   :key="renderKey"
   ref="qrRef"
   :value="qrUrl"
-  :width="256"
-  :height="256"
+  :width="QR_SIZE"
+  :height="QR_SIZE"
   :qrOptions="qrOptions"
   :image="logoDataUrl || undefined"
   :imageOptions="imageOptions"
@@ -576,8 +576,9 @@ watch(url, () => {
   justify-content: center;
 }
 .qr-img {
+  width: 256px;
+  height: 256px;
   max-width: 100%;
-  height: auto;
   border-radius: 8px;
 }
 </style>

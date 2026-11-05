@@ -59,7 +59,8 @@ class FormController extends Controller
             'department_id'=>session('department')->id??null,
             'require_login'=>false,
             'for_staff'=>false,
-            'published'=>false
+            'published'=>false,
+            'settings'=>['receipt_num'=>1]
         ]);
         $form->media;
         return Inertia::render('Department/Form/Form',[
@@ -117,6 +118,10 @@ class FormController extends Controller
     public function edit(Form $form)
     {
         $this->authorize('view',$form);
+        $form->settings = array_merge(
+            ['receipt_num'=>1],
+            $form->settings ?? []
+        );
         //$form->media;
         //dd(config('app'), $form->getFirstMediaUrl('banner'));
         $form->banner_url=$form->getFirstMediaUrl('banner');

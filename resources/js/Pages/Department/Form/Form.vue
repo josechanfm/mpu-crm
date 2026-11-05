@@ -54,12 +54,21 @@
             <div class="text-right">
                 <a @click="form.openThanks=!form.openThanks">Thank You Message</a>
             </div>
-            <a-form-item label="Thank you Message" name="thankyou" v-if="form.openThanks">
-                <a-textarea
-                    v-model:value="form.thanks"
-                    style="min-height: 200px"
-                />
-            </a-form-item>
+            <div v-if="form.openThanks">
+              <a-form-item label="Setting Receipt Number" name="settings_receipt_num">
+                  <a-switch
+                      v-model:checked="form.settings.receipt_num"
+                      :unCheckedValue="0"
+                      :checkedValue="1"
+                  />
+              </a-form-item>  
+              <a-form-item label="Thank you Message" name="thankyou">
+                  <a-textarea
+                      v-model:value="form.thanks"
+                      style="min-height: 200px"
+                  />
+              </a-form-item>
+            </div>
             <a-form-item label="Require Login" name="require_login">
                 <a-switch
                     v-model:checked="form.require_login"
