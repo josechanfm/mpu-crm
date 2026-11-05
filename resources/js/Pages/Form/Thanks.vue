@@ -17,7 +17,7 @@
                     </a-button>
                 </div>
                 <div v-if="form.thanks">
-                    <div id="pure-html" v-html="form.thanks"></div>
+                    <div class="ql-editor" v-html="form.thanks"></div>
                 </div>
                 <div v-else>
                     <p>Thank you very much! / 非常感謝您！</p>
@@ -31,6 +31,7 @@
 
 <script>
 import BlankLayout from '@/Layouts/BlankLayout.vue';
+import 'quill/dist/quill.snow.css';
 
 export default {
     components: {
@@ -47,13 +48,3 @@ export default {
     },
 }
 </script>
-
-<style>
-#pure-html {
-  all: initial
-}
-
-#pure-html * {
-  all: revert;
-}
-</style>

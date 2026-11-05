@@ -63,8 +63,8 @@
                   />
               </a-form-item>  
               <a-form-item label="Thank you Message" name="thankyou">
-                  <a-textarea
-                      v-model:value="form.thanks"
+                  <quill-editor
+                      v-model="form.thanks"
                       style="min-height: 200px"
                   />
               </a-form-item>
