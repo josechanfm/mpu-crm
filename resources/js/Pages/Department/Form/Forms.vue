@@ -11,29 +11,91 @@
           </template>
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
-              <a-button :href="route('manage.form.entries.index', record.id)">{{ $t('form_entries') }}</a-button>
-              <a-button :href="route('manage.entry.export', { form: record.id })">{{ $t('export') }}</a-button>
-              <a-button :href="route('manage.form.fields.index', { form: record.id })">{{ $t('data_field') }}</a-button>
-              <a-button :href="route('manage.forms.edit', record.id)">{{ $t('edit') }}</a-button>
-              <a-popconfirm
-                title="Confirm Delete"
-                ok-text="Yes"
-                cancel-text="No"
-                @confirm="deleteConfirmed(record)"
-                :disabled="record.entries_count > 0"
-              >
-                <a-button :disabled="record.entries_count > 0">{{ $t('delete') }}</a-button>
-              </a-popconfirm>
-              <br>
-              <a-button @click="openQrCodeModal(record)">Show QR Code</a-button>
-              <a-button @click="cloneForm(record)">Clone</a-button>
-              <a-button @click="backupRecords(record)" v-if="record.entries_count > 0">Backup</a-button>
-              <a-button :href="route('forms.show', { form: record.id, uuid: record.uuid, mode: 'preview' })" target="_blank">Preview</a-button>
-              
+              <div class="flex flex-wrap items-center gap-2">
+                <a-button
+                  type="primary"
+                  size="small"
+                  :href="route('manage.form.entries.index', record.id)"
+                >
+                  {{ $t('form_entries') }}
+                </a-button>
+                <a-button
+                  size="small"
+                  :href="route('manage.forms.edit', record.id)"
+                >
+                  {{ $t('edit') }}
+                </a-button>
+                <a-button
+                  size="small"
+                  :href="route('manage.form.fields.index', { form: record.id })"
+                >
+                  {{ $t('data_field') }}
+                </a-button>
+                <a-dropdown placement="bottomRight">
+                  <a-button size="small">
+                    More
+                    <DownOutlined />
+                  </a-button>
+                  <template #overlay>
+                    <a-menu>
+                      <a-menu-item key="export">
+                        <a :href="route('manage.entry.export', { form: record.id })">
+                          {{ $t('export') }}
+                        </a>
+                      </a-menu-item>
+                      <a-menu-item key="preview">
+                        <a
+                          :href="route('forms.show', { form: record.id, uuid: record.uuid, mode: 'preview' })"
+                          target="_blank"
+                        >
+                          Preview
+                        </a>
+                      </a-menu-item>
+                      <a-menu-divider />
+                      <a-menu-item key="qr-code" @click="openQrCodeModal(record)">
+                        Show QR Code
+                      </a-menu-item>
+                      <a-menu-item key="clone" @click="cloneForm(record)">
+                        Clone
+                      </a-menu-item>
+                      <a-menu-item
+                        v-if="record.entries_count > 0"
+                        key="backup"
+                        @click="backupRecords(record)"
+                      >
+                        Backup
+                      </a-menu-item>
+                    </a-menu>
+                  </template>
+                </a-dropdown>
+                <a-popconfirm
+                  title="Confirm Delete"
+                  ok-text="Yes"
+                  cancel-text="No"
+                  @confirm="deleteConfirmed(record)"
+                  :disabled="record.entries_count > 0"
+                >
+                  <a-button
+                    danger
+                    size="small"
+                    :disabled="record.entries_count > 0"
+                  >
+                    {{ $t('delete') }}
+                  </a-button>
+                </a-popconfirm>
+              </div>
             </template>
             <template v-else-if="column.type == 'yesno'">
-              <span v-if="record[column.dataIndex] == 1">Yes</span>
-              <span v-else>No</span>
+              <CheckCircleFilled
+                v-if="record[column.dataIndex] == 1"
+                class="text-green-500"
+                aria-label="Yes"
+              />
+              <CloseCircleFilled
+                v-else
+                class="text-red-300"
+                aria-label="No"
+              />
             </template>
             <template v-else-if="column.dataIndex == 'entry_count'">
               {{ record.entry_count }}
@@ -60,6 +122,9 @@
 <script>
 import DepartmentLayout from "@/Layouts/DepartmentLayout.vue";
 import {
+  CheckCircleFilled,
+  CloseCircleFilled,
+  DownOutlined,
   UploadOutlined,
   LoadingOutlined,
   PlusOutlined,
@@ -72,6 +137,9 @@ import QrCodeModal from '@/Components/QrCodeModal.vue';
 export default {
   components: {
     DepartmentLayout,
+    CheckCircleFilled,
+    CloseCircleFilled,
+    DownOutlined,
     UploadOutlined,
     LoadingOutlined,
     PlusOutlined,
@@ -124,6 +192,7 @@ export default {
           i18n: "operation",
           dataIndex: "operation",
           key: "operation",
+          width: 400,
         },
       ]
     };
