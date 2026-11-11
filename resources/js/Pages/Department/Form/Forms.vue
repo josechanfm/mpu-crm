@@ -169,26 +169,26 @@ export default {
       },
       columns: [
         {
-          title: "Title",
+          title: "欄位名稱",
           i18n: "form_title",
           dataIndex: "title",
         },{
-          title: "Require login",
+          title: "需要登入使用",
           i18n: "require_login",
           dataIndex: "require_login",
           type: "yesno",
         },{
-          title: "Published",
+          title: "已發報",
           i18n: "published",
           dataIndex: "published",
           type: "yesno",
         },{
-          title: "Entries",
+          title: "回覆數量",
           i18n: "form_entries",
           dataIndex: "entry_count",
           key: "entry_count",
         },{
-          title: "Operation",
+          title: "操作",
           i18n: "operation",
           dataIndex: "operation",
           key: "operation",

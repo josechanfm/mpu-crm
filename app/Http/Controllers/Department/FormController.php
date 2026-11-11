@@ -63,7 +63,7 @@ class FormController extends Controller
             'settings'=>['receipt_num'=>1]
         ]);
         $form->media;
-        return Inertia::render('Department/Form/Form',[
+        return Inertia::render('Department/Form/FormEdit',[
             'departments'=>Department::all(),
             'form'=>$form
         ]);
@@ -126,7 +126,7 @@ class FormController extends Controller
         //dd(config('app'), $form->getFirstMediaUrl('banner'));
         $form->banner_url=$form->getFirstMediaUrl('banner');
         $form->thumb_url=$form->getFirstMediaUrl('thumb');
-        return Inertia::render('Department/Form/Form',[
+        return Inertia::render('Department/Form/FormEdit',[
             'departments'=>Department::orderBy('abbr')->get(),
             'form'=>$form
         ]);

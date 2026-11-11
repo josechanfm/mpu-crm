@@ -2,110 +2,80 @@
     <a-modal
         :open="open"
         @update:open="$emit('update:open', $event)"
-        :title="mode == 'CREATE' ? 'Create' : 'Update'"
-        width="60%"
+        :title="mode == 'CREATE' ? '新增欄位' : '編輯欄位'"
+        :width="720"
     >
-        <a-form ref="modalRef" :model="localData" name="formField" :label-col="{ span: 4 }"
-                :wrapper-col="{ span: 20 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages">
-            <a-form-item v-if="isAdminOrMaster" label="Field Name" name="field_name">
-                <a-input type="input" v-model:value="localData.field_name" />
-                <p class="text-red-500 text-xs">* Only shows for admin and master, suggest to keep it blank</p>
+        <a-form ref="modalRef" :model="localData" name="formField" :label-col="{ span: 6 }"
+                :wrapper-col="{ span: 18 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages">
+            <a-form-item label="欄位名稱" name="field_label">
+                <a-input v-model:value="localData.field_label" />
             </a-form-item>
-            <a-form-item label="Field Label" name="field_label">
-                <a-input type="input" v-model:value="localData.field_label" />
-            </a-form-item>
-            <a-form-item label="Field Type" name="type">
-                <a-select v-model:value="localData.type" placeholder="Field Type" :options="fieldTypes"
+            <a-form-item label="欄位格式" name="type">
+                <a-select v-model:value="localData.type" placeholder="選擇格式" :options="fieldTypes"
                           @change="onChangeType" />
             </a-form-item>
-            <a-form-item label="Rows" name="rows"
+            <a-form-item v-if="isAdminOrMaster" label="內部名稱" name="field_name">
+                <a-input v-model:value="localData.field_name" />
+                <p class="mt-1 text-xs text-gray-500">只對管理員顯示，建議留空。</p>
+            </a-form-item>
+            <a-form-item label="行數" name="rows"
                          v-if="['textarea', 'longtext', 'richtext'].includes(localData.type)">
-                <a-input-number v-model:value="localData.options" />
+                <a-input-number v-model:value="localData.options" :min="1" />
             </a-form-item>
 
-            <!-- Options editor (for radio, checkbox, dropdown) -->
             <template v-if="['radio', 'checkbox', 'dropdown'].includes(localData.type)">
-                <div class="ant-form-item">
-                    <div class="ant-form-item-label">
-                        <label>Options</label>
-                    </div>
-                    <div class="ant-form-item-control">
-                        <div class="ant-form-item-control-input">
-                            <div class="flex flex-col gap-2">
-                                <!-- Each option row with delete button -->
-                                <a-form-item-rest v-for="(option, idx) in localData.options" :key="idx">
-                                    <div class="flex items-center gap-2">
-                                        <span class="min-w-[40px] text-right font-medium text-gray-600">
-                                            <span v-if="option.value=='option_other'">其他.</span>
-                                            <span v-else>{{ idx + 1 }}.</span>
-                                        </span>
-                                        <a-input 
-                                            type="input" 
-                                            v-model:value="option.label"
-                                            placeholder="Option label"
-                                            class="flex-1"
-                                        />
-                                        <a-button 
-                                            type="text" 
-                                            danger 
-                                            size="small"
-                                            @click="deleteOption(idx)"
-                                            class="flex-shrink-0"
-                                        >
-                                            <CloseOutlined />
-                                        </a-button>
-                                    </div>
-                                </a-form-item-rest>
-                                <!-- Add buttons row -->
-                                <div class="mt-1 flex flex-wrap items-center gap-2">
-                                    <a-button type="primary" ghost @click="addOptionItem" class="flex-1">
-                                        + Add option
-                                    </a-button>
-                                    <div class="flex items-center gap-1">
-                                        <a-checkbox v-model:checked="hasOtherOption">
-                                            Include "Other" option
-                                        </a-checkbox>
-                                    </div>
-                                </div>
-                                <div class="text-xs text-gray-500">"Other" option allows users to enter custom text</div>
+                <a-form-item label="選項範本">
+                    <a-select :options="optionTemplates" placeholder="套用範本" @change="onChangeOptionTemplate" />
+                </a-form-item>
+                <a-form-item label="選項">
+                    <div class="flex flex-col gap-2">
+                        <a-form-item-rest v-for="(option, idx) in localData.options" :key="idx">
+                            <div class="flex items-center gap-2">
+                                <span class="w-10 shrink-0 text-right text-gray-500">
+                                    {{ option.value == 'option_other' ? '其他' : (idx + 1) + '.' }}
+                                </span>
+                                <a-input v-model:value="option.label" placeholder="選項文字" class="flex-1" />
+                                <a-button type="text" danger size="small" @click="deleteOption(idx)">
+                                    <CloseOutlined />
+                                </a-button>
                             </div>
+                        </a-form-item-rest>
+                        <div class="flex flex-wrap items-center gap-3">
+                            <a-button type="primary" ghost @click="addOptionItem">新增選項</a-button>
+                            <a-checkbox v-model:checked="hasOtherOption">加入「其他」，讓填表人自行輸入</a-checkbox>
                         </div>
                     </div>
-                </div>
-
-                <a-form-item label="Template" name="optionTemplate">
-                    <a-select :options="optionTemplates" @change="onChangeOptionTemplate" />
                 </a-form-item>
-                <a-form-item 
-                    v-if="['radio', 'checkbox'].includes(localData.type)"
-                    label="Direction"
-                >
+                <a-form-item v-if="['radio', 'checkbox'].includes(localData.type)" label="排列">
                     <a-radio-group v-model:value="localData.direction">
-                        <a-radio value="H">Horizontal</a-radio>
-                        <a-radio value="V">Vertical</a-radio>
+                        <a-radio value="H">橫向</a-radio>
+                        <a-radio value="V">直向</a-radio>
                     </a-radio-group>
+                </a-form-item>
+                <a-form-item v-if="localData.type === 'checkbox'" label="最多可選">
+                    <a-input-number class="w-28" :min="1" :value="optionMax" placeholder="不限" @change="setOptionMax" />
+                    <span class="ml-2 text-xs text-gray-500">留空表示不限制</span>
                 </a-form-item>
             </template>
 
-            <a-form-item label="Compulsory" name="required">
+            <a-form-item label="必填欄" name="required">
                 <a-switch v-model:checked="localData.required" />
+                <span class="ml-2 text-xs text-gray-500">填表時必須填寫</span>
             </a-form-item>
-            <a-form-item label="Column data" name="in_column" v-if="localData.required">
+            <a-form-item label="顯示於輸出表格" name="in_column">
                 <a-switch v-model:checked="localData.in_column" />
+                <span class="ml-2 text-xs text-gray-500">在回覆列表和匯出中顯示</span>
             </a-form-item>
-            <a-form-item label="Extra">
-                <a-textarea v-model:value="localData.extra" />
-            </a-form-item>
-            <a-form-item label="Remark" name="remark">
-                <a-textarea v-model:value="localData.remark" />
+            <a-form-item label="備註" name="remark">
+                <a-textarea v-model:value="localData.remark" :rows="3" />
             </a-form-item>
         </a-form>
         <template #footer>
-            <a-button key="back" @click="closeModal">Cancel</a-button>
+            <a-button key="back" @click="closeModal">取消</a-button>
             <a-button v-if="mode == 'EDIT'" key="Update" type="primary"
-                      @click="updateRecord">Update</a-button>
+                      @click="updateRecord">儲存</a-button>
             <a-button v-if="mode == 'CREATE'" key="Store" type="primary"
-                      @click="storeRecord">Create</a-button>
+                      @click="storeRecord">建立</a-button>
         </template>
     </a-modal>
 </template>
@@ -160,7 +130,7 @@ export default {
                 { value: "time", label: "時間" },
                 { value: "email", label: "電郵欄位" },
                 { value: "number", label: "數值欄位" },
-                { value: "html", label: "HMTL text" }
+                { value: "html", label: "HTML 文字" }
             ],
             rules: {
                 field_label: { required: true },
@@ -179,6 +149,11 @@ export default {
         };
     },
     computed: {
+        optionMax() {
+            const raw = this.localData.extra?.option_max;
+            const count = parseInt(raw, 10);
+            return Number.isFinite(count) && count > 0 ? count : null;
+        },
         hasOtherOption: {
             get() {
                 return this.localData.options?.some(opt => opt.value === 'option_other') ?? false;
@@ -200,6 +175,7 @@ export default {
                     this.localData = this.cloneData(this.initialData);
                 }
                 this.ensureOptionsArray();
+                this.normalizeExtra();
             }
         },
         initialData: {
@@ -208,6 +184,7 @@ export default {
                 if (this.open && this.mode === 'EDIT') {
                     this.localData = this.cloneData(newVal);
                     this.ensureOptionsArray();
+                    this.normalizeExtra();
                 }
             },
         },
@@ -280,6 +257,26 @@ export default {
                 this.sortOptions();
             }
         },
+        setOptionMax(value) {
+            this.normalizeExtra();
+            if (value == null || value === '') {
+                delete this.localData.extra.option_max;
+                return;
+            }
+            this.localData.extra.option_max = value;
+        },
+        normalizeExtra() {
+            if (this.localData.type !== 'checkbox') return;
+            if (!this.localData.extra || typeof this.localData.extra !== 'object' || Array.isArray(this.localData.extra)) {
+                this.localData.extra = {};
+            }
+            const count = parseInt(this.localData.extra.option_max, 10);
+            if (!Number.isFinite(count) || count < 1) {
+                delete this.localData.extra.option_max;
+            } else {
+                this.localData.extra.option_max = count;
+            }
+        },
         onChangeType(value) {
             if (['textarea', 'longtext', 'richtext'].includes(value)) {
                 if (!Number.isInteger(this.localData.options)) {
@@ -289,6 +286,7 @@ export default {
                 if (!Array.isArray(this.localData.options)) {
                     this.localData.options = [{ value: 'option_1', label: 'option_1' }];
                 }
+                this.normalizeExtra();
             }
         },
         ensureOptionsArray() {

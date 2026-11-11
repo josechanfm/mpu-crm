@@ -1,43 +1,62 @@
 <template>
-    <DepartmentLayout title="Dashboard" :department="department">
-        <div class="flex pb-3 justify-end gap-2">
-            <a-button :href="route('manage.forms.index')">Back</a-button>
-            <a-button v-if="isDraggable" type="primary" ghost @click="reloadFormFields">Finish</a-button>
-            <a-button v-else type="primary" ghost @click="isDraggable = !isDraggable">Drag sort</a-button>
-            <a-button @click="createRecord()" type="primary">Create Field</a-button>
+    <DepartmentLayout :title="form.title || '欄位'" :department="department">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <p class="text-sm text-gray-500">{{ form.name }}</p>
+            <div class="flex flex-wrap gap-2">
+                <a-button :href="route('manage.forms.index')">返回</a-button>
+                <a-button v-if="isDraggable" type="primary" ghost @click="reloadFormFields">完成排序</a-button>
+                <a-button v-else type="primary" ghost @click="isDraggable = true">拖拉排序</a-button>
+                <a-button type="primary" :disabled="form.published == true" @click="createRecord()">新增欄位</a-button>
+            </div>
         </div>
-        <a-table 
-            :dataSource="formFields" 
-            :columns="columns" 
+        <a-alert
+            v-if="form.published"
+            class="mb-3"
+            type="warning"
+            show-icon
+            message="表單已發佈，欄位不能再新增、修改、刪除或複製。"
+        />
+        <a-table
+            :dataSource="formFields"
+            :columns="columns"
             :customRow="customRow"
+            row-key="id"
+            :pagination="false"
         >
-            <template #bodyCell="{ column, record, index }">
+            <template #bodyCell="{ column, record }">
                 <template v-if="column.dataIndex === 'operation'">
-                    <a-button @click="editRecord(record)" :disabled="form.published == true">Edit</a-button>
-                    <a-popconfirm title="Are you sure delete this field?" ok-text="Yes" cancel-text="No"
-                        @confirm="deleteRecord(record)" :disabled="form.published == true">
-                        <a-button :disabled="form.published == true">Delete</a-button>
-                    </a-popconfirm>
-                    <a-popconfirm title="Are you sure to clone this field?" ok-text="Yes" cancel-text="No"
-                        @confirm="cloneRecord(record)" :disabled="form.published == true">
-                        <a-button :disabled="form.published == true">Clone</a-button>
-                    </a-popconfirm>
+                    <div class="flex flex-wrap gap-2">
+                        <a-button size="small" :disabled="form.published == true" @click="editRecord(record)">編輯</a-button>
+                        <a-popconfirm title="確定刪除這個欄位？" ok-text="刪除" cancel-text="取消"
+                            @confirm="deleteRecord(record)" :disabled="form.published == true">
+                            <a-button size="small" danger :disabled="form.published == true">刪除</a-button>
+                        </a-popconfirm>
+                        <a-popconfirm title="確定複製這個欄位？" ok-text="複製" cancel-text="取消"
+                            @confirm="cloneRecord(record)" :disabled="form.published == true">
+                            <a-button size="small" :disabled="form.published == true">複製</a-button>
+                        </a-popconfirm>
+                    </div>
+                </template>
+                <template v-else-if="column.dataIndex == 'type'">
+                    {{ typeLabels[record.type] || record.type }}
                 </template>
                 <template v-else-if="column.dataIndex == 'dragger' && isDraggable">
                     <HolderOutlined />
                 </template>
-                <template v-else-if="column.dataIndex == 'required'">
-                    {{ record.required }}
-                </template>
-                <template v-else-if="column.dataIndex == 'in_column'">
-                    {{ record.in_column }}
+                <template v-else-if="column.dataIndex == 'required' || column.dataIndex == 'in_column'">
+                    <CheckCircleFilled
+                        v-if="record[column.dataIndex] == true"
+                        class="text-lg text-green-500"
+                        aria-label="Yes"
+                    />
+                    <CloseCircleFilled
+                        v-else
+                        class="text-lg text-red-400"
+                        aria-label="No"
+                    />
                 </template>
             </template>
         </a-table>
-        <div>
-            <div>備註:</div>
-            <div>1. 若表格式發佈,其已建主的欄位內容修改.</div>
-        </div>
 
         <!-- Modal Component -->
         <FormFieldModal
@@ -56,7 +75,7 @@
 <script>
 import DepartmentLayout from '@/Layouts/DepartmentLayout.vue';
 import { VueDraggableNext } from 'vue-draggable-next'
-import { HolderOutlined } from "@ant-design/icons-vue";
+import { CheckCircleFilled, CloseCircleFilled, HolderOutlined } from "@ant-design/icons-vue";
 import Sortable from "sortablejs";
 import FormFieldModal from './FormFieldModal.vue';
 
@@ -66,6 +85,8 @@ export default {
         draggable: VueDraggableNext,
         Sortable,
         HolderOutlined,
+        CheckCircleFilled,
+        CloseCircleFilled,
         FormFieldModal,
     },
     props: ['department', 'form', 'fields', 'configs'],
@@ -89,15 +110,35 @@ export default {
         this.formFields = this.fields;
     },
     computed: {
+        typeLabels() {
+            return {
+                input: '單行文字',
+                longtext: '長編文字',
+                richtext: '格式文字',
+                radio: '單項選擇',
+                checkbox: '多項選擇',
+                dropdown: '下拉清單',
+                true_false: '真/偽',
+                datetime: '日期時間',
+                date: '日期格式',
+                time: '時間',
+                email: '電郵欄位',
+                number: '數值欄位',
+                html: 'HTML 文字',
+            };
+        },
         columns() {
-            return [
-                { title: '拖拉', width: '60px', dataIndex: 'dragger' },
-                { title: '欄位名稱', i18n: 'field_label', dataIndex: 'field_label' },
-                { title: '欄位格式', i18n: 'field_type', dataIndex: 'type' },
-                { title: '必填欄', i18n: 'compulsory', dataIndex: 'required' },
-                { title: '顯示於輸出表格', i18n: 'in_column', dataIndex: 'in_column' },
-                { title: '操作', i18n: 'operation', dataIndex: 'operation' }
-            ]
+            const columns = [
+                { title: '欄位名稱', dataIndex: 'field_label' },
+                { title: '欄位格式', dataIndex: 'type', width: 140 },
+                { title: '必填欄', dataIndex: 'required', width: 90, align: 'center' },
+                { title: '顯示於輸出表格', dataIndex: 'in_column', width: 140, align: 'center' },
+                { title: '操作', dataIndex: 'operation', width: 220 },
+            ];
+            if (this.isDraggable) {
+                columns.unshift({ title: '', dataIndex: 'dragger', width: 48 });
+            }
+            return columns;
         },
         isAdminOrMaster() {
             return this.is('admin | master');
