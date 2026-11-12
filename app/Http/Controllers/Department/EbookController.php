@@ -171,6 +171,7 @@ class EbookController extends Controller
 
     protected function convertPdf(string $thumbPath, string $pagePath, string $pdfPath): int
     {
+        dd($this->convertUrl(),$thumbPath,$pagePath,$pdfPath);
         $ch = curl_init($this->convertUrl());
         curl_setopt_array($ch, [
             CURLOPT_POST => true,
