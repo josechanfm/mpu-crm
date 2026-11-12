@@ -136,9 +136,17 @@ class EbookController extends Controller
         File::put($bookPath.'mobile/javascript/pages.js', $content);
     }
 
+    protected function convertUrl(): string
+    {
+        $parts = parse_url((string) config('app.url'));
+        $host = $parts['host'] ?? '127.0.0.1';
+
+        return 'http://'.$host.':3030/convert';
+    }
+
     protected function convertPdf(string $thumbPath, string $pagePath, string $pdfPath): int
     {
-        $ch = curl_init('http://127.0.0.1:3030/convert');
+        $ch = curl_init($this->convertUrl());
         curl_setopt_array($ch, [
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => http_build_query([
