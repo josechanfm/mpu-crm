@@ -110,8 +110,64 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.get('/', (_req, res) => {
+app.get('/health', (_req, res) => {
     res.status(200).json({ ok: true });
+});
+
+app.get('/', (_req, res) => {
+    res.type('html').send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDF worker link test</title>
+<style>
+body { font-family: sans-serif; max-width: 42rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.45; }
+code { background: #f2f2f2; padding: 0.1rem 0.35rem; }
+button { margin-top: 0.5rem; }
+#result { white-space: pre-wrap; }
+.ok { color: #0a7a32; }
+.bad { color: #a40000; }
+</style>
+</head>
+<body>
+<h1>PDF conversion service</h1>
+<p>This page is served by the worker. If you can read it, this host and port reach the service.</p>
+<p>Convert URL: <code id="url"></code></p>
+<p>Laravel posts <code>thumb</code>, <code>folder</code>, and <code>pdf</code> to <code>http://&lt;APP_URL host&gt;:3030/convert</code>. That host must be the same host shown above.</p>
+<button id="ping" type="button">Test /convert</button>
+<p id="result"></p>
+<script>
+const url = location.origin + '/convert';
+document.getElementById('url').textContent = url;
+document.getElementById('ping').onclick = async () => {
+    const result = document.getElementById('result');
+    result.className = '';
+    result.textContent = 'Contacting ' + url + '...';
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'thumb=&folder=&pdf='
+        });
+        const text = await response.text();
+        let json = null;
+        try { json = JSON.parse(text); } catch (e) {}
+        if (json && (Object.prototype.hasOwnProperty.call(json, 'pages') || json.error)) {
+            result.className = 'ok';
+            result.textContent = 'Service link is correct.\\n' + response.status + ' ' + text;
+        } else {
+            result.className = 'bad';
+            result.textContent = 'Reached a server, but it is not this converter.\\n' + response.status + ' ' + text;
+        }
+    } catch (error) {
+        result.className = 'bad';
+        result.textContent = 'Could not reach ' + url + '\\n' + error;
+    }
+};
+</script>
+</body>
+</html>`);
 });
 
 app.post('/convert', async (req, res) => {
