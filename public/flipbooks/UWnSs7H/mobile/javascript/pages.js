@@ -1,2 +1,2 @@
-var total_page=62; 
-var book_title='demo';
+var total_page=60;
+var book_title="adsfads fadsfa";

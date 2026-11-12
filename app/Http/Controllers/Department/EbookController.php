@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Process;
 use RuntimeException;
 use App\Models\Ebook;
 use Endroid\QrCode\QrCode;
@@ -98,8 +99,8 @@ class EbookController extends Controller
         $ebook->original_filename = $filename;
         $ebook->save();
 
-        $file->move($bookPath, $filename);
         $this->ensureTemplate($this->templatePath.'book1', $bookPath);
+        $file->move($bookPath, $filename);
 
         $pages = $this->convertPdf(
             $bookPath.'files/thumb',
@@ -136,39 +137,82 @@ class EbookController extends Controller
         File::put($bookPath.'mobile/javascript/pages.js', $content);
     }
 
-    protected function convertUrl(): string
-    {
-        $parts = parse_url((string) config('app.url'));
-        $host = $parts['host'] ?? '127.0.0.1';
-
-        return 'http://'.$host.':3030/convert';
-    }
-
     protected function convertPdf(string $thumbPath, string $pagePath, string $pdfPath): int
     {
-        $ch = curl_init($this->convertUrl());
-        curl_setopt_array($ch, [
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => http_build_query([
-                'thumb' => $thumbPath,
-                'folder' => $pagePath,
-                'pdf' => $pdfPath,
-            ]),
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 3600,
-            CURLOPT_CONNECTTIMEOUT => 5,
-        ]);
-        $output = curl_exec($ch);
-        $error = curl_error($ch);
-        $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+        File::ensureDirectoryExists($pagePath);
+        File::ensureDirectoryExists($thumbPath);
 
-        $json = json_decode($output ?: '', true);
-        $pages = (int) ($json['pages'] ?? 0);
-        if ($error || $status !== 200 || $pages < 1) {
-            throw new RuntimeException($error ?: 'Flipbook conversion failed.');
+        $prefix = $pagePath.DIRECTORY_SEPARATOR.'page';
+        $result = Process::timeout(3600)->run([
+            $this->pdftoppmBinary(),
+            '-jpeg',
+            '-r',
+            '144',
+            $pdfPath,
+            $prefix,
+        ]);
+
+        if (! $result->successful()) {
+            throw new RuntimeException(trim($result->errorOutput()) ?: 'Flipbook conversion failed.');
         }
-        return $pages;
+
+        $rendered = File::glob($prefix.'-*.jpg') ?: [];
+        usort($rendered, fn (string $a, string $b) => $this->renderedPageNumber($a) <=> $this->renderedPageNumber($b));
+        if ($rendered === []) {
+            throw new RuntimeException(trim($result->errorOutput()) ?: 'Flipbook conversion produced no pages.');
+        }
+
+        $page = 0;
+        foreach ($rendered as $source) {
+            $page++;
+            $pageFile = $pagePath.DIRECTORY_SEPARATOR.$page.'.jpg';
+            File::move($source, $pageFile);
+            $this->writeThumbnail($pageFile, $thumbPath.DIRECTORY_SEPARATOR.$page.'.jpg');
+        }
+
+        return $page;
+    }
+
+    protected function pdftoppmBinary(): string
+    {
+        $configured = (string) env('PDFTOPPM_PATH', '');
+        if ($configured !== '' && is_file($configured)) {
+            return $configured;
+        }
+
+        $bundled = base_path('bin/poppler/pdftoppm.exe');
+        if (is_file($bundled)) {
+            return $bundled;
+        }
+
+        throw new RuntimeException('pdftoppm was not found. Set PDFTOPPM_PATH or add bin/poppler/pdftoppm.exe.');
+    }
+
+    protected function renderedPageNumber(string $path): int
+    {
+        if (preg_match('/page-(\d+)\.jpg$/', str_replace('\\', '/', $path), $matches)) {
+            return (int) $matches[1];
+        }
+
+        return 0;
+    }
+
+    protected function writeThumbnail(string $pageFile, string $thumbFile): void
+    {
+        $source = imagecreatefromjpeg($pageFile);
+        if ($source === false) {
+            throw new RuntimeException('Could not read a rendered page image.');
+        }
+
+        $width = imagesx($source);
+        $height = imagesy($source);
+        $thumbWidth = max(1, (int) round($width * 0.25));
+        $thumbHeight = max(1, (int) round($height * 0.25));
+        $thumb = imagecreatetruecolor($thumbWidth, $thumbHeight);
+        imagecopyresampled($thumb, $source, 0, 0, 0, 0, $thumbWidth, $thumbHeight, $width, $height);
+        imagejpeg($thumb, $thumbFile, 75);
+        imagedestroy($thumb);
+        imagedestroy($source);
     }
 
     public function _generateQrCode($ebook){
