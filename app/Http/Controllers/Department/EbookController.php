@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Process;
 use RuntimeException;
+use Symfony\Component\Process\Process;
 use App\Models\Ebook;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Color\Color;
@@ -143,7 +143,7 @@ class EbookController extends Controller
         File::ensureDirectoryExists($thumbPath);
 
         $prefix = $pagePath.DIRECTORY_SEPARATOR.'page';
-        $result = Process::timeout(3600)->run([
+        $process = new Process([
             $this->pdftoppmBinary(),
             '-jpeg',
             '-r',
@@ -151,15 +151,17 @@ class EbookController extends Controller
             $pdfPath,
             $prefix,
         ]);
+        $process->setTimeout(3600);
+        $process->run();
 
-        if (! $result->successful()) {
-            throw new RuntimeException(trim($result->errorOutput()) ?: 'Flipbook conversion failed.');
+        if (! $process->isSuccessful()) {
+            throw new RuntimeException(trim($process->getErrorOutput()) ?: 'Flipbook conversion failed.');
         }
 
         $rendered = File::glob($prefix.'-*.jpg') ?: [];
         usort($rendered, fn (string $a, string $b) => $this->renderedPageNumber($a) <=> $this->renderedPageNumber($b));
         if ($rendered === []) {
-            throw new RuntimeException(trim($result->errorOutput()) ?: 'Flipbook conversion produced no pages.');
+            throw new RuntimeException(trim($process->getErrorOutput()) ?: 'Flipbook conversion produced no pages.');
         }
 
         $page = 0;

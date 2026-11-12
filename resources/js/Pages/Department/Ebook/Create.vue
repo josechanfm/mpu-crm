@@ -8,10 +8,10 @@
             <div class="rounded-lg bg-white p-6 shadow">
                 <a-form layout="vertical" @submit.prevent="submit">
                     <a-form-item label="書籍名稱" required>
-                        <a-input v-model:value="pdfFile.title" placeholder="電子書標題" />
+                        <a-input type="input" v-model:value="pdfFile.title" placeholder="電子書標題" />
                     </a-form-item>
                     <a-form-item label="二維碼標題">
-                        <a-input v-model:value="pdfFile.qrcode_title" placeholder="印在二維碼下方的文字" />
+                        <a-input type="input" v-model:value="pdfFile.qrcode_title" placeholder="印在二維碼下方的文字" />
                         <div class="mt-1 text-xs text-gray-400">留空時使用書籍名稱</div>
                     </a-form-item>
                     <a-form-item label="說明">
