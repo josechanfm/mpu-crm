@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('uid')->uniqid();
             $table->string('title');
+            $table->string('qrcode_title')->nullable();
             $table->string('original_filename');
             $table->text('description')->nullable();
             $table->date('date_start');

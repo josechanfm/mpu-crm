@@ -3,20 +3,16 @@
 namespace App\Http\Controllers\Department;
 
 use App\Http\Controllers\Controller;
-use App\Models\Member;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\File;
-use Exception;
-use Smalot\PdfParser\Parser as Parser;
+use RuntimeException;
 use App\Models\Ebook;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Label\Label;
 use Endroid\QrCode\Logo\Logo;
 use Endroid\QrCode\Writer\PngWriter;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 
 
 class EbookController extends Controller
@@ -32,7 +28,6 @@ class EbookController extends Controller
 
     public function index()
     {
-    
        return Inertia::render('Department/Ebook/List',[
         'ebooks'=>Ebook::orderBy('created_at','desc')->get()
        ]);
@@ -47,27 +42,23 @@ class EbookController extends Controller
 
     public function store(Request $request)
     {
-        $time=ini_get('max_execution_time');
-        ini_set('max_execution_time',3600);
+        ini_set('max_execution_time', 3600);
 
         $data=[
             'original_filename'=>'MPU eBook',
             'title'=>$request->title,
+            'qrcode_title'=>$request->qrcode_title,
             'description'=>$request->description,
-            'date_start'=>$request->date_start??date('y-m-d'),
-            'data_end'=>$request->date_end,
+            'date_start'=>$request->date_start??date('Y-m-d'),
+            'date_end'=>$request->date_end,
             'remark'=>$request->remark,
             'published'=>$request->published,
             'template'=>'book1'
         ];
-        // //dd($file,$filename);
         $ebook=Ebook::create($data);
 
         if($request->file('file')){
-            $file = $request->file('file')[0];
-            $ebook->original_filename=$file->getClientOriginalName();
-            $ebook->save();
-            $this->create_flip_book($ebook, $file);
+            $this->create_flip_book($ebook, $request->file('file')[0]);
         }
         $this->_generateQrCode($ebook);
 
@@ -75,26 +66,23 @@ class EbookController extends Controller
     }
     public function update(Request $request, Ebook $ebook)
     {
-        $time=ini_get('max_execution_time');
-        ini_set('max_execution_time',3600);
+        ini_set('max_execution_time', 3600);
 
         $data=[
             'title'=>$request->title,
+            'qrcode_title'=>$request->qrcode_title,
             'description'=>$request->description,
-            'date_start'=>$request->date_start??date('y-m-d'),
-            'data_end'=>$request->date_end,
+            'date_start'=>$request->date_start??date('Y-m-d'),
+            'date_end'=>$request->date_end,
             'remark'=>$request->remark,
             'published'=>$request->published,
             'template'=>'book1'
         ];
-        //dd($request->all(), $data);
         $ebook->update($data);
         if($request->file('file')){
-            $file = $request->file('file')[0];
-            $ebook->original_filename=$file->getClientOriginalName();
-            $ebook->save();
-            $this->create_flip_book($ebook, $file);
+            $this->create_flip_book($ebook, $request->file('file')[0]);
         }
+        $this->_generateQrCode($ebook);
         return redirect()->back();
         // return redirect()->route('manage.ebooks.index');
     }
@@ -105,87 +93,94 @@ class EbookController extends Controller
     }
 
     function create_flip_book($ebook, $file){
-        $book_path=$this->destinationPath.$ebook->uid.'/';
-        $book_img_path=$book_path."files/mobile";
-        $thumb_img_path=$book_path."files/thumb";
-        //$template_path=base_path()."/resources/ebookTemplate/book1";
-        $template_path=$this->templatePath.'book1';
-        $file_path=$book_path.$ebook->original_filename;
-        
-        // dd($book_path, $book_img_path, $thumb_img_path, $template_path, $file_path, $ebook->original_filename);
+        $bookPath = $this->destinationPath.$ebook->uid.'/';
+        $filename = $this->pdfFilename($file);
+        $ebook->original_filename = $filename;
+        $ebook->save();
 
-        $pdfPath = $file->move($book_path, $ebook->original_filename);
-        $pageNum=$this->countPdfPages($book_path.$ebook->original_filename);
-        $this->cloneTemplate($template_path ,$book_path,$pageNum);
-        $d= $this->_remote_post( $thumb_img_path, $book_img_path, $file_path);
+        $file->move($bookPath, $filename);
+        $this->ensureTemplate($this->templatePath.'book1', $bookPath);
+
+        $pages = $this->convertPdf(
+            $bookPath.'files/thumb',
+            $bookPath.'files/mobile',
+            $bookPath.$filename
+        );
+        $this->writePagesJs($bookPath, $pages, $ebook->title);
+
         return true;
     }
 
-    function _remote_post($thumbFullPath='',$folderFullPath='', $pdfFullPath='' ){///
-        //dd($thumbFullPath, $folderFullPath, $pdfFullPath);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,"127.0.0.1:3030/convert");
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS,
-                    "thumb={$thumbFullPath}&folder={$folderFullPath}&pdf={$pdfFullPath}");
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $server_output = curl_exec ($ch);
-        curl_close ($ch);
-        return ($server_output) ;
+    protected function pdfFilename($file): string
+    {
+        $name = basename(str_replace('\\', '/', $file->getClientOriginalName()));
+        if (!str_ends_with(strtolower($name), '.pdf')) {
+            $name .= '.pdf';
+        }
+        return $name !== '.pdf' ? $name : 'book.pdf';
     }
 
-     public function cloneTemplate($fromPath, $toPath,$pageNum){
-        //dd($fromPath, $toPath, $pageNum, !is_dir($toPath));
-        if(!is_dir($toPath)){
-            try {
-                File::copyDirectory($fromPath, $toPath);
-                echo "Directory copy successfully";
-
-            } catch (Exception $e) {
-                echo "Error copying directory: " . $e->getMessage();
-            }
-        }else{
-            File::cleanDirectory($toPath.'files/mobile/');
-            File::cleanDirectory($toPath.'files/thumb/');
+    protected function ensureTemplate(string $fromPath, string $toPath): void
+    {
+        if (!is_dir($toPath.'mobile')) {
             File::copyDirectory($fromPath, $toPath);
+            return;
         }
-        $filePath=$toPath.'mobile/javascript/pages.js';
-        $newContent="var total_page={$pageNum}; \nvar book_title='demo';";
-        if (file_put_contents($filePath, $newContent) === false) {
-            die("Error writing to the file.");
-        }
-        return true;
+        File::cleanDirectory($toPath.'files/mobile');
+        File::cleanDirectory($toPath.'files/thumb');
     }
-    ///
-        function countPdfPages($filename) {
-            try {
-                $parser = new Parser();
-                $pdf    = $parser->parseFile($filename);
-                $pages  = $pdf->getPages();
-                $pageCount = count($pages);
-                return $pageCount;
-            } catch (Exception $e) {
-                return 100;
-            }
+
+    protected function writePagesJs(string $bookPath, int $pages, ?string $title): void
+    {
+        $content = "var total_page={$pages};\nvar book_title=".json_encode($title ?: 'demo', JSON_UNESCAPED_UNICODE).';';
+        File::put($bookPath.'mobile/javascript/pages.js', $content);
+    }
+
+    protected function convertPdf(string $thumbPath, string $pagePath, string $pdfPath): int
+    {
+        $ch = curl_init('http://127.0.0.1:3030/convert');
+        curl_setopt_array($ch, [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => http_build_query([
+                'thumb' => $thumbPath,
+                'folder' => $pagePath,
+                'pdf' => $pdfPath,
+            ]),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 3600,
+            CURLOPT_CONNECTTIMEOUT => 5,
+        ]);
+        $output = curl_exec($ch);
+        $error = curl_error($ch);
+        $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        $json = json_decode($output ?: '', true);
+        $pages = (int) ($json['pages'] ?? 0);
+        if ($error || $status !== 200 || $pages < 1) {
+            throw new RuntimeException($error ?: 'Flipbook conversion failed.');
         }
+        return $pages;
+    }
 
     public function _generateQrCode($ebook){
         // Create generic logo
         $logo = new Logo(
-            path: public_path('images/mpu_logo.png'),
+            path: public_path('images\mpu_logo.png'),
             resizeToWidth: 50,
             punchoutBackground: true
         );
         $label = new Label(
-            text: $ebook->title,
+            text: $ebook->qrcode_title ?: $ebook->title ?: 'MPU',
             textColor: new Color(0,102,51)
         );
+        
         $url=env('APP_URL').'/flipbooks/'.$ebook->uid;
         $qrcode=QrCode::create($url)->setSize(300)->setMargin(10);
         $writer=new PngWriter();
         $result=$writer->write($qrcode,$logo,$label);
         $filePath=$this->destinationPath.$ebook->uid;
+        File::ensureDirectoryExists($filePath);
         file_put_contents($filePath.'/qrcode.png',$result->getString());
         return true;
     }

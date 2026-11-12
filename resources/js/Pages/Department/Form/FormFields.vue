@@ -1,5 +1,5 @@
 <template>
-    <DepartmentLayout :title="form.title || '欄位'" :department="department">
+    <DepartmentLayout title="表格欄位" :department="department">
         <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
             <p class="text-sm text-gray-500">{{ form.name }}</p>
             <div class="flex flex-wrap gap-2">

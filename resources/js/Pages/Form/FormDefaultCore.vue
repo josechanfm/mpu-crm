@@ -1,6 +1,4 @@
 <template>
-
-        
         <div class="mx-auto sm:px-6 lg:px-8">
             <!-- Alert Component -->
             <a-alert
@@ -56,7 +54,7 @@
                                         <span class="custom-label">{{ item.label }}</span>
                                     </label>
                                 </div>
-                                <div v-if="formData[field.id] == 'option_other'" class="flex items-center gap-2 pl-2">
+                                <div v-if="formData[field.id] == 'option_other'" class="md:flex items-center gap-2 pl-2">
                                     <span class="ant-form-item-label" style="width: auto; padding: 0; font-weight: 500; white-space: nowrap;">
                                         請填寫/Please fill
                                     </span>
@@ -84,7 +82,7 @@
                                     </label>
                                 </div>
                                 <!-- "Other" text input -->
-                                <div v-if="formData[field.id] && formData[field.id].includes('option_other')" class="flex items-center gap-2 pl-2">
+                                <div v-if="formData[field.id] && formData[field.id].includes('option_other')" class="md:flex items-center gap-2 pl-2">
                                     <span class="ant-form-item-label" style="width: auto; padding: 0; font-weight: 500; white-space: nowrap;">
                                         請填寫/Please fill
                                     </span>
@@ -107,7 +105,7 @@
                                     v-model:value="formData[field.id]"
                                     :options="field.options"
                                 />
-                                <div v-if="formData[field.id] == 'option_other'" class="flex items-center gap-2 pl-2">
+                                <div v-if="formData[field.id] == 'option_other'" class="md:flex items-center gap-2 pl-2">
                                     <span class="ant-form-item-label" style="width: auto; padding: 0; font-weight: 500; white-space: nowrap;">
                                         請填寫/Please fill
                                         <!-- {{ field.options.find(o => o.value == 'option_other').label }} -->
