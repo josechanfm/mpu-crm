@@ -187,7 +187,7 @@ class EbookController extends Controller
         $output = curl_exec($ch);
         $error = curl_error($ch);
         $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        //dd($output,$error,$status);
+        dd($output,$error,$status);
         curl_close($ch);
 
         $json = json_decode($output ?: '', true);
