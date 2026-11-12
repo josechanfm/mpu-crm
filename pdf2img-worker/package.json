@@ -1,6 +1,8 @@
 {
     "scripts": {
-        "start": "node service.js"
+        "start": "node service.js",
+        "stop": "node server.stop.js"
+
     },
     "private": true,
     "type": "module",
