@@ -78,6 +78,7 @@
                                             type="checkbox" 
                                             :value="item.value" 
                                             v-model="formData[field.id]"
+                                            @click="limitCheckbox(field, item.value, $event)"
                                         />
                                         <span class="custom-label">{{ item.label }}</span>
                                     </label>
@@ -223,6 +224,9 @@ export default {
                 number: {
                     range: '${label} 必須介於 ${min} 至 ${max}; ${label} must be between ${min} and ${max}',
                 },
+                array: {
+                    max: '${label}最多選擇 ${max} 項',
+                },
             },
             labelCol: {
                 style: {
@@ -290,25 +294,32 @@ export default {
                 behavior: 'smooth'
             });
         },
+        limitCheckbox(field, value, event) {
+            const max = parseInt(field.extra?.option_max, 10);
+            if (!(max > 0)) return;
+            const selected = this.formData[field.id] || [];
+            if (selected.includes(value) || selected.length < max) return;
+            event.preventDefault();
+            this.$message.warning(
+                this.validateMessages.array.max
+                    .replace('${label}', field.field_label || '')
+                    .replace('${max}', max)
+            );
+        },
         checkboxRules(field) {
             const rules = [];
             if (field.required) {
                 rules.push({ required: true, message: '必填欄位/Required' });
             }
-            const max = field.extra?.option_max;
-            if (max) {
-                const intMax = parseInt(max, 10);
-                if (!isNaN(intMax) && intMax > 0) {
-                    rules.push({
-                        validator: (rule, value) => {
-                            if (!value) return Promise.resolve();
-                            if (Array.isArray(value) && value.length > intMax) {
-                                return Promise.reject(`最多選擇 ${intMax} 項`);
-                            }
-                            return Promise.resolve();
-                        }
-                    });
-                }
+            const max = parseInt(field.extra?.option_max, 10);
+            if (max > 0) {
+                rules.push({
+                    max,
+                    validator: (_rule, value) => {
+                        if (!Array.isArray(value) || value.length <= max) return Promise.resolve();
+                        return Promise.reject(this.validateMessages.array.max);
+                    },
+                });
             }
             return rules;
         }
