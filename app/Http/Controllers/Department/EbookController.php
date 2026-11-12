@@ -138,10 +138,35 @@ class EbookController extends Controller
 
     protected function convertUrl(): string
     {
-        $parts = parse_url((string) config('app.url'));
-        $host = $parts['host'] ?? '127.0.0.1';
+        return (string) config('services.pdf2img.url', 'http://127.0.0.1:3030/convert');
+    }
 
-        return 'http://'.$host.':3030/convert';
+    public function workerHealth()
+    {
+        $healthUrl = preg_replace('#/convert$#', '/health', $this->convertUrl());
+        $ch = curl_init($healthUrl);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 5,
+            CURLOPT_CONNECTTIMEOUT => 3,
+        ]);
+        $output = curl_exec($ch);
+        $error = curl_error($ch);
+        $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        $ok = $error === '' && $status === 200;
+        $detail = e($error !== '' ? $error : (string) $output);
+        $label = $ok ? 'Worker is reachable' : 'Worker is not reachable';
+        $color = $ok ? '#0a7a32' : '#a40000';
+
+        return response('<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>PDF worker</title></head><body style="font-family:sans-serif;max-width:42rem;margin:2rem auto">'
+            .'<h1 style="color:'.$color.'">'.$label.'</h1>'
+            .'<p>Checked from inside the app: <code>'.e($healthUrl).'</code></p>'
+            .'<p>HTTP '.$status.'</p>'
+            .'<pre>'.$detail.'</pre>'
+            .'<p><code>http://venus.mpu.edu.mo:3030/health</code> is not published. Use this page instead.</p>'
+            .'</body></html>');
     }
 
     protected function convertPdf(string $thumbPath, string $pagePath, string $pdfPath): int

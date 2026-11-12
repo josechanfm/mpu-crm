@@ -31,4 +31,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'pdf2img' => [
+        'url' => env('PDF2IMG_URL', 'http://127.0.0.1:3030/convert'),
+    ],
+
 ];

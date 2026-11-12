@@ -119,6 +119,7 @@ Route::group([
 
     Route::resource('mailers',App\Http\Controllers\MailerController::class)->names('manage.mailers');
 
+    Route::get('ebooks/worker-health',[App\Http\Controllers\Department\EbookController::class,'workerHealth'])->name('manage.ebooks.worker-health');
     Route::resource('ebooks',App\Http\Controllers\Department\EbookController::class)->names('manage.ebooks');
     Route::get('action',[ App\Http\Controllers\Department\EbookController::class,'create_filp_book']   )->name('test');
     // Route::get('member/yearList',[  App\Http\Controllers\Department\MemberController::class,'yearList']   )->name('yearList');

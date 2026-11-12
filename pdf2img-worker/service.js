@@ -134,7 +134,7 @@ button { margin-top: 0.5rem; }
 <h1>PDF conversion service</h1>
 <p>This page is served by the worker. If you can read it, this host and port reach the service.</p>
 <p>Convert URL: <code id="url"></code></p>
-<p>Laravel posts <code>thumb</code>, <code>folder</code>, and <code>pdf</code> to <code>http://&lt;APP_URL host&gt;:3030/convert</code>. That host must be the same host shown above.</p>
+<p>Laravel posts <code>thumb</code>, <code>folder</code>, and <code>pdf</code> to <code>PDF2IMG_URL</code>, which defaults to <code>http://127.0.0.1:3030/convert</code> inside the app container.</p>
 <button id="ping" type="button">Test /convert</button>
 <p id="result"></p>
 <script>
