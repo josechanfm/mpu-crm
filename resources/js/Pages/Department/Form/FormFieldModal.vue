@@ -34,7 +34,7 @@
                                 <span class="w-10 shrink-0 text-right text-gray-500">
                                     {{ option.value == 'option_other' ? '其他' : (idx + 1) + '.' }}
                                 </span>
-                                <a-input v-model:value="option.label" placeholder="選項文字" class="flex-1" />
+                                <a-input type="input" v-model:value="option.label" placeholder="選項文字" class="flex-1" />
                                 <a-button type="text" danger size="small" @click="deleteOption(idx)">
                                     <CloseOutlined />
                                 </a-button>
