@@ -114,72 +114,180 @@ app.get('/health', (_req, res) => {
     res.status(200).json({ ok: true });
 });
 
+// ─── Debug page ───────────────────────────────────────────────────────────
 app.get('/', (_req, res) => {
     res.type('html').send(`<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PDF worker link test</title>
+<title>PDF worker debug</title>
 <style>
-body { font-family: sans-serif; max-width: 42rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.45; }
-code { background: #f2f2f2; padding: 0.1rem 0.35rem; }
-button { margin-top: 0.5rem; }
-#result { white-space: pre-wrap; }
-.ok { color: #0a7a32; }
-.bad { color: #a40000; }
+body { font-family: ui-monospace, monospace; max-width: 56rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+label { display: block; margin: .75rem 0 .25rem; font-weight: bold; }
+input { width: 100%; padding: .4rem; font-family: inherit; font-size: .9rem; }
+button { margin: .75rem .5rem .75rem 0; padding: .4rem .9rem; font-family: inherit; cursor: pointer; }
+pre { background: #f5f5f5; padding: .75rem; overflow-x: auto; border-radius: 4px; font-size: .82rem; max-height: 30rem; }
+.ok  { color: #0a7a32; font-weight: bold; }
+.bad { color: #a40000; font-weight: bold; }
+hr { border: none; border-top: 1px solid #ddd; margin: 1.5rem 0; }
 </style>
 </head>
 <body>
-<h1>PDF conversion service</h1>
-<p>This page is served by the worker. If you can read it, this host and port reach the service.</p>
-<p>Convert URL: <code id="url"></code></p>
-<p>Laravel posts <code>thumb</code>, <code>folder</code>, and <code>pdf</code> to <code>PDF2IMG_URL</code>, which defaults to <code>http://127.0.0.1:3030/convert</code> inside the app container.</p>
-<button id="ping" type="button">Test /convert</button>
-<p id="result"></p>
+<h1>PDF worker debug</h1>
+<p>Worker cwd: <code>${process.cwd()}</code></p>
+
+<label>PDF path (must be readable from inside this container)</label>
+<input id="pdf" value="/var/www/html/public/flipbooks/Un91sWh/sprouting2025_small.pdf">
+
+<label>Page output folder</label>
+<input id="folder" value="/var/www/html/public/flipbooks/Un91sWh/files/mobile">
+
+<label>Thumb output folder</label>
+<input id="thumb" value="/var/www/html/public/flipbooks/Un91sWh/files/thumb">
+
+<div>
+  <button id="check">1. Check paths</button>
+  <button id="convert">2. Run /convert</button>
+</div>
+
+<p id="status"></p>
+<pre id="output"></pre>
+
 <script>
-const url = location.origin + '/convert';
-document.getElementById('url').textContent = url;
-document.getElementById('ping').onclick = async () => {
-    const result = document.getElementById('result');
-    result.className = '';
-    result.textContent = 'Contacting ' + url + '...';
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'thumb=&folder=&pdf='
-        });
-        const text = await response.text();
-        let json = null;
-        try { json = JSON.parse(text); } catch (e) {}
-        if (json && (Object.prototype.hasOwnProperty.call(json, 'pages') || json.error)) {
-            result.className = 'ok';
-            result.textContent = 'Service link is correct.\\n' + response.status + ' ' + text;
-        } else {
-            result.className = 'bad';
-            result.textContent = 'Reached a server, but it is not this converter.\\n' + response.status + ' ' + text;
-        }
-    } catch (error) {
-        result.className = 'bad';
-        result.textContent = 'Could not reach ' + url + '\\n' + error;
+const $ = (id) => document.getElementById(id);
+const out = (msg) => { $('output').textContent = msg; };
+const status = (msg, cls) => { $('status').className = cls; $('status').textContent = msg; };
+
+function paths() {
+  return {
+    pdf:    $('pdf').value.trim(),
+    folder: $('folder').value.trim(),
+    thumb:  $('thumb').value.trim(),
+  };
+}
+
+$('check').onclick = async () => {
+  status('Checking…', '');
+  const r = await fetch('/debug/check', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(paths()),
+  });
+  const j = await r.json();
+  out(JSON.stringify(j, null, 2));
+  status(j.allGood ? 'Paths look good.' : 'Problems found — see below.', j.allGood ? 'ok' : 'bad');
+};
+
+$('convert').onclick = async () => {
+  status('Converting… (this can take a while)', '');
+  out('');
+  const p = paths();
+  const body = new URLSearchParams({ pdf: p.pdf, folder: p.folder, thumb: p.thumb });
+  const t0 = Date.now();
+  try {
+    const r = await fetch('/convert?debug=1', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body,
+    });
+    const text = await r.text();
+    let j = null;
+    try { j = JSON.parse(text); } catch (e) {}
+    const ms = Date.now() - t0;
+    if (r.ok && j && typeof j.pages === 'number') {
+      status('Success: ' + j.pages + ' pages in ' + ms + 'ms', 'ok');
+    } else {
+      status('Failed (' + r.status + ') after ' + ms + 'ms', 'bad');
     }
+    out(JSON.stringify(j ?? text, null, 2));
+  } catch (err) {
+    status('Request error: ' + err, 'bad');
+  }
 };
 </script>
 </body>
 </html>`);
 });
 
+// ─── Debug helper: report filesystem state for the given paths ────────────
+app.post('/debug/check', async (req, res) => {
+    const { pdf, folder, thumb } = req.body || {};
+    const check = async (p, wantWritable) => {
+        if (!p) return { path: p, ok: false, error: 'empty path' };
+        try {
+            const stat = await fs.stat(p);
+            const isDir = stat.isDirectory();
+            if (wantWritable && isDir) {
+                // Try to create + delete a temp file to prove writability
+                const probe = path.join(p, '.probe-' + Date.now());
+                await fs.writeFile(probe, '');
+                await fs.unlink(probe);
+            }
+            return {
+                path: p,
+                ok: true,
+                kind: isDir ? 'dir' : 'file',
+                size: isDir ? null : stat.size,
+                uid: stat.uid,
+                gid: stat.gid,
+                mode: '0' + (stat.mode & 0o777).toString(8),
+            };
+        } catch (e) {
+            return { path: p, ok: false, error: e.code + ': ' + e.message };
+        }
+    };
+
+    const pdfInfo = await check(pdf, false);
+    // For output dirs: if they don't exist, try creating them (like renderBook does)
+    const ensureDir = async (p) => {
+        if (!p) return { path: p, ok: false, error: 'empty path' };
+        try {
+            await fs.mkdir(p, { recursive: true });
+            return await check(p, true);
+        } catch (e) {
+            return { path: p, ok: false, error: e.code + ': ' + e.message };
+        }
+    };
+    const folderInfo = await ensureDir(folder);
+    const thumbInfo = await ensureDir(thumb);
+
+    const allGood = pdfInfo.ok && folderInfo.ok && thumbInfo.ok;
+    res.json({
+        worker: {
+            cwd: process.cwd(),
+            uid: process.getuid ? process.getuid() : null,
+            gid: process.getgid ? process.getgid() : null,
+            node: process.version,
+        },
+        pdf: pdfInfo,
+        folder: folderInfo,
+        thumb: thumbInfo,
+        allGood,
+    });
+});
+
+// ─── Convert endpoint (debug=1 exposes the real error) ────────────────────
 app.post('/convert', async (req, res) => {
     const pageFolder = req.body.folder;
     const pdfPath = req.body.pdf;
     const thumbFolder = req.body.thumb;
+    const debug = req.query.debug === '1';
     try {
         const pages = await renderBook(pdfPath, pageFolder, thumbFolder);
         res.status(200).json({ pages });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Conversion failed' });
+        if (debug) {
+            res.status(500).json({
+                error: 'Conversion failed',
+                code: error?.code || null,
+                message: error?.message || String(error),
+                stack: (error?.stack || '').split('\n').slice(0, 8).join('\n'),
+            });
+        } else {
+            res.status(500).json({ error: 'Conversion failed' });
+        }
     }
 });
 
