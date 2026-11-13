@@ -201,7 +201,7 @@ class EbookController extends Controller
     public function _generateQrCode($ebook){
         // Create generic logo
         $logo = new Logo(
-            path: public_path('images\mpu_logo.png'),
+            path: storage_path('/app/public/images/mpu_logo.png'),
             resizeToWidth: 50,
             punchoutBackground: true
         );
