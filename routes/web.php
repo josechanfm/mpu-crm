@@ -52,7 +52,7 @@ Route::prefix('souvenir')->group(function(){
 
 });
 
-Route::get('ebooks',[App\Http\Controllers\EbookController::class,'index'])->name('ebooks');
+
 
 Route::get('/language/{language}', function ($language) {
     Session::put('applocale', $language);
@@ -80,6 +80,7 @@ Route::prefix('enquiry')->group(function(){
     Route::get('ticket/{response}/{token}',[\App\Http\Controllers\EnquiryTicketController::class,'ticket'])->name('enquiry.ticket');
     Route::post('ticket',[\App\Http\Controllers\EnquiryTicketController::class,'store'])->name('enquiry.ticket.store');
 });
+
 Route::resource('enquiry',App\Http\Controllers\EnquiryController::class)->names('enquiry');
 Route::resource('forms',\App\Http\Controllers\FormController::class)->names('forms');
 Route::get('s/{token}',[\App\Http\Controllers\ShortenerController::class,'index']);
@@ -88,6 +89,7 @@ Route::get('s/{token}',[\App\Http\Controllers\ShortenerController::class,'index'
 Route::get('form/entry/{entry}/thank_you',[\App\Http\Controllers\FormController::class,'thankYou'])->name('form.entry.thankYou');
 Route::get('form/entry/{entry}/receipt',[\App\Http\Controllers\FormController::class,'receipt'])->name('form.entry.receipt');
 
+Route::get('ebooks',[App\Http\Controllers\Ebook\EbookController::class,'ebookShelf'])->name('ebooks');
 
 
 Route::group([

@@ -1,2 +1,2 @@
-var total_page=60;
+var total_page=27;
 var book_title="adsfads fadsfa";

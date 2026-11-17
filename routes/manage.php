@@ -119,16 +119,15 @@ Route::group([
 
     Route::resource('mailers',App\Http\Controllers\MailerController::class)->names('manage.mailers');
 
-    Route::get('ebooks/worker-health',[App\Http\Controllers\Department\EbookController::class,'workerHealth'])->name('manage.ebooks.worker-health');
-    Route::resource('ebooks',App\Http\Controllers\Department\EbookController::class)->names('manage.ebooks');
-    Route::get('action',[ App\Http\Controllers\Department\EbookController::class,'create_filp_book']   )->name('test');
+    Route::get('ebooks/worker-health',[App\Http\Controllers\Ebook\EbookController::class,'workerHealth'])->name('manage.ebooks.health');
+    Route::get('ebooks/help',[App\Http\Controllers\Ebook\EbookController::class,'help'])->name('manage.ebooks.help');
+    Route::resource('ebooks',App\Http\Controllers\Ebook\EbookController::class)->names('manage.ebooks');
+    Route::get('action',[ App\Http\Controllers\Ebook\EbookController::class,'create_filp_book']   )->name('test');
     // Route::get('member/yearList',[  App\Http\Controllers\Department\MemberController::class,'yearList']   )->name('yearList');
     // Route::get('demoPdf',[  App\Http\Controllers\Department\ReportController::class,'viewPdf']   )->name('viewPdf');
-    Route::get('actionHandbook',[ App\Http\Controllers\Department\EbookController::class,'create_hand_book']   )->name('test2');
+    Route::get('actionHandbook',[ App\Http\Controllers\Ebook\EbookController::class,'create_hand_book']   )->name('test2');
 
     Route::resource('shorteners',\App\Http\Controllers\Department\ShortenerController::class)->names('manage.shorteners');
-
-
 });
 
 // Route::middleware([

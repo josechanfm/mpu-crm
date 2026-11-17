@@ -32,7 +32,7 @@ return [
     ],
 
     'pdf2img' => [
-        'url' => env('PDF2IMG_URL', 'http://127.0.0.1:3030/convert'),
+        'url' => env('PDF2IMG_URL', 'http://172.25.5.36:3030/convert'),
     ],
 
 ];
