@@ -4,6 +4,7 @@ use App\Models\Department;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use App\Http\Controllers\Master\RolePermissionController;
 use Inertia\Inertia;
 
 // Route::get('/get-permissions', function () {
@@ -58,9 +59,10 @@ Route::group([
 Route::group([
     'prefix' => '/master',
     'middleware' => [
-        // 'auth:sanctum',
-        // 'checkInternalIP',
-        //'role:admin|master'
+        'auth:admin',
+        'role:master'
+        //'auth:sanctum',
+        //'checkInternalIP',
     ]
 ], function () {
     Route::get('/',[App\Http\Controllers\Master\DashboardController::class,'index'])->name('master');
@@ -72,22 +74,19 @@ Route::group([
     Route::resource('/manuals',App\Http\Controllers\Master\ManualController::class)->names('master.manuals');
     Route::get('/schedulers',[App\Http\Controllers\Master\SchedulerController::class,'index'])->name('master.schedulers.index');
 
+    Route::get('roles-permissions', [RolePermissionController::class, 'index'])->name('master.rolesPermissions.index');
+    
+    // Role Actions
+    Route::post('roles', [RolePermissionController::class, 'storeRole'])->name('master.roles.s  tore');
+    Route::put('roles/{role}', [RolePermissionController::class, 'updateRole'])->name('master.roles.update');
+    Route::delete('roles/{role}', [RolePermissionController::class, 'destroyRole'])->name('master.roles.destroy');
+
+    // Permission Actions
+    Route::post('permissions', [RolePermissionController::class, 'storePermission'])->name('master.permissions.store'); 
+    Route::put('permissions/{permission}', [RolePermissionController::class, 'updatePermission'])->name('master.permissions.update');
+    Route::delete('permissions/{permission}', [RolePermissionController::class, 'destroyPermission'])->name('master.permissions.destroy');
+
 });
-// Route::middleware([
-//     'auth:admin',
-//     config('jetstream.auth_session'),
-//     'role:master',
-//     'checkIneternalIP'
-// ])->group(function () {
-//     Route::prefix('/master')->group(function(){
-//         Route::get('/',[App\Http\Controllers\Master\DashboardController::class,'index'])->name('master');
-//         Route::resource('/admin_users',App\Http\Controllers\Master\AdminUserController::class)->names('master.adminUsers');
-//         Route::resource('/departments',App\Http\Controllers\Master\DepartmentController::class)->names('master.departments');
-//         Route::resource('/articles',App\Http\Controllers\Master\ArticleController::class)->names('master.articles');
-//         Route::resource('/medias',App\Http\Controllers\Master\MediaController::class)->names('master.medias');
-//         Route::resource('/manuals',App\Http\Controllers\Master\ManualController::class)->names('master.manuals');
-//     });
-// });
 
 
 Route::group([
@@ -119,13 +118,14 @@ Route::group([
 
     Route::resource('mailers',App\Http\Controllers\MailerController::class)->names('manage.mailers');
 
-    Route::get('ebooks/worker-health',[App\Http\Controllers\Ebook\EbookController::class,'workerHealth'])->name('manage.ebooks.health');
-    Route::get('ebooks/help',[App\Http\Controllers\Ebook\EbookController::class,'help'])->name('manage.ebooks.help');
-    Route::resource('ebooks',App\Http\Controllers\Ebook\EbookController::class)->names('manage.ebooks');
-    Route::get('action',[ App\Http\Controllers\Ebook\EbookController::class,'create_filp_book']   )->name('test');
-    // Route::get('member/yearList',[  App\Http\Controllers\Department\MemberController::class,'yearList']   )->name('yearList');
-    // Route::get('demoPdf',[  App\Http\Controllers\Department\ReportController::class,'viewPdf']   )->name('viewPdf');
-    Route::get('actionHandbook',[ App\Http\Controllers\Ebook\EbookController::class,'create_hand_book']   )->name('test2');
+// ==========================================
+    // EBOOK ROUTES (Protected by 'ebook' permission)
+    // ==========================================
+    Route::middleware(['permission:ebook'])->group(function () {
+        Route::resource('ebooks',App\Http\Controllers\Ebook\EbookController::class)->names('manage.ebooks');
+        Route::get('ebooks/worker-health',[App\Http\Controllers\Ebook\EbookController::class,'workerHealth'])->name('manage.ebooks.health');
+        Route::get('ebooks/help',[App\Http\Controllers\Ebook\EbookController::class,'help'])->name('manage.ebooks.help');
+    });   
 
     Route::resource('shorteners',\App\Http\Controllers\Department\ShortenerController::class)->names('manage.shorteners');
 });
@@ -323,6 +323,7 @@ Route::middleware([
         Route::resource('/publications',App\Http\Controllers\Department\Flt\PublicationController::class)->names('flt.publications'); 
     });
 });
+
 
 
 

@@ -20,7 +20,7 @@
                 <div class="flex-1"></div>
 
                 <a-dropdown placement="bottomRight">
-                    <a class="trigger" @click.prevent>
+                    <a class="trigger"  href="#" @click.prevent>
                         <!-- {{ $page.props.currentUser.roles }} -->
                           username
                         <!-- {{ $page.props.currentUser.name }} -->
@@ -28,17 +28,17 @@
                     <template #overlay>
                         <a-menu>
                             <a-menu-item>
-                                <a href="javascript:;">我的資料</a>
+                                <a href="#">我的資料</a>
                             </a-menu-item>
                             <a-menu-divider />
                             <a-menu-item>
-                                <a href="javascript:;">系統設置</a>
+                                <a href="#">系統設置</a>
                             </a-menu-item>
                             <a-menu-item>
-                                <a href="javascript:;">行政管理後臺</a>
+                                <a href="#">行政管理後臺</a>
                             </a-menu-item>
                             <a-menu-item @click="logout">
-                                <a>登出</a>
+                                <span >登出</span>
                             </a-menu-item>
                         </a-menu>
                     </template>
@@ -87,8 +87,7 @@ const menuKeys = reactive({
     menuSelectKey: ''
 })
 
-const showingNavigationDropdown = ref(false);
-const selectedKeys = ref(['1']);
+
 const collapsed = ref(false);
 
 const switchToTeam = (team) => {

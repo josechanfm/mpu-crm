@@ -5,196 +5,174 @@
                 Admin users
             </h2>
         </template>
-        <a-button @click="createRecord">Add Admin User</a-button>
+
+        <!-- Toolbar -->
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="w-full sm:w-80">
+                    <a-input-search
+                        v-model:value="searchQuery"
+                        placeholder="Search username / name / email"
+                        allow-clear
+                    />
+                </div>
+                <a-button @click="resetFilters">Reset</a-button>
+            </div>
+            <a-button type="primary" @click="createRecord">Add Admin User</a-button>
+        </div>
+
+        <!-- Table -->
         <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                <a-table :dataSource="adminUsers" :columns="columns" :row-key="record => record.root_id">
-                    <template #bodyCell="{column, text, record, index}" >
-                        <template v-if="column.dataIndex=='operation'">
+                <a-table
+                    ref="tableRef"
+                    :dataSource="displayedUsers"
+                    :columns="columns"
+                    :row-key="record => record.id"
+                    :pagination="{
+                        pageSize: 10,
+                        showSizeChanger: true,
+                        showTotal: (total) => `Total ${total} users`,
+                    }"
+                >
+                    <template #bodyCell="{ column, record }">
+                        <!-- Operations -->
+                        <template v-if="column.dataIndex === 'operation'">
                             <a-button @click="editRecord(record)">Edit</a-button>
-                            <!-- <inertia-link :href="route('manage.department.faqs.show', {department:record.department_id, faq:record.id})">View</inertia-link> -->
                         </template>
-                        <template v-else-if="column.dataIndex=='manage_departments'">
-                            <ol>
-                                <li v-for="role in record.roles">{{ role.name }}</li>    
+                        
+                        <!-- Roles -->
+                        <template v-else-if="column.dataIndex === 'manage_departments'">
+                            <ol class="list-decimal pl-4">
+                                <li v-for="role in record.roles" :key="role.id">
+                                    {{ role.name }}
+                                </li>
                             </ol>
                         </template>
-                        <template v-else-if="column.dataIndex=='belong_departments'">
-                            <ol>
-                                <li v-for="department in record.departments">{{ department.name_zh }}</li>    
-                            </ol>
+
+                        <!-- Direct Permissions -->
+                        <template v-else-if="column.dataIndex === 'direct_permissions'">
+                            <div class="flex flex-wrap gap-1">
+                                <a-tag v-for="permission in record.permissions" :key="permission.id" color="blue">
+                                    {{ permission.name }}
+                                </a-tag>
+                                <span v-if="!record.permissions || record.permissions.length === 0" class="text-gray-400 text-sm italic">
+                                    None
+                                </span>
+                            </div>
                         </template>
+
+                        <!-- Default -->
                         <template v-else>
-                            {{record[column.dataIndex]}}
+                            {{ record[column.dataIndex] }}
                         </template>
                     </template>
                 </a-table>
             </div>
         </div>
 
-
-        <!-- Modal Start-->
-        <a-modal v-model:open="modal.isOpen" :title="modal.title" width="60%" >
-        <a-form
-            ref="modalRef"
-            :model="modal.data"
-            name="Teacher"
-            layout="vertical"
-            autocomplete="off"
-            :ruels="rules"
-            :validate-messages="validateMessages"
-        >
-            <a-form-item label="Username" name="username">
-                <a-input type="inpuut" v-model:value="modal.data.username"                 />
-            </a-form-item>
-            <a-form-item label="Display Name" name="name">
-                <a-input type="inpuut" v-model:value="modal.data.name"                 />
-            </a-form-item>
-            <a-form-item label="Email" name="email">
-                <a-input type="inpuut" v-model:value="modal.data.email"/>
-            </a-form-item>
-            <a-form-item label="Password" name="password">
-                <a-input type="inpuut" v-model:value="modal.data.password"/>
-            </a-form-item>
-            <a-form-item label="Retype Password" name="retype_password">
-                <a-input type="inpuut" v-model:value="modal.data.retype_password"/>
-            </a-form-item>
-            <a-form-item label="Departments" name="departments">
-                <a-select 
-                    mode="multiple"
-                    v-model:value="modal.data.belong_departments" 
-                    :options="departments" 
-                    :fieldNames="{value:'abbr'}"
-                />
-            </a-form-item>
-            <a-form-item label="Manage Departments" name="manage_departments">
-                <a-select 
-                    mode="multiple"
-                    v-model:value="modal.data.manage_departments" 
-                    :options="roles" 
-                    :fieldNames="{value:'name'}"
-                />
-            </a-form-item>
-        </a-form>
-        <template #footer>
-            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
-            <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">Add</a-button>
-        </template>
-    </a-modal>    
-    <!-- Modal End-->
-
+        <!-- Form Component -->
+        <AdminUserForm
+            v-model:open="formOpen"
+            :mode="formMode"
+            :record="formRecord"
+            :roles="roles"
+            :departments="departments"
+            :permissions="permissions" 
+            @saved="onSaved"
+        />
     </MasterLayout>
 </template>
 
 <script>
 import MasterLayout from '@/Layouts/MasterLayout.vue';
+import AdminUserForm from './AdminUserForm.vue';
 
 export default {
-    components: {
-        MasterLayout
-    },
-    props: ['roles','departments','adminUsers'],
+    components: { MasterLayout, AdminUserForm },
+    // Restored 'departments' back into props array
+    props: ['roles', 'departments', 'adminUsers', 'permissions'],
     data() {
         return {
-            modal:{
-                isOpen:false,
-                data:{},
-                title:"Modal",
-                mode:""
-            },
-            columns:[
+            searchQuery: '',
+            formOpen: false,
+            formMode: 'CREATE',
+            formRecord: null,
+        };
+    },
+    computed: {
+        columns() {
+            return [
                 {
                     title: 'Username',
                     dataIndex: 'username',
-                },{
+                    sorter: (a, b) => (a.username || '').localeCompare(b.username || ''),
+                },
+                {
                     title: 'Display Name',
                     dataIndex: 'name',
-                },{
+                    sorter: (a, b) => (a.name || '').localeCompare(b.name || ''),
+                },
+                {
                     title: 'Email',
                     dataIndex: 'email',
-                },{
-                    title: 'Belong Departments',
-                    dataIndex: 'belong_departments',
-                },{
-                    title: 'Manage Departments',
+                    sorter: (a, b) => (a.email || '').localeCompare(b.email || ''),
+                },
+                {
+                    title: 'Manage Roles',
                     dataIndex: 'manage_departments',
-                },{
+                    filters: this.roles.map(r => ({ text: r.name, value: r.name })),
+                    onFilter: (value, record) =>
+                        (record.roles || []).some(r => r.name === value),
+                    sorter: (a, b) =>
+                        (a.roles?.length || 0) - (b.roles?.length || 0),
+                },
+                {
+                    title: 'Direct Permissions',
+                    dataIndex: 'direct_permissions',
+                    filters: this.permissions.map(p => ({ text: p.name, value: p.name })),
+                    onFilter: (value, record) =>
+                        (record.permissions || []).some(p => p.name === value),
+                    sorter: (a, b) =>
+                        (a.permissions?.length || 0) - (b.permissions?.length || 0),
+                },
+                {
                     title: '操作',
                     dataIndex: 'operation',
                     key: 'operation',
                 },
-            ],
-            rules:{
-                name:{required:true},
-                email:{required:true},
-                password:{required:true},
-                retype_password:{required:true},
-            },
-            validateMessages:{
-                required: '${label} is required!',
-                types: {
-                    email: '${label} is not a valid email!',
-                    number: '${label} is not a valid number!',
-                },
-                number: {
-                    range: '${label} must be between ${min} and ${max}',
-                },
-            },
+            ];
+        },
 
-        }
-    },
-    created(){
-    },
-    mounted(){
+        displayedUsers() {
+            const q = this.searchQuery.trim().toLowerCase();
+            if (!q) return this.adminUsers;
+            return this.adminUsers.filter(u =>
+                [u.username, u.name, u.email]
+                    .filter(Boolean)
+                    .some(v => v.toLowerCase().includes(q))
+            );
+        },
     },
     methods: {
-        createRecord(){
-            this.modal.data={};
-            //this.modal.data.department_id = [];
-            this.modal.mode="CREATE";
-            this.modal.title="新增";
-            this.modal.isOpen=true;
+        createRecord() {
+            this.formRecord = null;
+            this.formMode = 'CREATE';
+            this.formOpen = true;
         },
-        editRecord(record){
-            this.modal.data={...record};
-            this.modal.data.belong_departments=record.departments.map(department=>department.abbr);
-            this.modal.data.manage_departments=record.roles.map(role=>role.name);
-            this.modal.mode="EDIT";
-            this.modal.title="修改";
-            this.modal.isOpen=true;
+        editRecord(record) {
+            this.formRecord = record;
+            this.formMode = 'EDIT';
+            this.formOpen = true;
         },
-        storeRecord(){
-            this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post(route('master.adminUsers.store'),this.modal.data, {
-                    onSuccess:(page)=>{
-                        this.modal.data={};
-                        this.modal.isOpen=false;
-                    },
-                    onError:(err)=>{
-                        console.log(err);
-                    }
-                });
-            }).catch(err => {
-                console.log(err);
-            });
+        onSaved() {
+            this.formRecord = null;
         },
-        updateRecord(){
-            this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch(route('master.adminUsers.update',this.modal.data.id),this.modal.data, {
-                    onSuccess:(page)=>{
-                        this.modal.data={};
-                        this.modal.isOpen=false;
-                        console.log(page);
-                    },
-                    onError:(error)=>{
-                        console.log(error);
-                    }
-                });
-            }).catch(err => {
-                console.log("error", err);
-            });
-           
+        resetFilters() {
+            this.searchQuery = '';
+            this.$refs.tableRef?.clearFilters?.();
+            this.$refs.tableRef?.clearSorters?.();
         },
     },
-}
+};
 </script>

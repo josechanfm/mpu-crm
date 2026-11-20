@@ -55,6 +55,14 @@
             <inertia-link :href="route('master.articles.index')">Articles</inertia-link>
           </span>
         </a-menu-item>
+        <a-menu-item key="7">
+          <template #icon>
+            <FileTextOutlined />
+          </template>
+          <span>
+            <inertia-link :href="route('master.rolesPermissions.index')">Role & Permission</inertia-link>
+          </span>
+        </a-menu-item>
 
         <a-sub-menu key="sub1">
           <template #icon>
@@ -84,7 +92,7 @@
             <InboxOutlined />
           </template>
           <span>
-            <inertia-link @click="logout">Logout</inertia-link>
+            <inertia-link href="#" @click.prevent="logout">Logout</inertia-link>
           </span>
         </a-menu-item>
 
